@@ -107,6 +107,19 @@ export class NetworkFacade {
         fileReadable = encryptStreamInParts(file, cipher, options.parts);
       },
       async (urls: string[]) => {
+        console.log('Reading file readable', urls);
+        // const reader = fileReadable.getReader();
+
+        // let done = false;
+
+        // while (!done) {
+        //   console.log('hola1');
+        //   const res = await reader.read();
+        //   console.log('hola2');
+
+        //   console.log('Reading chunk of ', res.value?.length);
+        //   done = res.done;
+        // }
 
         const fileParts: { PartNumber: number; ETag: string }[] = [];
 
@@ -118,6 +131,7 @@ export class NetworkFacade {
             process.env.REACT_APP_DONT_USE_PROXY !== 'true' && !new URL(currentUrl).hostname.includes('internxt');
           const putUrl = (useProxy ? process.env.REACT_APP_PROXY + '/' : '') + currentUrl;
 
+          console.log('Uploading chunk of %s bytes to url %s, part %s', blob.size, putUrl, currentUrlIndex);
           const response = await uploadFileBlob(blob, putUrl, {
             progressCallback: options.uploadingCallback,
             abortController: options.abortController,

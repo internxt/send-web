@@ -83,7 +83,6 @@ export function uploadFile(bucketId: string, params: IUploadParams): Promise<str
     pass: params.creds.pass,
   });
 
-
   const facade = new NetworkFacade(
     Network.client(
       process.env.REACT_APP_NETWORK_URL as string,
@@ -99,6 +98,7 @@ export function uploadFile(bucketId: string, params: IUploadParams): Promise<str
   );
 
   if (params.parts) {
+    console.log('Performing multipart');
 
     return facade
       .uploadMultipart(bucketId, params.mnemonic, file, {
