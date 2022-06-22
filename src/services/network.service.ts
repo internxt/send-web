@@ -63,9 +63,9 @@ export class NetworkService {
   ): Promise<string> {
     const { bucketId, user, pass, encryptionKey } = getSendAccountParameters();
 
-    let parts = 1;
+    let parts
     const partSize = 100*1024*1024;
-    const minimumMultipartThreshold = 50*1024*1024;
+    const minimumMultipartThreshold = 100*1024*1024;
 
     if (file.size > minimumMultipartThreshold) {
       parts = Math.ceil(file.size / partSize);

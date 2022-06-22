@@ -15,6 +15,7 @@
     "@types/react-dom": "^18.0.5",
     "@types/streamsaver": "^2.0.1",
     "asmcrypto.js": "^2.3.2",
+    "async": "^3.2.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "4.0.3",
@@ -49,6 +50,7 @@
     ]
   },
   "devDependencies": {
+    "@types/async": "^3.2.13",
     "autoprefixer": "^10.4.7",
     "concurrently": "^7.2.2",
     "postcss": "^8.4.14",
