@@ -133,6 +133,7 @@ export function sha256(input: Buffer): Buffer {
 
   return new ReadableStream({
     async pull(controller) {
+      console.log('2ND_STEP: PULLING');
       const status = await reader.read();
 
       if (!status.done) {
