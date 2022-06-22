@@ -6,7 +6,10 @@ export class UploadService {
 
   static async uploadFiles(
     files: File[], 
-    progress: (totalBytes: number, uploadedBytes: number) => void
+    opts?: {
+      progress?: (totalBytes: number, uploadedBytes: number) => void,
+      abortController?: AbortController
+    }
   ): Promise<string[]> {
     console.log(files);
     const totalBytes = files.reduce((a, f) => a+f.size, 0);
@@ -18,7 +21,7 @@ export class UploadService {
     const progressInterval = setInterval(() => {
       const uploadedBytes = Object.values(uploadsProgress).reduce((a, p) => a+p, 0);
 
-      progress(totalBytes, uploadedBytes);
+      opts?.progress?.(totalBytes, uploadedBytes);
     }, 500);
 
     try {
@@ -29,8 +32,11 @@ export class UploadService {
         const uploadId = randomBytes(10).toString('hex');
         uploadsProgress[uploadId] = 0;
 
-        const networkId = await networkService.uploadFile(file, (_, uploadedBytes) => {
-          uploadsProgress[uploadId] = uploadedBytes;
+        const networkId = await networkService.uploadFile(file, {
+          abortController: opts?.abortController,
+          progress: (_, uploadedBytes) => {
+            uploadsProgress[uploadId] = uploadedBytes;
+          }
         });
 
         networkIds.push(networkId);

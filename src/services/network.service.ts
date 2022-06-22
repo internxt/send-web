@@ -33,7 +33,10 @@ export class NetworkService {
 
   public getDownloadFileStream(
     fileId: string,
-    progress?: (totalBytes: number, downloadedBytes: number) => void
+    opts?: {
+      progress?: (totalBytes: number, downloadedBytes: number) => void,
+      abortController?: AbortController
+    }
   ): Promise<ReadableStream> {
     const { bucketId, encryptionKey } = getSendAccountParameters();
 
@@ -44,15 +47,19 @@ export class NetworkService {
       mnemonic: encryptionKey,
       options: {
         notifyProgress: (totalBytes, downloadedBytes) => {
-          progress && progress(totalBytes, downloadedBytes);
-        }
+          opts?.progress?.(totalBytes, downloadedBytes);
+        },
+        abortController: opts?.abortController
       }
     });
   }
 
   async uploadFile(
     file: File, 
-    progress?: (totalBytes: number, uploadedBytes: number) => void
+    opts?: {
+      progress?: (totalBytes: number, downloadedBytes: number) => void,
+      abortController?: AbortController
+    }
   ): Promise<string> {
     const { bucketId, user, pass, encryptionKey } = getSendAccountParameters();
 
@@ -70,9 +77,10 @@ export class NetworkService {
       filesize: file.size,
       mnemonic: encryptionKey,
       progressCallback: (totalBytes, uploadedBytes) => {
-        progress && progress(totalBytes, uploadedBytes);
+        opts?.progress?.(totalBytes, uploadedBytes);
       },
-      parts
+      parts,
+      abortController: opts?.abortController
     });
   }
 }
