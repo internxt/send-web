@@ -1,6 +1,6 @@
 import streamSaver from 'streamsaver';
 
-import { buildProgressStream } from '../stream.service';
+import { buildProgressStream } from '../../network/streams';
 import { loadWritableStreamPonyfill, createFolderWithFilesWritable, ZipStream } from "./Zip";
 
 type FlatFolderZipOpts = {
