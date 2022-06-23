@@ -1,10 +1,14 @@
-import HomeView from './views/HomeView';
+import RootDropzone from "./components/RootDropzone";
+import { FilesProvider } from "./contexts/Files";
+import HomeView from "./views/HomeView";
 
 function App() {
   return (
-    <div>
+    <FilesProvider>
+      <RootDropzone>
         <HomeView></HomeView>
-    </div>
+      </RootDropzone>
+    </FilesProvider>
   );
 }
 

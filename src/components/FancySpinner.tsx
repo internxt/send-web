@@ -18,7 +18,7 @@ export default function FancySpinner({
           r="54"
           fill="none"
           stroke="currentcolor"
-          stroke-width="4"
+          strokeWidth="4"
         />
         <circle
           cx="60"
@@ -26,7 +26,7 @@ export default function FancySpinner({
           r="54"
           fill="none"
           stroke="rgb(0,102,255)"
-          stroke-width="4"
+          strokeWidth="4"
           pathLength="100"
           strokeDasharray="100"
           strokeDashoffset={100 - progress}
