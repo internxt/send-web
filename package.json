@@ -16,6 +16,7 @@
     "@types/streamsaver": "^2.0.1",
     "asmcrypto.js": "^2.3.2",
     "async": "^3.2.4",
+    "js-file-download": "^0.4.12",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "4.0.3",
