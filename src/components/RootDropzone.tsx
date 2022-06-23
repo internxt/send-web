@@ -33,7 +33,7 @@ export default function RootDropzone({
             <div className="text-center">
               <h1 className="text-5xl font-medium text-white">Drop files</h1>
               <h2 className="mt-3 text-2xl text-white">
-                Upload up to 2GB in total
+                Upload up to 5GB in total
               </h2>
             </div>
           </div>
