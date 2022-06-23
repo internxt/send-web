@@ -21,6 +21,7 @@ export default function RootDropzone({
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     noClick: true,
+    disabled: !filesContext.enabled,
   });
 
   return (
