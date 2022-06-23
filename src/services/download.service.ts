@@ -21,21 +21,23 @@ type DownloadFileOptions = {
 
 export class DownloadService {
   static async downloadFiles(
+    zipName: string,
     items: Item[], 
     networkService: NetworkService,
     opts?: DownloadFileOptions
   ) {
     const totalBytes = items.reduce((a, f) => a + f.size, 0);
-    const zip = new FlatFolderZip('test', {
+    const zip = new FlatFolderZip(zipName, {
       progress: (downloadedBytes) => {
         opts?.progress?.(totalBytes, downloadedBytes);
       }
     });
 
     for (const item of items) {
-      const itemDownloadStream = await networkService.getDownloadFileStream(item.networkId, { 
-        abortController: opts?.abortController 
-      });
+      const itemDownloadStream = await networkService.getDownloadFileStream(
+        item.networkId, 
+        { abortController: opts?.abortController }
+      );
 
       zip.addFile(item.name, itemDownloadStream);
     }
