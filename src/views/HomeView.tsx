@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Button from "../components/Button";
 import Card from "../components/Card";
 import Switch from "../components/Switch";
 import logo from "../logo.svg";
@@ -21,6 +22,7 @@ export default function HomeView() {
             onClick={setSwitchValue}
             value={switchValue}
           />
+          <Button outline>Label</Button>
         </Card>
       </div>
     </div>
