@@ -60,8 +60,8 @@ class UploadManager {
     }
   }
 
+  private errored = false;
   private uploadsProgress: Record<string, number> = {};
-
   private uploadQueue: QueueObject<File> = queue<File>((
     file, 
     next: (err: Error | null, networkId?: string) => void
@@ -79,6 +79,12 @@ class UploadManager {
     }).then((networkId) => {      
       next(null, networkId);
     }).catch((err) => {
+      if (!this.errored) {
+        this.uploadQueue.kill();
+      }
+
+      this.errored = true;
+
       next(err);
     });
   }, this.filesGroups.small.concurrency);
