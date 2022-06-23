@@ -1,3 +1,5 @@
+const defaultTheme = require("tailwindcss/defaultTheme");
+
 /* eslint-disable */
 module.exports = {
   content: ["./src/**/*.tsx"],
@@ -166,6 +168,9 @@ module.exports = {
         "photo-select": "0px 12px 24px rgba(0, 0, 0, 0.16)",
         subtle: "0 32px 40px 0 rgba(18, 22, 25, 0.04)",
         "subtle-hard": "0 32px 40px 0 rgba(18, 22, 25, 0.08)",
+      },
+      fontFamily: {
+        sans: ["NeueEinstellung", ...defaultTheme.fontFamily.sans],
       },
     },
     colors: {
