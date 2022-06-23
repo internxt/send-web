@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Button from "../components/Button";
 import Card from "../components/Card";
+import FancySpinner from "../components/FancySpinner";
 import Switch from "../components/Switch";
 import logo from "../logo.svg";
 
@@ -23,6 +24,7 @@ export default function HomeView() {
             value={switchValue}
           />
           <Button outline>Label</Button>
+          <FancySpinner className="mx-auto mt-5" progress={20} />
         </Card>
       </div>
     </div>
