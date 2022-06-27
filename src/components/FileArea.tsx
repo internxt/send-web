@@ -32,7 +32,7 @@ export default function FileArea({ className = "" }: { className?: string }) {
       {fileContext.files.length === 0 && <Empty onClick={openFileExplorer} />}
       {fileContext.files.length !== 0 && (
         <>
-          <div className="flex-1 py-3 px-5">
+          <div className="flex-1 overflow-auto py-3 px-5">
             {fileContext.files.map((file, i) => (
               <Item
                 key={file.name}

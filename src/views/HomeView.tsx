@@ -18,10 +18,10 @@ export default function HomeView() {
       </header>
       <div className="flex-1">
         <Card className="ml-20 mt-10 flex flex-col">
-          <div className="flex-1">
+          <div className="min-h-0 flex-1">
             <FileArea />
           </div>
-          <div className="border-t border-gray-5 py-4 px-5">
+          <div className=" border-t border-gray-5 py-4 px-5">
             <Switch
               options={options}
               onClick={setSwitchValue}
