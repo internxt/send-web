@@ -1,5 +1,7 @@
+import { format } from "bytes";
 import { ReactNode, useCallback, useContext } from "react";
 import { useDropzone } from "react-dropzone";
+import { MAX_BYTES_PER_SEND } from "../constants";
 import { FilesContext } from "../contexts/Files";
 
 export default function RootDropzone({
@@ -24,6 +26,8 @@ export default function RootDropzone({
     disabled: !filesContext.enabled,
   });
 
+  const maxBytesPerSendDisplay = format(MAX_BYTES_PER_SEND);
+
   return (
     <div className={className} {...getRootProps()}>
       <input {...getInputProps()} />
@@ -33,7 +37,7 @@ export default function RootDropzone({
             <div className="text-center">
               <h1 className="text-5xl font-medium text-white">Drop files</h1>
               <h2 className="mt-3 text-2xl text-white">
-                Upload up to 5GB in total
+                Upload up to {maxBytesPerSendDisplay} in total
               </h2>
             </div>
           </div>
