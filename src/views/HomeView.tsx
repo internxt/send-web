@@ -1,7 +1,8 @@
 import isValidEmail from "@internxt/lib/dist/src/auth/isValidEmail";
 import { format } from "bytes";
-import { X } from "phosphor-react";
-import { ReactNode, useContext, useState } from "react";
+import copy from "copy-to-clipboard";
+import { CheckCircle, X } from "phosphor-react";
+import { ReactNode, useContext, useEffect, useRef, useState } from "react";
 import Button from "../components/Button";
 import Card from "../components/Card";
 import FancySpinner from "../components/FancySpinner";
@@ -32,6 +33,10 @@ export default function HomeView() {
     | { name: "error" }
   >({ name: "standby" });
 
+  useEffect(() => {
+    filesContext.setEnabled(phase.name === "standby");
+  }, [phase]);
+
   const [formState, setFormState] = useState<EmailFormState>({
     sendTo: [],
     sender: "",
@@ -51,13 +56,28 @@ export default function HomeView() {
       (formState.sendTo.length === 0 || !isValidEmail(formState.sender)));
 
   function simulateUpload(cb: (progress: number) => void) {
-    return new Promise((resolve) => setTimeout(resolve, 3000));
+    return new Promise((resolve) => setTimeout(resolve, 10000));
   }
 
   async function onSubmit() {
     setPhase({ name: "loading", uploadedBytes: 0 });
     await simulateUpload((progress) => {});
     setPhase({ name: "done", link: "https://whateva.com" });
+  }
+
+  const linkRef = useRef<HTMLDivElement>(null);
+
+  function copyLink() {
+    if (phase.name === "done") {
+      copy(phase.link);
+      const selection = window.getSelection();
+      if (selection && linkRef.current) {
+        const range = document.createRange();
+        range.selectNodeContents(linkRef.current);
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
+    }
   }
 
   return (
@@ -159,6 +179,60 @@ export default function HomeView() {
                     </Button>
                   </div>
                 )}
+              </CardBottom>
+            </div>
+          )}
+          {phase.name === "done" && (
+            <div className="flex h-full flex-col">
+              <div className="flex flex-1 flex-col items-center">
+                <CheckCircle
+                  className="mt-20 text-green"
+                  weight="fill"
+                  size={140}
+                />
+                <div className="mt-20 w-full px-5 text-center">
+                  <p className="text-xl font-medium text-gray-80">
+                    {switchValue === "Send email"
+                      ? "Files sent via email"
+                      : `${filesContext.files.length} files uploaded`}
+                  </p>
+                  <p className="text-gray-60">
+                    {switchValue === "Send email"
+                      ? "File access will expire in 2 weeks"
+                      : "This link will expire in 2 weeks"}
+                  </p>
+                  {switchValue === "Send link" && (
+                    <div
+                      ref={linkRef}
+                      className="mt-3 flex h-11 w-full items-center justify-center rounded-lg bg-gray-5 px-3 text-gray-80"
+                      onClick={copyLink}
+                    >
+                      {phase.link}
+                    </div>
+                  )}
+                </div>
+              </div>
+              <CardBottom>
+                <Button
+                  onClick={() => {
+                    if (switchValue === "Send email") {
+                      setPhase({ name: "standby" });
+                      setFormState({
+                        message: "",
+                        sender: "",
+                        sendTo: [],
+                        title: "",
+                      });
+                      filesContext.clear();
+                    } else {
+                      copyLink();
+                    }
+                  }}
+                >
+                  {switchValue === "Send email"
+                    ? "Send more files"
+                    : "Copy link"}
+                </Button>
               </CardBottom>
             </div>
           )}
