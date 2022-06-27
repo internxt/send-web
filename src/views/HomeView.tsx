@@ -1,7 +1,7 @@
 import isValidEmail from "@internxt/lib/dist/src/auth/isValidEmail";
 import { format } from "bytes";
 import copy from "copy-to-clipboard";
-import { CheckCircle, X } from "phosphor-react";
+import { CheckCircle, X, XCircle } from "phosphor-react";
 import { ReactNode, useContext, useEffect, useRef, useState } from "react";
 import Button from "../components/Button";
 import Card from "../components/Card";
@@ -33,10 +33,6 @@ export default function HomeView() {
     | { name: "error" }
   >({ name: "standby" });
 
-  useEffect(() => {
-    filesContext.setEnabled(phase.name === "standby");
-  }, [phase]);
-
   const [formState, setFormState] = useState<EmailFormState>({
     sendTo: [],
     sender: "",
@@ -45,6 +41,11 @@ export default function HomeView() {
   });
 
   const filesContext = useContext(FilesContext);
+
+  useEffect(() => {
+    filesContext.setEnabled(phase.name === "standby");
+  }, [phase, filesContext]);
+
   const totalSize = filesContext.files.reduce(
     (prev, current) => prev + current.size,
     0
@@ -56,13 +57,17 @@ export default function HomeView() {
       (formState.sendTo.length === 0 || !isValidEmail(formState.sender)));
 
   function simulateUpload(cb: (progress: number) => void) {
-    return new Promise((resolve) => setTimeout(resolve, 10000));
+    return new Promise((resolve, reject) => setTimeout(reject, 10000));
   }
 
   async function onSubmit() {
     setPhase({ name: "loading", uploadedBytes: 0 });
-    await simulateUpload((progress) => {});
-    setPhase({ name: "done", link: "https://whateva.com" });
+    try {
+      await simulateUpload((progress) => {});
+      setPhase({ name: "done", link: "" });
+    } catch {
+      setPhase({ name: "error" });
+    }
   }
 
   const linkRef = useRef<HTMLDivElement>(null);
@@ -131,7 +136,8 @@ export default function HomeView() {
                   {phase.name === "loading" ? (
                     <>
                       <p className="text-xl font-medium text-gray-80">
-                        Sending {filesContext.files.length} files
+                        {switchValue === "Send email" ? "Sending" : "Uploading"}{" "}
+                        {filesContext.files.length} files
                       </p>
                       <p className="mt-1.5 text-gray-60">
                         {format(phase.uploadedBytes)} of {format(totalSize)}{" "}
@@ -233,6 +239,46 @@ export default function HomeView() {
                     ? "Send more files"
                     : "Copy link"}
                 </Button>
+              </CardBottom>
+            </div>
+          )}
+          {phase.name === "error" && (
+            <div className="flex h-full flex-col">
+              <div className="flex flex-1 flex-col items-center">
+                <XCircle
+                  className="mt-20 text-red-std"
+                  weight="fill"
+                  size={140}
+                />
+                <div className="mt-20 w-full px-5 text-center">
+                  <p className="text-xl font-medium text-gray-80">
+                    Something went wrong...
+                  </p>
+                  <p className="text-gray-60">
+                    We were unable to{" "}
+                    {switchValue === "Send email" ? "send" : "upload"} your
+                    files.
+                    <br />
+                    Please try again later.
+                  </p>
+                </div>
+              </div>
+              <CardBottom>
+                <div className="flex">
+                  <Button
+                    outline
+                    onClick={() =>
+                      setPhase({
+                        name: "standby",
+                      })
+                    }
+                  >
+                    Back
+                  </Button>
+                  <Button className="ml-4" onClick={onSubmit}>
+                    Try again
+                  </Button>
+                </div>
               </CardBottom>
             </div>
           )}
