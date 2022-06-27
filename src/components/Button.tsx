@@ -5,11 +5,13 @@ export default function Button({
   children,
   disabled,
   outline,
+  onClick,
 }: {
   className?: string;
   children: ReactNode;
   disabled?: boolean;
   outline?: boolean;
+  onClick?: () => void;
 }) {
   const background = outline
     ? "bg-transparent"
@@ -27,6 +29,7 @@ export default function Button({
     <button
       disabled={disabled}
       className={`${className} ${background} ${textColor} ${border} h-11 w-full rounded-[100px] font-medium`}
+      onClick={onClick}
     >
       {children}
     </button>

@@ -1,8 +1,10 @@
 import isValidEmail from "@internxt/lib/dist/src/auth/isValidEmail";
+import { format } from "bytes";
 import { X } from "phosphor-react";
-import { useContext, useState } from "react";
+import { ReactNode, useContext, useState } from "react";
 import Button from "../components/Button";
 import Card from "../components/Card";
+import FancySpinner from "../components/FancySpinner";
 import FileArea from "../components/FileArea";
 import Input from "../components/Input";
 import Switch from "../components/Switch";
@@ -23,6 +25,13 @@ export default function HomeView() {
     options[0]
   );
 
+  const [phase, setPhase] = useState<
+    | { name: "standby" }
+    | { name: "loading" | "confirm_cancel"; uploadedBytes: number }
+    | { name: "done"; link: string }
+    | { name: "error" }
+  >({ name: "standby" });
+
   const [formState, setFormState] = useState<EmailFormState>({
     sendTo: [],
     sender: "",
@@ -31,11 +40,25 @@ export default function HomeView() {
   });
 
   const filesContext = useContext(FilesContext);
+  const totalSize = filesContext.files.reduce(
+    (prev, current) => prev + current.size,
+    0
+  );
 
   const disableButton =
     filesContext.files.length === 0 ||
     (switchValue === "Send email" &&
       (formState.sendTo.length === 0 || !isValidEmail(formState.sender)));
+
+  function simulateUpload(cb: (progress: number) => void) {
+    return new Promise((resolve) => setTimeout(resolve, 3000));
+  }
+
+  async function onSubmit() {
+    setPhase({ name: "loading", uploadedBytes: 0 });
+    await simulateUpload((progress) => {});
+    setPhase({ name: "done", link: "https://whateva.com" });
+  }
 
   return (
     <div className="flex h-screen flex-col bg-black">
@@ -44,35 +67,109 @@ export default function HomeView() {
       </header>
       <div className="flex-1">
         <Card className="ml-20 mt-10 flex flex-col">
-          <div
-            className={`min-h-0 flex-1 ${
-              switchValue === "Send email" ? "overflow-auto" : ""
-            }`}
-          >
-            <FileArea
-              className={
-                switchValue === "Send email" ? "min-h-[224px]" : "h-full"
-              }
-              scroll={switchValue === "Send link"}
-            />
-            {switchValue === "Send email" && (
-              <EmailForm value={formState} onChange={setFormState} />
-            )}
-          </div>
-          <div className="border-t border-gray-5 py-4 px-5">
-            <Switch
-              options={options}
-              onClick={setSwitchValue}
-              value={switchValue}
-            />
-            <Button disabled={disableButton} className="mt-4">
-              {switchValue === "Send link" ? "Get a link" : "Send files"}
-            </Button>
-          </div>
+          {phase.name === "standby" && (
+            <>
+              <div
+                className={`min-h-0 flex-1 ${
+                  switchValue === "Send email" ? "overflow-auto" : ""
+                }`}
+              >
+                <FileArea
+                  className={
+                    switchValue === "Send email" ? "min-h-[224px]" : "h-full"
+                  }
+                  scroll={switchValue === "Send link"}
+                />
+                {switchValue === "Send email" && (
+                  <EmailForm value={formState} onChange={setFormState} />
+                )}
+              </div>
+              <CardBottom>
+                <Switch
+                  options={options}
+                  onClick={setSwitchValue}
+                  value={switchValue}
+                />
+                <Button
+                  disabled={disableButton}
+                  className="mt-4"
+                  onClick={onSubmit}
+                >
+                  {switchValue === "Send link" ? "Get a link" : "Send files"}
+                </Button>
+              </CardBottom>
+            </>
+          )}
+          {(phase.name === "loading" || phase.name === "confirm_cancel") && (
+            <div className="flex h-full flex-col">
+              <div className="flex flex-1 flex-col items-center">
+                <FancySpinner
+                  className="mt-20"
+                  progress={Math.floor((phase.uploadedBytes / totalSize) * 100)}
+                />
+                <div className="mt-10 text-center">
+                  {phase.name === "loading" ? (
+                    <>
+                      <p className="text-xl font-medium text-gray-80">
+                        Sending {filesContext.files.length} files
+                      </p>
+                      <p className="mt-1.5 text-gray-60">
+                        {format(phase.uploadedBytes)} of {format(totalSize)}{" "}
+                        uploaded
+                      </p>
+                    </>
+                  ) : (
+                    <p className="w-64 text-xl font-medium text-gray-80">
+                      Are you sure you want to cancel this transfer?
+                    </p>
+                  )}
+                </div>
+              </div>
+              <CardBottom>
+                {phase.name === "loading" ? (
+                  <Button
+                    outline
+                    onClick={() =>
+                      setPhase({
+                        name: "confirm_cancel",
+                        uploadedBytes: phase.uploadedBytes,
+                      })
+                    }
+                  >
+                    Cancel
+                  </Button>
+                ) : (
+                  <div className="flex">
+                    <Button
+                      outline
+                      onClick={() =>
+                        setPhase({
+                          name: "loading",
+                          uploadedBytes: phase.uploadedBytes,
+                        })
+                      }
+                    >
+                      No
+                    </Button>
+                    <Button
+                      className="ml-4"
+                      onClick={() => setPhase({ name: "standby" })}
+                    >
+                      Yes
+                    </Button>
+                  </div>
+                )}
+              </CardBottom>
+            </div>
+          )}
         </Card>
       </div>
     </div>
   );
+}
+
+function CardBottom({ children }: { children: ReactNode }) {
+  return <div className="border-t border-gray-5 py-4 px-5">{children}</div>;
 }
 
 function EmailForm({
