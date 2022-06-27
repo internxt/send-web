@@ -81,7 +81,7 @@ function Item({ file, onRemove }: { file: File; onRemove: () => void }) {
         <p>{extension(file.type)}</p>
       </div>
       <button
-        className="absolute right-0 top-0 hidden h-full items-center justify-end bg-gradient-to-r from-transparent via-white to-white pl-10 group-hover:flex"
+        className="absolute right-0 top-0 hidden h-full items-center justify-end bg-gradient-to-r from-transparent via-gray-1 to-gray-1 pl-10 group-hover:flex"
         onClick={onRemove}
       >
         <X size={20} className="text-gray-80" />
