@@ -1,3 +1,4 @@
+import { Transition } from "@headlessui/react";
 import { format } from "bytes";
 import { ReactNode, useCallback, useContext } from "react";
 import { useDropzone } from "react-dropzone";
@@ -45,7 +46,15 @@ export default function RootDropzone({
   return (
     <div className={className} {...getRootProps()}>
       <input {...getInputProps()} />
-      {isDragActive && (
+      <Transition
+        show={isDragActive}
+        enter="transition-opacity duration-500 ease-in-out"
+        enterFrom="opacity-0"
+        enterTo="opacity-100"
+        leave="transition-opacity duration-0"
+        leaveFrom="opacity-100"
+        leaveTo="opacity-0"
+      >
         <div className="fixed z-10 h-full w-full bg-primary p-20">
           <div className="flex h-full w-full items-center justify-center rounded-[40px] border-4 border-dashed border-white">
             <div className="text-center">
@@ -56,7 +65,7 @@ export default function RootDropzone({
             </div>
           </div>
         </div>
-      )}
+      </Transition>
       {children}
     </div>
   );
