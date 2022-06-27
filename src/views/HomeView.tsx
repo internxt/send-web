@@ -6,6 +6,7 @@ import Card from "../components/Card";
 import FileArea from "../components/FileArea";
 import Input from "../components/Input";
 import Switch from "../components/Switch";
+import { MAX_RECIPIENTS } from "../constants";
 import { FilesContext } from "../contexts/Files";
 import logo from "../logo.svg";
 
@@ -148,6 +149,8 @@ function SendTo({
     onChange(value.filter((_, i) => index !== i));
   }
 
+  const maxRecipientsReached = value.length >= MAX_RECIPIENTS;
+
   return (
     <div>
       <label className={`mt-4 block text-sm font-medium text-gray-80`}>
@@ -173,7 +176,13 @@ function SendTo({
           value={inputValue}
           className="mt-1"
           placeholder="Send files to..."
-          message="Separate multiple emails with commas"
+          message={
+            maxRecipientsReached
+              ? `You can have up to ${MAX_RECIPIENTS} recipients`
+              : "Separate multiple emails with commas"
+          }
+          disabled={maxRecipientsReached}
+          accent={maxRecipientsReached ? "warning" : undefined}
         />
       </label>
     </div>
