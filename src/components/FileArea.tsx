@@ -5,7 +5,13 @@ import bytes, { format } from "bytes";
 import { extension } from "mime-types";
 import { MAX_BYTES_PER_SEND } from "../constants";
 
-export default function FileArea({ className = "" }: { className?: string }) {
+export default function FileArea({
+  className = "",
+  scroll,
+}: {
+  className?: string;
+  scroll: boolean;
+}) {
   const inputRef = useRef<HTMLInputElement>(null);
   const fileContext = useContext(FilesContext);
 
@@ -22,7 +28,7 @@ export default function FileArea({ className = "" }: { className?: string }) {
     fileContext.files.reduce((prev, current) => prev + current.size, 0);
 
   return (
-    <div className={`${className} flex h-full flex-col`}>
+    <div className={`${className} flex flex-col`}>
       <input
         type="file"
         className="hidden"
@@ -32,7 +38,11 @@ export default function FileArea({ className = "" }: { className?: string }) {
       {fileContext.files.length === 0 && <Empty onClick={openFileExplorer} />}
       {fileContext.files.length !== 0 && (
         <>
-          <div className="flex-1 overflow-auto py-3 px-5">
+          <div
+            className={`flex-1 bg-gray-1 ${
+              scroll ? "overflow-auto" : ""
+            } py-3 px-5`}
+          >
             {fileContext.files.map((file, i) => (
               <Item
                 key={file.name}
@@ -42,7 +52,7 @@ export default function FileArea({ className = "" }: { className?: string }) {
             ))}
           </div>
           <div
-            className="flex cursor-pointer select-none items-center px-5 py-2.5"
+            className="flex cursor-pointer select-none items-center bg-gray-1 px-5 py-2.5"
             onClick={openFileExplorer}
           >
             <PlusCircle className="text-primary" size={28}></PlusCircle>
@@ -84,7 +94,7 @@ function Empty({ onClick }: { onClick: () => void }) {
   const maxBytesPerSendDisplay = format(MAX_BYTES_PER_SEND);
   return (
     <div
-      className="flex h-full cursor-pointer select-none items-center justify-center"
+      className="flex h-full flex-1 cursor-pointer select-none items-center justify-center"
       onClick={onClick}
     >
       <div className="flex">

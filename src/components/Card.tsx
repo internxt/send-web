@@ -8,7 +8,9 @@ export default function Card({
   children?: ReactNode;
 }) {
   return (
-    <div className={`${className} h-[540px] w-80 rounded-2xl bg-white`}>
+    <div
+      className={`${className} h-[540px] w-80 overflow-hidden rounded-2xl bg-white`}
+    >
       {children}
     </div>
   );
