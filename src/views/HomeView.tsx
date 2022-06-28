@@ -11,6 +11,7 @@ import Switch from "../components/Switch";
 import { MAX_RECIPIENTS } from "../constants";
 import { FilesContext } from "../contexts/Files";
 import Layout from "../Layout";
+import { UploadService } from "../services/upload.service";
 
 type EmailFormState = {
   sendTo: string[];
@@ -21,6 +22,7 @@ type EmailFormState = {
 
 export default function HomeView() {
   const options = ["Send link", "Send email"] as const;
+  const [uploadAbortController, setUploadAbortController] = useState<AbortController>();
   const [switchValue, setSwitchValue] = useState<typeof options[number]>(
     options[0]
   );
@@ -55,14 +57,49 @@ export default function HomeView() {
     (switchValue === "Send email" &&
       (formState.sendTo.length === 0 || !isValidEmail(formState.sender)));
 
-  function simulateUpload(cb: (progress: number) => void) {
-    return new Promise((resolve, reject) => setTimeout(reject, 10000));
+  async function uploadFiles(cb: (progress: number) => void) {
+    const abortController = new AbortController();
+    setUploadAbortController(abortController);
+
+    try {
+      const files = filesContext.files;
+
+      const networkIds = await UploadService.uploadFiles(
+        Object.values(files),
+        {
+          progress: (_, uploadedBytes) => cb(uploadedBytes),
+          abortController
+        }
+      );
+
+      console.log('network ids', networkIds);
+    } catch (err) {
+      if (abortController.signal.aborted) {
+        return console.log('Upload aborted');
+      }
+      
+      throw err;
+    }    
+  }
+
+  function cancelUpload() {
+    if (phase.name !== 'loading') {
+      return;
+    }
+
+    uploadAbortController?.abort();
+    setPhase({
+      name: "confirm_cancel",
+      uploadedBytes: phase.uploadedBytes,
+    })
   }
 
   async function onSubmit() {
     setPhase({ name: "loading", uploadedBytes: 0 });
     try {
-      await simulateUpload((progress) => {});
+      await uploadFiles((uploadedBytes) => {
+        setPhase({ name: "loading", uploadedBytes });
+      });
       setPhase({ name: "done", link: "" });
     } catch {
       setPhase({ name: "error" });
@@ -149,12 +186,7 @@ export default function HomeView() {
             {phase.name === "loading" ? (
               <Button
                 outline
-                onClick={() =>
-                  setPhase({
-                    name: "confirm_cancel",
-                    uploadedBytes: phase.uploadedBytes,
-                  })
-                }
+                onClick={cancelUpload}
               >
                 Cancel
               </Button>
