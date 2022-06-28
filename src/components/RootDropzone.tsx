@@ -14,11 +14,6 @@ export default function RootDropzone({
 }) {
   const filesContext = useContext(FilesContext);
 
-  const totalSizeUsed = filesContext.files.reduce(
-    (prev, current) => prev + current.size,
-    0
-  );
-
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       filesContext.addFiles(acceptedFiles);
@@ -30,14 +25,6 @@ export default function RootDropzone({
     onDrop,
     noClick: true,
     disabled: !filesContext.enabled,
-    validator: (file) => {
-      if (file.size === undefined) return null;
-
-      if (file.size + totalSizeUsed > MAX_BYTES_PER_SEND)
-        return { code: "MAX_SPACE_REACHED", message: "" };
-
-      return null;
-    },
     noKeyboard: true,
   });
 

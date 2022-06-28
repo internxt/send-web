@@ -1,4 +1,5 @@
 import { createContext, ReactNode, useState } from "react";
+import { MAX_BYTES_PER_SEND } from "../constants";
 
 type FilesContextT = {
   enabled: boolean;
@@ -17,7 +18,18 @@ export const FilesProvider = ({ children }: { children: ReactNode }) => {
   const [enabled, setEnabled] = useState(true);
 
   function addFiles(file: File[]) {
-    setState([...state, ...file]);
+    const currentTotalSize = state.reduce(
+      (prev, current) => prev + current.size,
+      0
+    );
+    const newFilesTotalSize = file.reduce(
+      (prev, current) => prev + current.size,
+      0
+    );
+
+    if (currentTotalSize + newFilesTotalSize <= MAX_BYTES_PER_SEND) {
+      setState([...state, ...file]);
+    }
   }
 
   function removeFile(index: number) {
