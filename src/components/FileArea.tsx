@@ -19,8 +19,8 @@ export default function FileArea({
     inputRef.current?.click();
   }
   function onInputChange(event: ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.item(0);
-    if (file) fileContext.addFiles([file]);
+    if (event.target.files)
+      fileContext.addFiles(Array.from(event.target.files));
   }
 
   const spaceRemaining =
@@ -34,6 +34,7 @@ export default function FileArea({
         className="hidden"
         ref={inputRef}
         onChange={onInputChange}
+        multiple
       />
       {fileContext.files.length === 0 && <Empty onClick={openFileExplorer} />}
       {fileContext.files.length !== 0 && (

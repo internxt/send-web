@@ -21,18 +21,34 @@ export const FilesProvider = ({ children }: { children: ReactNode }) => {
 
   const [enabled, setEnabled] = useState(true);
 
-  function addFiles(file: File[]) {
+  function addFiles(files: File[]) {
+    const isFolder = files.some((file) => {
+      const { path } = file as File & { path: string };
+      if (typeof path === "string") {
+        return path !== file.name;
+      }
+      return false;
+    });
+
+    if (isFolder) {
+      notificationsService.show({
+        text: "Folders are not supported",
+        type: ToastType.Warning,
+      });
+      return;
+    }
+
     const currentTotalSize = state.reduce(
       (prev, current) => prev + current.size,
       0
     );
-    const newFilesTotalSize = file.reduce(
+    const newFilesTotalSize = files.reduce(
       (prev, current) => prev + current.size,
       0
     );
 
     if (currentTotalSize + newFilesTotalSize <= MAX_BYTES_PER_SEND) {
-      setState([...state, ...file]);
+      setState([...state, ...files]);
     } else {
       notificationsService.show({
         text: `The maximum size allowed is ${format(
