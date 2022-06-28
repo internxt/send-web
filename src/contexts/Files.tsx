@@ -1,5 +1,9 @@
+import { format } from "bytes";
 import { createContext, ReactNode, useState } from "react";
 import { MAX_BYTES_PER_SEND } from "../constants";
+import notificationsService, {
+  ToastType,
+} from "../services/notifications.service";
 
 type FilesContextT = {
   enabled: boolean;
@@ -29,6 +33,13 @@ export const FilesProvider = ({ children }: { children: ReactNode }) => {
 
     if (currentTotalSize + newFilesTotalSize <= MAX_BYTES_PER_SEND) {
       setState([...state, ...file]);
+    } else {
+      notificationsService.show({
+        text: `The maximum size allowed is ${format(
+          MAX_BYTES_PER_SEND
+        )} in total`,
+        type: ToastType.Warning,
+      });
     }
   }
 
