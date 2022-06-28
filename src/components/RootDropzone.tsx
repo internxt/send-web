@@ -14,11 +14,6 @@ export default function RootDropzone({
 }) {
   const filesContext = useContext(FilesContext);
 
-  const totalSizeUsed = filesContext.files.reduce(
-    (prev, current) => prev + current.size,
-    0
-  );
-
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       filesContext.addFiles(acceptedFiles);
@@ -30,14 +25,6 @@ export default function RootDropzone({
     onDrop,
     noClick: true,
     disabled: !filesContext.enabled,
-    validator: (file) => {
-      if (file.size === undefined) return null;
-
-      if (file.size + totalSizeUsed > MAX_BYTES_PER_SEND)
-        return { code: "MAX_SPACE_REACHED", message: "" };
-
-      return null;
-    },
     noKeyboard: true,
   });
 
@@ -55,11 +42,13 @@ export default function RootDropzone({
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        <div className="fixed z-10 h-full w-full bg-primary p-20">
-          <div className="flex h-full w-full items-center justify-center rounded-[40px] border-4 border-dashed border-white">
+        <div className="fixed z-10 h-full w-full bg-white p-5 lg:bg-primary lg:p-20">
+          <div className="flex h-full w-full items-center justify-center rounded-[40px] border-4 border-dashed border-gray-40 lg:border-white ">
             <div className="text-center">
-              <h1 className="text-5xl font-medium text-white">Drop files</h1>
-              <h2 className="mt-3 text-2xl text-white">
+              <h1 className="text-3xl font-medium text-gray-40 lg:text-5xl lg:text-white">
+                Drop files
+              </h1>
+              <h2 className="mt-3  text-lg text-gray-40 lg:text-2xl lg:text-white">
                 Upload up to {maxBytesPerSendDisplay} in total
               </h2>
             </div>

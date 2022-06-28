@@ -22,7 +22,7 @@ type EmailFormState = {
 
 export default function HomeView() {
   const options = ["Send link", "Send email"] as const;
-  const [uploadAbortController, setUploadAbortController] = useState<AbortController>();
+  const uploadAbortController = useRef<AbortController | null>(null);
   const [switchValue, setSwitchValue] = useState<typeof options[number]>(
     options[0]
   );
@@ -59,50 +59,44 @@ export default function HomeView() {
 
   async function uploadFiles(cb: (progress: number) => void) {
     const abortController = new AbortController();
-    setUploadAbortController(abortController);
+    uploadAbortController.current = abortController;
 
-    try {
-      const files = filesContext.files;
+    const files = filesContext.files;
 
-      const networkIds = await UploadService.uploadFiles(
-        Object.values(files),
-        {
-          progress: (_, uploadedBytes) => cb(uploadedBytes),
-          abortController
-        }
-      );
+    const networkIds = await UploadService.uploadFiles(files, {
+      progress: (_, uploadedBytes) => cb(uploadedBytes),
+      abortController,
+    });
 
-      console.log('network ids', networkIds);
-    } catch (err) {
-      if (abortController.signal.aborted) {
-        return console.log('Upload aborted');
-      }
-      
-      throw err;
-    }    
+    console.log("network ids", networkIds);
   }
 
   function cancelUpload() {
-    if (phase.name !== 'loading') {
+    if (phase.name !== "loading") {
       return;
     }
 
-    uploadAbortController?.abort();
     setPhase({
       name: "confirm_cancel",
       uploadedBytes: phase.uploadedBytes,
-    })
+    });
   }
 
   async function onSubmit() {
     setPhase({ name: "loading", uploadedBytes: 0 });
     try {
       await uploadFiles((uploadedBytes) => {
-        setPhase({ name: "loading", uploadedBytes });
+        setPhase((phase) => {
+          if (phase.name === "loading" || phase.name === "confirm_cancel")
+            return { name: phase.name, uploadedBytes };
+          else return phase;
+        });
       });
       setPhase({ name: "done", link: "" });
-    } catch {
-      setPhase({ name: "error" });
+    } catch (err) {
+      console.error(err);
+      if (!uploadAbortController.current?.signal.aborted)
+        setPhase({ name: "error" });
     }
   }
 
@@ -142,6 +136,7 @@ export default function HomeView() {
           </div>
           <CardBottom>
             <Switch
+              className="mx-auto"
               options={options}
               onClick={setSwitchValue}
               value={switchValue}
@@ -184,10 +179,7 @@ export default function HomeView() {
           </div>
           <CardBottom>
             {phase.name === "loading" ? (
-              <Button
-                outline
-                onClick={cancelUpload}
-              >
+              <Button outline onClick={cancelUpload}>
                 Cancel
               </Button>
             ) : (
@@ -205,7 +197,10 @@ export default function HomeView() {
                 </Button>
                 <Button
                   className="ml-4"
-                  onClick={() => setPhase({ name: "standby" })}
+                  onClick={() => {
+                    uploadAbortController.current?.abort();
+                    setPhase({ name: "standby" });
+                  }}
                 >
                   Yes
                 </Button>
@@ -398,7 +393,7 @@ function SendTo({
               {email}
               <div
                 onClick={() => onRemoveEmail(i)}
-                className="absolute right-0 top-1/2 hidden -translate-y-1/2 cursor-pointer bg-gradient-to-r from-transparent via-gray-5 to-gray-5 pr-2.5 pl-6 group-hover:block"
+                className="absolute right-0 top-1/2 flex -translate-y-1/2 cursor-pointer bg-gradient-to-r from-transparent via-gray-5 to-gray-5 pr-2.5 pl-6 lg:hidden lg:group-hover:block"
               >
                 <X size={14} />
               </div>

@@ -19,8 +19,8 @@ export default function FileArea({
     inputRef.current?.click();
   }
   function onInputChange(event: ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.item(0);
-    if (file) fileContext.addFiles([file]);
+    if (event.target.files)
+      fileContext.addFiles(Array.from(event.target.files));
   }
 
   const spaceRemaining =
@@ -34,6 +34,7 @@ export default function FileArea({
         className="hidden"
         ref={inputRef}
         onChange={onInputChange}
+        multiple
       />
       {fileContext.files.length === 0 && <Empty onClick={openFileExplorer} />}
       {fileContext.files.length !== 0 && (
@@ -81,7 +82,7 @@ function Item({ file, onRemove }: { file: File; onRemove: () => void }) {
         <p>{extension(file.type)}</p>
       </div>
       <button
-        className="absolute right-0 top-0 hidden h-full items-center justify-end bg-gradient-to-r from-transparent via-gray-1 to-gray-1 pl-10 group-hover:flex"
+        className="absolute right-0 top-0 flex h-full items-center justify-end bg-gradient-to-r from-transparent via-gray-1 to-gray-1 pl-10 lg:hidden lg:group-hover:flex"
         onClick={onRemove}
       >
         <X size={20} className="text-gray-80" />
