@@ -136,6 +136,7 @@ export default function HomeView() {
           </div>
           <CardBottom>
             <Switch
+              className="mx-auto"
               options={options}
               onClick={setSwitchValue}
               value={switchValue}
@@ -392,7 +393,7 @@ function SendTo({
               {email}
               <div
                 onClick={() => onRemoveEmail(i)}
-                className="absolute right-0 top-1/2 hidden -translate-y-1/2 cursor-pointer bg-gradient-to-r from-transparent via-gray-5 to-gray-5 pr-2.5 pl-6 group-hover:block"
+                className="absolute right-0 top-1/2 flex -translate-y-1/2 cursor-pointer bg-gradient-to-r from-transparent via-gray-5 to-gray-5 pr-2.5 pl-6 lg:hidden lg:group-hover:block"
               >
                 <X size={14} />
               </div>
