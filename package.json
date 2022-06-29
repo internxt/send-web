@@ -18,6 +18,7 @@
     "@types/streamsaver": "^2.0.1",
     "asmcrypto.js": "^2.3.2",
     "async": "^3.2.4",
+    "axios": "^0.27.2",
     "bytes": "^3.1.2",
     "copy-to-clipboard": "^3.3.1",
     "js-file-download": "^0.4.12",
