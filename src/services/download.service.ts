@@ -1,28 +1,35 @@
 import { NetworkService } from "./network.service";
 import { FlatFolderZip } from "./zip/FlatFolderZip";
+import axios from 'axios';
+import { aes } from '@internxt/lib';
 
-interface SharedFile {
-  name: string;
-  networkId: string;
-  size: number;
-}
-
-// interface SharedFolder {
-//   mnemonic: string;
-//   children: SharedFile[];
-// }
-
-// type Item = SharedFile | SharedFolder;
-type Item = SharedFile;
 type DownloadFileOptions = {
   progress?: (totalBytes: number, downloadedBytes: number) => void,
   abortController?: AbortController
 }
 
 export class DownloadService {
+  static async downloadFilesFromLink(
+    linkId: string,
+    opts?: DownloadFileOptions
+  ): Promise<void> {
+    const { title, items, code, size } = await getSendLink(linkId);
+
+    const itemsWithPlainEncryptionKey = items.map((item) => {
+      return { ...item, encryptionKey: aes.decrypt(item.encryptionKey, code) };
+    });
+
+    await DownloadService.downloadFiles(
+      title, 
+      itemsWithPlainEncryptionKey,
+      NetworkService.getInstance(),
+      opts
+    );
+  }
+
   static async downloadFiles(
     zipName: string,
-    items: Item[], 
+    items: SendItem[], 
     networkService: NetworkService,
     opts?: DownloadFileOptions
   ) {
@@ -44,4 +51,41 @@ export class DownloadService {
 
     await zip.close();
   }
+}
+
+/**
+ * TODO: SDK
+ */
+interface SendItem {
+  id: string
+  name: string
+  type: string
+  linkId: string
+  networkId: string
+  encryptionKey: string
+  size: number
+  createdAt: Date
+  updatedAt: Date
+}
+
+interface GetSendLinkResponse {
+  id: string
+  title: string
+  subject: string
+  code: string
+  sender: string
+  receivers: string[]
+  views: number
+  userId: number | null
+  items: SendItem[]
+  createdAt: Date
+  updatedAt: Date
+  expirationAt: Date
+  size: number
+}
+
+export async function getSendLink(linkId: string): Promise<GetSendLinkResponse> {
+  const res = await axios.get<GetSendLinkResponse>(process.env.REACT_APP_API_URL + '/api/links/' + linkId);
+
+  return res.data;
 }
