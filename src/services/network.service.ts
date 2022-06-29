@@ -70,7 +70,7 @@ export class NetworkService {
     const { bucketId, user, pass, encryptionKey } = getSendAccountParameters();
 
     let parts
-    const partSize = 100*1024*1024;
+    const partSize = 50*1024*1024;
     const minimumMultipartThreshold = 100*1024*1024;
 
     if (file.size > minimumMultipartThreshold) {
