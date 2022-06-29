@@ -24,7 +24,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         ref={backgroundRef}
         className="fixed inset-0 hidden opacity-0 transition-opacity duration-500 lg:block"
       />
-      <header className="flex h-16 flex-shrink-0 items-center justify-center px-6 lg:h-20 lg:justify-start">
+      <header className="flex h-16 flex-shrink-0 items-center justify-center  px-6 lg:absolute lg:top-0 lg:h-20 lg:justify-start">
         <img
           className="h-3 invert lg:invert-0"
           src={logo}
@@ -32,32 +32,23 @@ export default function Layout({ children }: { children: ReactNode }) {
         />
       </header>
       <div className="relative min-h-0 flex-1">
-        <div className="flex h-full">
-          <Card className="flex flex-col lg:ml-20 lg:mt-10">{children}</Card>
+        <div className="flex h-full items-center">
+          <Card className="flex flex-col lg:ml-20">{children}</Card>
           <div
             ref={ctaRef}
             className="ml-36 hidden text-white opacity-0 transition-opacity duration-500 lg:block "
           >
-            <h1
-              className="mt-40 text-[56px] font-semibold"
-              style={{ lineHeight: 1 }}
-            >
-              Privacy matters,
-              <br /> use Internxt
+            <h1 className="text-[56px] font-semibold" style={{ lineHeight: 1 }}>
+              Share files fast, encrypted
+              <br />
+              and in total privacy
             </h1>
-            <p className="mt-6 w-120 text-2xl font-normal">
-              Store all your files securely in total privacy with Internxt
-              Drive. Sign up now and get 10GB for free, no fine print, just
-              privacy.
+            <p className="mt-6 w-156 text-2xl font-normal">
+              Internxt Send allows you to share files fast without worrying
+              about the security of your documents, images or videos. Select the
+              files you want to share and choose between sending them by link or
+              by mail.
             </p>
-            <a
-              className="mt-6 flex h-11 w-max items-center rounded-[100px] border border-white px-7 text-lg font-medium"
-              href="https://drive.internxt.com/new"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Get started now
-            </a>
           </div>
         </div>
       </div>
