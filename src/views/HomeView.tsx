@@ -2,8 +2,9 @@ import isValidEmail from "@internxt/lib/dist/src/auth/isValidEmail";
 import { format } from "bytes";
 import copy from "copy-to-clipboard";
 import { CheckCircle, X, XCircle } from "phosphor-react";
-import { ReactNode, useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Button from "../components/Button";
+import CardBottom from "../components/CardBotton";
 import FancySpinner from "../components/FancySpinner";
 import FileArea from "../components/FileArea";
 import Input from "../components/Input";
@@ -11,6 +12,9 @@ import Switch from "../components/Switch";
 import { MAX_RECIPIENTS } from "../constants";
 import { FilesContext } from "../contexts/Files";
 import Layout from "../Layout";
+import notificationsService, {
+  ToastType,
+} from "../services/notifications.service";
 import { UploadService } from "../services/upload.service";
 
 type EmailFormState = {
@@ -75,8 +79,7 @@ export default function HomeView() {
       abortController,
     });
 
-    setPhase({ name: "done", link });
-
+    return link;
   }
 
   function cancelUpload() {
@@ -93,14 +96,14 @@ export default function HomeView() {
   async function onSubmit() {
     setPhase({ name: "loading", uploadedBytes: 0 });
     try {
-      await uploadFiles((uploadedBytes) => {
+      const link = await uploadFiles((uploadedBytes) => {
         setPhase((phase) => {
           if (phase.name === "loading" || phase.name === "confirm_cancel")
             return { name: phase.name, uploadedBytes };
           else return phase;
         });
       });
-      setPhase({ name: "done", link: "" });
+      setPhase({ name: "done", link });
     } catch (err) {
       console.error(err);
       if (!uploadAbortController.current?.signal.aborted)
@@ -120,6 +123,10 @@ export default function HomeView() {
         selection.removeAllRanges();
         selection.addRange(range);
       }
+      notificationsService.show({
+        type: ToastType.Success,
+        text: "Link copied to your clipboard",
+      });
     }
   }
 
@@ -242,7 +249,7 @@ export default function HomeView() {
                   className="mt-3 flex h-11 w-full items-center justify-center rounded-lg bg-gray-5 px-3 text-gray-80"
                   onClick={copyLink}
                 >
-                  {phase.link}
+                  <p className="truncate">{phase.link}</p>
                 </div>
               )}
             </div>
@@ -306,10 +313,6 @@ export default function HomeView() {
       )}
     </Layout>
   );
-}
-
-function CardBottom({ children }: { children: ReactNode }) {
-  return <div className="border-t border-gray-5 py-4 px-5">{children}</div>;
 }
 
 function EmailForm({
