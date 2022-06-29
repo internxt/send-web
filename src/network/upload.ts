@@ -98,8 +98,6 @@ export function uploadFile(bucketId: string, params: IUploadParams): Promise<str
   );
 
   if (params.parts) {
-    console.log('Performing multipart');
-
     return facade
       .uploadMultipart(bucketId, params.mnemonic, file, {
         uploadingCallback: params.progressCallback,
