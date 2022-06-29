@@ -36,8 +36,22 @@ export class UploadService {
       abortController?: AbortController
     }
   ): Promise<string> {
-    const { items, code } = await UploadService.uploadFiles(files, opts);
-    const createSendLinksPayload: CreateSendLinksPayload = {...emailInfo, items, code };
+    const items = await UploadService.uploadFiles(files, opts);
+
+    const code = randomBytes(32).toString('hex');
+    const encryptedCode = aes.encrypt(code, NetworkService.getInstance().encryptionKey);
+    const itemsWithEncryptionKeyEncrypted = items.map(i => {
+      return { 
+        ...i, 
+        encryptionKey: aes.encrypt(i.encryptionKey, code)
+      };
+    });
+
+    const createSendLinksPayload: CreateSendLinksPayload = {
+      ...emailInfo, 
+      items: itemsWithEncryptionKeyEncrypted, 
+      code: encryptedCode 
+    };
     const createSendLinkResponse = await storeSendLinks(createSendLinksPayload);
 
     return window.origin + '/' + createSendLinkResponse.id;
@@ -49,7 +63,7 @@ export class UploadService {
       progress?: (totalBytes: number, uploadedBytes: number) => void,
       abortController?: AbortController
     }
-  ): Promise<{ code: string, items: SendLink[] }> {
+  ): Promise<SendLink[]> {
     console.log(files);
     const totalBytes = files.reduce((a, f) => a+f.size, 0);
     if (totalBytes > this.UPLOAD_SIZE_LIMIT) {
@@ -136,10 +150,7 @@ class UploadManager {
     ];
   }
 
-  async run(progress?: (totalBytes: number, uploadedBytes: number) => void): Promise<{
-    code: string,
-    items: SendLink[]
-  }> {
+  async run(progress?: (totalBytes: number, uploadedBytes: number) => void): Promise<SendLink[]> {
     const totalBytes = this.files.reduce((a, f) => a + f.size, 0);
     const progressInterval = setInterval(() => {
       const uploadedBytes = Object.values(this.uploadsProgress).reduce((a, p) => a+p, 0);
@@ -150,7 +161,6 @@ class UploadManager {
     try {
       const [bigSizedFiles, mediumSizedFiles, smallSizedFiles] = this.classifyFilesBySize(this.files);
       const filesReferences: SendLink[] = [];
-      const code = randomBytes(32).toString('hex');
   
       const uploadFiles = async (files: File[], concurrency: number) => {
         this.uploadQueue.concurrency = concurrency;
@@ -159,10 +169,8 @@ class UploadManager {
         const uploadedFiles = await Promise.all(uploadPromises);
 
         for (const uploadedFile of uploadedFiles) { 
-          const encryptionKey = aes.encrypt(this.networkService.encryptionKey, code);
-
           filesReferences.push({
-            encryptionKey,
+            encryptionKey: this.networkService.encryptionKey,
             name: uploadedFile.name,
             networkId: uploadedFile.networkId,
             size: uploadedFile.size,
@@ -179,12 +187,8 @@ class UploadManager {
   
       if (bigSizedFiles.length > 0)
         await uploadFiles(bigSizedFiles, this.filesGroups.big.concurrency);
-
       
-      return {
-        code,
-        items: filesReferences,
-      };
+      return filesReferences;
     } finally {
       clearInterval(progressInterval);
     }   

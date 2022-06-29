@@ -13,10 +13,12 @@ export class DownloadService {
     linkId: string,
     opts?: DownloadFileOptions
   ): Promise<void> {
+    const networkService = NetworkService.getInstance();
     const { title, items, code, size } = await getSendLink(linkId);
+    const decryptedCode = aes.decrypt(code, networkService.encryptionKey);
 
     const itemsWithPlainEncryptionKey = items.map((item) => {
-      return { ...item, encryptionKey: aes.decrypt(item.encryptionKey, code) };
+      return { ...item, encryptionKey: aes.decrypt(item.encryptionKey, decryptedCode) };
     });
 
     await DownloadService.downloadFiles(
