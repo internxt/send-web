@@ -149,7 +149,7 @@ export default function DownloadView() {
                 router("/");
               }}
             >
-              Craete another send
+              Create another send
             </Button>
           </CardBottom>
         </div>

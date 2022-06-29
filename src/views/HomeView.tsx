@@ -67,17 +67,21 @@ export default function HomeView() {
 
     const files = filesContext.files;
 
-    const link = await UploadService.uploadFilesAndGetLink({
-      sender: 'hello@internxt.com',
-      receivers: [
-        'hello@internxt.com'
-      ],
-      subject: 'Subject',
-      title: 'Title'
-    }, files, {
-      progress: (_, uploadedBytes) => cb(uploadedBytes),
-      abortController,
-    });
+    const link = await UploadService.uploadFilesAndGetLink(
+      files,
+      switchValue === "Send email"
+        ? {
+            sender: formState.sender,
+            receivers: formState.sendTo,
+            subject: formState.message,
+            title: formState.title,
+          }
+        : undefined,
+      {
+        progress: (_, uploadedBytes) => cb(uploadedBytes),
+        abortController,
+      }
+    );
 
     return link;
   }
