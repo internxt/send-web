@@ -96,6 +96,17 @@ export class NetworkFacade {
     console.log('bucket', bucketId);
     console.log('mnemonic', mnemonic);
 
+    const partsUploadedBytes: Record<number, number> = {};
+
+    function notifyProgress(partId: number, uploadedBytes: number) {
+      partsUploadedBytes[partId] = uploadedBytes;
+
+      options.uploadingCallback(
+        file.size, 
+        Object.values(partsUploadedBytes).reduce((a,p) => a+p, 0)
+      )
+    }
+
     return uploadMultipartFile(
       this.network,
       this.cryptoLib,
@@ -107,20 +118,6 @@ export class NetworkFacade {
         fileReadable = encryptStreamInParts(file, cipher, options.parts);
       },
       async (urls: string[]) => {
-        console.log('Reading file readable', urls);
-        // const reader = fileReadable.getReader();
-
-        // let done = false;
-
-        // while (!done) {
-        //   console.log('hola1');
-        //   const res = await reader.read();
-        //   console.log('hola2');
-
-        //   console.log('Reading chunk of ', res.value?.length);
-        //   done = res.done;
-        // }
-
         const fileParts: { PartNumber: number; ETag: string }[] = [];
 
         let currentUrlIndex = 0;
@@ -133,9 +130,13 @@ export class NetworkFacade {
 
           console.log('Uploading chunk of %s bytes to url %s, part %s', blob.size, putUrl, currentUrlIndex);
           const response = await uploadFileBlob(blob, putUrl, {
-            progressCallback: options.uploadingCallback,
+            progressCallback: (_, uploadedBytes) => {
+              notifyProgress(currentUrlIndex, uploadedBytes);
+            },
             abortController: options.abortController,
           });
+
+          blob = new Blob([]);
 
           const ETag = response.getResponseHeader('etag');
 
