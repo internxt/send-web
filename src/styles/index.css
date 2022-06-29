@@ -41,3 +41,18 @@
     url(./fonts/NeueEinstellung-Bold.woff) format("woff"),
     url(./fonts/NeueEinstellung-Bold.woff2) format("woff2");
 }
+
+.fade-in-animation {
+  animation-name: FadeIn;
+  animation-duration: 500ms;
+  transition-timing-function: ease-in-out;
+}
+
+@keyframes FadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
