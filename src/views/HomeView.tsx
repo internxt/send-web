@@ -2,8 +2,9 @@ import isValidEmail from "@internxt/lib/dist/src/auth/isValidEmail";
 import { format } from "bytes";
 import copy from "copy-to-clipboard";
 import { CheckCircle, X, XCircle } from "phosphor-react";
-import { ReactNode, useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Button from "../components/Button";
+import CardBottom from "../components/CardBotton";
 import FancySpinner from "../components/FancySpinner";
 import FileArea from "../components/FileArea";
 import Input from "../components/Input";
@@ -312,10 +313,6 @@ export default function HomeView() {
       )}
     </Layout>
   );
-}
-
-function CardBottom({ children }: { children: ReactNode }) {
-  return <div className="border-t border-gray-5 py-4 px-5">{children}</div>;
 }
 
 function EmailForm({
