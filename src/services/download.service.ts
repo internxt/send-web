@@ -73,8 +73,6 @@ interface GetSendLinkResponse {
   title: string
   subject: string
   code: string
-  sender: string
-  receivers: string[]
   views: number
   userId: number | null
   items: SendItem[]
