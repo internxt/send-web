@@ -63,12 +63,13 @@ export default function HomeView() {
 
     const files = filesContext.files;
 
-    const networkIds = await UploadService.uploadFiles(files, {
+    const link = await UploadService.uploadFilesAndGetLink(files, {
       progress: (_, uploadedBytes) => cb(uploadedBytes),
       abortController,
     });
 
-    console.log("network ids", networkIds);
+    setPhase({ name: "done", link });
+
   }
 
   function cancelUpload() {
