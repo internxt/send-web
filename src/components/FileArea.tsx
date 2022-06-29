@@ -75,7 +75,7 @@ export default function FileArea({
 function Item({ file, onRemove }: { file: File; onRemove: () => void }) {
   return (
     <div className="group relative border-b border-gray-5 py-1.5">
-      <h1 className="truncate text-sm text-gray-80">{file.name}</h1>
+      <h1 className="truncate text-base text-gray-80">{file.name}</h1>
       <div className="flex space-x-1.5 text-xs text-gray-50">
         <p>{bytes.format(file.size)}</p>
         <p className="font-bold text-gray-30">·</p>
@@ -102,7 +102,7 @@ function Empty({ onClick }: { onClick: () => void }) {
         <PlusCircle size={48} className="text-primary" weight="fill" />
         <div className="ml-2">
           <h1 className="text-2xl font-medium text-gray-80">Upload files</h1>
-          <h2 className="text-sm text-gray-50">
+          <h2 className="text-sm text-gray-50 -mt-0.5">
             Up to {maxBytesPerSendDisplay}
           </h2>
         </div>

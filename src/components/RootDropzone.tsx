@@ -34,7 +34,7 @@ export default function RootDropzone({
       <input {...getInputProps()} />
       {isDragActive && (
         <div className="fade-in-animation fixed z-10 h-full w-full bg-white p-5 lg:bg-primary lg:p-20">
-          <div className="flex h-full w-full items-center justify-center rounded-[40px] border-4 border-dashed border-gray-40 lg:border-white">
+          <div className="flex h-full w-full items-center justify-center rounded-2xl border-3 border-dashed border-gray-40 lg:border-white">
             <div className="text-center">
               <h1 className="text-3xl font-medium text-gray-40 lg:text-5xl lg:text-white">
                 Drop files

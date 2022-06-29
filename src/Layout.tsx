@@ -1,5 +1,6 @@
 import { ReactNode, useEffect, useRef } from "react";
 import logo from "./logo.svg";
+import logo_dark from "./logo_dark.svg";
 import Card from "./components/Card";
 
 export default function Layout({ children }: { children: ReactNode }) {
@@ -24,30 +25,40 @@ export default function Layout({ children }: { children: ReactNode }) {
         ref={backgroundRef}
         className="fixed inset-0 hidden bg-cover bg-center bg-no-repeat opacity-0 transition-opacity duration-500 lg:block"
       />
-      <header className="flex h-16 flex-shrink-0 items-center justify-center  px-6 lg:absolute lg:top-0 lg:h-20 lg:justify-start">
-        <img
-          className="h-3 invert lg:invert-0"
-          src={logo}
-          alt="Internxt's logo"
-        />
+      <header className="flex h-16 flex-shrink-0 items-center justify-center px-20 lg:absolute lg:top-0 lg:h-20 lg:justify-start">
+        <a href="https://send.internxt.com">
+          <img
+            className="h-3 flex lg:hidden"
+            src={logo_dark}
+            alt="Internxt's logo"
+          />
+          <img
+            className="h-3 hidden lg:flex"
+            src={logo}
+            alt="Internxt's logo"
+          />
+        </a>
       </header>
       <div className="relative min-h-0 flex-1">
-        <div className="flex h-full items-center">
-          <Card className="flex flex-col lg:ml-20">{children}</Card>
+        <div className="relative flex flex-row lg:py-20 h-full items-center">
+          <Card className="flex flex-col flex-shrink-0 lg:ml-20">{children}</Card>
           <div
             ref={ctaRef}
-            className="ml-36 hidden text-white opacity-0 transition-opacity duration-500 lg:block "
+            className="ml-32 hidden text-white opacity-0 transition-opacity duration-500 lg:block"
           >
-            <h1 className="text-[56px] font-semibold" style={{ lineHeight: 1 }}>
+            <h1 className="text-4xl font-medium" style={{ lineHeight: 1 }}>
               Share files fast, encrypted
               <br />
               and in total privacy
             </h1>
-            <p className="mt-6 w-156 text-2xl font-normal">
+            <p className="mt-6 w-156 text-xl font-normal">
               Internxt Send allows you to share files fast without worrying
-              about the security of your documents, images or videos. Select the
-              files you want to share and choose between sending them by link or
-              by mail.
+              <br />
+              about the security of your documents, images or videos.
+              <br />
+              Select the files you want to share and choose between
+              <br />
+              sending them by link or by mail.
             </p>
           </div>
         </div>
