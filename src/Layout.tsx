@@ -22,7 +22,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     <div className="relative flex h-screen flex-col bg-white lg:bg-black">
       <div
         ref={backgroundRef}
-        className="fixed inset-0 hidden opacity-0 transition-opacity duration-500 lg:block"
+        className="fixed inset-0 hidden bg-cover bg-center bg-no-repeat opacity-0 transition-opacity duration-500 lg:block"
       />
       <header className="flex h-16 flex-shrink-0 items-center justify-center  px-6 lg:absolute lg:top-0 lg:h-20 lg:justify-start">
         <img
