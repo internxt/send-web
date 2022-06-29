@@ -1,7 +1,13 @@
 import { randomBytes } from "crypto";
 import { queue, QueueObject } from 'async';
+import axios from 'axios';
+import { aes } from '@internxt/lib';
 
 import { NetworkService } from "./network.service";
+
+interface FileWithNetworkId extends File {
+  networkId: string
+}
 
 enum FileSizeType {
   Big = 'big',
@@ -15,29 +21,41 @@ const twentyMbytes = 20 * 1024 * 1024;
 export class UploadService {
   private static UPLOAD_SIZE_LIMIT = 5 * 1024 * 1024 * 1024;
 
+  static async uploadFilesAndGetLink(
+    files: File[], 
+    opts?: {
+      progress?: (totalBytes: number, uploadedBytes: number) => void,
+      abortController?: AbortController
+    }
+  ): Promise<string> {
+    const createSendLinksPayload = await UploadService.uploadFiles(files, opts);
+    const createSendLinkResponse = await storeSendLinks(createSendLinksPayload);
+
+    return window.origin + '/' + createSendLinkResponse.id;
+  }
+
   static async uploadFiles(
     files: File[], 
     opts?: {
       progress?: (totalBytes: number, uploadedBytes: number) => void,
       abortController?: AbortController
     }
-  ): Promise<string[]> {
+  ): Promise<CreateSendLinksPayload> {
     console.log(files);
     const totalBytes = files.reduce((a, f) => a+f.size, 0);
     if (totalBytes > this.UPLOAD_SIZE_LIMIT) {
       throw new Error('Maximum allowed total upload size is '+ this.UPLOAD_SIZE_LIMIT);
     }
 
+    const networkToken = await NetworkService.getInstance().getShareToken();
 
-    const uploadManager = new UploadManager(files, opts?.abortController);
-    const networkIds = await uploadManager.run(opts?.progress);
-
-    // TODO: POST this to Send server (+ bucket token)
-    return networkIds;
+    const uploadManager = new UploadManager(files, opts?.abortController);    
+    return uploadManager.run(opts?.progress);
   }
 }
 
 class UploadManager {
+  private networkService = NetworkService.getInstance();
   private filesGroups: Record<FileSizeType, { 
     upperBound: number, 
     lowerBound: number,
@@ -64,9 +82,9 @@ class UploadManager {
   private uploadsProgress: Record<string, number> = {};
   private uploadQueue: QueueObject<File> = queue<File>((
     file, 
-    next: (err: Error | null, networkId?: string) => void
+    next: (err: Error | null, res?: Pick<File, 'name' | 'size'> & { networkId: string }) => void
   ) => {
-    const networkService = NetworkService.getInstance();
+    const networkService = this.networkService;
     const uploadId = randomBytes(10).toString('hex');
 
     this.uploadsProgress[uploadId] = 0;
@@ -77,7 +95,11 @@ class UploadManager {
         this.uploadsProgress[uploadId] = uploadedBytes;
       }
     }).then((networkId) => {      
-      next(null, networkId);
+      next(null, { 
+        name: file.name,
+        size: file.size, 
+        networkId
+      });
     }).catch((err) => {
       if (!this.errored) {
         this.uploadQueue.kill();
@@ -105,7 +127,7 @@ class UploadManager {
     ];
   }
 
-  async run(progress?: (totalBytes: number, uploadedBytes: number) => void): Promise<string[]> {
+  async run(progress?: (totalBytes: number, uploadedBytes: number) => void): Promise<CreateSendLinksPayload> {
     const totalBytes = this.files.reduce((a, f) => a + f.size, 0);
     const progressInterval = setInterval(() => {
       const uploadedBytes = Object.values(this.uploadsProgress).reduce((a, p) => a+p, 0);
@@ -115,16 +137,26 @@ class UploadManager {
 
     try {
       const [bigSizedFiles, mediumSizedFiles, smallSizedFiles] = this.classifyFilesBySize(this.files);
-      const networkIds: string[] = [];
+      const filesReferences: SendLink[] = [];
+      const code = randomBytes(32).toString('hex');
   
       const uploadFiles = async (files: File[], concurrency: number) => {
         this.uploadQueue.concurrency = concurrency;
-  
-        const uploadPromises: Promise<string>[] = await this.uploadQueue.pushAsync(files);
-  
-        const networkIdsChunk = await Promise.all(uploadPromises);
-  
-        networkIds.push(...networkIdsChunk);
+
+        const uploadPromises: Promise<FileWithNetworkId>[] = await this.uploadQueue.pushAsync(files);
+        const uploadedFiles = await Promise.all(uploadPromises);
+
+        for (const uploadedFile of uploadedFiles) { 
+          const encryptionKey = aes.encrypt(this.networkService.encryptionKey, code);
+
+          filesReferences.push({
+            encryptionKey,
+            name: uploadedFile.name,
+            networkId: uploadedFile.networkId,
+            size: uploadedFile.size,
+            type: 'file'
+          });
+        }      
       };
   
       if (smallSizedFiles.length > 0)
@@ -135,10 +167,59 @@ class UploadManager {
   
       if (bigSizedFiles.length > 0)
         await uploadFiles(bigSizedFiles, this.filesGroups.big.concurrency);
-  
-      return networkIds;
+
+      
+      return {
+        code,
+        items: filesReferences,
+        receivers: [],
+        sender: 'hello@internxt.com',
+        subject: 'test',
+        title: 'test'
+      };
     } finally {
       clearInterval(progressInterval);
     }   
   }
 }
+
+/**
+ * TODO: SDK
+ */
+interface SendLink {
+  name: string, 
+  type: 'file', 
+  size: number, 
+  networkId: string, 
+  encryptionKey: string 
+}
+
+interface CreateSendLinksPayload {
+  sender: string
+  receivers: string[]
+  code: string
+  title: string
+  subject: string
+  items: SendLink[]
+}
+
+interface CreateSendLinksResponse {
+  id: string,
+  title: string
+  subject: string
+  code: string
+  sender: string
+  receivers: string[]
+  views: number
+  userId: number
+  items: SendLink[]
+  createdAt: string
+  updatedAt: string
+  expirationAt: string
+}
+
+async function storeSendLinks(payload: CreateSendLinksPayload) {
+  const res = await axios.post<CreateSendLinksResponse>(process.env.REACT_APP_API_URL + '/api/links', payload);
+
+  return res.data;
+} 
