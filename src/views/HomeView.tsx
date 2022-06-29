@@ -63,7 +63,14 @@ export default function HomeView() {
 
     const files = filesContext.files;
 
-    const link = await UploadService.uploadFilesAndGetLink(files, {
+    const link = await UploadService.uploadFilesAndGetLink({
+      sender: 'hello@internxt.com',
+      receivers: [
+        'hello@internxt.com'
+      ],
+      subject: 'Subject',
+      title: 'Title'
+    }, files, {
       progress: (_, uploadedBytes) => cb(uploadedBytes),
       abortController,
     });

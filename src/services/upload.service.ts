@@ -18,17 +18,26 @@ enum FileSizeType {
 const oneHundredMbytes = 100 * 1024 * 1024;
 const twentyMbytes = 20 * 1024 * 1024;
 
+interface EmailInfo {
+  sender: string
+  title: string
+  receivers: string[]
+  subject: string
+}
+
 export class UploadService {
   private static UPLOAD_SIZE_LIMIT = 5 * 1024 * 1024 * 1024;
 
   static async uploadFilesAndGetLink(
+    emailInfo: EmailInfo,
     files: File[], 
     opts?: {
       progress?: (totalBytes: number, uploadedBytes: number) => void,
       abortController?: AbortController
     }
   ): Promise<string> {
-    const createSendLinksPayload = await UploadService.uploadFiles(files, opts);
+    const { items, code } = await UploadService.uploadFiles(files, opts);
+    const createSendLinksPayload: CreateSendLinksPayload = {...emailInfo, items, code };
     const createSendLinkResponse = await storeSendLinks(createSendLinksPayload);
 
     return window.origin + '/' + createSendLinkResponse.id;
@@ -40,7 +49,7 @@ export class UploadService {
       progress?: (totalBytes: number, uploadedBytes: number) => void,
       abortController?: AbortController
     }
-  ): Promise<CreateSendLinksPayload> {
+  ): Promise<{ code: string, items: SendLink[] }> {
     console.log(files);
     const totalBytes = files.reduce((a, f) => a+f.size, 0);
     if (totalBytes > this.UPLOAD_SIZE_LIMIT) {
@@ -127,7 +136,10 @@ class UploadManager {
     ];
   }
 
-  async run(progress?: (totalBytes: number, uploadedBytes: number) => void): Promise<CreateSendLinksPayload> {
+  async run(progress?: (totalBytes: number, uploadedBytes: number) => void): Promise<{
+    code: string,
+    items: SendLink[]
+  }> {
     const totalBytes = this.files.reduce((a, f) => a + f.size, 0);
     const progressInterval = setInterval(() => {
       const uploadedBytes = Object.values(this.uploadsProgress).reduce((a, p) => a+p, 0);
@@ -172,10 +184,6 @@ class UploadManager {
       return {
         code,
         items: filesReferences,
-        receivers: [],
-        sender: 'hello@internxt.com',
-        subject: 'test',
-        title: 'test'
       };
     } finally {
       clearInterval(progressInterval);
