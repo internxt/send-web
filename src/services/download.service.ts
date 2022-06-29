@@ -18,11 +18,14 @@ export class DownloadService {
     const decryptedCode = aes.decrypt(code, networkService.encryptionKey);
 
     const itemsWithPlainEncryptionKey = items.map((item) => {
-      return { ...item, encryptionKey: aes.decrypt(item.encryptionKey, decryptedCode) };
+      return {
+        ...item,
+        encryptionKey: aes.decrypt(item.encryptionKey, decryptedCode),
+      };
     });
 
     await DownloadService.downloadFiles(
-      title,
+      title ?? "download",
       itemsWithPlainEncryptionKey,
       NetworkService.getInstance(),
       opts
