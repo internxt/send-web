@@ -380,7 +380,6 @@ function SendTo({
           sendToField: "",
           sendTo: [...value.sendTo, value.sendToField],
         });
-      else onChange({ ...value, sendToField: "" });
     }
   };
 
