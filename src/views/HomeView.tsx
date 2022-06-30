@@ -1,6 +1,7 @@
 import isValidEmail from "@internxt/lib/dist/src/auth/isValidEmail";
 import { format } from "bytes";
 import copy from "copy-to-clipboard";
+import throttle from "lodash.throttle";
 import { CheckCircle, X, XCircle } from "phosphor-react";
 import { useContext, useEffect, useRef, useState } from "react";
 import Button from "../components/Button";
@@ -134,6 +135,8 @@ export default function HomeView() {
     }
   }
 
+  const copyLinkThrottled = throttle(copyLink, 5000);
+
   return (
     <Layout>
       {phase.name === "standby" && (
@@ -251,7 +254,7 @@ export default function HomeView() {
                 <div
                   ref={linkRef}
                   className="mt-3 flex h-11 w-full items-center justify-center rounded-lg bg-gray-5 px-3 text-gray-80"
-                  onClick={copyLink}
+                  onClick={copyLinkThrottled}
                 >
                   <p className="truncate">{phase.link}</p>
                 </div>
@@ -271,7 +274,7 @@ export default function HomeView() {
                   });
                   filesContext.clear();
                 } else {
-                  copyLink();
+                  copyLinkThrottled();
                 }
               }}
             >
