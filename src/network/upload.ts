@@ -32,6 +32,10 @@ export function uploadFileBlob(
 ): Promise<XMLHttpRequest> {
   const uploadRequest = new XMLHttpRequest();
 
+  if (opts.abortController?.signal && opts.abortController.signal.aborted) {
+    throw new Error('Upload aborted');
+  }
+
   opts.abortController?.signal.addEventListener(
     'abort',
     () => {
