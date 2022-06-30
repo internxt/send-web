@@ -7,6 +7,7 @@ import Button from "../components/Button";
 import CardBottom from "../components/CardBotton";
 import FancySpinner from "../components/FancySpinner";
 import Spinner from "../components/Spinner";
+import FileList from "../components/FileList";
 import Layout from "../Layout";
 import {
   DownloadService,
@@ -78,22 +79,19 @@ export default function DownloadView() {
       )}
       {state.status === "ready" && (
         <div className="flex h-full flex-col items-center">
-          <div className="flex-1">
+          <div className="min-h-0 w-full flex-1 overflow-auto">
             <div className="mx-auto mt-10 flex h-24 w-24 items-center justify-center rounded-full bg-primary/10">
               <ArrowDown size={64} className="text-primary " />
             </div>
             <h1 className="mt-2 text-center text-xl font-semibold text-gray-80">
               {state.details.title ?? `${state.details.items.length} items`}
             </h1>
-            <p className="mb-2 text-center text-xs text-gray-50">
-              ({format(state.details.size)})
-            </p>
             {state.details.subject && (
               <p className="text-center text-gray-60">
                 {state.details.subject}
               </p>
             )}
-            <p className="text-sm text-gray-50">
+            <p className="text-center text-sm text-gray-50">
               Link expires in{" "}
               {(
                 (new Date(state.details.expirationAt).valueOf() -
@@ -102,6 +100,15 @@ export default function DownloadView() {
               ).toFixed(0)}{" "}
               days
             </p>
+            <div className="mt-4 w-full border-t border-gray-5 py-4 px-5">
+              <p className="text-lg font-medium text-gray-80">
+                {state.details.items.length} item(s)
+              </p>
+              <p className="text-sm text-gray-50">
+                {format(state.details.size)} in total
+              </p>
+              <FileList files={state.details.items} className="mt-4" />
+            </div>
           </div>
           <CardBottom>
             <Button onClick={onDownload}>

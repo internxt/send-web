@@ -1215,10 +1215,10 @@
   resolved "https://npm.pkg.github.com/download/@internxt/lib/1.2.0/283c36f4d8c443ca4d4bf41a856f43de94b290a3ea50d72cdaf1d6cb778ca838#172d7929abb3dc34fda044ad9977875791f7a471"
   integrity sha512-14byNxSU0S0KSc3g+BWiJb7/fcHUfqxkHQRz9fwJhAHNmgOo+Bhx13xXk07KKUzeNX1JymSGEZkVCk0AOQiM+Q==
 
-"@internxt/sdk@^0.15.4":
-  version "0.15.4"
-  resolved "https://npm.pkg.github.com/download/@internxt/sdk/0.15.4/ed29bb4e5452f754e8781a27d8998ec218fd0a6f5ba868ca5903f27cae464519#c4a473735486acba21975993ebad359fe9864ff0"
-  integrity sha512-/QKDb8omYbqSaUIlBunMayYe9oD5U8I7jEnJGu39d3kolRa7eDDYF0AMUP/qYBwIMwM+9c56nthjL/8xlm3awA==
+"@internxt/sdk@0.15.5":
+  version "0.15.5"
+  resolved "https://npm.pkg.github.com/download/@internxt/sdk/0.15.5/367ffbd0f0cc1607ce8e9ee75e114e0e6d4c6bbceff8e4e303803fa767cae2b0#e5f7111ff073758647edc0a2bbf804b3c922dda7"
+  integrity sha512-3+MkDB25FQGL3W7stB6q0032BPkGQUg2zHYKWWCV++Ne0IFlHgE2/qb0tooNgJfFieQ9Gf8ae58nJ9cCJ+8VKg==
   dependencies:
     axios "^0.24.0"
     query-string "^7.1.0"
@@ -7749,7 +7749,7 @@ mime-db@1.52.0, "mime-db@>= 1.43.0 < 2":
   resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.52.0.tgz#bbabcdc02859f4987301c856e3387ce5ec43bf70"
   integrity sha512-sPU4uV7dYlvtWJxwwxHD0PuihVNiE7TyAbQ5SWxDCB9mUYvOgroQOwYQQOKPJ8CIbE+1ETVlOoK1UC2nU3gYvg==
 
-mime-types@^2.1.12, mime-types@^2.1.27, mime-types@^2.1.35, mime-types@~2.1.17, mime-types@~2.1.24, mime-types@~2.1.34:
+mime-types@^2.1.12, mime-types@^2.1.27, mime-types@~2.1.17, mime-types@~2.1.24, mime-types@~2.1.34:
   version "2.1.35"
   resolved "https://registry.yarnpkg.com/mime-types/-/mime-types-2.1.35.tgz#381a871b62a734450660ae3deee44813f70d959a"
   integrity sha512-ZDY+bPm5zTTF+YpCrAU9nK0UgICYPT0QtT1NZWFv4s++TNkcgVaT0g6+4R2uI4MjQjzysHB1zxuWL50hzaeXiw==
