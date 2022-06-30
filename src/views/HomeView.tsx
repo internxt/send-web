@@ -23,6 +23,7 @@ type EmailFormState = {
   sender: string;
   title: string;
   message: string;
+  sendToField: string;
 };
 
 export default function HomeView() {
@@ -44,6 +45,7 @@ export default function HomeView() {
     sender: "",
     title: "",
     message: "",
+    sendToField: "",
   });
 
   const filesContext = useContext(FilesContext);
@@ -60,7 +62,9 @@ export default function HomeView() {
   const disableButton =
     filesContext.files.length === 0 ||
     (switchValue === "Send email" &&
-      (formState.sendTo.length === 0 || !isValidEmail(formState.sender)));
+      ((formState.sendTo.length === 0 &&
+        !isValidEmail(formState.sendToField)) ||
+        !isValidEmail(formState.sender)));
 
   async function uploadFiles(cb: (progress: number) => void) {
     const abortController = new AbortController();
@@ -73,7 +77,10 @@ export default function HomeView() {
       switchValue === "Send email"
         ? {
             sender: formState.sender,
-            receivers: formState.sendTo,
+            receivers:
+              formState.sendTo.length === 0
+                ? [formState.sendToField]
+                : formState.sendTo,
             subject: formState.message,
             title: formState.title,
           }
@@ -271,6 +278,7 @@ export default function HomeView() {
                     sender: "",
                     sendTo: [],
                     title: "",
+                    sendToField: "",
                   });
                   filesContext.clear();
                 } else {
@@ -329,11 +337,12 @@ function EmailForm({
   value: EmailFormState;
   onChange: (v: EmailFormState) => void;
 }) {
+  const { sendTo, sendToField } = value;
   return (
     <div className="border-t border-gray-5 px-5 py-4">
       <SendTo
-        value={value.sendTo}
-        onChange={(v) => onChange({ ...value, sendTo: v })}
+        value={{ sendTo, sendToField }}
+        onChange={(v) => onChange({ ...value, ...v })}
       />
       <Input
         placeholder="My email address"
@@ -365,17 +374,15 @@ function SendTo({
   value,
   onChange,
 }: {
-  value: string[];
-  onChange: (v: string[]) => void;
+  value: { sendTo: string[]; sendToField: string };
+  onChange: (v: { sendTo: string[]; sendToField: string }) => void;
 }) {
-  const [inputValue, setInputValue] = useState("");
-
   function onInputChange(newInputValue: string) {
     const noWhitespacesInput = newInputValue.replace(/\s/g, "");
     const thereAreCommas = noWhitespacesInput.includes(",");
 
     if (!thereAreCommas) {
-      setInputValue(noWhitespacesInput);
+      onChange({ ...value, sendToField: noWhitespacesInput });
       return;
     }
 
@@ -383,27 +390,26 @@ function SendTo({
 
     const newValidEmails = valuesBetweenCommas.filter((email) => {
       const isValid = isValidEmail(email);
-      const isAlreadyInList = value.find((e) => e === email);
+      const isAlreadyInList = value.sendTo.find((e) => e === email);
 
       return isValid && !isAlreadyInList;
     });
 
-    setInputValue("");
-    onChange([...value, ...newValidEmails]);
+    onChange({ sendToField: "", sendTo: [...value.sendTo, ...newValidEmails] });
   }
 
   function onRemoveEmail(index: number) {
-    onChange(value.filter((_, i) => index !== i));
+    onChange({ ...value, sendTo: value.sendTo.filter((_, i) => index !== i) });
   }
 
-  const maxRecipientsReached = value.length >= MAX_RECIPIENTS;
+  const maxRecipientsReached = value.sendTo.length >= MAX_RECIPIENTS;
 
   return (
     <div>
       <label className={`mt-4 block text-sm font-medium text-gray-80`}>
         Send to
         <ul>
-          {value.map((email, i) => (
+          {value.sendTo.map((email, i) => (
             <li
               key={email}
               className="group relative mt-1 w-max max-w-full truncate rounded-[100px] bg-gray-5 px-3 py-1 text-xs font-medium text-gray-80"
@@ -420,7 +426,7 @@ function SendTo({
         </ul>
         <Input
           onChange={onInputChange}
-          value={inputValue}
+          value={value.sendToField}
           className="mt-1"
           placeholder="Send files to..."
           message={
