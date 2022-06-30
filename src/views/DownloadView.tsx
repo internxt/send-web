@@ -73,8 +73,8 @@ export default function DownloadView() {
   return (
     <Layout>
       {state.status === "loading" && (
-        <div className="flex h-full items-center justify-center">
-          <Spinner className="h-12 w-12 text-gray-30" />
+        <div className="fixed flex flex-row h-screen w-screen overflow-hidden pb-32 items-center justify-center">
+          <Spinner className="h-10 w-10 mt-16" />
         </div>
       )}
       {state.status === "ready" && (
@@ -83,8 +83,8 @@ export default function DownloadView() {
             <div className="mx-auto mt-10 flex h-24 w-24 items-center justify-center rounded-full bg-primary/10">
               <ArrowDown size={64} className="text-primary " />
             </div>
-            <h1 className="mt-2 text-center text-xl font-semibold text-gray-80">
-              {state.details.title ?? `${state.details.items.length} items`}
+            <h1 className="mt-4 text-center text-xl font-semibold text-gray-80">
+              {state.details.title ?? `${state.details.items.length} ${state.details.items.length > 1 ? 'Items' : 'Item'}`}
             </h1>
             {state.details.subject && (
               <p className="text-center text-gray-60">
@@ -112,7 +112,7 @@ export default function DownloadView() {
           </div>
           <CardBottom>
             <Button onClick={onDownload}>
-              Download {state.details.items.length} files
+              Download {state.details.items.length} {state.details.items.length > 1 ? 'files' : 'file'}
             </Button>
           </CardBottom>
         </div>

@@ -21,12 +21,12 @@ export default function Layout({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <div className="relative flex h-screen flex-col bg-white lg:bg-black">
+    <div className="relative flex lg:h-screen flex-col bg-white lg:bg-black">
       <div
         ref={backgroundRef}
         className="fixed inset-0 hidden bg-cover bg-center bg-no-repeat opacity-0 transition-opacity duration-500 lg:block"
       />
-      <header className=" z-10 flex h-16 flex-shrink-0 items-center justify-center px-20 lg:absolute lg:top-0 lg:h-20 lg:justify-start">
+      <header className=" z-10 flex h-16 w-screen bg-white lg:bg-transparent flex-shrink-0 items-center justify-center px-20 border-b border-gray-5 lg:border-b-0 fixed lg:top-0 lg:h-20 lg:justify-start">
         <Link to="/">
           <img
             className="flex h-3 lg:hidden"
@@ -40,7 +40,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           />
         </Link>
       </header>
-      <div className="relative min-h-0 flex-1">
+      <div className="relative min-h-0 flex-1 pt-16 pb-32 lg:py-0">
         <div className="relative flex h-full flex-row items-center lg:py-20">
           <Card className="flex flex-shrink-0 flex-col lg:ml-20">
             {children}

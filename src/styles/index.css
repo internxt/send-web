@@ -56,3 +56,8 @@
     opacity: 1;
   }
 }
+
+html, body {
+  background: #ffffff;
+  background-color: #ffffff;
+}

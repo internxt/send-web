@@ -1,24 +1,18 @@
 import {
-  Eye,
-  EyeSlash,
-  MagnifyingGlass,
-  X,
   WarningOctagon,
   Warning,
   CheckCircle,
 } from "phosphor-react";
-import { useState } from "react";
 
 export default function Input({
   className = "",
   label,
-  variant = "default",
+  type = "text",
   accent,
   disabled,
   placeholder,
   value,
   onChange,
-  onClear,
   message,
   onFocus,
   onBlur,
@@ -26,17 +20,17 @@ export default function Input({
 }: {
   className?: string;
   label?: string;
-  variant?: "default" | "search" | "password";
+  variant?: "text" | "email";
   accent?: "error" | "warning" | "success";
   disabled?: boolean;
   placeholder?: string;
   value?: string;
   onChange?: (v: string) => void;
-  onClear?: () => void;
   onFocus?: () => void;
   onBlur?: () => void;
-  onKeyDown?: () => void;
+  onKeyDown?: (v?: string) => void;
   message?: string;
+  type?: string;
 }): JSX.Element {
   let focusColor: string;
 
@@ -55,82 +49,34 @@ export default function Input({
       break;
   }
 
-  const borderColor =
-    variant === "search"
-      ? "border-transparent"
-      : "border-gray-20 disabled:border-gray-10 hover:border-gray-30";
+  const borderColor = "border-gray-20 disabled:border-gray-10 hover:border-gray-30";
 
-  const backgroundColor =
-    variant === "search"
-      ? "bg-gray-5 focus:bg-white disabled:bg-gray-5"
-      : "bg-white disabled:bg-white";
+  const backgroundColor = "bg-white disabled:bg-white";
 
-  const placeholderColor =
-    variant === "search" ? "placeholder-gray-30" : "placeholder-gray-30";
+  const placeholderColor = "placeholder-gray-30";
 
-  const padding = variant === "search" ? "pr-4 pl-10" : "px-3";
-
-  const [showPassword, setShowPassword] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
+  const padding = "px-3";
 
   const input = (
     <div className="relative">
       <input
         disabled={disabled}
-        className={`inxt-input text h-9 w-full rounded-md border font-normal text-gray-80 outline-none ring-opacity-10 focus:ring-2 disabled:text-gray-40 disabled:placeholder-gray-20 
+        className={`inxt-input text-lg lg:text-base h-11 md:h-9 w-full rounded-md border font-normal text-gray-80 outline-none ring-opacity-10 focus:ring-2 disabled:text-gray-40 disabled:placeholder-gray-20 
 				${borderColor} ${focusColor} ${placeholderColor} ${backgroundColor} ${padding}`}
-        type={variant === "password" && !showPassword ? "password" : "text"}
+        type={type ?? 'text'}
         placeholder={placeholder}
         onChange={(e) => onChange && onChange(e.target.value)}
         onFocus={() => {
-          if (onFocus) onFocus();
-          setIsFocused(true);
+          onFocus && onFocus();
         }}
         onKeyDown={(e) => {
           if ( e.key === 'Enter') onKeyDown && onKeyDown();
         }}
         onBlur={() => {
-          if (onBlur) onBlur();
-          setIsFocused(false);
+          onBlur && onBlur();
         }}
         value={value}
       />
-      {variant === "password" && isFocused && (
-        <div
-          role="button"
-          tabIndex={0}
-          onMouseDown={(e) => {
-            e.preventDefault();
-            setShowPassword(!showPassword);
-          }}
-          className={`absolute top-1/2 right-4 -translate-y-1/2 transform cursor-pointer py-2 pl-2 text-gray-80 ${backgroundColor}`}
-        >
-          {showPassword ? <Eye size={24} /> : <EyeSlash size={24} />}
-        </div>
-      )}
-      {variant === "search" && (
-        <MagnifyingGlass
-          className={`absolute top-1/2 left-4 -translate-y-1/2 transform ${
-            disabled ? "text-gray-20" : "text-gray-40"
-          }`}
-          size={20}
-        />
-      )}
-      {variant === "search" && value && !disabled && (
-        <div
-          role="button"
-          tabIndex={0}
-          onMouseDown={(e) => {
-            e.preventDefault();
-            if (onClear) onClear();
-          }}
-          className={`absolute top-1/2 right-4 -translate-y-1/2 transform cursor-pointer py-2 pl-2 text-gray-40  ${
-            isFocused ? "bg-white" : "bg-gray-5"
-          }`}
-        >
-          <X size={20} />
-        </div>
-      )}
     </div>
   );
 

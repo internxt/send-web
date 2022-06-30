@@ -55,7 +55,7 @@ export default function FileArea({
             <div className="ml-1.5">
               <p className="text-sm text-gray-80">Add more files</p>
               <div className="flex space-x-1.5 text-xs text-gray-50">
-                <p>{fileContext.files.length} files added</p>
+                <p>{fileContext.files.length} {fileContext.files.length > 1 ? 'files' : 'file'} added</p>
                 <p className="font-bold text-gray-30">·</p>
                 <p>{format(spaceRemaining)} remaining</p>
               </div>
@@ -71,7 +71,7 @@ function Empty({ onClick }: { onClick: () => void }) {
   const maxBytesPerSendDisplay = format(MAX_BYTES_PER_SEND);
   return (
     <div
-      className="flex h-full flex-1 cursor-pointer select-none items-center justify-center"
+      className="flex h-full flex-1 cursor-pointer select-none py-20 lg:py-0 items-center justify-center"
       onClick={onClick}
     >
       <div className="flex">

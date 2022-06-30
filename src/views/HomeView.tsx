@@ -141,13 +141,11 @@ export default function HomeView() {
         <>
           <div
             className={`min-h-0 flex-1 ${
-              switchValue === "Send email" ? "overflow-hidden overflow-y-auto rounded-t-2xl" : ""
+              switchValue === "Send email" ? "overflow-hidden overflow-y-auto lg:rounded-t-2xl" : ""
             }`}
           >
             <FileArea
-              className={
-                switchValue === "Send email" ? "min-h-[224px]" : "h-full"
-              }
+              className="min-h-[224px] lg:h-full"
               scroll={switchValue === "Send link"}
             />
             {switchValue === "Send email" && (
@@ -247,13 +245,6 @@ export default function HomeView() {
                   : "This link will expire in 2 weeks"}
               </p>
               {switchValue === "Send link" && (
-                // <div
-                //   ref={linkRef}
-                //   className="mt-3 flex h-11 w-full items-center justify-center rounded-lg bg-gray-5 px-3 text-gray-80"
-                //   onClick={copyLinkThrottled}
-                // >
-                //   <p className="truncate">{phase.link}</p>
-                // </div>
                 <Button
                   className="flex flex-row items-center justify-center w-auto px-7 mx-auto mt-4 space-x-2"
                   onClick={() => { copyLinkThrottled(); }}
@@ -340,6 +331,7 @@ function EmailForm({
         onChange={(v) => onChange({ ...value, ...v })}
       />
       <Input
+        type="email"
         placeholder="My email address"
         label="Your email"
         onChange={(v) => onChange({ ...value, sender: v })}
@@ -355,7 +347,7 @@ function EmailForm({
         />
       </label>
       <textarea
-        className="mt-1 h-20 w-full resize-none rounded-md border border-gray-20 bg-white px-3 py-2 text-sm font-normal text-gray-80 placeholder-gray-30 
+        className="mt-1 h-20 w-full resize-none rounded-md border border-gray-20 bg-white px-3 py-2 text-lg lg:text-base font-normal text-gray-80 placeholder-gray-30 
 				outline-none ring-primary ring-opacity-10 hover:border-gray-30 focus:border-primary focus:ring-2"
         placeholder="Message"
         onChange={(v) => onChange({ ...value, message: v.target.value })}
@@ -407,19 +399,22 @@ function SendTo({
           {value.sendTo.map((email, i) => (
             <li
               key={email}
-              className="group relative mt-1 w-max max-w-full truncate rounded-[100px] bg-gray-5 px-3 py-1 text-xs font-medium text-gray-80"
+              className="group relative mt-1 w-max max-w-full truncate rounded-full bg-gray-5 px-3 py-1 text-xs font-medium text-gray-80"
             >
               {email}
               <div
                 onClick={() => onRemoveEmail(i)}
-                className="absolute right-0 top-1/2 flex -translate-y-1/2 cursor-pointer bg-gradient-to-r from-transparent via-gray-5 to-gray-5 pr-2.5 pl-6 lg:hidden lg:group-hover:block"
+                className="absolute right-0 top-0 h-full flex flex-row items-center cursor-pointer bg-gradient-to-r from-transparent via-gray-5 to-gray-5 pr-2.5 pl-6 lg:hidden lg:group-hover:block"
               >
-                <X size={14} />
+                <div className="h-full flex flex-row items-center">
+                  <X size={14} />
+                </div>
               </div>
             </li>
           ))}
         </ul>
         <Input
+          type="email"
           onChange={onInputChange}
           value={value.sendToField}
           className="mt-1"
