@@ -2,7 +2,7 @@ import isValidEmail from "@internxt/lib/dist/src/auth/isValidEmail";
 import { format } from "bytes";
 import copy from "copy-to-clipboard";
 import throttle from "lodash.throttle";
-import { CheckCircle, X, XCircle } from "phosphor-react";
+import { Check, Copy, X } from "phosphor-react";
 import { useContext, useEffect, useRef, useState } from "react";
 import Button from "../components/Button";
 import CardBottom from "../components/CardBotton";
@@ -123,18 +123,9 @@ export default function HomeView() {
     }
   }
 
-  const linkRef = useRef<HTMLDivElement>(null);
-
   function copyLink() {
     if (phase.name === "done") {
       copy(phase.link);
-      const selection = window.getSelection();
-      if (selection && linkRef.current) {
-        const range = document.createRange();
-        range.selectNodeContents(linkRef.current);
-        selection.removeAllRanges();
-        selection.addRange(range);
-      }
       notificationsService.show({
         type: ToastType.Success,
         text: "Link copied to your clipboard",
@@ -150,7 +141,7 @@ export default function HomeView() {
         <>
           <div
             className={`min-h-0 flex-1 ${
-              switchValue === "Send email" ? "overflow-auto" : ""
+              switchValue === "Send email" ? "overflow-hidden overflow-y-auto rounded-t-2xl" : ""
             }`}
           >
             <FileArea
@@ -241,11 +232,9 @@ export default function HomeView() {
       {phase.name === "done" && (
         <div className="flex h-full flex-col">
           <div className="flex flex-1 flex-col items-center">
-            <CheckCircle
-              className="mt-20 text-green"
-              weight="fill"
-              size={140}
-            />
+            <div className="mt-20 w-28 h-28 flex flex-row items-center justify-center bg-green text-white rounded-full">
+              <Check size={80} />
+            </div>
             <div className="mt-20 w-full px-5 text-center">
               <p className="text-xl font-medium text-gray-80">
                 {switchValue === "Send email"
@@ -258,35 +247,39 @@ export default function HomeView() {
                   : "This link will expire in 2 weeks"}
               </p>
               {switchValue === "Send link" && (
-                <div
-                  ref={linkRef}
-                  className="mt-3 flex h-11 w-full items-center justify-center rounded-lg bg-gray-5 px-3 text-gray-80"
-                  onClick={copyLinkThrottled}
+                // <div
+                //   ref={linkRef}
+                //   className="mt-3 flex h-11 w-full items-center justify-center rounded-lg bg-gray-5 px-3 text-gray-80"
+                //   onClick={copyLinkThrottled}
+                // >
+                //   <p className="truncate">{phase.link}</p>
+                // </div>
+                <Button
+                  className="flex flex-row items-center justify-center w-auto px-7 mx-auto mt-4 space-x-2"
+                  onClick={() => { copyLinkThrottled(); }}
                 >
-                  <p className="truncate">{phase.link}</p>
-                </div>
+                  <Copy className="text-white" size={24} />
+                  <span>Copy link</span>
+                </Button>
               )}
             </div>
           </div>
           <CardBottom>
             <Button
+              outline
               onClick={() => {
-                if (switchValue === "Send email") {
-                  setPhase({ name: "standby" });
-                  setFormState({
-                    message: "",
-                    sender: "",
-                    sendTo: [],
-                    title: "",
-                    sendToField: "",
-                  });
-                  filesContext.clear();
-                } else {
-                  copyLinkThrottled();
-                }
+                setPhase({ name: "standby" });
+                setFormState({
+                  message: "",
+                  sender: "",
+                  sendTo: [],
+                  title: "",
+                  sendToField: "",
+                });
+                filesContext.clear();
               }}
             >
-              {switchValue === "Send email" ? "Send more files" : "Copy link"}
+              Send more files
             </Button>
           </CardBottom>
         </div>
@@ -294,7 +287,9 @@ export default function HomeView() {
       {phase.name === "error" && (
         <div className="flex h-full flex-col">
           <div className="flex flex-1 flex-col items-center">
-            <XCircle className="mt-20 text-red-std" weight="fill" size={140} />
+            <div className="mt-20 w-28 h-28 flex flex-row items-center justify-center bg-red-std text-white rounded-full">
+              <X size={80} />
+            </div>
             <div className="mt-20 w-full px-5 text-center">
               <p className="text-xl font-medium text-gray-80">
                 Something went wrong...

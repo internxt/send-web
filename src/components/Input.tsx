@@ -22,6 +22,7 @@ export default function Input({
   message,
   onFocus,
   onBlur,
+  onKeyDown,
 }: {
   className?: string;
   label?: string;
@@ -34,6 +35,7 @@ export default function Input({
   onClear?: () => void;
   onFocus?: () => void;
   onBlur?: () => void;
+  onKeyDown?: () => void;
   message?: string;
 }): JSX.Element {
   let focusColor: string;
@@ -83,6 +85,9 @@ export default function Input({
         onFocus={() => {
           if (onFocus) onFocus();
           setIsFocused(true);
+        }}
+        onKeyDown={(e) => {
+          if ( e.key === 'Enter') onKeyDown && onKeyDown();
         }}
         onBlur={() => {
           if (onBlur) onBlur();

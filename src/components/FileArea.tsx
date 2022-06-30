@@ -41,7 +41,7 @@ export default function FileArea({
         <>
           <div
             className={`flex-1 bg-gray-1 ${
-              scroll ? "overflow-auto" : ""
+              scroll ? "overflow-y-auto" : ""
             } py-3 px-5`}
           >
             {fileContext.files.map((file, i) => (
