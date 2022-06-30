@@ -79,30 +79,34 @@ export default function DownloadView() {
       )}
       {state.status === "ready" && (
         <div className="flex h-full flex-col items-center">
-          <div className="min-h-0 w-full flex-1 overflow-auto">
-            <div className="mx-auto mt-10 flex h-24 w-24 items-center justify-center rounded-full bg-primary/10">
-              <ArrowDown size={64} className="text-primary " />
-            </div>
-            <h1 className="mt-4 text-center text-xl font-semibold text-gray-80">
-              {state.details.title ?? `${state.details.items.length} ${state.details.items.length > 1 ? 'Items' : 'Item'}`}
-            </h1>
-            {state.details.subject && (
-              <p className="text-center text-gray-60">
-                {state.details.subject}
+          <div className="relative min-h-0 w-full flex-1 overflow-auto">
+
+            <div className="flex flex-col bg-white">
+              <div className="mx-auto mt-10 flex h-24 w-24 items-center justify-center rounded-full bg-primary/10">
+                <ArrowDown size={64} className="text-primary " />
+              </div>
+              <h1 className="mt-4 text-center text-xl font-semibold text-gray-80 px-5">
+                {state.details.title ?? `${state.details.items.length} ${state.details.items.length > 1 ? 'Items' : 'Item'}`}
+              </h1>
+              {state.details.subject && (
+                <p className="text-center text-gray-60 px-5">
+                  {state.details.subject}
+                </p>
+              )}
+              <p className="text-center mb-8 text-sm text-gray-50 px-5">
+                Link expires in{" "}
+                {(
+                  (new Date(state.details.expirationAt).valueOf() -
+                    new Date().valueOf()) /
+                  (1000 * 3600 * 24)
+                ).toFixed(0)}{" "}
+                days
               </p>
-            )}
-            <p className="text-center text-sm text-gray-50">
-              Link expires in{" "}
-              {(
-                (new Date(state.details.expirationAt).valueOf() -
-                  new Date().valueOf()) /
-                (1000 * 3600 * 24)
-              ).toFixed(0)}{" "}
-              days
-            </p>
-            <div className="mt-4 w-full border-t border-gray-5 py-4 px-5">
+            </div>
+
+            <div className="w-full border-t border-gray-5 py-4 px-5">
               <p className="text-lg font-medium text-gray-80">
-                {state.details.items.length} item(s)
+                {`${state.details.items.length} ${state.details.items.length > 1 ? 'files' : 'file'}`} 
               </p>
               <p className="text-sm text-gray-50">
                 {format(state.details.size)} in total
