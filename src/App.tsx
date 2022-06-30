@@ -20,7 +20,7 @@ function App() {
               </FilesProvider>
             }
           />
-          <Route path="/:shareId" element={<DownloadView />} />
+          <Route path="/download/:shareId" element={<DownloadView />} />
         </Routes>
       </BrowserRouter>
       <Toaster position="bottom-center" />

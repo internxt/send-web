@@ -57,7 +57,7 @@ export class UploadService {
     };
     const createSendLinkResponse = await storeSendLinks(createSendLinksPayload);
 
-    return window.origin + "/" + createSendLinkResponse.id;
+    return window.origin + "/download/" + createSendLinkResponse.id;
   }
 
   static async uploadFiles(
