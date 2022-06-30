@@ -50,18 +50,17 @@ export default function Layout({ children }: { children: ReactNode }) {
             className="ml-32 hidden text-white opacity-0 transition-opacity duration-500 lg:block"
           >
             <h1 className="text-4xl font-medium" style={{ lineHeight: 1 }}>
-              Share files fast, encrypted
+              Encrypt and send files
               <br />
-              and in total privacy
+              in total privacy
             </h1>
             <p className="mt-6 w-156 text-xl font-normal">
               Internxt Send allows you to share files fast without worrying
               <br />
-              about the security of your documents, images or videos.
+              about the security of your documents, images, or videos.
               <br />
-              Select the files you want to share and choose between
+              Select the files you want to encrypt and send by link or email.
               <br />
-              sending them by link or by mail.
             </p>
           </div>
         </div>
