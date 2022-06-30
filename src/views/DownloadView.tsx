@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import { format } from "bytes";
-import { ArrowDown, CheckCircle, XCircle } from "phosphor-react";
+import { ArrowDown, Check, X } from "phosphor-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "../components/Button";
@@ -143,11 +143,9 @@ export default function DownloadView() {
       {state.status === "done" && (
         <div className="flex h-full flex-col">
           <div className="flex flex-1 flex-col items-center">
-            <CheckCircle
-              className="mt-20 text-green"
-              weight="fill"
-              size={140}
-            />
+            <div className="mt-20 flex h-28 w-28 flex-row items-center justify-center rounded-full bg-green text-white">
+              <Check size={80} />
+            </div>
             <div className="mt-20 w-full px-5 text-center">
               <p className="text-xl font-medium text-gray-80">
                 Download completed
@@ -168,7 +166,9 @@ export default function DownloadView() {
       {state.status === "error" && (
         <div className="flex h-full flex-col">
           <div className="flex flex-1 flex-col items-center">
-            <XCircle className="mt-20 text-red-std" weight="fill" size={140} />
+          <div className="mt-20 flex h-28 w-28 flex-row items-center justify-center rounded-full bg-red-std text-white">
+              <X size={80} />
+            </div>
             <div className="mt-20 w-full px-5 text-center">
               <p className="text-xl font-medium text-gray-80">
                 {state.reason === "not_found"
