@@ -2,6 +2,7 @@ import { ReactNode, useEffect, useRef } from "react";
 import logo from "./logo.svg";
 import logo_dark from "./logo_dark.svg";
 import Card from "./components/Card";
+import { Link } from "react-router-dom";
 
 export default function Layout({ children }: { children: ReactNode }) {
   const backgroundRef = useRef<HTMLDivElement>(null);
@@ -25,23 +26,25 @@ export default function Layout({ children }: { children: ReactNode }) {
         ref={backgroundRef}
         className="fixed inset-0 hidden bg-cover bg-center bg-no-repeat opacity-0 transition-opacity duration-500 lg:block"
       />
-      <header className="flex h-16 flex-shrink-0 items-center justify-center px-20 lg:absolute lg:top-0 lg:h-20 lg:justify-start">
-        <a href="https://send.internxt.com">
+      <header className=" z-10 flex h-16 flex-shrink-0 items-center justify-center px-20 lg:absolute lg:top-0 lg:h-20 lg:justify-start">
+        <Link to="/">
           <img
-            className="h-3 flex lg:hidden"
+            className="flex h-3 lg:hidden"
             src={logo_dark}
             alt="Internxt's logo"
           />
           <img
-            className="h-3 hidden lg:flex"
+            className="hidden h-3 lg:flex"
             src={logo}
             alt="Internxt's logo"
           />
-        </a>
+        </Link>
       </header>
       <div className="relative min-h-0 flex-1">
-        <div className="relative flex flex-row lg:py-20 h-full items-center">
-          <Card className="flex flex-col flex-shrink-0 lg:ml-20">{children}</Card>
+        <div className="relative flex h-full flex-row items-center lg:py-20">
+          <Card className="flex flex-shrink-0 flex-col lg:ml-20">
+            {children}
+          </Card>
           <div
             ref={ctaRef}
             className="ml-32 hidden text-white opacity-0 transition-opacity duration-500 lg:block"
