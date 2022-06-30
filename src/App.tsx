@@ -4,6 +4,7 @@ import RootDropzone from "./components/RootDropzone";
 import { FilesProvider } from "./contexts/Files";
 import DownloadView from "./views/DownloadView";
 import HomeView from "./views/HomeView";
+import NotFoundView from "./views/NotFoundView";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             }
           />
           <Route path="/download/:shareId" element={<DownloadView />} />
+          <Route path="*" element={<NotFoundView />} />
         </Routes>
       </BrowserRouter>
       <Toaster position="bottom-center" />
