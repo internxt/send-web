@@ -1,8 +1,4 @@
-import {
-  WarningOctagon,
-  Warning,
-  CheckCircle,
-} from "phosphor-react";
+import { WarningOctagon, Warning, CheckCircle } from "phosphor-react";
 
 export default function Input({
   className = "",
@@ -16,6 +12,7 @@ export default function Input({
   message,
   onFocus,
   onBlur,
+  onPaste,
   onKeyDown,
 }: {
   className?: string;
@@ -26,9 +23,10 @@ export default function Input({
   placeholder?: string;
   value?: string;
   onChange?: (v: string) => void;
+  onKeyDown?: React.KeyboardEventHandler;
+  onPaste?: React.ClipboardEventHandler;
   onFocus?: () => void;
   onBlur?: () => void;
-  onKeyDown?: (v?: string) => void;
   message?: string;
   type?: string;
 }): JSX.Element {
@@ -49,7 +47,8 @@ export default function Input({
       break;
   }
 
-  const borderColor = "border-gray-20 disabled:border-gray-10 hover:border-gray-30";
+  const borderColor =
+    "border-gray-20 disabled:border-gray-10 hover:border-gray-30";
 
   const backgroundColor = "bg-white disabled:bg-white";
 
@@ -61,21 +60,20 @@ export default function Input({
     <div className="relative">
       <input
         disabled={disabled}
-        className={`inxt-input text-lg lg:text-base h-11 md:h-9 w-full rounded-md border font-normal text-gray-80 outline-none ring-opacity-10 focus:ring-2 disabled:text-gray-40 disabled:placeholder-gray-20 
+        className={`inxt-input h-11 w-full rounded-md border text-lg font-normal text-gray-80 outline-none ring-opacity-10 focus:ring-2 disabled:text-gray-40 disabled:placeholder-gray-20 md:h-9 lg:text-base 
 				${borderColor} ${focusColor} ${placeholderColor} ${backgroundColor} ${padding}`}
-        type={type ?? 'text'}
+        type={type ?? "text"}
         placeholder={placeholder}
         onChange={(e) => onChange && onChange(e.target.value)}
         onFocus={() => {
           onFocus && onFocus();
         }}
-        onKeyDown={(e) => {
-          if ( e.key === 'Enter') onKeyDown && onKeyDown();
-        }}
         onBlur={() => {
           onBlur && onBlur();
         }}
+        onPaste={onPaste}
         value={value}
+        onKeyDown={onKeyDown}
       />
     </div>
   );

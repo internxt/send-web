@@ -141,7 +141,9 @@ export default function HomeView() {
         <>
           <div
             className={`min-h-0 flex-1 ${
-              switchValue === "Send email" ? "overflow-hidden overflow-y-auto lg:rounded-t-2xl" : ""
+              switchValue === "Send email"
+                ? "overflow-hidden overflow-y-auto lg:rounded-t-2xl"
+                : ""
             }`}
           >
             <FileArea
@@ -230,7 +232,7 @@ export default function HomeView() {
       {phase.name === "done" && (
         <div className="flex h-full flex-col">
           <div className="flex flex-1 flex-col items-center">
-            <div className="mt-20 w-28 h-28 flex flex-row items-center justify-center bg-green text-white rounded-full">
+            <div className="mt-20 flex h-28 w-28 flex-row items-center justify-center rounded-full bg-green text-white">
               <Check size={80} />
             </div>
             <div className="mt-20 w-full px-5 text-center">
@@ -246,8 +248,10 @@ export default function HomeView() {
               </p>
               {switchValue === "Send link" && (
                 <Button
-                  className="flex flex-row items-center justify-center w-auto px-7 mx-auto mt-4 space-x-2"
-                  onClick={() => { copyLinkThrottled(); }}
+                  className="mx-auto mt-4 flex w-auto flex-row items-center justify-center space-x-2 px-7"
+                  onClick={() => {
+                    copyLinkThrottled();
+                  }}
                 >
                   <Copy className="text-white" size={24} />
                   <span>Copy link</span>
@@ -278,7 +282,7 @@ export default function HomeView() {
       {phase.name === "error" && (
         <div className="flex h-full flex-col">
           <div className="flex flex-1 flex-col items-center">
-            <div className="mt-20 w-28 h-28 flex flex-row items-center justify-center bg-red-std text-white rounded-full">
+            <div className="mt-20 flex h-28 w-28 flex-row items-center justify-center rounded-full bg-red-std text-white">
               <X size={80} />
             </div>
             <div className="mt-20 w-full px-5 text-center">
@@ -347,8 +351,8 @@ function EmailForm({
         />
       </label>
       <textarea
-        className="mt-1 h-20 w-full resize-none rounded-md border border-gray-20 bg-white px-3 py-2 text-lg lg:text-base font-normal text-gray-80 placeholder-gray-30 
-				outline-none ring-primary ring-opacity-10 hover:border-gray-30 focus:border-primary focus:ring-2"
+        className="mt-1 h-20 w-full resize-none rounded-md border border-gray-20 bg-white px-3 py-2 text-lg font-normal text-gray-80 placeholder-gray-30 outline-none 
+				ring-primary ring-opacity-10 hover:border-gray-30 focus:border-primary focus:ring-2 lg:text-base"
         placeholder="Message"
         onChange={(v) => onChange({ ...value, message: v.target.value })}
         value={value.message}
@@ -364,8 +368,39 @@ function SendTo({
   value: { sendTo: string[]; sendToField: string };
   onChange: (v: { sendTo: string[]; sendToField: string }) => void;
 }) {
-  function onInputChange(newInputValue: string) {
-    const noWhitespacesInput = newInputValue.replace(/\s/g, "");
+  function onRemoveEmail(index: number) {
+    onChange({ ...value, sendTo: value.sendTo.filter((_, i) => index !== i) });
+  }
+
+  const onKeyDown: React.KeyboardEventHandler = (event) => {
+    if (event.key === "Enter" || event.key === "," || event.key === " ") {
+      event.preventDefault();
+      if (emailFilter(value.sendToField))
+        onChange({
+          sendToField: "",
+          sendTo: [...value.sendTo, value.sendToField],
+        });
+      else onChange({ ...value, sendToField: "" });
+    }
+  };
+
+  function onInputChange(newText: string) {
+    if (Math.abs(newText.length - value.sendToField.length) === 1) {
+      onChange({ ...value, sendToField: newText });
+    }
+  }
+
+  function emailFilter(email: string) {
+    const isValid = isValidEmail(email);
+    const isAlreadyInList = value.sendTo.find((e) => e === email);
+
+    return isValid && !isAlreadyInList;
+  }
+
+  const onPaste: React.ClipboardEventHandler = (event) => {
+    const text = event.clipboardData.getData("text");
+
+    const noWhitespacesInput = text.replace(/[\s,]+/g, ",");
     const thereAreCommas = noWhitespacesInput.includes(",");
 
     if (!thereAreCommas) {
@@ -375,19 +410,10 @@ function SendTo({
 
     const valuesBetweenCommas = noWhitespacesInput.split(",");
 
-    const newValidEmails = valuesBetweenCommas.filter((email) => {
-      const isValid = isValidEmail(email);
-      const isAlreadyInList = value.sendTo.find((e) => e === email);
-
-      return isValid && !isAlreadyInList;
-    });
+    const newValidEmails = valuesBetweenCommas.filter(emailFilter);
 
     onChange({ sendToField: "", sendTo: [...value.sendTo, ...newValidEmails] });
-  }
-
-  function onRemoveEmail(index: number) {
-    onChange({ ...value, sendTo: value.sendTo.filter((_, i) => index !== i) });
-  }
+  };
 
   const maxRecipientsReached = value.sendTo.length >= MAX_RECIPIENTS;
 
@@ -404,9 +430,9 @@ function SendTo({
               {email}
               <div
                 onClick={() => onRemoveEmail(i)}
-                className="absolute right-0 top-0 h-full flex flex-row items-center cursor-pointer bg-gradient-to-r from-transparent via-gray-5 to-gray-5 pr-2.5 pl-6 lg:hidden lg:group-hover:block"
+                className="absolute right-0 top-0 flex h-full cursor-pointer flex-row items-center bg-gradient-to-r from-transparent via-gray-5 to-gray-5 pr-2.5 pl-6 lg:hidden lg:group-hover:block"
               >
-                <div className="h-full flex flex-row items-center">
+                <div className="flex h-full flex-row items-center">
                   <X size={14} />
                 </div>
               </div>
@@ -415,8 +441,9 @@ function SendTo({
         </ul>
         <Input
           type="email"
-          onChange={onInputChange}
+          onKeyDown={onKeyDown}
           value={value.sendToField}
+          onChange={onInputChange}
           className="mt-1"
           placeholder="Send files to..."
           message={
@@ -426,6 +453,7 @@ function SendTo({
           }
           disabled={maxRecipientsReached}
           accent={maxRecipientsReached ? "warning" : undefined}
+          onPaste={onPaste}
         />
       </label>
     </div>
