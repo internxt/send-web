@@ -6,7 +6,7 @@
     "@headlessui/react": "^1.6.5",
     "@internxt/inxt-js": "=1.2.21",
     "@internxt/lib": "^1.2.0",
-    "@internxt/sdk": "^0.15.4",
+    "@internxt/sdk": "0.15.5",
     "@sentry/react": "^7.2.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
