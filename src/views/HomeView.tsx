@@ -421,16 +421,16 @@ function SendTo({
     <div>
       <label className={`mt-4 block text-sm font-medium text-gray-80`}>
         Send to
-        <ul>
+        <ul className="space-y-1.5 mt-1 mb-2">
           {value.sendTo.map((email, i) => (
             <li
               key={email}
-              className="group relative mt-1 w-max max-w-full truncate rounded-full bg-gray-5 px-3 py-1 text-xs font-medium text-gray-80"
+              className="group relative w-max max-w-full truncate rounded-full bg-gray-5 px-3.5 pr-9 lg:pr-3.5 py-1.5 lg:py-1 text-sm font-medium text-gray-80"
             >
               {email}
               <div
                 onClick={() => onRemoveEmail(i)}
-                className="absolute right-0 top-0 flex h-full cursor-pointer flex-row items-center bg-gradient-to-r from-transparent via-gray-5 to-gray-5 pr-2.5 pl-6 lg:hidden lg:group-hover:block"
+                className="absolute right-0 top-0 flex h-full cursor-pointer flex-row items-center lg:bg-gradient-to-r lg:from-transparent lg:via-gray-5 lg:to-gray-5 pr-2.5 pl-12 lg:hidden lg:group-hover:block"
               >
                 <div className="flex h-full flex-row items-center">
                   <X size={14} />
