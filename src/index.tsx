@@ -1,8 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import * as Sentry from '@sentry/react';
+import { BrowserTracing } from "@sentry/tracing";
 import './styles/index.generated.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+
+
+Sentry.init({
+  dsn: process.env.REACT_APP_SENTRY_DSN,
+  integrations: [new BrowserTracing()],
+  tracesSampleRate: 1.0,
+  debug: process.env.NODE_ENV !== 'production',
+  environment: process.env.NODE_ENV
+});
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
