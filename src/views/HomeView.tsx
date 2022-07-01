@@ -147,7 +147,9 @@ export default function HomeView() {
             }`}
           >
             <FileArea
-              className={`min-h-[224px] ${switchValue !== "Send email" && 'lg:h-full' }`}
+              className={`min-h-[224px] ${
+                switchValue !== "Send email" && "lg:h-full"
+              }`}
               scroll={switchValue === "Send link"}
             />
             {switchValue === "Send email" && (
@@ -375,11 +377,14 @@ function SendTo({
   const onKeyDown: React.KeyboardEventHandler = (event) => {
     if (event.key === "Enter" || event.key === "," || event.key === " ") {
       event.preventDefault();
-      if (emailFilter(value.sendToField))
+      if (emailFilter(value.sendToField)) {
         onChange({
           sendToField: "",
           sendTo: [...value.sendTo, value.sendToField],
         });
+      } else if (isAlreadyInList(value.sendToField)) {
+        onChange({ ...value, sendToField: "" });
+      }
     }
   };
 
@@ -389,11 +394,15 @@ function SendTo({
     }
   }
 
+  function isAlreadyInList(email: string) {
+    return value.sendTo.find((e) => e === email);
+  }
+
   function emailFilter(email: string) {
     const isValid = isValidEmail(email);
-    const isAlreadyInList = value.sendTo.find((e) => e === email);
+    const alreadyInList = isAlreadyInList(email);
 
-    return isValid && !isAlreadyInList;
+    return isValid && !alreadyInList;
   }
 
   const onPaste: React.ClipboardEventHandler = (event) => {
@@ -420,16 +429,16 @@ function SendTo({
     <div>
       <label className={`mt-4 block text-sm font-medium text-gray-80`}>
         Send to
-        <ul className="space-y-1.5 mt-1 mb-2">
+        <ul className="mt-1 mb-2 space-y-1.5">
           {value.sendTo.map((email, i) => (
             <li
               key={email}
-              className="group relative w-max max-w-full truncate rounded-full bg-gray-5 px-3.5 pr-9 lg:pr-3.5 py-1.5 lg:py-1 text-sm font-medium text-gray-80"
+              className="group relative w-max max-w-full truncate rounded-full bg-gray-5 px-3.5 py-1.5 pr-9 text-sm font-medium text-gray-80 lg:py-1 lg:pr-3.5"
             >
               {email}
               <div
                 onClick={() => onRemoveEmail(i)}
-                className="absolute right-0 top-0 flex h-full cursor-pointer flex-row items-center lg:bg-gradient-to-r lg:from-transparent lg:via-gray-5 lg:to-gray-5 pr-2.5 pl-12 lg:hidden lg:group-hover:block"
+                className="absolute right-0 top-0 flex h-full cursor-pointer flex-row items-center pr-2.5 pl-12 lg:hidden lg:bg-gradient-to-r lg:from-transparent lg:via-gray-5 lg:to-gray-5 lg:group-hover:block"
               >
                 <div className="flex h-full flex-row items-center">
                   <X size={14} />
