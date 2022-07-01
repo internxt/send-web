@@ -342,6 +342,9 @@ function EmailForm({
         label="Your email"
         onChange={(v) => onChange({ ...value, sender: v })}
         value={value.sender}
+        onKeyDown={(e) => {
+          if (e.key === " ") e.preventDefault();
+        }}
       />
       <label className={`mt-4 block text-sm font-medium text-gray-80`}>
         Transfer info
