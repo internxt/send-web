@@ -22,6 +22,15 @@ export const FilesProvider = ({ children }: { children: ReactNode }) => {
   const [enabled, setEnabled] = useState(true);
 
   function addFiles(files: File[]) {
+    const thereAreEmptyFiles = files.some((file) => file.size === 0);
+    if (thereAreEmptyFiles) {
+      notificationsService.show({
+        text: "Empty files are not supported",
+        type: ToastType.Warning,
+      });
+      return;
+    }
+
     const isFolder = files.some((file) => {
       const { path } = file as File & { path: string };
       if (typeof path === "string") {
