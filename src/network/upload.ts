@@ -1,11 +1,15 @@
-import * as Sentry from '@sentry/react';
-import { Network } from '@internxt/sdk/dist/network';
-import { ErrorWithContext } from '@internxt/sdk/dist/network/errors';
+import * as Sentry from "@sentry/react";
+import { Network } from "@internxt/sdk/dist/network";
+import { ErrorWithContext } from "@internxt/sdk/dist/network/errors";
 
-import { sha256 } from './crypto';
-import { NetworkFacade } from './NetworkFacade';
+import { sha256 } from "./crypto";
+import { NetworkFacade } from "./NetworkFacade";
+import { reportError } from "../services/error-reporting.service";
 
-export type UploadProgressCallback = (totalBytes: number, uploadedBytes: number) => void;
+export type UploadProgressCallback = (
+  totalBytes: number,
+  uploadedBytes: number
+) => void;
 
 interface NetworkCredentials {
   user: string;
@@ -28,58 +32,75 @@ export function uploadFileBlob(
   opts: {
     progressCallback: UploadProgressCallback;
     abortController?: AbortController;
-  },
+  }
 ): Promise<XMLHttpRequest> {
   const uploadRequest = new XMLHttpRequest();
 
   if (opts.abortController?.signal && opts.abortController.signal.aborted) {
-    throw new Error('Upload aborted');
+    throw new Error("Upload aborted");
   }
 
   opts.abortController?.signal.addEventListener(
-    'abort',
+    "abort",
     () => {
       uploadRequest.abort();
     },
-    { once: true },
+    { once: true }
   );
 
-  uploadRequest.upload.addEventListener('progress', (e) => {
+  uploadRequest.upload.addEventListener("progress", (e) => {
     opts.progressCallback(e.total, e.loaded);
   });
-  uploadRequest.upload.addEventListener('loadstart', (e) => opts.progressCallback(e.total, 0));
-  uploadRequest.upload.addEventListener('loadend', (e) => opts.progressCallback(e.total, e.total));
+  uploadRequest.upload.addEventListener("loadstart", (e) =>
+    opts.progressCallback(e.total, 0)
+  );
+  uploadRequest.upload.addEventListener("loadend", (e) =>
+    opts.progressCallback(e.total, e.total)
+  );
 
-  const uploadFinishedPromise = new Promise<XMLHttpRequest>((resolve, reject) => {
-    uploadRequest.onload = () => {
-      if (uploadRequest.status !== 200) {
-        return reject(
-          new Error('Upload failed with code ' + uploadRequest.status + ' message ' + uploadRequest.response),
-        );
-      }
-      resolve(uploadRequest);
-    };
-    uploadRequest.onerror = reject;
-    uploadRequest.onabort = () => reject(new Error('Upload aborted'));
-    uploadRequest.ontimeout = () => reject(new Error('Request timeout'));
-  });
+  const uploadFinishedPromise = new Promise<XMLHttpRequest>(
+    (resolve, reject) => {
+      uploadRequest.onload = () => {
+        if (uploadRequest.status !== 200) {
+          return reject(
+            new Error(
+              "Upload failed with code " +
+                uploadRequest.status +
+                " message " +
+                uploadRequest.response
+            )
+          );
+        }
+        resolve(uploadRequest);
+      };
+      uploadRequest.onerror = reject;
+      uploadRequest.onabort = () => reject(new Error("Upload aborted"));
+      uploadRequest.ontimeout = () => reject(new Error("Request timeout"));
+    }
+  );
 
-  uploadRequest.open('PUT', url);
-   // ! Uncomment this line for multipart to work:
+  uploadRequest.open("PUT", url);
+  // ! Uncomment this line for multipart to work:
   // uploadRequest.setRequestHeader('Content-Type', '');
   uploadRequest.send(encryptedFile);
 
   return uploadFinishedPromise;
 }
 
-function getAuthFromCredentials(creds: NetworkCredentials): { username: string; password: string } {
+function getAuthFromCredentials(creds: NetworkCredentials): {
+  username: string;
+  password: string;
+} {
   return {
     username: creds.user,
-    password: sha256(Buffer.from(creds.pass)).toString('hex'),
+    password: sha256(Buffer.from(creds.pass)).toString("hex"),
   };
 }
 
-export function uploadFile(bucketId: string, params: IUploadParams): Promise<string> {
+export function uploadFile(
+  bucketId: string,
+  params: IUploadParams
+): Promise<string> {
   const file: File = params.filecontent;
 
   const auth = getAuthFromCredentials({
@@ -91,14 +112,14 @@ export function uploadFile(bucketId: string, params: IUploadParams): Promise<str
     Network.client(
       process.env.REACT_APP_NETWORK_URL as string,
       {
-        clientName: 'drive-web',
-        clientVersion: '1.0',
+        clientName: "drive-web",
+        clientVersion: "1.0",
       },
       {
         bridgeUser: auth.username,
         userId: auth.password,
-      },
-    ),
+      }
+    )
   );
 
   if (params.parts) {
@@ -109,8 +130,7 @@ export function uploadFile(bucketId: string, params: IUploadParams): Promise<str
         parts: params.parts,
       })
       .catch((err: ErrorWithContext) => {
-        Sentry.captureException(err, { extra: err.context });
-
+        reportError(err, err.context);
         throw err;
       });
   }
@@ -121,7 +141,7 @@ export function uploadFile(bucketId: string, params: IUploadParams): Promise<str
       abortController: params.abortController,
     })
     .catch((err: ErrorWithContext) => {
-      Sentry.captureException(err, { extra: err.context });
+      reportError(err, err.context);
 
       throw err;
     });
