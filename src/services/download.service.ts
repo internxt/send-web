@@ -3,6 +3,7 @@ import { FlatFolderZip } from "./zip/FlatFolderZip";
 import axios from "axios";
 import { aes } from "@internxt/lib";
 import { binaryStreamToBlob } from "../network/streams";
+import fileDownload from "js-file-download";
 
 type BinaryStream = ReadableStream<Uint8Array>;
 
@@ -64,21 +65,12 @@ export class DownloadService {
         items[0].networkId,
         { abortController: opts?.abortController }
       );
-      const blob = await binaryStreamToBlob(itemDownloadStream);
-      await this.downloadFileFromBlob(blob, items[0].name);
+      
+      return fileDownload(
+        await binaryStreamToBlob(itemDownloadStream),
+        items[0].name
+      );
     }
-  }
-
-  static async downloadFileFromBlob(blob: Blob, fileName: string) {
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.style.display = 'none';
-    a.href = url;
-    a.download = fileName;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
   }
 
 }
