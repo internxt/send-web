@@ -2,6 +2,7 @@ import { NetworkService } from "./network.service";
 import { FlatFolderZip } from "./zip/FlatFolderZip";
 import axios from "axios";
 import { aes } from "@internxt/lib";
+import { binaryStreamToBlob } from "../network/streams";
 
 type BinaryStream = ReadableStream<Uint8Array>;
 
@@ -63,30 +64,9 @@ export class DownloadService {
         items[0].networkId,
         { abortController: opts?.abortController }
       );
-      const blob = await this.binaryStreamToBlob(itemDownloadStream);
+      const blob = await binaryStreamToBlob(itemDownloadStream);
       await this.downloadFileFromBlob(blob, items[0].name);
     }
-  }
-
-
-
-  static async binaryStreamToBlob(stream: BinaryStream): Promise<Blob> {
-    const reader = stream.getReader();
-    const slices: Uint8Array[] = [];
-  
-    let finish = false;
-  
-    while (!finish) {
-      const { done, value } = await reader.read();
-  
-      if (!done) {
-        slices.push(value as Uint8Array);
-      }
-  
-      finish = done;
-    }
-  
-    return new Blob(slices);
   }
 
   static async downloadFileFromBlob(blob: Blob, fileName: string) {
