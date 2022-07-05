@@ -2,6 +2,8 @@ import { NetworkService } from "./network.service";
 import { FlatFolderZip } from "./zip/FlatFolderZip";
 import axios from "axios";
 import { aes } from "@internxt/lib";
+import { binaryStreamToBlob } from "../network/streams";
+import fileDownload from "js-file-download";
 
 type DownloadFileOptions = {
   progress?: (totalBytes: number, downloadedBytes: number) => void;
@@ -39,23 +41,36 @@ export class DownloadService {
     opts?: DownloadFileOptions
   ) {
     const totalBytes = items.reduce((a, f) => a + f.size, 0);
-    const zip = new FlatFolderZip(zipName, {
-      progress: (downloadedBytes) => {
-        opts?.progress?.(totalBytes, Math.min(downloadedBytes, totalBytes));
-      },
-    });
+    if(items.length > 1) {
+      const zip = new FlatFolderZip(zipName, {
+        progress: (downloadedBytes) => {
+          opts?.progress?.(totalBytes, Math.min(downloadedBytes, totalBytes));
+        },
+      });
 
-    for (const item of items) {
+      for (const item of items) {
+        const itemDownloadStream = await networkService.getDownloadFileStream(
+          item.networkId,
+          { abortController: opts?.abortController }
+        );
+
+        zip.addFile(item.name, itemDownloadStream);
+      }
+
+      await zip.close();
+    } else {
       const itemDownloadStream = await networkService.getDownloadFileStream(
-        item.networkId,
+        items[0].networkId,
         { abortController: opts?.abortController }
       );
 
-      zip.addFile(item.name, itemDownloadStream);
+      return fileDownload(
+        await binaryStreamToBlob(itemDownloadStream),
+        items[0].name
+      );
     }
-
-    await zip.close();
   }
+
 }
 
 /**
