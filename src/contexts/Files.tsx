@@ -22,6 +22,7 @@ export const FilesProvider = ({ children }: { children: ReactNode }) => {
   const [enabled, setEnabled] = useState(true);
 
   function addFiles(files: File[]) {
+    throw new Error();
     const thereAreEmptyFiles = files.some((file) => file.size === 0);
     if (thereAreEmptyFiles) {
       notificationsService.show({
