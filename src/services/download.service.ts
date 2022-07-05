@@ -5,8 +5,6 @@ import { aes } from "@internxt/lib";
 import { binaryStreamToBlob } from "../network/streams";
 import fileDownload from "js-file-download";
 
-type BinaryStream = ReadableStream<Uint8Array>;
-
 type DownloadFileOptions = {
   progress?: (totalBytes: number, downloadedBytes: number) => void;
   abortController?: AbortController;
@@ -65,7 +63,7 @@ export class DownloadService {
         items[0].networkId,
         { abortController: opts?.abortController }
       );
-      
+
       return fileDownload(
         await binaryStreamToBlob(itemDownloadStream),
         items[0].name
