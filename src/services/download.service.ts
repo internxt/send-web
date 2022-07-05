@@ -3,6 +3,8 @@ import { FlatFolderZip } from "./zip/FlatFolderZip";
 import axios from "axios";
 import { aes } from "@internxt/lib";
 
+type BinaryStream = ReadableStream<Uint8Array>;
+
 type DownloadFileOptions = {
   progress?: (totalBytes: number, downloadedBytes: number) => void;
   abortController?: AbortController;
@@ -39,23 +41,66 @@ export class DownloadService {
     opts?: DownloadFileOptions
   ) {
     const totalBytes = items.reduce((a, f) => a + f.size, 0);
-    const zip = new FlatFolderZip(zipName, {
-      progress: (downloadedBytes) => {
-        opts?.progress?.(totalBytes, Math.min(downloadedBytes, totalBytes));
-      },
-    });
+    if(items.length > 1) {
+      const zip = new FlatFolderZip(zipName, {
+        progress: (downloadedBytes) => {
+          opts?.progress?.(totalBytes, Math.min(downloadedBytes, totalBytes));
+        },
+      });
 
-    for (const item of items) {
+      for (const item of items) {
+        const itemDownloadStream = await networkService.getDownloadFileStream(
+          item.networkId,
+          { abortController: opts?.abortController }
+        );
+
+        zip.addFile(item.name, itemDownloadStream);
+      }
+
+      await zip.close();
+    } else {
       const itemDownloadStream = await networkService.getDownloadFileStream(
-        item.networkId,
+        items[0].networkId,
         { abortController: opts?.abortController }
       );
-
-      zip.addFile(item.name, itemDownloadStream);
+      const blob = await this.binaryStreamToBlob(itemDownloadStream);
+      await this.downloadFileFromBlob(blob, items[0].name);
     }
-
-    await zip.close();
   }
+
+
+
+  static async binaryStreamToBlob(stream: BinaryStream): Promise<Blob> {
+    const reader = stream.getReader();
+    const slices: Uint8Array[] = [];
+  
+    let finish = false;
+  
+    while (!finish) {
+      const { done, value } = await reader.read();
+  
+      if (!done) {
+        slices.push(value as Uint8Array);
+      }
+  
+      finish = done;
+    }
+  
+    return new Blob(slices);
+  }
+
+  static async downloadFileFromBlob(blob: Blob, fileName: string) {
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.style.display = 'none';
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  }
+
 }
 
 /**
