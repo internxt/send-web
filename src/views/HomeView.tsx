@@ -120,9 +120,10 @@ export default function HomeView() {
       setPhase({ name: "done", link });
     } catch (err) {
       console.error(err);
-      Sentry.captureException(err);
-      if (!uploadAbortController.current?.signal.aborted)
+      if (!uploadAbortController.current?.signal.aborted) {
         setPhase({ name: "error" });
+        Sentry.captureException(err);
+      }
     }
   }
 
