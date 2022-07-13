@@ -18,6 +18,8 @@ import notificationsService, {
 } from "../services/notifications.service";
 import { UploadService } from "../services/upload.service";
 
+import * as Sentry from "@sentry/react";
+
 type EmailFormState = {
   sendTo: string[];
   sender: string;
@@ -118,8 +120,10 @@ export default function HomeView() {
       setPhase({ name: "done", link });
     } catch (err) {
       console.error(err);
-      if (!uploadAbortController.current?.signal.aborted)
+      if (!uploadAbortController.current?.signal.aborted) {
         setPhase({ name: "error" });
+        Sentry.captureException(err);
+      }
     }
   }
 

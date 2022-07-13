@@ -15,6 +15,8 @@ import {
   GetSendLinkResponse,
 } from "../services/download.service";
 
+import * as Sentry from "@sentry/react";
+
 export default function DownloadView() {
   const [state, setState] = useState<
     | { status: "loading" }
@@ -38,6 +40,7 @@ export default function DownloadView() {
       setState({ status: "ready", details });
     } catch (err) {
       console.error(err);
+      Sentry.captureException(err);
       if (err instanceof AxiosError && err.response?.status === 404) {
         setState({ status: "error", reason: "not_found" });
       }
@@ -66,6 +69,7 @@ export default function DownloadView() {
       setState({ status: "done" });
     } catch (err) {
       console.error(err);
+      Sentry.captureException(err);
       setState({ status: "error", reason: "unknown" });
     }
   }
