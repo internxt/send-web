@@ -16,7 +16,7 @@ import Layout from "../Layout";
 import notificationsService, {
   ToastType,
 } from "../services/notifications.service";
-import { UploadService } from "../services/upload.service";
+import { UploadService, MaximumItemsNumberLimitReachedError } from "../services/upload.service";
 
 import * as Sentry from "@sentry/react";
 
@@ -120,6 +120,7 @@ export default function HomeView() {
       setPhase({ name: "done", link });
     } catch (err) {
       console.error(err);
+
       if (!uploadAbortController.current?.signal.aborted) {
         setPhase({ name: "error" });
         Sentry.captureException(err);
@@ -299,7 +300,7 @@ export default function HomeView() {
                 We were unable to{" "}
                 {switchValue === "Send email" ? "send" : "upload"} your files.
                 <br />
-                Please try again later.
+                "Please try again later."
               </p>
             </div>
           </div>
