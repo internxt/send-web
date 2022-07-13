@@ -3,6 +3,7 @@ import { queue, QueueObject } from "async";
 import axios from "axios";
 import { aes } from "@internxt/lib";
 
+import { MAX_ITEMS_PER_LINK, MAX_BYTES_PER_SEND } from "../constants";
 import { NetworkService } from "./network.service";
 
 interface FileWithNetworkId extends File {
@@ -25,9 +26,13 @@ interface EmailInfo {
   subject: string;
 }
 
-export class UploadService {
-  private static UPLOAD_SIZE_LIMIT = 5 * 1024 * 1024 * 1024;
+export class MaximumItemsNumberLimitReachedError extends Error {
+  constructor() {
+    super("Maximum allowed files to upload is " + MAX_ITEMS_PER_LINK);
+  }
+}
 
+export class UploadService {
   static async uploadFilesAndGetLink(
     files: File[],
     emailInfo?: EmailInfo,
@@ -68,10 +73,15 @@ export class UploadService {
     }
   ): Promise<SendLink[]> {
     console.log(files);
+
+    if (files.length > MAX_ITEMS_PER_LINK) {
+      throw new MaximumItemsNumberLimitReachedError();
+    }
+
     const totalBytes = files.reduce((a, f) => a + f.size, 0);
-    if (totalBytes > this.UPLOAD_SIZE_LIMIT) {
+    if (totalBytes > MAX_BYTES_PER_SEND) {
       throw new Error(
-        "Maximum allowed total upload size is " + this.UPLOAD_SIZE_LIMIT
+        "Maximum allowed total upload size is " + MAX_BYTES_PER_SEND
       );
     }
 
