@@ -1,5 +1,6 @@
 import { randomBytes } from "crypto";
 import { queue, QueueObject } from "async";
+import { generateMnemonic } from 'bip39';
 import axios from "axios";
 import { aes } from "@internxt/lib";
 
@@ -43,11 +44,11 @@ export class UploadService {
   ): Promise<string> {
     const items = await UploadService.uploadFiles(files, opts);
 
+    const randomMnemonic = generateMnemonic(256);
     const code = randomBytes(32).toString("hex");
-    const encryptedCode = aes.encrypt(
-      code,
-      NetworkService.getInstance().encryptionKey
-    );
+    const encryptedCode = aes.encrypt(code, randomMnemonic);
+    const encryptedMnemonic = aes.encrypt(randomMnemonic, code);
+
     const itemsWithEncryptionKeyEncrypted = items.map((i) => {
       return {
         ...i,
@@ -59,10 +60,11 @@ export class UploadService {
       ...emailInfo,
       items: itemsWithEncryptionKeyEncrypted,
       code: encryptedCode,
+      mnemonic: encryptedMnemonic
     };
     const createSendLinkResponse = await storeSendLinks(createSendLinksPayload);
 
-    return window.origin + "/download/" + createSendLinkResponse.id;
+    return window.origin + "/download/" + createSendLinkResponse.id + '?code=' + code;
   }
 
   static async uploadFiles(
@@ -258,6 +260,7 @@ interface CreateSendLinksPayload {
   title?: string;
   subject?: string;
   items: SendLink[];
+  mnemonic: string;
 }
 
 interface CreateSendLinksResponse {
