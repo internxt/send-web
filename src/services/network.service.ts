@@ -2,6 +2,8 @@ import downloadFile from "../network/download";
 import { uploadFile } from "../network/upload";
 import axios, { AxiosRequestConfig } from 'axios';
 import { createHash } from 'crypto';
+import { aes } from "@internxt/lib";
+import { SendItem } from "../models/SendItem";
 
 interface NetworkCredentials {
   user: string;
@@ -22,6 +24,16 @@ function getSendAccountParameters(): {
   }
 }
 
+interface DownloadOptions {
+  progress?: (totalBytes: number, downloadedBytes: number) => void,
+  abortController?: AbortController
+}
+
+/**
+ * This service has *the only responsability* of providing access
+ * to the content of Send ites, knowing how Send is using the Internxt's 
+ * Network and how the zero-knowledge is being implemented.
+ */
 export class NetworkService {
   private constructor(private readonly creds: NetworkCredentials) {}
   public static getInstance(): NetworkService {
@@ -33,18 +45,45 @@ export class NetworkService {
     });
   }
 
-  public getDownloadFileStream(
-    fileId: string,
-    opts?: {
-      progress?: (totalBytes: number, downloadedBytes: number) => void,
-      abortController?: AbortController
-    }
+  /**
+   * Downloads a Send item using the decrypting protocol version 1.
+   */
+  getDownloadFileStreamV1(
+    item: SendItem,
+    encryptedCode: string,
+    opts?: DownloadOptions
   ): Promise<ReadableStream> {
     const { bucketId, encryptionKey } = getSendAccountParameters();
+    const plainCode = aes.decrypt(encryptedCode, encryptionKey);
 
     return downloadFile({
       bucketId,
-      fileId,
+      fileId: item.networkId,
+      creds: this.creds,
+      mnemonic: aes.decrypt(item.encryptionKey, plainCode),
+      options: {
+        notifyProgress: (totalBytes, downloadedBytes) => {
+          opts?.progress?.(totalBytes, downloadedBytes);
+        },
+        abortController: opts?.abortController
+      }
+    });
+  }
+
+  /**
+   * Downloads a Send item using the decrypting protocol version 2.
+   */
+  getDownloadFileStreamV2(
+    item: SendItem,
+    plainCode: string,
+    opts?: DownloadOptions
+  ): Promise<ReadableStream> {
+    const { bucketId } = getSendAccountParameters();
+    const encryptionKey = aes.decrypt(item.encryptionKey, plainCode);
+
+    return downloadFile({
+      bucketId,
+      fileId: item.networkId,
       creds: this.creds,
       mnemonic: encryptionKey,
       options: {
@@ -54,6 +93,28 @@ export class NetworkService {
         abortController: opts?.abortController
       }
     });
+  }
+
+  public getDownloadFileStream(
+    item: SendItem,
+    code: string,
+    opts?: DownloadOptions & { customEncryptionKey?: string }
+  ): Promise<ReadableStream> {
+    const requiresVersionTwoDecryption = item.version === 2;
+
+    if (requiresVersionTwoDecryption) {
+      return this.getDownloadFileStreamV2(
+        item, 
+        code,
+        opts
+      );
+    } else {
+      return this.getDownloadFileStreamV1(
+        item, 
+        code, 
+        opts
+      );
+    }
   }
 
   get encryptionKey(): string {
