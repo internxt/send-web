@@ -1,35 +1,34 @@
+import axios from "axios";
+import fileDownload from "js-file-download";
+
 import { NetworkService } from "./network.service";
 import { FlatFolderZip } from "./zip/FlatFolderZip";
-import axios from "axios";
-import { aes } from "@internxt/lib";
+
 import { binaryStreamToBlob } from "../network/streams";
-import fileDownload from "js-file-download";
+import { SendItem } from "../models/SendItem";
 
 type DownloadFileOptions = {
   progress?: (totalBytes: number, downloadedBytes: number) => void;
   abortController?: AbortController;
+  plainCode?: string;
 };
 
+/**
+ * This service has *the only responsability* of downloading 
+ * the content via browser to the user filesystem.
+ */
 export class DownloadService {
   static async downloadFilesFromLink(
     linkId: string,
     opts?: DownloadFileOptions
   ): Promise<void> {
-    const networkService = NetworkService.getInstance();
     const { title, items, code, size } = await getSendLink(linkId);
-    const decryptedCode = aes.decrypt(code, networkService.encryptionKey);
-
-    const itemsWithPlainEncryptionKey = items.map((item) => {
-      return {
-        ...item,
-        encryptionKey: aes.decrypt(item.encryptionKey, decryptedCode),
-      };
-    });
 
     await DownloadService.downloadFiles(
       title ?? "download",
-      itemsWithPlainEncryptionKey,
+      items,
       NetworkService.getInstance(),
+      opts?.plainCode || code,
       opts
     );
   }
@@ -38,9 +37,11 @@ export class DownloadService {
     zipName: string,
     items: SendItem[],
     networkService: NetworkService,
+    plainCode: string,
     opts?: DownloadFileOptions
   ) {
     const totalBytes = items.reduce((a, f) => a + f.size, 0);
+
     if(items.length > 1) {
       const zip = new FlatFolderZip(zipName, {
         progress: (downloadedBytes) => {
@@ -50,7 +51,8 @@ export class DownloadService {
 
       for (const item of items) {
         const itemDownloadStream = await networkService.getDownloadFileStream(
-          item.networkId,
+          item,
+          plainCode,
           { abortController: opts?.abortController }
         );
 
@@ -59,14 +61,16 @@ export class DownloadService {
 
       await zip.close();
     } else {
+      const [firstItem] = items;
       const itemDownloadStream = await networkService.getDownloadFileStream(
-        items[0].networkId,
+        firstItem,
+        plainCode,
         { abortController: opts?.abortController }
       );
 
       return fileDownload(
         await binaryStreamToBlob(itemDownloadStream),
-        items[0].name
+        firstItem.name
       );
     }
   }
@@ -76,18 +80,6 @@ export class DownloadService {
 /**
  * TODO: SDK
  */
-interface SendItem {
-  id: string;
-  name: string;
-  type: string;
-  linkId: string;
-  networkId: string;
-  encryptionKey: string;
-  size: number;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
 export interface GetSendLinkResponse {
   id: string;
   title: string;
