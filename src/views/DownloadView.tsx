@@ -2,7 +2,7 @@ import { AxiosError } from "axios";
 import { format } from "bytes";
 import { ArrowDown, Check, X } from "phosphor-react";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import Button from "../components/Button";
 import CardBottom from "../components/CardBotton";
 import FancySpinner from "../components/FancySpinner";
@@ -27,6 +27,7 @@ export default function DownloadView() {
   >({ status: "loading" });
 
   const params = useParams();
+  const [search] = useSearchParams();
 
   const router = useNavigate();
 
@@ -65,6 +66,7 @@ export default function DownloadView() {
         progress: (totalBytes, downloadedBytes) => {
           setState({ status: "downloading", totalBytes, downloadedBytes });
         },
+        plainCode: search.get('code') || undefined
       });
       setState({ status: "done" });
     } catch (err) {
