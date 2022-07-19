@@ -190,7 +190,7 @@ export default function HomeView() {
                 <>
                   <p className="text-xl font-medium text-gray-80">
                     {switchValue === "Send email" ? "Sending" : "Uploading"}{" "}
-                    {filesContext.files.length} files
+                    {filesContext.files.length} {filesContext.files.length > 1 ? 'files' : 'file'}
                   </p>
                   <p className="mt-1.5 text-gray-60">
                     {format(phase.uploadedBytes)} of {format(totalSize)}{" "}
@@ -246,7 +246,7 @@ export default function HomeView() {
               <p className="text-xl font-medium text-gray-80">
                 {switchValue === "Send email"
                   ? "Files sent via email"
-                  : `${filesContext.files.length} files uploaded`}
+                  : `${filesContext.files.length} ${filesContext.files.length > 1 ? 'files' : 'file'} uploaded`}
               </p>
               <p className="text-gray-60">
                 {switchValue === "Send email"
