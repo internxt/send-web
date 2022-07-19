@@ -53,7 +53,7 @@ export class DownloadService {
         const itemDownloadStream = await networkService.getDownloadFileStream(
           item,
           plainCode,
-          { abortController: opts?.abortController }
+          opts
         );
 
         zip.addFile(item.name, itemDownloadStream);
@@ -65,7 +65,7 @@ export class DownloadService {
       const itemDownloadStream = await networkService.getDownloadFileStream(
         firstItem,
         plainCode,
-        { abortController: opts?.abortController }
+        opts
       );
 
       return fileDownload(
