@@ -6,6 +6,7 @@ import { FlatFolderZip } from "./zip/FlatFolderZip";
 
 import { binaryStreamToBlob } from "../network/streams";
 import { SendItem } from "../models/SendItem";
+import { StreamService } from "./stream.service";
 
 type DownloadFileOptions = {
   progress?: (totalBytes: number, downloadedBytes: number) => void;
@@ -42,24 +43,12 @@ export class DownloadService {
   ) {
     const totalBytes = items.reduce((a, f) => a + f.size, 0);
 
-    /**
-     * The ZIP is optimized for using native downloads and streams
-     * in almost all the browsers, trying to ensure the complete compatibility.
-     * 
-     * More than 1GB without writing in the disk or in some browser cache
-     * could break the browser, providing a very poor UX. 
-     * 
-     * Do not change this unless you are sure that the memory is being used
-     * efficiently.
-     */
-    const oneGigabyte = 1*1024*1024*1024;
-    const firstFileIsBig = items[0].size > oneGigabyte;
-
-    if(items.length > 1 || firstFileIsBig) {
+    if(items.length > 1) {
       const zip = new FlatFolderZip(zipName, {
         progress: (downloadedBytes) => {
           opts?.progress?.(totalBytes, Math.min(downloadedBytes, totalBytes));
         },
+        abortController: opts?.abortController
       });
 
       for (const item of items) {
@@ -81,10 +70,24 @@ export class DownloadService {
         opts
       );
 
-      return fileDownload(
-        await binaryStreamToBlob(itemDownloadStream),
-        firstItem.name
-      );
+      const oneGigabyte = 1*1024*1024*1024;
+      if (firstItem.size > oneGigabyte) {
+        await StreamService.pipeReadableToFileSystemStream(
+          itemDownloadStream,
+          firstItem.name,
+          {
+            progress: (downloadedBytes) => {
+              opts?.progress?.(totalBytes, Math.min(downloadedBytes, totalBytes));
+            },
+            abortController: opts?.abortController
+          }
+        )
+      } else {
+        fileDownload(
+          await binaryStreamToBlob(itemDownloadStream),
+          firstItem.name
+        );
+      }
     }
   }
 
