@@ -60,8 +60,10 @@ export class UploadService {
       ...emailInfo,
       items: itemsWithEncryptionKeyEncrypted,
       code: encryptedCode,
-      mnemonic: encryptedMnemonic
-    };
+      mnemonic: encryptedMnemonic,
+      plainCode: code
+    } as CreateSendLinksPayload;
+
     const createSendLinkResponse = await storeSendLinks(createSendLinksPayload);
 
     return window.origin + "/download/" + createSendLinkResponse.id + '?code=' + code;
