@@ -78,8 +78,8 @@ function Empty({ onClick }: { onClick: () => void }) {
         <PlusCircle size={48} className="text-primary" weight="fill" />
         <div className="ml-2">
           <h1 className="text-2xl font-medium text-gray-80">Upload files</h1>
-          <h2 className="-mt-0.5 text-sm text-gray-50">
-            Up to {maxBytesPerSendDisplay}
+          <h2 className="-mt-0.5 text-base leading-4 text-primary underline">
+            or select a folder
           </h2>
         </div>
       </div>
