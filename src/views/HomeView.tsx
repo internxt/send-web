@@ -16,7 +16,10 @@ import Layout from "../Layout";
 import notificationsService, {
   ToastType,
 } from "../services/notifications.service";
-import { UploadService, MaximumItemsNumberLimitReachedError } from "../services/upload.service";
+import {
+  UploadService,
+  MaximumItemsNumberLimitReachedError,
+} from "../services/upload.service";
 
 import * as Sentry from "@sentry/react";
 
@@ -190,7 +193,8 @@ export default function HomeView() {
                 <>
                   <p className="text-xl font-medium text-gray-80">
                     {switchValue === "Send email" ? "Sending" : "Uploading"}{" "}
-                    {filesContext.files.length} {filesContext.files.length > 1 ? 'files' : 'file'}
+                    {filesContext.files.length}{" "}
+                    {filesContext.files.length > 1 ? "files" : "file"}
                   </p>
                   <p className="mt-1.5 text-gray-60">
                     {format(phase.uploadedBytes)} of {format(totalSize)}{" "}
@@ -246,7 +250,9 @@ export default function HomeView() {
               <p className="text-xl font-medium text-gray-80">
                 {switchValue === "Send email"
                   ? "Files sent via email"
-                  : `${filesContext.files.length} ${filesContext.files.length > 1 ? 'files' : 'file'} uploaded`}
+                  : `${filesContext.files.length} ${
+                      filesContext.files.length > 1 ? "files" : "file"
+                    } uploaded`}
               </p>
               <p className="text-gray-60">
                 {switchValue === "Send email"

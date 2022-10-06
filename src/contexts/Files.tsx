@@ -5,19 +5,33 @@ import notificationsService, {
   ToastType,
 } from "../services/notifications.service";
 
+type Folder = { size: number; name: string };
+
+type FileWithPath = File & { path: string; id: string }; // TODO: NEED TO REVIEW THIS TYPE,
+// WHEN ADD IT FROM THE INPUT IT NOS HAS PATH ATTRIBUTE
+
 type FilesContextT = {
   enabled: boolean;
   setEnabled: (value: boolean) => void;
   files: File[];
+  filesWithoutFolders: FileWithPath[];
+  filesInFolders: Record<string, { files: File[]; folderInfo?: Folder }>;
   addFiles: (file: File[]) => void;
-  removeFile: (index: number) => void;
+  removeFile: (path: string) => void;
+  removeFolder: (folderName: string) => void;
   clear: () => void;
 };
 
 export const FilesContext = createContext<FilesContextT>({} as FilesContextT);
 
 export const FilesProvider = ({ children }: { children: ReactNode }) => {
-  const [state, setState] = useState<File[]>([]);
+  const [state, setState] = useState<FileWithPath[]>([]);
+  const [filesInFolders, setFilesInFolders] = useState<
+    Record<string, { files: File[]; folderInfo?: Folder }>
+  >({});
+  const [filesWithoutFolders, setFilesWithoutFolders] = useState<
+    FileWithPath[]
+  >([]);
 
   const [enabled, setEnabled] = useState(true);
 
@@ -26,22 +40,6 @@ export const FilesProvider = ({ children }: { children: ReactNode }) => {
     if (thereAreEmptyFiles) {
       notificationsService.show({
         text: "Empty files are not supported",
-        type: ToastType.Warning,
-      });
-      return;
-    }
-
-    const isFolder = files.some((file) => {
-      const { path } = file as File & { path: string };
-      if (typeof path === "string") {
-        return path !== file.name;
-      }
-      return false;
-    });
-
-    if (isFolder) {
-      notificationsService.show({
-        text: "Folders are not supported",
         type: ToastType.Warning,
       });
       return;
@@ -56,15 +54,28 @@ export const FilesProvider = ({ children }: { children: ReactNode }) => {
       0
     );
 
-    if ((state.length + files.length) > MAX_ITEMS_PER_LINK) {
+    if (state.length + files.length > MAX_ITEMS_PER_LINK) {
       return notificationsService.show({
         text: `The maximum number of files allowed in total is ${MAX_ITEMS_PER_LINK}`,
         type: ToastType.Warning,
       });
     }
 
+    // TODO - WIP - THINKING ABOUT ADDING IDS FOR EASIER FILE DELETION
+    // const filesWithIds: FileWithPath[] = files.map((file) => ({
+    //   path: "",
+    //   ...file,
+    //   id: Math.floor(Math.random() * Date.now()),
+    // }));
+
     if (currentTotalSize + newFilesTotalSize <= MAX_BYTES_PER_SEND) {
-      setState([...state, ...files]);
+      setState([...state, ...(files as FileWithPath[])]);
+      const { rawFiles, mappedFolderFiles } = getFolderFiles(files);
+      setFilesInFolders({ ...filesInFolders, ...mappedFolderFiles });
+      setFilesWithoutFolders([
+        ...filesWithoutFolders,
+        ...(rawFiles as FileWithPath[]),
+      ]);
     } else {
       notificationsService.show({
         text: `The maximum size allowed is ${format(
@@ -75,17 +86,99 @@ export const FilesProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
-  function removeFile(index: number) {
-    setState(state.filter((_, i) => i !== index));
+  // OLD REMOVE FILE
+  // const removeFile = (index: number) => {
+  //   setState(state.filter((_, i) => i !== index));
+  // };
+
+  // IT NOT WORKS IF THE FILE COMES FROM THE INPUT INSTEAD OF THE D&D
+  // BETTER ADD IDS TO ALL FILES IN ORDER TO REMOVE IT
+  const removeFile = (path: string) => {
+    setState(state.filter((file) => file.path !== path));
+    setFilesWithoutFolders(
+      filesWithoutFolders.filter((file) => file.path !== path)
+    );
+  };
+
+  const getFolderFiles = (files: File[]) => {
+    let mappedFolderFiles: Record<
+      string,
+      { files: File[]; folderInfo?: Folder }
+    > = {};
+
+    const rawFiles = files.filter((file) => {
+      const { path } = file as FileWithPath;
+
+      if (typeof path === "string" && path !== file.name) {
+        mappedFolderFiles = addFolderFilesToMappedObject(
+          mappedFolderFiles,
+          file as FileWithPath
+        );
+        return false;
+      }
+      return true;
+    });
+
+    return { rawFiles, mappedFolderFiles };
+  };
+
+  const addFolderFilesToMappedObject = (
+    mappedFolderFiles: Record<string, { files: File[]; folderInfo?: Folder }>,
+    file: FileWithPath
+  ) => {
+    const folderName: string = getRootFolderNameFromPath(file.path);
+    return {
+      ...mappedFolderFiles,
+      [folderName]: mappedFolderFiles[folderName]
+        ? {
+            files: [...mappedFolderFiles[folderName]?.files, file],
+            folderInfo: {
+              name: folderName,
+              size:
+                (mappedFolderFiles[folderName]?.folderInfo?.size ?? 0) +
+                file.size,
+            },
+          }
+        : {
+            files: [file],
+            folderInfo: { name: folderName, size: file.size },
+          },
+    };
+  };
+
+  const getRootFolderNameFromPath = (path: string): string =>
+    path.split("/")[1] ?? "";
+
+  function removeFolder(folderName: string) {
+    setState(
+      state.filter((file) => {
+        const fileFolder = getRootFolderNameFromPath(file.path);
+        return fileFolder !== folderName;
+      })
+    );
+    const { [folderName]: _, ...rest } = filesInFolders;
+    setFilesInFolders(rest);
   }
 
   function clear() {
     setState([]);
+    setFilesInFolders({});
+    setFilesWithoutFolders([]);
   }
 
   return (
     <FilesContext.Provider
-      value={{ enabled, setEnabled, files: state, addFiles, removeFile, clear }}
+      value={{
+        enabled,
+        setEnabled,
+        files: state,
+        filesInFolders,
+        filesWithoutFolders,
+        addFiles,
+        removeFile,
+        removeFolder,
+        clear,
+      }}
     >
       {children}
     </FilesContext.Provider>
