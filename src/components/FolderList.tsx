@@ -5,21 +5,21 @@ type ItemDetails = Pick<File, "name" | "size" | "type">;
 
 export default function FileFolder({
   className = "",
-  files,
+  folders,
   onRemoveFolder,
 }: {
   className?: string;
-  files: ItemDetails[];
+  folders: ItemDetails[];
   onRemoveFolder?: (folderName: string) => void;
 }) {
   return (
     <div className={`${className}`}>
-      {files.map((file, i) => (
+      {folders.map((folder, i) => (
         <Item
-          key={file.name}
-          file={file}
+          key={folder.name}
+          file={folder}
           onRemove={
-            onRemoveFolder ? () => onRemoveFolder(file.name) : undefined
+            onRemoveFolder ? () => onRemoveFolder(folder.name) : undefined
           }
         />
       ))}

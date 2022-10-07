@@ -1,7 +1,10 @@
 import bytes from "bytes";
 import { X } from "phosphor-react";
+import { FileWithPath } from "../contexts/Files";
 
-type ItemDetails = Pick<File, "name" | "size" | "type"> & { path?: string };
+type ItemDetails = Pick<FileWithPath, "name" | "size" | "type"> & {
+  path?: string;
+};
 
 export default function FileList({
   className = "",
@@ -19,7 +22,9 @@ export default function FileList({
           key={file.name}
           file={file}
           onRemove={
-            onRemoveFile ? () => onRemoveFile(file?.path ?? "") : undefined
+            onRemoveFile
+              ? () => onRemoveFile(file?.path ?? file?.name)
+              : undefined
           }
         />
       ))}

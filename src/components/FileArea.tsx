@@ -1,6 +1,6 @@
 import { PlusCircle } from "phosphor-react";
 import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
-import { FilesContext } from "../contexts/Files";
+import { FilesContext, FileWithPath } from "../contexts/Files";
 import { format } from "bytes";
 import { MAX_BYTES_PER_SEND } from "../constants";
 import FileList from "./FileList";
@@ -19,8 +19,8 @@ export default function FileArea({
   const [mappedFolderFiles, setFolderFiles] = useState<
     Record<string, { files: File[]; folderInfo?: Folder }>
   >({});
-  const [files, setFiles] = useState<(File & { path: string })[]>([]);
-  console.log({ files });
+  const [files, setFiles] = useState<FileWithPath[]>([]);
+
   const fileContext = useContext(FilesContext);
 
   type Folder = { size: number; name: string };
@@ -80,7 +80,7 @@ export default function FileArea({
           <div className="flex-1 bg-gray-1">
             {existsFolders && (
               <FolderList
-                files={foldersList}
+                folders={foldersList}
                 onRemoveFolder={fileContext.removeFolder}
                 className={`h-auto bg-gray-1 py-3 px-5 ${
                   scroll ? "overflow-y-auto" : ""

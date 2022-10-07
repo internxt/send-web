@@ -7,7 +7,15 @@ import notificationsService, {
 
 type Folder = { size: number; name: string };
 
-type FileWithPath = File & { path: string; id: string }; // TODO: NEED TO REVIEW THIS TYPE,
+type FilesByFolders = Record<
+  Folder["name"],
+  { files: File[]; folderInfo?: Folder }
+>;
+
+export type FileWithPath = File & {
+  path: string;
+  lastModifiedDate: Date;
+}; // TODO: NEED TO REVIEW THIS TYPE,
 // WHEN ADD IT FROM THE INPUT IT NOS HAS PATH ATTRIBUTE
 
 type FilesContextT = {
@@ -15,7 +23,7 @@ type FilesContextT = {
   setEnabled: (value: boolean) => void;
   files: File[];
   filesWithoutFolders: FileWithPath[];
-  filesInFolders: Record<string, { files: File[]; folderInfo?: Folder }>;
+  filesInFolders: FilesByFolders;
   addFiles: (file: File[]) => void;
   removeFile: (path: string) => void;
   removeFolder: (folderName: string) => void;
@@ -26,9 +34,7 @@ export const FilesContext = createContext<FilesContextT>({} as FilesContextT);
 
 export const FilesProvider = ({ children }: { children: ReactNode }) => {
   const [state, setState] = useState<FileWithPath[]>([]);
-  const [filesInFolders, setFilesInFolders] = useState<
-    Record<string, { files: File[]; folderInfo?: Folder }>
-  >({});
+  const [filesInFolders, setFilesInFolders] = useState<FilesByFolders>({});
   const [filesWithoutFolders, setFilesWithoutFolders] = useState<
     FileWithPath[]
   >([]);
@@ -60,18 +66,15 @@ export const FilesProvider = ({ children }: { children: ReactNode }) => {
         type: ToastType.Warning,
       });
     }
-
-    // TODO - WIP - THINKING ABOUT ADDING IDS FOR EASIER FILE DELETION
-    // const filesWithIds: FileWithPath[] = files.map((file) => ({
-    //   path: "",
-    //   ...file,
-    //   id: Math.floor(Math.random() * Date.now()),
-    // }));
+    console.log({ files });
 
     if (currentTotalSize + newFilesTotalSize <= MAX_BYTES_PER_SEND) {
       setState([...state, ...(files as FileWithPath[])]);
+
       const { rawFiles, mappedFolderFiles } = getFolderFiles(files);
+
       setFilesInFolders({ ...filesInFolders, ...mappedFolderFiles });
+
       setFilesWithoutFolders([
         ...filesWithoutFolders,
         ...(rawFiles as FileWithPath[]),
@@ -86,13 +89,20 @@ export const FilesProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
-  // OLD REMOVE FILE
-  // const removeFile = (index: number) => {
-  //   setState(state.filter((_, i) => i !== index));
-  // };
+  const getRootFolderNameFromPath = (path: string): string =>
+    path.split("/")[1] ?? "";
 
-  // IT NOT WORKS IF THE FILE COMES FROM THE INPUT INSTEAD OF THE D&D
-  // BETTER ADD IDS TO ALL FILES IN ORDER TO REMOVE IT
+  const removeFolder = (folderName: string) => {
+    setState(
+      state.filter((file) => {
+        const fileFolder = getRootFolderNameFromPath(file.path);
+        return fileFolder !== folderName;
+      })
+    );
+    const { [folderName]: _, ...rest } = filesInFolders;
+    setFilesInFolders(rest);
+  };
+
   const removeFile = (path: string) => {
     setState(state.filter((file) => file.path !== path));
     setFilesWithoutFolders(
@@ -100,7 +110,12 @@ export const FilesProvider = ({ children }: { children: ReactNode }) => {
     );
   };
 
-  const getFolderFiles = (files: File[]) => {
+  const getFolderFiles = (
+    files: File[]
+  ): {
+    rawFiles: File[];
+    mappedFolderFiles: FilesByFolders;
+  } => {
     let mappedFolderFiles: Record<
       string,
       { files: File[]; folderInfo?: Folder }
@@ -123,7 +138,7 @@ export const FilesProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const addFolderFilesToMappedObject = (
-    mappedFolderFiles: Record<string, { files: File[]; folderInfo?: Folder }>,
+    mappedFolderFiles: FilesByFolders,
     file: FileWithPath
   ) => {
     const folderName: string = getRootFolderNameFromPath(file.path);
@@ -145,20 +160,6 @@ export const FilesProvider = ({ children }: { children: ReactNode }) => {
           },
     };
   };
-
-  const getRootFolderNameFromPath = (path: string): string =>
-    path.split("/")[1] ?? "";
-
-  function removeFolder(folderName: string) {
-    setState(
-      state.filter((file) => {
-        const fileFolder = getRootFolderNameFromPath(file.path);
-        return fileFolder !== folderName;
-      })
-    );
-    const { [folderName]: _, ...rest } = filesInFolders;
-    setFilesInFolders(rest);
-  }
 
   function clear() {
     setState([]);
