@@ -21,12 +21,12 @@ export default function Layout({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <div className="relative flex lg:h-screen flex-col bg-white lg:bg-black">
+    <div className="reltive flex flex-col bg-white lg:h-screen lg:bg-black">
       <div
         ref={backgroundRef}
         className="fixed inset-0 hidden bg-cover bg-center bg-no-repeat opacity-0 transition-opacity duration-500 lg:block"
       />
-      <header className=" z-10 flex h-16 w-screen bg-white lg:bg-transparent flex-shrink-0 items-center justify-center px-20 border-b border-gray-5 lg:border-b-0 fixed lg:top-0 lg:h-20 lg:justify-start">
+      <header className="fixed z-10 flex h-16 w-screen flex-shrink-0 items-center justify-center border-b border-gray-5 bg-white px-20 lg:top-0 lg:h-20 lg:justify-start lg:border-b-0 lg:bg-transparent">
         <Link to="/">
           <img
             className="flex h-3 lg:hidden"
@@ -57,9 +57,9 @@ export default function Layout({ children }: { children: ReactNode }) {
             <p className="mt-6 w-156 text-lg font-normal">
               Internxt Send allows you to share files fast without worrying
               <br />
-               about the security of your documents, images, or videos.
+              about the security of your documents, images, or videos.
               <br />
-               Select the files you want to encrypt and send by link or email.
+              Select the files you want to encrypt and send by link or email.
             </p>
           </div>
         </div>
