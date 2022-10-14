@@ -1,10 +1,9 @@
 import { PlusCircle } from "phosphor-react";
-import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
-import { FilesContext, FileWithPath } from "../contexts/Files";
+import { ChangeEvent, MouseEvent, useContext, useRef } from "react";
+import { FilesContext } from "../contexts/Files";
 import { format } from "bytes";
-import { MAX_BYTES_PER_SEND } from "../constants";
-import FileList from "./FileList";
-import FolderList from "./FolderList";
+import { MAX_BYTES_PER_SEND, MAX_ITEMS_PER_LINK } from "../constants";
+import ItemsList from "./FileList";
 
 export default function FileArea({
   className = "",
@@ -16,43 +15,24 @@ export default function FileArea({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const folderInputRef = useRef<HTMLInputElement>(null);
 
-  const [mappedFolderFiles, setFolderFiles] = useState<
-    Record<string, { files: File[]; folderInfo?: Folder }>
-  >({});
-  const [files, setFiles] = useState<FileWithPath[]>([]);
-
   const fileContext = useContext(FilesContext);
 
-  type Folder = { size: number; name: string };
-
-  useEffect(() => {
-    setFiles(fileContext.filesWithoutFolders);
-    setFolderFiles(fileContext.filesInFolders);
-  }, [fileContext.filesInFolders, fileContext.filesWithoutFolders]);
-
-  const existsFiles = !!files.length;
-  const existsFolders = !!Object.keys(mappedFolderFiles);
-
-  function openFileExplorer() {
+  const onFileExplorerOpen = (e: MouseEvent) => {
+    e.preventDefault();
     fileInputRef.current?.click();
   }
 
-  function openFolderExplorer() {
+  const onFolderExplorerOpen = (e: MouseEvent) => {
+    e.preventDefault();
     folderInputRef.current?.click();
   }
 
-  function onFileInputChange(event: ChangeEvent<HTMLInputElement>) {
+  const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files)
       fileContext.addFiles(Array.from(event.target.files));
   }
 
-  const spaceRemaining =
-    MAX_BYTES_PER_SEND -
-    fileContext.files.reduce((prev, current) => prev + current.size, 0);
-
-  const foldersList = Object.values(mappedFolderFiles).map(
-    (folder) => folder.folderInfo as File
-  );
+  const spaceRemaining = MAX_BYTES_PER_SEND - fileContext.totalFilesSize;
 
   return (
     <div className={`${className} flex flex-col`}>
@@ -60,58 +40,39 @@ export default function FileArea({
         type="file"
         className="hidden"
         ref={fileInputRef}
-        onChange={onFileInputChange}
-        multiple
+        onChange={onInputChange}
+        multiple={true}
       />
       <input
+        type="file"
         className="hidden"
         ref={folderInputRef}
-        type="file"
-        directory
-        webkitdirectory
-        onChange={onFileInputChange}
-        multiple
+        onChange={onInputChange}
+        multiple={true}
+        directory=""
+        webkitdirectory=""
       />
-      {fileContext.files.length === 0 && (
-        <Empty onClick={openFileExplorer} onTextClick={openFolderExplorer} />
-      )}
-      {fileContext.files.length !== 0 && (
+      {fileContext.itemList.length === 0 ? (
+        <Empty onFileExplorerOpen={onFileExplorerOpen} onFolderExplorerOpen={onFolderExplorerOpen} />
+      ) : (
         <>
           <div className="flex-1 bg-gray-1">
-            {existsFolders && (
-              <FolderList
-                folders={foldersList}
-                onRemoveFolder={fileContext.removeFolder}
-                className={`h-auto bg-gray-1 py-3 px-5 ${
-                  scroll ? "overflow-y-auto" : ""
-                } 
-                ${existsFiles ? "pb-0" : ""}
-                `}
-              />
-            )}
-            {existsFiles && (
-              <FileList
-                files={files}
-                onRemoveFile={fileContext.removeFile}
-                className={`h-auto bg-gray-1 py-3 px-5 ${
-                  scroll ? "overflow-y-auto" : ""
-                }
-                ${existsFolders ? "pt-0" : ""}
-                `}
-              />
-            )}
+            <ItemsList
+              items={fileContext.itemList}
+              onRemoveItem={fileContext.removeItem}
+              className={`h-auto bg-gray-1 py-3 px-5 ${scroll ? "overflow-y-auto" : ""} `} // ${existsFolders ? "pt-0" : ""}
+            />
           </div>
           <div
             className="flex cursor-pointer select-none items-center bg-gray-1 px-5 py-2.5"
-            onClick={openFileExplorer}
+            onClick={onFileExplorerOpen}
           >
             <PlusCircle className="text-primary" size={28}></PlusCircle>
             <div className="ml-1.5">
               <p className="text-sm text-gray-80">Add more files</p>
               <div className="flex space-x-1.5 text-xs text-gray-50">
                 <p>
-                  {fileContext.files.length}{" "}
-                  {fileContext.files.length > 1 ? "files" : "file"} added
+                  {fileContext.totalFilesCount} / {MAX_ITEMS_PER_LINK} {fileContext.totalFilesCount > 1 ? "files" : "file"} added
                 </p>
                 <p className="font-bold text-gray-30">·</p>
                 <p>{format(spaceRemaining)} remaining</p>
@@ -125,37 +86,36 @@ export default function FileArea({
 }
 
 function Empty({
-  onClick,
-  onTextClick,
+  onFileExplorerOpen,
+  onFolderExplorerOpen,
 }: {
-  onClick: () => void;
-  onTextClick: () => void;
+  onFileExplorerOpen: (e: MouseEvent) => void;
+  onFolderExplorerOpen: (e: MouseEvent) => void;
 }) {
   return (
     <div
       className="flex h-full flex-1 cursor-pointer select-none items-center justify-center py-20 lg:py-0"
-      onClick={onClick}
+      onClick={onFileExplorerOpen}
     >
-      <div className="flex">
-        <PlusCircle size={48} className="text-primary" weight="fill" />
+      <div className="flex cursor-default p-3" onClick={(e) => { e.stopPropagation(); }}>
+        <PlusCircle size={48} className="text-primary cursor-pointer" weight="fill" onClick={onFileExplorerOpen} />
         <div className="ml-2">
           <h1 className="text-2xl font-medium text-gray-80">Upload files</h1>
-          {/* div added to test onfolderlopen */}
-          {/* <div onClick={onTextClick} className="z-50"> */}
-          <h2 className="-mt-0.5 text-base leading-4 text-primary underline">
-            or select a folder
-          </h2>
-          {/* </div> */}
+          <div onClick={onFolderExplorerOpen} className="cursor-pointer">
+            <h2 className="-mt-0.5 text-base leading-4 text-primary underline">
+              or select a folder
+            </h2>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-declare module "react" {
+declare module 'react' {
   interface HTMLAttributes<T> extends AriaAttributes, DOMAttributes<T> {
     // extends React's HTMLAttributes
-    directory?: boolean;
-    webkitdirectory?: boolean;
+    directory?: string;
+    webkitdirectory?: string;
   }
 }
