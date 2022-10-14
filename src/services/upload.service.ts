@@ -106,22 +106,22 @@ class UploadManager {
       concurrency: number;
     }
   > = {
-    [FileSizeType.Big]: {
-      upperBound: Infinity,
-      lowerBound: oneHundredMbytes,
-      concurrency: 1,
-    },
-    [FileSizeType.Medium]: {
-      upperBound: oneHundredMbytes - 1,
-      lowerBound: twentyMbytes,
-      concurrency: 3,
-    },
-    [FileSizeType.Small]: {
-      upperBound: twentyMbytes - 1,
-      lowerBound: 1,
-      concurrency: 6,
-    },
-  };
+      [FileSizeType.Big]: {
+        upperBound: Infinity,
+        lowerBound: oneHundredMbytes,
+        concurrency: 1,
+      },
+      [FileSizeType.Medium]: {
+        upperBound: oneHundredMbytes - 1,
+        lowerBound: twentyMbytes,
+        concurrency: 3,
+      },
+      [FileSizeType.Small]: {
+        upperBound: twentyMbytes - 1,
+        lowerBound: 1,
+        concurrency: 6,
+      },
+    };
 
   private errored = false;
   private uploadsProgress: Record<string, number> = {};

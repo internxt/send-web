@@ -7,15 +7,15 @@ import Button from "../components/Button";
 import CardBottom from "../components/CardBotton";
 import FancySpinner from "../components/FancySpinner";
 import Spinner from "../components/Spinner";
-import FileList from "../components/FileList";
+import ItemsList from "../components/ItemList";
 import Layout from "../Layout";
 import {
   DownloadService,
   getSendLink,
   GetSendLinkResponse,
 } from "../services/download.service";
-
 import * as Sentry from "@sentry/react";
+import { SendItemData } from "../models/SendItem";
 
 export default function DownloadView() {
   const [state, setState] = useState<
@@ -112,12 +112,12 @@ export default function DownloadView() {
 
             <div className="w-full border-t border-gray-5 py-4 px-5">
               <p className="text-lg font-medium text-gray-80">
-                {`${state.details.items.length} ${state.details.items.length > 1 ? 'files' : 'file'}`} 
+                {`${state.details.items.length} ${state.details.items.length > 1 ? 'files' : 'file'}`}
               </p>
               <p className="text-sm text-gray-50">
                 {format(state.details.size)} in total
               </p>
-              <FileList files={state.details.items} className="mt-4" />
+              <ItemsList items={state.details.items as SendItemData[]} className="mt-4" />
             </div>
           </div>
           <CardBottom>
@@ -172,7 +172,7 @@ export default function DownloadView() {
       {state.status === "error" && (
         <div className="flex h-full flex-col">
           <div className="flex flex-1 flex-col items-center">
-          <div className="mt-20 flex h-28 w-28 flex-row items-center justify-center rounded-full bg-red-std text-white">
+            <div className="mt-20 flex h-28 w-28 flex-row items-center justify-center rounded-full bg-red-std text-white">
               <X size={80} />
             </div>
             <div className="mt-20 w-full px-5 text-center">

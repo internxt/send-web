@@ -43,7 +43,7 @@ export class DownloadService {
   ) {
     const totalBytes = items.reduce((a, f) => a + f.size, 0);
 
-    if(items.length > 1) {
+    if (items.length > 1) {
       const zip = new FlatFolderZip(zipName, {
         progress: (downloadedBytes) => {
           opts?.progress?.(totalBytes, Math.min(downloadedBytes, totalBytes));
