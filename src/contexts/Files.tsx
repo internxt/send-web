@@ -1,48 +1,45 @@
 import { format } from "bytes";
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useEffect, useState } from "react";
+import { FileWithPath } from "react-dropzone";
 import { MAX_BYTES_PER_SEND, MAX_ITEMS_PER_LINK } from "../constants";
+import { SendItemData } from "../models/SendItem";
+import { normalizeItemsId, transformInputFilesToJSON, transformJsonFilesToItems } from "../services/items.service";
 import notificationsService, {
   ToastType,
 } from "../services/notifications.service";
 
-type Folder = { size: number; name: string };
-
-type FilesByFolders = Record<
-  Folder["name"],
-  { files: File[]; folderInfo?: Folder }
->;
-
-export type FileWithPath = File & {
-  path: string;
-  lastModifiedDate: Date;
-}; // TODO: NEED TO REVIEW THIS TYPE,
-// WHEN ADD IT FROM THE INPUT IT NOS HAS PATH ATTRIBUTE
-
 type FilesContextT = {
   enabled: boolean;
   setEnabled: (value: boolean) => void;
-  files: File[];
-  filesWithoutFolders: FileWithPath[];
-  filesInFolders: FilesByFolders;
-  addFiles: (file: File[]) => void;
-  removeFile: (path: string) => void;
-  removeFolder: (folderName: string) => void;
+  itemList: SendItemData[];
+  totalFilesCount: number;
+  totalFilesSize: number;
+  addFiles: (file: FileWithPath[]) => void;
+  removeItem: (file: SendItemData) => void;
   clear: () => void;
 };
 
 export const FilesContext = createContext<FilesContextT>({} as FilesContextT);
 
 export const FilesProvider = ({ children }: { children: ReactNode }) => {
-  const [state, setState] = useState<FileWithPath[]>([]);
-  const [filesInFolders, setFilesInFolders] = useState<FilesByFolders>({});
-  const [filesWithoutFolders, setFilesWithoutFolders] = useState<
-    FileWithPath[]
-  >([]);
-
+  const [itemList, setItemList] = useState<SendItemData[]>([]);
+  const [totalFilesCount, setTotalFilesCount] = useState(0);
+  const [totalFilesSize, setTotalFilesSize] = useState(0);
   const [enabled, setEnabled] = useState(true);
 
-  function addFiles(files: File[]) {
-    const thereAreEmptyFiles = files.some((file) => file.size === 0);
+  useEffect(() => {
+    setTotalFilesCount(itemList.reduce(
+      (prev, current) => prev + (current.isFolder ? current.countFiles || 0 : 1),
+      0
+    ));
+    setTotalFilesSize(itemList.reduce(
+      (prev, current) => prev + current.size,
+      0
+    ));
+  }, [itemList]);
+
+  const addFiles = (newFileList: FileWithPath[]) => {
+    const thereAreEmptyFiles = newFileList.some((file) => file.size === 0);
     if (thereAreEmptyFiles) {
       notificationsService.show({
         text: "Empty files are not supported",
@@ -51,34 +48,25 @@ export const FilesProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
 
-    const currentTotalSize = state.reduce(
-      (prev, current) => prev + current.size,
-      0
-    );
-    const newFilesTotalSize = files.reduce(
+    const newFilesTotalSize = newFileList.reduce(
       (prev, current) => prev + current.size,
       0
     );
 
-    if (state.length + files.length > MAX_ITEMS_PER_LINK) {
+    if (totalFilesCount + newFileList.length > MAX_ITEMS_PER_LINK) {
       return notificationsService.show({
         text: `The maximum number of files allowed in total is ${MAX_ITEMS_PER_LINK}`,
         type: ToastType.Warning,
       });
     }
-    console.log({ files });
 
-    if (currentTotalSize + newFilesTotalSize <= MAX_BYTES_PER_SEND) {
-      setState([...state, ...(files as FileWithPath[])]);
+    if (totalFilesSize + newFilesTotalSize <= MAX_BYTES_PER_SEND) {
+      const filesJson = transformInputFilesToJSON(newFileList);
+      const { rootFolders, rootFiles } = transformJsonFilesToItems(filesJson);
 
-      const { rawFiles, mappedFolderFiles } = getFolderFiles(files);
+      const sendItemsList = [...rootFolders, ...rootFiles];
 
-      setFilesInFolders({ ...filesInFolders, ...mappedFolderFiles });
-
-      setFilesWithoutFolders([
-        ...filesWithoutFolders,
-        ...(rawFiles as FileWithPath[]),
-      ]);
+      setItemList(normalizeItemsId([...itemList, ...sendItemsList]));
     } else {
       notificationsService.show({
         text: `The maximum size allowed is ${format(
@@ -89,82 +77,12 @@ export const FilesProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
-  const getRootFolderNameFromPath = (path: string): string =>
-    path.split("/")[1] ?? "";
-
-  const removeFolder = (folderName: string) => {
-    setState(
-      state.filter((file) => {
-        const fileFolder = getRootFolderNameFromPath(file.path);
-        return fileFolder !== folderName;
-      })
-    );
-    const { [folderName]: _, ...rest } = filesInFolders;
-    setFilesInFolders(rest);
+  const removeItem = (removeItem: SendItemData) => {
+    setItemList(normalizeItemsId(itemList.filter((item) => item.id !== removeItem.id)));
   };
 
-  const removeFile = (path: string) => {
-    setState(state.filter((file) => file.path !== path));
-    setFilesWithoutFolders(
-      filesWithoutFolders.filter((file) => file.path !== path)
-    );
-  };
-
-  const getFolderFiles = (
-    files: File[]
-  ): {
-    rawFiles: File[];
-    mappedFolderFiles: FilesByFolders;
-  } => {
-    let mappedFolderFiles: Record<
-      string,
-      { files: File[]; folderInfo?: Folder }
-    > = {};
-
-    const rawFiles = files.filter((file) => {
-      const { path } = file as FileWithPath;
-
-      if (typeof path === "string" && path !== file.name) {
-        mappedFolderFiles = addFolderFilesToMappedObject(
-          mappedFolderFiles,
-          file as FileWithPath
-        );
-        return false;
-      }
-      return true;
-    });
-
-    return { rawFiles, mappedFolderFiles };
-  };
-
-  const addFolderFilesToMappedObject = (
-    mappedFolderFiles: FilesByFolders,
-    file: FileWithPath
-  ) => {
-    const folderName: string = getRootFolderNameFromPath(file.path);
-    return {
-      ...mappedFolderFiles,
-      [folderName]: mappedFolderFiles[folderName]
-        ? {
-            files: [...mappedFolderFiles[folderName]?.files, file],
-            folderInfo: {
-              name: folderName,
-              size:
-                (mappedFolderFiles[folderName]?.folderInfo?.size ?? 0) +
-                file.size,
-            },
-          }
-        : {
-            files: [file],
-            folderInfo: { name: folderName, size: file.size },
-          },
-    };
-  };
-
-  function clear() {
-    setState([]);
-    setFilesInFolders({});
-    setFilesWithoutFolders([]);
+  const clear = () => {
+    setItemList([]);
   }
 
   return (
@@ -172,12 +90,11 @@ export const FilesProvider = ({ children }: { children: ReactNode }) => {
       value={{
         enabled,
         setEnabled,
-        files: state,
-        filesInFolders,
-        filesWithoutFolders,
+        itemList,
+        totalFilesCount,
+        totalFilesSize,
         addFiles,
-        removeFile,
-        removeFolder,
+        removeItem,
         clear,
       }}
     >

@@ -3,7 +3,7 @@ import { ChangeEvent, MouseEvent, useContext, useRef } from "react";
 import { FilesContext } from "../contexts/Files";
 import { format } from "bytes";
 import { MAX_BYTES_PER_SEND, MAX_ITEMS_PER_LINK } from "../constants";
-import ItemsList from "./FileList";
+import ItemsList from "./ItemList";
 
 export default function FileArea({
   className = "",
