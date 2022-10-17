@@ -29,7 +29,7 @@ export const FilesProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     setTotalFilesCount(itemList.reduce(
-      (prev, current) => prev + (current.isFolder ? current.countFiles || 0 : 1),
+      (prev, current) => prev + (current.type === 'folder' ? current.countFiles || 0 : 1),
       0
     ));
     setTotalFilesSize(itemList.reduce(

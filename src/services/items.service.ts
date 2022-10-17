@@ -47,8 +47,8 @@ export const transformJsonFilesToItems = (jsonObject: JSON): {
         id: '',
         name: value.name,
         size: value.size,
-        isFolder: false,
-        file: value
+        type: 'file',
+        file: value,
       });
     } else {
       const { childrenFiles, childrenFilesSize } = getChildrenFiles(value);
@@ -57,7 +57,7 @@ export const transformJsonFilesToItems = (jsonObject: JSON): {
         id: '',
         name: key,
         size: childrenFilesSize + childrenFoldersSize,
-        isFolder: true,
+        type: 'folder',
         countFiles: childrenFiles.length + childrenFolderCountFiles,
         childrenFiles: childrenFiles,
         childrenFolders: childrenFolders
@@ -80,8 +80,8 @@ export const getChildrenFiles = (jsonObject: JSON): {
         id: '',
         name: key,
         size: value.size,
-        isFolder: false,
-        file: value
+        type: 'file',
+        file: value,
       });
     }
   }
@@ -104,7 +104,7 @@ export const getChildrenFolders = (jsonObject: JSON): {
         id: '',
         name: key,
         size: childrenFilesSize + childrenFoldersSize,
-        isFolder: true,
+        type: 'folder',
         countFiles: childrenFiles.length + childrenFolderCountFiles,
         childrenFiles: childrenFiles,
         childrenFolders: childrenFolders

@@ -3,7 +3,7 @@ import { FileWithPath } from "react-dropzone";
 export interface SendItem {
   id: string;
   name: string;
-  type: string;
+  type: 'file' | 'folder';
   linkId: string;
   networkId: string;
   encryptionKey: string;
@@ -17,14 +17,15 @@ export interface SendItemFile {
   id: string;
   name: string;
   size: number;
-  isFolder?: boolean;
+  type: 'file' | 'folder';
   file?: FileWithPath;
 }
+
 export interface SendItemFolder {
   id: string;
   name: string;
   size: number;
-  isFolder?: boolean;
+  type: 'file' | 'folder';
   countFiles?: number;
   childrenFiles?: SendItemFile[];
   childrenFolders?: SendItemFolder[];

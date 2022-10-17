@@ -37,7 +37,7 @@ function Item({
     <div className="group relative border-b border-gray-5 py-2.5">
       <h1 className="truncate text-base text-gray-80">{item.name}</h1>
       <div className="flex space-x-1.5 text-xs text-gray-50">
-        {item.isFolder &&
+        {item.type === 'folder' &&
           <>
             <p>Folder</p>
             <p className="font-bold text-gray-30">·</p>

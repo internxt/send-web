@@ -249,7 +249,7 @@ class UploadManager {
  */
 interface SendLink {
   name: string;
-  type: "file";
+  type: 'file' | 'folder';
   size: number;
   networkId: string;
   encryptionKey: string;
