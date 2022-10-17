@@ -1,5 +1,5 @@
 import { PlusCircle } from "phosphor-react";
-import { ChangeEvent, MouseEvent, useContext, useRef } from "react";
+import { ChangeEvent, MouseEvent, useContext, useRef, useState } from "react";
 import { FilesContext } from "../contexts/Files";
 import { format } from "bytes";
 import { MAX_BYTES_PER_SEND, MAX_ITEMS_PER_LINK } from "../constants";
@@ -14,6 +14,8 @@ export default function FileArea({
 }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const folderInputRef = useRef<HTMLInputElement>(null);
+  const [fileInputKey, setFileInputKey] = useState<number>(Date.now());
+  const [folderInputKey, setFolderInputKey] = useState<number>(Date.now());
 
   const fileContext = useContext(FilesContext);
 
@@ -30,6 +32,8 @@ export default function FileArea({
   const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files)
       fileContext.addFiles(Array.from(event.target.files));
+    setFileInputKey(Date.now());
+    setFolderInputKey(Date.now());
   }
 
   const spaceRemaining = MAX_BYTES_PER_SEND - fileContext.totalFilesSize;
@@ -37,6 +41,7 @@ export default function FileArea({
   return (
     <div className={`${className} flex flex-col`}>
       <input
+        key={`file-${fileInputKey}`}
         type="file"
         className="hidden"
         ref={fileInputRef}
@@ -44,6 +49,7 @@ export default function FileArea({
         multiple={true}
       />
       <input
+        key={`folder-${folderInputKey}`}
         type="file"
         className="hidden"
         ref={folderInputRef}
