@@ -21,7 +21,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <div className="reltive flex flex-col bg-white lg:h-screen lg:bg-black">
+    <div className="relative flex flex-col bg-white lg:h-screen lg:bg-black">
       <div
         ref={backgroundRef}
         className="fixed inset-0 hidden bg-cover bg-center bg-no-repeat opacity-0 transition-opacity duration-500 lg:block"

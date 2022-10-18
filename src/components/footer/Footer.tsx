@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { Transition, Disclosure } from "@headlessui/react";
 import { Minus } from "phosphor-react";
 import Facebook from "../../assets/social/cool-gray-60/facebook.svg";
@@ -8,7 +7,7 @@ import Twitter from "../../assets/social/cool-gray-60/twitter.svg";
 import YouTube from "../../assets/social/cool-gray-60/youtube.svg";
 import Internxt from "../../assets/Internxt.svg";
 
-const text = require("../../assets/lang/en/footer");
+import label from "../../assets/lang/en/footer.json";
 
 export default function Footer() {
   return (
@@ -19,10 +18,10 @@ export default function Footer() {
       >
         <div className="flex w-full flex-col space-y-1 md:max-w-sm">
           <h2 className="text-lg font-medium">
-            {text.NewsletterSection.title}
+            {label.NewsletterSection.title}
           </h2>
           <p className={`text-base text-cool-gray-60 sm:text-sm`}>
-            {text.NewsletterSection.description}
+            {label.NewsletterSection.description}
           </p>
         </div>
 
@@ -37,7 +36,7 @@ export default function Footer() {
           <input
             name="fields[email]"
             type="email"
-            placeholder={`${text.NewsletterSection.input}`}
+            placeholder={`${label.NewsletterSection.input}`}
             className={`} mb-2 flex h-auto w-full appearance-none flex-row rounded-lg border border-cool-gray-20 bg-white px-4 
                 py-3 text-left text-lg outline-none
               transition-all duration-150 focus:border-blue-50 focus:ring focus:ring-primary focus:ring-opacity-20 sm:py-2 sm:text-base md:w-64`}
@@ -46,14 +45,14 @@ export default function Footer() {
           <input
             name="signup"
             type="submit"
-            value={`${text.NewsletterSection.cta}`}
+            value={`${label.NewsletterSection.cta}`}
             className="mb-6 flex w-full cursor-pointer items-center justify-center rounded-lg border border-transparent bg-primary px-4 py-3 text-lg font-medium text-white transition-all duration-75 focus:outline-none active:bg-primary-dark sm:mb-2 sm:py-2 sm:text-base"
           />
           <span className="text-xs text-cool-gray-40 sm:text-supporting-2">
-            {text.NewsletterSection.privacy}{" "}
+            {label.NewsletterSection.privacy}{" "}
             <a href="https://internxt.com/legal">
               <span className="cursor-pointer underline">
-                {text.NewsletterSection.privacyLink}
+                {label.NewsletterSection.privacyLink}
               </span>
             </a>
           </span>
@@ -71,17 +70,17 @@ export default function Footer() {
             <div className="flex flex-1 flex-col items-center lg:flex-none">
               <div className="flex flex-shrink-0 flex-col space-y-3">
                 <h3 className="text-lg font-medium">
-                  {text.FooterSection.sections.products.title}
+                  {label.FooterSection.sections.products.title}
                 </h3>
                 <div
                   className={`flex flex-col space-y-1.5 text-base text-cool-gray-60`}
                 >
                   <a href="https://internxt.com/drive">
-                    <a>{text.FooterSection.sections.products.drive}</a>
+                    <a>{label.FooterSection.sections.products.drive}</a>
                   </a>
 
                   <a href="https://internxt.com/photos">
-                    <a>{text.FooterSection.sections.products.photos}</a>
+                    <a>{label.FooterSection.sections.products.photos}</a>
                   </a>
 
                   <a
@@ -90,18 +89,18 @@ export default function Footer() {
                     rel="noerrer noreferrer"
                     className="flex flex-row items-center"
                   >
-                    <div>{text.FooterSection.sections.products.send}</div>
+                    <div>{label.FooterSection.sections.products.send}</div>
                     <div className="pointer-events-none ml-2 flex flex-row items-center whitespace-nowrap rounded-full bg-orange bg-opacity-15 px-2 text-supporting-1 font-medium uppercase text-orange">
-                      {text.FooterSection.new}
+                      {label.FooterSection.new}
                     </div>
                   </a>
 
                   <a href="https://internxt.com/token">
-                    <a>{text.FooterSection.sections.products.token}</a>
+                    <a>{label.FooterSection.sections.products.token}</a>
                   </a>
 
                   <a href="https://internxt.com/pricing">
-                    <a>{text.FooterSection.sections.products.pricing}</a>
+                    <a>{label.FooterSection.sections.products.pricing}</a>
                   </a>
 
                   {/*
@@ -116,17 +115,17 @@ export default function Footer() {
             <div className="flex flex-1 flex-col items-center lg:flex-none">
               <div className="flex flex-shrink-0 flex-col space-y-3">
                 <h3 className="text-lg font-medium">
-                  {text.FooterSection.sections.company.title}
+                  {label.FooterSection.sections.company.title}
                 </h3>
                 <div
                   className={`flex flex-col space-y-1.5 text-base text-cool-gray-60`}
                 >
                   <a href="https://internxt.com/about">
-                    <a>{text.FooterSection.sections.company.about}</a>
+                    <a>{label.FooterSection.sections.company.about}</a>
                   </a>
 
                   <a href="https://internxt.com/privacy">
-                    <a>{text.FooterSection.sections.company.privacy}</a>
+                    <a>{label.FooterSection.sections.company.privacy}</a>
                   </a>
 
                   <a
@@ -135,11 +134,11 @@ export default function Footer() {
                     target="_blank"
                     rel="noerrer noreferrer"
                   >
-                    {text.FooterSection.sections.company.security}
+                    {label.FooterSection.sections.company.security}
                   </a>
 
                   <a href="https://internxt.com/legal">
-                    <a>{text.FooterSection.sections.company.legal}</a>
+                    <a>{label.FooterSection.sections.company.legal}</a>
                   </a>
 
                   {/*
@@ -153,11 +152,11 @@ export default function Footer() {
                     target="_blank"
                     rel="noerrer noreferrer"
                   >
-                    {text.FooterSection.sections.company.support}
+                    {label.FooterSection.sections.company.support}
                   </a>
 
                   <a href="https://internxt.com/cloud-storage-comparison">
-                    <a>{text.FooterSection.sections.company.comparison}</a>
+                    <a>{label.FooterSection.sections.company.comparison}</a>
                   </a>
                 </div>
               </div>
@@ -166,17 +165,17 @@ export default function Footer() {
             <div className="flex flex-1 flex-col items-center lg:flex-none">
               <div className="flex flex-shrink-0 flex-col space-y-3">
                 <h3 className="text-lg font-medium">
-                  {text.FooterSection.sections.join.title}
+                  {label.FooterSection.sections.join.title}
                 </h3>
                 <div
                   className={`flex flex-col space-y-1.5 text-base text-cool-gray-60`}
                 >
                   <a href="https://drive.internxt.com/new" target="_top">
-                    {text.FooterSection.sections.join.signup}
+                    {label.FooterSection.sections.join.signup}
                   </a>
 
                   <a href="https://drive.internxt.com/login" target="_top">
-                    {text.FooterSection.sections.join.login}
+                    {label.FooterSection.sections.join.login}
                   </a>
 
                   <a
@@ -184,7 +183,7 @@ export default function Footer() {
                     target="_blank"
                     rel="noerrer noreferrer"
                   >
-                    {text.FooterSection.sections.join.community}
+                    {label.FooterSection.sections.join.community}
                   </a>
 
                   <a
@@ -192,7 +191,7 @@ export default function Footer() {
                     target="_blank"
                     rel="noreferrer"
                   >
-                    {text.FooterSection.sections.join.github}
+                    {label.FooterSection.sections.join.github}
                   </a>
                 </div>
               </div>
@@ -201,18 +200,18 @@ export default function Footer() {
             <div className="flex flex-1 flex-col items-center lg:flex-none">
               <div className="flex flex-shrink-0 flex-col space-y-3">
                 <h3 className="text-lg font-medium">
-                  {text.FooterSection.sections.resources.title}
+                  {label.FooterSection.sections.resources.title}
                 </h3>
                 <div
                   className={`flex flex-col space-y-1.5 text-base text-cool-gray-60`}
                 >
                   <a href="https://blog.internxt.com/">
-                    {text.FooterSection.sections.resources.blog}
+                    {label.FooterSection.sections.resources.blog}
                   </a>
 
                   <a href="https://internxt.com/privacy-directory">
                     {
-                      text.FooterSection.sections.resources
+                      label.FooterSection.sections.resources
                         .directoryOfPrivacyOrganizations
                     }
                   </a>
@@ -233,17 +232,19 @@ export default function Footer() {
 
                   <a href="https://internxt.com/password-checker">
                     <a>
-                      {text.FooterSection.sections.resources.passwordChecker}
+                      {label.FooterSection.sections.resources.passwordChecker}
                     </a>
                   </a>
 
                   <a href="https://internxt.com/virus-scanner">
-                    <a>{text.FooterSection.sections.resources.fileVirusScan}</a>
+                    <a>
+                      {label.FooterSection.sections.resources.fileVirusScan}
+                    </a>
                   </a>
 
                   <a href="https://internxt.com/cyber-awareness">
                     <a>
-                      {text.FooterSection.sections.resources.cyberAwareness}
+                      {label.FooterSection.sections.resources.cyberAwareness}
                     </a>
                   </a>
                 </div>
@@ -326,7 +327,7 @@ export default function Footer() {
             </div>
 
             <p className={`$text-cool-gray-60 text-xs`}>
-              {text.FooterSection.copyright}
+              {label.FooterSection.copyright}
             </p>
 
             <a href="https://internxt.com/">
@@ -344,7 +345,7 @@ export default function Footer() {
               <div>
                 <Disclosure.Button className="flex w-full items-center justify-between py-4 text-lg font-medium">
                   <span className="flex flex-row">
-                    {text.FooterSection.sections.products.title}
+                    {label.FooterSection.sections.products.title}
                   </span>
                   <span className="relative h-5 w-5">
                     <Minus
@@ -374,11 +375,11 @@ export default function Footer() {
                     className={`flex flex-col space-y-4 p-4 pt-2 text-cool-gray-60`}
                   >
                     <a href="https://internxt.com/drive">
-                      <a>{text.FooterSection.sections.products.drive}</a>
+                      <a>{label.FooterSection.sections.products.drive}</a>
                     </a>
 
                     <a href="https://internxt.com/photos">
-                      <a>{text.FooterSection.sections.products.photos}</a>
+                      <a>{label.FooterSection.sections.products.photos}</a>
                     </a>
 
                     <a
@@ -387,18 +388,18 @@ export default function Footer() {
                       rel="noerrer noreferrer"
                       className="flex flex-row items-center"
                     >
-                      <div>{text.FooterSection.sections.products.send}</div>
+                      <div>{label.FooterSection.sections.products.send}</div>
                       <div className="pointer-events-none ml-2 flex flex-row items-center whitespace-nowrap rounded-full bg-orange bg-opacity-15 px-2 py-1 text-supporting-1 font-medium uppercase text-orange">
-                        {text.FooterSection.new}
+                        {label.FooterSection.new}
                       </div>
                     </a>
 
                     <a href="https://internxt.com/token">
-                      <a>{text.FooterSection.sections.products.token}</a>
+                      <a>{label.FooterSection.sections.products.token}</a>
                     </a>
 
                     <a href="https://internxt.com/pricing">
-                      <a>{text.FooterSection.sections.products.pricing}</a>
+                      <a>{label.FooterSection.sections.products.pricing}</a>
                     </a>
 
                     {/*
@@ -417,7 +418,7 @@ export default function Footer() {
               <div>
                 <Disclosure.Button className="flex w-full items-center justify-between py-4 text-lg font-medium">
                   <span className="flex flex-row">
-                    {text.FooterSection.sections.company.title}
+                    {label.FooterSection.sections.company.title}
                   </span>
                   <span className="relative h-5 w-5">
                     <Minus
@@ -447,11 +448,11 @@ export default function Footer() {
                     className={`flex flex-col space-y-4 p-4 pt-2 text-cool-gray-60`}
                   >
                     <a href="https://internxt.com/about">
-                      <a>{text.FooterSection.sections.company.about}</a>
+                      <a>{label.FooterSection.sections.company.about}</a>
                     </a>
 
                     <a href="https://internxt.com/privacy">
-                      <a>{text.FooterSection.sections.company.privacy}</a>
+                      <a>{label.FooterSection.sections.company.privacy}</a>
                     </a>
 
                     <a
@@ -460,11 +461,11 @@ export default function Footer() {
                       target="_blank"
                       rel="noerrer noreferrer"
                     >
-                      {text.FooterSection.sections.company.security}
+                      {label.FooterSection.sections.company.security}
                     </a>
 
                     <a href="https://internxt.com/legal">
-                      <a>{text.FooterSection.sections.company.legal}</a>
+                      <a>{label.FooterSection.sections.company.legal}</a>
                     </a>
 
                     <a
@@ -472,7 +473,7 @@ export default function Footer() {
                       target="_blank"
                       rel="noerrer noreferrer"
                     >
-                      {text.FooterSection.sections.company.support}
+                      {label.FooterSection.sections.company.support}
                     </a>
 
                     {/*
@@ -482,7 +483,7 @@ export default function Footer() {
                       */}
 
                     <a href="https://internxt.com/cloud-storage-comparison">
-                      <a>{text.FooterSection.sections.company.comparison}</a>
+                      <a>{label.FooterSection.sections.company.comparison}</a>
                     </a>
                   </Disclosure.Panel>
                 </Transition>
@@ -499,7 +500,7 @@ export default function Footer() {
               <div>
                 <Disclosure.Button className="flex w-full items-center justify-between py-4 text-lg font-medium">
                   <span className="flex flex-row">
-                    {text.FooterSection.sections.join.title}
+                    {label.FooterSection.sections.join.title}
                   </span>
                   <span className="relative h-5 w-5">
                     <Minus
@@ -530,11 +531,11 @@ export default function Footer() {
                       p-4 pt-2 text-cool-gray-60`}
                   >
                     <a href="https://drive.internxt.com/new" target="_top">
-                      {text.FooterSection.sections.join.signup}
+                      {label.FooterSection.sections.join.signup}
                     </a>
 
                     <a href="https://drive.internxt.com/login" target="_top">
-                      {text.FooterSection.sections.join.login}
+                      {label.FooterSection.sections.join.login}
                     </a>
 
                     <a
@@ -542,7 +543,7 @@ export default function Footer() {
                       target="_blank"
                       rel="noerrer noreferrer"
                     >
-                      {text.FooterSection.sections.join.community}
+                      {label.FooterSection.sections.join.community}
                     </a>
 
                     <a
@@ -550,7 +551,7 @@ export default function Footer() {
                       target="_blank"
                       rel="noerrer noreferrer"
                     >
-                      {text.FooterSection.sections.join.github}
+                      {label.FooterSection.sections.join.github}
                     </a>
                   </Disclosure.Panel>
                 </Transition>
@@ -563,7 +564,7 @@ export default function Footer() {
               <div>
                 <Disclosure.Button className="flex w-full items-center justify-between py-4 text-lg font-medium">
                   <span className="flex flex-row">
-                    {text.FooterSection.sections.resources.title}
+                    {label.FooterSection.sections.resources.title}
                   </span>
                   <span className="relative h-5 w-5">
                     <Minus
@@ -597,13 +598,13 @@ export default function Footer() {
                       target="_blank"
                       rel="noerrer noreferrer"
                     >
-                      {text.FooterSection.sections.resources.blog}
+                      {label.FooterSection.sections.resources.blog}
                     </a>
 
                     <a href="https://internxt.com/privacy-directory">
                       <a>
                         {
-                          text.FooterSection.sections.resources
+                          label.FooterSection.sections.resources
                             .directoryOfPrivacyOrganizations
                         }
                       </a>
@@ -625,18 +626,18 @@ export default function Footer() {
 
                     <a href="https://internxt.com/password-checker">
                       <a>
-                        {text.FooterSection.sections.resources.passwordChecker}
+                        {label.FooterSection.sections.resources.passwordChecker}
                       </a>
                     </a>
 
                     <a href="https://internxt.com/virus-scanner">
                       <a>
-                        {text.FooterSection.sections.resources.fileVirusScan}
+                        {label.FooterSection.sections.resources.fileVirusScan}
                       </a>
                     </a>
                     <a href="https://internxt.com/cyber-awareness">
                       <a>
-                        {text.FooterSection.sections.resources.cyberAwareness}
+                        {label.FooterSection.sections.resources.cyberAwareness}
                       </a>
                     </a>
                   </Disclosure.Panel>
@@ -720,7 +721,7 @@ export default function Footer() {
             </div>
 
             <p className={`text-xs text-cool-gray-60`}>
-              {text.FooterSection.copyright}
+              {label.FooterSection.copyright}
             </p>
 
             <a href="https://internxt.com/">

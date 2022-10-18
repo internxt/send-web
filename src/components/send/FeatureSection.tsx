@@ -6,48 +6,48 @@ import {
   Envelope,
 } from "phosphor-react";
 import React from "react";
-const text = require("../../assets/lang/en/send");
+import label from "../../assets/lang/en/send.json";
 
 const FeatureSection = () => {
   const cards = [
     {
       id: 1,
       icon: User,
-      title: text.FeatureSection.card1.title,
-      description: text.FeatureSection.card1.description,
+      title: label.FeatureSection.card1.title,
+      description: label.FeatureSection.card1.description,
     },
     {
       id: 2,
       icon: Lock,
-      title: text.FeatureSection.card2.title,
-      description: text.FeatureSection.card2.description,
+      title: label.FeatureSection.card2.title,
+      description: label.FeatureSection.card2.description,
     },
     {
       id: 3,
       icon: PaperPlaneTilt,
-      title: text.FeatureSection.card3.title,
-      description: text.FeatureSection.card3.description,
+      title: label.FeatureSection.card3.title,
+      description: label.FeatureSection.card3.description,
     },
     {
       id: 4,
       icon: FileDotted,
-      title: text.FeatureSection.card4.title,
-      description: text.FeatureSection.card4.description,
+      title: label.FeatureSection.card4.title,
+      description: label.FeatureSection.card4.description,
     },
     {
       id: 5,
       icon: Envelope,
-      title: text.FeatureSection.card5.title,
-      description: text.FeatureSection.card5.description,
+      title: label.FeatureSection.card5.title,
+      description: label.FeatureSection.card5.description,
     },
   ];
 
   return (
     <div className="relative z-10 flex flex-col items-center justify-center bg-white py-[88px]">
       <div className=" pb-16 text-center">
-        <p className="text-4xl font-semibold">{text.FeatureSection.title}</p>
+        <p className="text-4xl font-semibold">{label.FeatureSection.title}</p>
         <p className="w-[778px] pt-4 text-xl font-light text-gray-80">
-          {text.FeatureSection.description}
+          {label.FeatureSection.description}
         </p>
       </div>
       <div className="flex flex-col flex-wrap items-center justify-center pt-14 sm:flex-row sm:gap-x-24 xl:gap-x-80">
