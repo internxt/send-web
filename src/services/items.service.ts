@@ -127,7 +127,4 @@ export const getChildrenFolders = (jsonObject: JSON, parent_folder: string): {
   };
 };
 
-export const normalizeItemsId = (items: SendItemData[]): SendItemData[] => {
-  return items.map((item, index) => { item.id = String(index); return item; });
-};
 

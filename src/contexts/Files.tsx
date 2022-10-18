@@ -3,7 +3,7 @@ import { createContext, ReactNode, useEffect, useState } from "react";
 import { FileWithPath } from "react-dropzone";
 import { MAX_BYTES_PER_SEND, MAX_ITEMS_PER_LINK } from "../constants";
 import { SendItemData } from "../models/SendItem";
-import { normalizeItemsId, transformInputFilesToJSON, transformJsonFilesToItems } from "../services/items.service";
+import { transformInputFilesToJSON, transformJsonFilesToItems } from "../services/items.service";
 import notificationsService, {
   ToastType,
 } from "../services/notifications.service";
@@ -66,7 +66,7 @@ export const FilesProvider = ({ children }: { children: ReactNode }) => {
 
       const sendItemsList = [...rootFolders, ...rootFiles];
 
-      setItemList(normalizeItemsId([...itemList, ...sendItemsList]));
+      setItemList([...itemList, ...sendItemsList]);
     } else {
       notificationsService.show({
         text: `The maximum size allowed is ${format(
@@ -78,7 +78,7 @@ export const FilesProvider = ({ children }: { children: ReactNode }) => {
   }
 
   const removeItem = (removeItem: SendItemData) => {
-    setItemList(normalizeItemsId(itemList.filter((item) => item.id !== removeItem.id)));
+    setItemList(itemList.filter((item) => item.id !== removeItem.id));
   };
 
   const clear = () => {
