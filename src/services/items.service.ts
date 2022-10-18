@@ -127,4 +127,32 @@ export const getChildrenFolders = (jsonObject: JSON, parent_folder: string): {
   };
 };
 
-
+export const getAllItemsArray = (itemList: SendItemData[]): SendItemData[] => {
+  const items = [] as SendItemData[];
+  itemList.forEach((item) => {
+    items.push({
+      id: item.id,
+      name: item.name,
+      size: item.size,
+      type: item.type,
+      file: item.file,
+      parent_folder: item.parent_folder
+    });
+    if (item.childrenFiles && item.childrenFiles.length > 0) {
+      item.childrenFiles.forEach((childrenFile) => {
+        items.push({
+          id: childrenFile.id,
+          name: childrenFile.name,
+          size: childrenFile.size,
+          type: childrenFile.type,
+          file: childrenFile.file,
+          parent_folder: childrenFile.parent_folder
+        });
+      });
+    }
+    if (item.childrenFolders && item.childrenFolders.length > 0) {
+      items.push(...getAllItemsArray(item.childrenFolders));
+    }
+  });
+  return items;
+};

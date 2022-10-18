@@ -13,15 +13,10 @@ import Switch from "../components/Switch";
 import { MAX_RECIPIENTS } from "../constants";
 import { FilesContext } from "../contexts/Files";
 import Layout from "../Layout";
-import notificationsService, {
-  ToastType,
-} from "../services/notifications.service";
-import {
-  UploadService,
-} from "../services/upload.service";
-
+import notificationsService, { ToastType } from "../services/notifications.service";
+import { UploadService } from "../services/upload.service";
 import * as Sentry from "@sentry/react";
-import { FileWithPath } from "react-dropzone";
+import { getAllItemsArray } from "../services/items.service";
 
 type EmailFormState = {
   sendTo: string[];
@@ -70,12 +65,10 @@ export default function HomeView() {
     const abortController = new AbortController();
     uploadAbortController.current = abortController;
 
-    const files = filesContext.itemList
-      .filter((file) => file !== undefined && file !== null)
-      .map((item) => item.file) as FileWithPath[];
+    const items = getAllItemsArray(filesContext.itemList);
 
     const link = await UploadService.uploadFilesAndGetLink(
-      files,
+      items,
       switchValue === "Send email"
         ? {
           sender: formState.sender,
