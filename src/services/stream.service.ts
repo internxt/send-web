@@ -7,7 +7,7 @@ import { binaryStreamToBlob, buildProgressStream } from '../network/streams';
 function isBrave() {
   const maybeBrave = (window.navigator as { brave?: any }).brave;
 
-  return maybeBrave != undefined && maybeBrave.isBrave.name == "isBrave";
+  return maybeBrave !== undefined && maybeBrave.isBrave.name === "isBrave";
 }
 
 export class StreamService {
