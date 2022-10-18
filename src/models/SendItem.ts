@@ -11,6 +11,7 @@ export interface SendItem {
   createdAt: Date;
   updatedAt: Date;
   version: number;
+  parent_folder: string | null;
 }
 
 export interface SendItemFile {
@@ -18,6 +19,7 @@ export interface SendItemFile {
   name: string;
   size: number;
   type: 'file' | 'folder';
+  parent_folder: string | null;
   file?: FileWithPath;
 }
 
@@ -26,6 +28,7 @@ export interface SendItemFolder {
   name: string;
   size: number;
   type: 'file' | 'folder';
+  parent_folder: string | null;
   countFiles?: number;
   childrenFiles?: SendItemFile[];
   childrenFolders?: SendItemFolder[];

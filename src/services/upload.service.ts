@@ -216,11 +216,13 @@ class UploadManager {
 
         for (const uploadedFile of uploadedFiles) {
           filesReferences.push({
+            id: uploadedFile.id,
             encryptionKey: this.networkService.encryptionKey,
             name: uploadedFile.name,
             networkId: uploadedFile.networkId,
             size: uploadedFile.size,
-            type: "file",
+            type: uploadedFile.type,
+            parent_folder: uploadedFile.parent_folder
           });
         }
       };
@@ -248,11 +250,13 @@ class UploadManager {
  * TODO: SDK
  */
 interface SendLink {
+  id: string;
   name: string;
   type: 'file' | 'folder';
   size: number;
   networkId: string;
   encryptionKey: string;
+  parent_folder: string | null;
 }
 
 interface CreateSendLinksPayload {

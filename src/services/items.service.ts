@@ -1,5 +1,6 @@
 import { FileWithPath } from "react-dropzone";
 import { SendItemData, SendItemFile, SendItemFolder } from "../models/SendItem";
+import { v4 as uuidv4 } from 'uuid';
 
 
 export const getPathFromFile = (file: FileWithPath): string => {
@@ -44,30 +45,33 @@ export const transformJsonFilesToItems = (jsonObject: JSON): {
   for (const [key, value] of Object.entries(jsonObject)) {
     if (value instanceof File) {
       rootFiles.push({
-        id: '',
+        id: uuidv4(),
         name: value.name,
         size: value.size,
         type: 'file',
         file: value,
+        parent_folder: null
       });
     } else {
-      const { childrenFiles, childrenFilesSize } = getChildrenFiles(value);
-      const { childrenFolders, childrenFoldersSize, childrenFolderCountFiles } = getChildrenFolders(value);
+      const currentId = uuidv4();
+      const { childrenFiles, childrenFilesSize } = getChildrenFiles(value, currentId);
+      const { childrenFolders, childrenFoldersSize, childrenFolderCountFiles } = getChildrenFolders(value, currentId);
       rootFolders.push({
-        id: '',
+        id: String(currentId),
         name: key,
         size: childrenFilesSize + childrenFoldersSize,
         type: 'folder',
         countFiles: childrenFiles.length + childrenFolderCountFiles,
         childrenFiles: childrenFiles,
-        childrenFolders: childrenFolders
+        childrenFolders: childrenFolders,
+        parent_folder: null
       });
     }
   }
   return { rootFolders, rootFiles };
 };
 
-export const getChildrenFiles = (jsonObject: JSON): {
+export const getChildrenFiles = (jsonObject: JSON, parent_folder: string): {
   childrenFiles: SendItemFile[],
   childrenFilesSize: number
 } => {
@@ -77,18 +81,19 @@ export const getChildrenFiles = (jsonObject: JSON): {
     if (value instanceof File) {
       childrenFilesSize += value.size;
       childrenFiles.push({
-        id: '',
+        id: uuidv4(),
         name: key,
         size: value.size,
         type: 'file',
         file: value,
+        parent_folder: parent_folder
       });
     }
   }
   return { childrenFiles, childrenFilesSize };
 };
 
-export const getChildrenFolders = (jsonObject: JSON): {
+export const getChildrenFolders = (jsonObject: JSON, parent_folder: string): {
   childrenFolders: SendItemFolder[],
   childrenFoldersSize: number,
   childrenFolderCountFiles: number
@@ -98,16 +103,18 @@ export const getChildrenFolders = (jsonObject: JSON): {
   let totalChildrenFoldersCountFiles = 0;
   for (const [key, value] of Object.entries(jsonObject)) {
     if (!(value instanceof File)) {
-      const { childrenFiles, childrenFilesSize } = getChildrenFiles(value);
-      const { childrenFolders, childrenFoldersSize, childrenFolderCountFiles } = getChildrenFolders(value);
+      const currentId = uuidv4();
+      const { childrenFiles, childrenFilesSize } = getChildrenFiles(value, currentId);
+      const { childrenFolders, childrenFoldersSize, childrenFolderCountFiles } = getChildrenFolders(value, currentId);
       totalChildrenFolders.push({
-        id: '',
+        id: currentId,
         name: key,
         size: childrenFilesSize + childrenFoldersSize,
         type: 'folder',
         countFiles: childrenFiles.length + childrenFolderCountFiles,
         childrenFiles: childrenFiles,
-        childrenFolders: childrenFolders
+        childrenFolders: childrenFolders,
+        parent_folder: parent_folder
       });
       totalChildrenFoldersSize += childrenFilesSize + childrenFoldersSize;
       totalChildrenFoldersCountFiles += childrenFiles.length + childrenFolderCountFiles;
