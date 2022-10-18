@@ -1,5 +1,5 @@
 import { FileWithPath } from "react-dropzone";
-import { SendItemData, SendItemFile, SendItemFolder } from "../models/SendItem";
+import { SendItem, SendItemData, SendItemFile, SendItemFolder } from "../models/SendItem";
 import { v4 as uuidv4 } from 'uuid';
 
 
@@ -157,32 +157,34 @@ export const getAllItemsArray = (itemList: SendItemData[]): SendItemData[] => {
   return items;
 };
 
-export const getAllItemsList = (flatArray: SendItemData[]): SendItemData[] => {
+export const getAllItemsList = (flatArray: SendItem[]): SendItem[] => {
   const hashTable = Object.create(null);
   flatArray.forEach(item => hashTable[item.id] = { ...item, childrenFiles: [], childrenFolders: [] });
-  const dataTree = [] as SendItemData[];
+  const dataTree = [] as SendItem[];
   flatArray.forEach(item => {
     if (item.parent_folder) {
+      hashTable[item.id]['path'] = hashTable[item.parent_folder].path + '/' + item.name;
       if (item.type === 'file') {
         hashTable[item.parent_folder].childrenFiles.push(hashTable[item.id]);
       } else if (item.type === 'folder') {
         hashTable[item.parent_folder].childrenFolders.push(hashTable[item.id]);
       }
     } else {
+      hashTable[item.id]['path'] = item.name;
       dataTree.push(hashTable[item.id]);
     }
   });
   return getItemListWithFileCount(dataTree);
 };
 
-const getItemListWithFileCount = (itemList: SendItemData[]): SendItemData[] => {
-  const items = [] as SendItemData[];
+const getItemListWithFileCount = (itemList: SendItem[]): SendItem[] => {
+  const items = [] as SendItem[];
   itemList.forEach((item) => {
     if (item.type === 'folder') {
       items.push({
         ...item,
         countFiles: getChildrenFoldersFileCount(item)
-      })
+      });
     } else if (item.type === 'file') {
       items.push(item);
     }
