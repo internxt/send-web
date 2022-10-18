@@ -353,7 +353,7 @@ function EmailForm({
       </label>
       <textarea
         className="mt-1 h-20 w-full resize-none rounded-md border border-gray-20 bg-white px-3 py-2 text-lg font-normal text-gray-80 placeholder-gray-30 outline-none 
-				ring-primary ring-opacity-10 hover:border-gray-30 focus:border-primary focus:ring-2 lg:text-base"
+      ring-primary ring-opacity-10 hover:border-gray-30 focus:border-primary focus:ring-2 lg:text-base"
         placeholder="Message"
         onChange={(v) => onChange({ ...value, message: v.target.value })}
         value={value.message}
