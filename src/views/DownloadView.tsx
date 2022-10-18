@@ -16,6 +16,7 @@ import {
 } from "../services/download.service";
 import * as Sentry from "@sentry/react";
 import { SendItemData } from "../models/SendItem";
+import { getAllItemsList } from "../services/items.service";
 
 export default function DownloadView() {
   const [state, setState] = useState<
@@ -25,6 +26,7 @@ export default function DownloadView() {
     | { status: "done" }
     | { status: "downloading"; totalBytes: number; downloadedBytes: number }
   >({ status: "loading" });
+  const [fileList, setFileList] = useState<SendItemData[]>([]);
 
   const params = useParams();
   const [search] = useSearchParams();
@@ -37,7 +39,7 @@ export default function DownloadView() {
       if (!params.shareId) throw new Error();
 
       const details = await getSendLink(params.shareId);
-
+      setFileList(details.items.filter(item => item.type === 'file') as SendItemData[]);
       setState({ status: "ready", details });
     } catch (err) {
       console.error(err);
@@ -92,7 +94,7 @@ export default function DownloadView() {
                 <ArrowDown size={64} className="text-primary " />
               </div>
               <h1 className="mt-4 text-center text-xl font-semibold text-gray-80 px-5">
-                {state.details.title ?? `${state.details.items.length} ${state.details.items.length > 1 ? 'Items' : 'Item'}`}
+                {state.details.title ?? `${fileList.length} ${fileList.length === 1 ? 'File' : 'Files'}`}
               </h1>
               {state.details.subject && (
                 <p className="text-center text-gray-60 px-5">
@@ -112,17 +114,18 @@ export default function DownloadView() {
 
             <div className="w-full border-t border-gray-5 py-4 px-5">
               <p className="text-lg font-medium text-gray-80">
-                {`${state.details.items.length} ${state.details.items.length > 1 ? 'files' : 'file'}`}
+                {`${fileList.length} ${fileList.length === 1 ? 'file' : 'files'}`}
               </p>
               <p className="text-sm text-gray-50">
                 {format(state.details.size)} in total
               </p>
-              <ItemsList items={state.details.items as SendItemData[]} className="mt-4" />
+              <ItemsList className="mt-4"
+                items={getAllItemsList(state.details.items)} />
             </div>
           </div>
           <CardBottom>
             <Button onClick={onDownload}>
-              Download {state.details.items.length} {state.details.items.length > 1 ? 'files' : 'file'}
+              Download {fileList.length} {fileList.length === 1 ? 'file' : 'files'}
             </Button>
           </CardBottom>
         </div>

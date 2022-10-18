@@ -23,10 +23,15 @@ export class DownloadService {
     linkId: string,
     opts?: DownloadFileOptions
   ): Promise<void> {
-    const { title, items, code, size } = await getSendLink(linkId);
+    const { title, items, code } = await getSendLink(linkId);
+    const date = new Date();
+    const now = date.getFullYear() + String(date.getMonth() + 1).padStart(2, '0')
+      + String(date.getDate()).padStart(2, '0') + String(date.getHours()).padStart(2, '0')
+      + String(date.getMinutes()).padStart(2, '0') + String(date.getSeconds()).padStart(2, '0')
+      + String(date.getMilliseconds()).padStart(3, '0');
 
     await DownloadService.downloadFiles(
-      title ?? "download",
+      title ?? 'internxt-send_' + now,
       items,
       NetworkService.getInstance(),
       opts?.plainCode || code,
@@ -41,7 +46,7 @@ export class DownloadService {
     plainCode: string,
     opts?: DownloadFileOptions
   ) {
-    const totalBytes = items.reduce((a, f) => a + f.size, 0);
+    const totalBytes = items.reduce((a, f) => a + (f.type === 'file' ? f.size : 0), 0);
 
     if (items.length > 1) {
       const zip = new FlatFolderZip(zipName, {
@@ -70,7 +75,7 @@ export class DownloadService {
         opts
       );
 
-      const oneGigabyte = 1*1024*1024*1024;
+      const oneGigabyte = 1 * 1024 * 1024 * 1024;
       if (firstItem.size > oneGigabyte) {
         await StreamService.pipeReadableToFileSystemStream(
           itemDownloadStream,
