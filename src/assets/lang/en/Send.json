@@ -1,0 +1,73 @@
+{
+  "FeatureSection": {
+    "title": "Secure from the moment you hit send",
+    "description": "Files uploaded and sent through Internxt Send use Internxt's disruptive zero-knowledge architecture to maximize the security and privacy of files. Maintain rock-solid confidentiality and safely transmit sensitive information with Internxt Send.",
+    "card1": {
+      "title": "User-first the sharing",
+      "description": "Internxt Send respects users' right to privacy and doesn't scan, store, or save any information you send through the service."
+    },
+    "card2": {
+      "title": "Private, encrypted file transfer",
+      "description": "All files and photos are end-to-end encrypted, meaning all your information is scrambled and fragmented before even leaving your device."
+    },
+    "card3": {
+      "title": "Send large files in secrecy",
+      "description": "Send and share files no matter the size. Internxt Send has no file size limits and can send large files in no time."
+    },
+    "card4": {
+      "title": "Share files and photos of all formats",
+      "description": "All file formats are supported and can easily be encrypted and shared with Internxt Send. PDF, JPEG, DOC, PNG, XLS and many more."
+    },
+    "card5": {
+      "title": "Safely send files by link or email",
+      "description": "Share files and photos via a password-protected link or email to anyone, whether they have an Internxt account or not."
+    }
+  },
+  "InfoSection": {
+    "title": "How to use Internxt Send",
+    "description": "Simply drag and drop the files you want to share or send into the browser, or select the + icon and manually select the files or photos you wish to send. From there, you will have to choose from two options to complete your encrypted file transfer:",
+    "card1": {
+      "title": "Share by link",
+      "description": "Select 'Get a link', and a unique sharing link and share it, however, with whoever you wish. Your link will be valid only for 15 days and then automatically expire for your safety."
+    },
+    "card2": {
+      "title": "Share by email",
+      "description": "Or, move the slider to 'Send email' and input the email addresses of those you wish to share files and photos with. Add in your email address and an optional subject or message. Then click 'Send files', and your unique sharing link will automatically be sent via email. Your link will also only be valid for 15 days and then automatically expire."
+    }
+  },
+  "FaqSection": {
+    "title": "Frequently asked questions",
+    "faq": [
+      {
+        "question": "Do I need an Internxt account to use Internxt Send?",
+        "answer": [
+          "No. Anyone can use Internxt Send, and the service is completely FREE! Also, anyone can receive encrypted files through Send. No account is needed."
+        ]
+      },
+      {
+        "question": "Is there a limit to how many times I can use Internxt Send?",
+        "answer": [
+          "No. There is no limit to how many times you can use Internxt Send. Use it as much as you like, but be aware that you can only send 100 files simultaneously."
+        ]
+      },
+      {
+        "question": "How big of a file can I send?",
+        "answer": [
+          "5GB. We're currently working on removing all file size limits, but until then, you can only share files up to 5GB in size at a time."
+        ]
+      },
+      {
+        "question": "How many files can I send at one time?",
+        "answer": [
+          "100. If you need to send more files, you must wait until you complete your first transfer, then start another new encrypted file transfer."
+        ]
+      },
+      {
+        "question": "How do I send the secure sharing link to someone?",
+        "answer": [
+          "You may copy and paste it into whatever messenger service you prefer. You may also send a unique sharing link via email by choosing the \"Send email\" option."
+        ]
+      }
+    ]
+  }
+}
