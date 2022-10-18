@@ -175,8 +175,8 @@ class UploadManager {
           },
         })
         .then((networkId) => {
-          const fileObject = { file: { ...file, networkId } };
-          next(null, Object.assign({}, { ...sendLinkWithFile, fileObject }));
+          const fileObject = Object.assign({}, { ...file, networkId });
+          next(null, Object.assign({}, { ...sendLinkWithFile, file: fileObject }));
         })
         .catch((err) => {
           if (!this.errored) {

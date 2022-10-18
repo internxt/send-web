@@ -62,10 +62,19 @@ export const FilesProvider = ({ children }: { children: ReactNode }) => {
 
     if (totalFilesSize + newFilesTotalSize <= MAX_BYTES_PER_SEND) {
       const filesJson = transformInputFilesToJSON(newFileList);
-      const { rootFolders, rootFiles } = transformJsonFilesToItems(filesJson);
+      let { rootFolders, rootFiles } = transformJsonFilesToItems(filesJson);
+
+      rootFolders = rootFolders.filter((folder) => {
+        const sameNameItems = itemList.filter(item => item.name === folder.name);
+        return sameNameItems.length === 0;
+      });
+
+      rootFiles = rootFiles.filter((file) => {
+        const sameNameItems = itemList.filter(item => item.name === file.name);
+        return sameNameItems.length === 0;
+      });
 
       const sendItemsList = [...rootFolders, ...rootFiles];
-
       setItemList([...itemList, ...sendItemsList]);
     } else {
       notificationsService.show({
@@ -78,7 +87,7 @@ export const FilesProvider = ({ children }: { children: ReactNode }) => {
   }
 
   const removeItem = (removeItem: SendItemData) => {
-    setItemList(itemList.filter((item) => item.id !== removeItem.id));
+    setItemList(itemList.filter(item => item.id !== removeItem.id));
   };
 
   const clear = () => {

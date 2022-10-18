@@ -31,7 +31,7 @@ function Item({
   item: SendItemData;
   onRemove?: (item: SendItemData) => void;
 }) {
-  const extension = item.file?.name.includes('.') && item.file?.name.split(".").pop();
+  const extension = item.type === 'file' && item.name.includes('.') && item.name.split(".").pop();
 
   return (
     <div className="group relative border-b border-gray-5 py-2.5">
