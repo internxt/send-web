@@ -26,7 +26,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         ref={backgroundRef}
         className="fixed inset-0 hidden bg-cover bg-center bg-no-repeat opacity-0 transition-opacity duration-500 lg:block"
       />
-      <header className="fixed z-10 flex h-16 w-screen flex-shrink-0 items-center justify-center border-b border-gray-5 bg-white px-20 lg:top-0 lg:h-20 lg:justify-start lg:border-b-0 lg:bg-transparent">
+      <header className="z-10 flex h-16 w-screen flex-shrink-0 items-center justify-center border-b border-gray-5 bg-white px-20 lg:top-0 lg:h-20 lg:justify-start lg:border-b-0 lg:bg-transparent">
         <Link to="/">
           <img
             className="flex h-3 lg:hidden"
@@ -40,14 +40,12 @@ export default function Layout({ children }: { children: ReactNode }) {
           />
         </Link>
       </header>
-      <div className="relative min-h-0 flex-1 pt-16 pb-32 lg:py-0">
-        <div className="relative flex h-full flex-row items-center lg:py-20">
-          <Card className="flex flex-shrink-0 flex-col lg:ml-20">
-            {children}
-          </Card>
+      <div className="relative min-h-0 flex-1 p-20 lg:py-0">
+        <div className="relative flex h-full flex-row items-center pb-20">
+          <Card className="flex flex-shrink-0 flex-col">{children}</Card>
           <div
             ref={ctaRef}
-            className="ml-32 hidden text-white opacity-0 transition-opacity duration-500 lg:block"
+            className="ml-44 hidden text-white opacity-0 transition-opacity duration-500 lg:block"
           >
             <h1 className="text-5xl font-medium" style={{ lineHeight: 1 }}>
               Encrypt and send files

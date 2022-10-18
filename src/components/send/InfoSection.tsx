@@ -1,19 +1,41 @@
 import React from "react";
 
+const text = require("../../assets/lang/en/Send");
+
 const InfoSection = () => {
   return (
-    <div className="z-10 flex flex-col items-center justify-center py-10">
+    <div className="z-10 flex flex-col items-center justify-center py-20">
       <div className="flex h-36 w-[756px] flex-col space-y-6 text-center text-white">
-        <p className="text-4xl font-semibold">How to use Internxt Send</p>
-        <p className=" text-xl font-light">
-          Simply drag and drop the files you want to share or send into the
-          browser, or select the + icon and manually select the files or photos
-          you wish to send. From there, you will have to choose from two options
-          to complete your encrypted file transfer:
-        </p>
+        <p className="text-4xl font-semibold">{text.InfoSection.title}</p>
+        <p className=" text-xl font-light">{text.InfoSection.description}</p>
       </div>
-      <div className="pt-32">
-        <div className="h-[480px] w-[960px] rounded-[34px] bg-blue-80"></div>
+      <div className="flex flex-col space-y-10 pt-32">
+        <div className="flex h-[480px] w-[960px] rounded-[34px] bg-blue-80">
+          <div className="flex flex-row justify-between">
+            <div className="flex flex-col items-start justify-center space-y-6 p-20 text-white">
+              <p className="text-3xl font-semibold">
+                {text.InfoSection.card1.title}
+              </p>
+              <p className="font-regular text-lg">
+                {text.InfoSection.card1.description}
+              </p>
+            </div>
+            <img src="/bylink.png" alt="laptop" />
+          </div>
+        </div>
+        <div className="flex h-[480px] w-[960px] rounded-[34px] bg-blue-80">
+          <div className="items-between flex flex-row justify-between">
+            <div className="flex flex-col items-start justify-center space-y-6 p-20 text-white">
+              <p className="text-3xl font-semibold">
+                {text.InfoSection.card2.title}
+              </p>
+              <p className="font-regular text-lg">
+                {text.InfoSection.card2.description}
+              </p>
+            </div>
+            <img src="/byemail.png" alt="laptop" />
+          </div>
+        </div>
       </div>
     </div>
   );
