@@ -6,7 +6,7 @@ import {
   Envelope,
 } from "phosphor-react";
 import React from "react";
-const text = require("../../assets/lang/en/Send");
+const text = require("../../assets/lang/en/send");
 
 const FeatureSection = () => {
   const cards = [

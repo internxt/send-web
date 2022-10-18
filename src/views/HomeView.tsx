@@ -24,6 +24,8 @@ import {
 import * as Sentry from "@sentry/react";
 import FeatureSection from "../components/send/FeatureSection";
 import InfoSection from "../components/send/InfoSection";
+import FaqSection from "../components/send/FaqSection";
+import Footer from "../components/footer/Footer";
 
 type EmailFormState = {
   sendTo: string[];
@@ -335,6 +337,8 @@ export default function HomeView() {
       </Layout>
       <FeatureSection />
       <InfoSection />
+      <FaqSection />
+      <Footer />
     </div>
   );
 }
