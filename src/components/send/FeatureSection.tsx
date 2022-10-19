@@ -43,16 +43,19 @@ const FeatureSection = () => {
   ];
 
   return (
-    <div className="relative z-10 flex flex-col items-center justify-center bg-white py-[88px]">
-      <div className=" pb-16 text-center">
+    <div className="relative z-10 flex w-screen flex-col items-center justify-center bg-white px-5 pt-32 pb-[88px] lg:px-0">
+      <div className="pb-16 text-center">
         <p className="text-4xl font-semibold">{label.FeatureSection.title}</p>
-        <p className="w-[778px] pt-4 text-xl font-light text-gray-80">
+        <p className="pt-4 text-xl font-light text-gray-80 lg:w-[778px]">
           {label.FeatureSection.description}
         </p>
       </div>
-      <div className="flex flex-col flex-wrap items-center justify-center pt-14 sm:flex-row sm:gap-x-24 xl:gap-x-80">
+      <div className="flex max-w-screen-xl flex-col flex-wrap items-center justify-center pt-14 sm:flex-row sm:gap-x-32">
         {cards.map((card) => (
-          <div className="flex flex-col items-center space-y-6" key={card.id}>
+          <div
+            className="lg: flex flex-col items-center space-y-6"
+            key={card.id}
+          >
             <card.icon size={54} weight="light" color="rgb(0,102,255)" />
             <div className="flex  flex-col items-center gap-x-40 space-y-5 text-center">
               <p className="text-xl font-semibold">{card.title}</p>

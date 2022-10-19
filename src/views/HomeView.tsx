@@ -22,6 +22,10 @@ import {
 } from "../services/upload.service";
 
 import * as Sentry from "@sentry/react";
+import FeatureSection from "../components/send/FeatureSection";
+import InfoSection from "../components/send/InfoSection";
+import FaqSection from "../components/send/FaqSection";
+import Footer from "../components/footer/Footer";
 
 type EmailFormState = {
   sendTo: string[];
@@ -144,192 +148,200 @@ export default function HomeView() {
   const copyLinkThrottled = throttle(copyLink, 5000);
 
   return (
-    <Layout>
-      {phase.name === "standby" && (
-        <>
-          <div
-            className={`min-h-0 flex-1 ${
-              switchValue === "Send email"
-                ? "overflow-hidden overflow-y-auto lg:rounded-t-2xl"
-                : ""
-            }`}
-          >
-            <FileArea
-              className={`min-h-[224px] ${
-                switchValue !== "Send email" && "lg:h-full"
+    <div className="flex flex-col overflow-hidden">
+      <Layout>
+        {phase.name === "standby" && (
+          <>
+            <div
+              className={`min-h-0 flex-1 ${
+                switchValue === "Send email"
+                  ? "overflow-hidden overflow-y-auto rounded-t-2xl"
+                  : ""
               }`}
-              scroll={switchValue === "Send link"}
-            />
-            {switchValue === "Send email" && (
-              <EmailForm value={formState} onChange={setFormState} />
-            )}
-          </div>
-          <CardBottom>
-            <Switch
-              className="mx-auto"
-              options={options}
-              onClick={setSwitchValue}
-              value={switchValue}
-            />
-            <Button
-              disabled={disableButton}
-              className="mt-4"
-              onClick={onSubmit}
             >
-              {switchValue === "Send link" ? "Get a link" : "Send files"}
-            </Button>
-          </CardBottom>
-        </>
-      )}
-      {(phase.name === "loading" || phase.name === "confirm_cancel") && (
-        <div className="flex h-full flex-col">
-          <div className="flex flex-1 flex-col items-center">
-            <FancySpinner
-              className="mt-20"
-              progress={Math.floor((phase.uploadedBytes / totalSize) * 100)}
-            />
-            <div className="mt-10 text-center">
-              {phase.name === "loading" ? (
-                <>
-                  <p className="text-xl font-medium text-gray-80">
-                    {switchValue === "Send email" ? "Sending" : "Uploading"}{" "}
-                    {filesContext.files.length}{" "}
-                    {filesContext.files.length > 1 ? "files" : "file"}
-                  </p>
-                  <p className="mt-1.5 text-gray-60">
-                    {format(phase.uploadedBytes)} of {format(totalSize)}{" "}
-                    uploaded
-                  </p>
-                </>
-              ) : (
-                <p className="w-64 text-xl font-medium text-gray-80">
-                  Are you sure you want to cancel this transfer?
-                </p>
+              <FileArea
+                className={`min-h-[224px] ${
+                  switchValue !== "Send email" && "h-full"
+                }`}
+                scroll={switchValue === "Send link"}
+              />
+              {switchValue === "Send email" && (
+                <EmailForm value={formState} onChange={setFormState} />
               )}
             </div>
+            <div className="min-h-auto flex">
+              <CardBottom>
+                <Switch
+                  className="mx-auto flex"
+                  options={options}
+                  onClick={setSwitchValue}
+                  value={switchValue}
+                />
+                <Button
+                  disabled={disableButton}
+                  className="mt-4"
+                  onClick={onSubmit}
+                >
+                  {switchValue === "Send link" ? "Get a link" : "Send files"}
+                </Button>
+              </CardBottom>
+            </div>
+          </>
+        )}
+        {(phase.name === "loading" || phase.name === "confirm_cancel") && (
+          <div className="flex h-full flex-col">
+            <div className="flex flex-1 flex-col items-center">
+              <FancySpinner
+                className="mt-20"
+                progress={Math.floor((phase.uploadedBytes / totalSize) * 100)}
+              />
+              <div className="mt-10 text-center">
+                {phase.name === "loading" ? (
+                  <>
+                    <p className="text-xl font-medium text-gray-80">
+                      {switchValue === "Send email" ? "Sending" : "Uploading"}{" "}
+                      {filesContext.files.length}{" "}
+                      {filesContext.files.length > 1 ? "files" : "file"}
+                    </p>
+                    <p className="mt-1.5 text-gray-60">
+                      {format(phase.uploadedBytes)} of {format(totalSize)}{" "}
+                      uploaded
+                    </p>
+                  </>
+                ) : (
+                  <p className="w-64 text-xl font-medium text-gray-80">
+                    Are you sure you want to cancel this transfer?
+                  </p>
+                )}
+              </div>
+            </div>
+            <CardBottom>
+              {phase.name === "loading" ? (
+                <Button outline onClick={cancelUpload}>
+                  Cancel
+                </Button>
+              ) : (
+                <div className="flex">
+                  <Button
+                    outline
+                    onClick={() =>
+                      setPhase({
+                        name: "loading",
+                        uploadedBytes: phase.uploadedBytes,
+                      })
+                    }
+                  >
+                    No
+                  </Button>
+                  <Button
+                    className="ml-4"
+                    onClick={() => {
+                      uploadAbortController.current?.abort();
+                      setPhase({ name: "standby" });
+                    }}
+                  >
+                    Yes
+                  </Button>
+                </div>
+              )}
+            </CardBottom>
           </div>
-          <CardBottom>
-            {phase.name === "loading" ? (
-              <Button outline onClick={cancelUpload}>
-                Cancel
+        )}
+        {phase.name === "done" && (
+          <div className="flex h-full flex-col">
+            <div className="flex flex-1 flex-col items-center">
+              <div className="mt-20 flex h-28 w-28 flex-row items-center justify-center rounded-full bg-green text-white">
+                <Check size={80} />
+              </div>
+              <div className="mt-20 w-full px-5 text-center">
+                <p className="text-xl font-medium text-gray-80">
+                  {switchValue === "Send email"
+                    ? "Files sent via email"
+                    : `${filesContext.files.length} ${
+                        filesContext.files.length > 1 ? "files" : "file"
+                      } uploaded`}
+                </p>
+                <p className="text-gray-60">
+                  {switchValue === "Send email"
+                    ? "File access will expire in 2 weeks"
+                    : "This link will expire in 2 weeks"}
+                </p>
+                {switchValue === "Send link" && (
+                  <Button
+                    className="mx-auto mt-4 flex w-auto flex-row items-center justify-center space-x-2 px-7"
+                    onClick={() => {
+                      copyLinkThrottled();
+                    }}
+                  >
+                    <Copy className="text-white" size={24} />
+                    <span>Copy link</span>
+                  </Button>
+                )}
+              </div>
+            </div>
+            <CardBottom>
+              <Button
+                outline
+                onClick={() => {
+                  setPhase({ name: "standby" });
+                  setFormState({
+                    message: "",
+                    sender: "",
+                    sendTo: [],
+                    title: "",
+                    sendToField: "",
+                  });
+                  filesContext.clear();
+                }}
+              >
+                Send more files
               </Button>
-            ) : (
+            </CardBottom>
+          </div>
+        )}
+        {phase.name === "error" && (
+          <div className="flex h-full flex-col">
+            <div className="flex flex-1 flex-col items-center">
+              <div className="mt-20 flex h-28 w-28 flex-row items-center justify-center rounded-full bg-red-std text-white">
+                <X size={80} />
+              </div>
+              <div className="mt-20 w-full px-5 text-center">
+                <p className="text-xl font-medium text-gray-80">
+                  Something went wrong...
+                </p>
+                <p className="text-gray-60">
+                  We were unable to{" "}
+                  {switchValue === "Send email" ? "send" : "upload"} your files.
+                  <br />
+                  "Please try again later."
+                </p>
+              </div>
+            </div>
+            <CardBottom>
               <div className="flex">
                 <Button
                   outline
                   onClick={() =>
                     setPhase({
-                      name: "loading",
-                      uploadedBytes: phase.uploadedBytes,
+                      name: "standby",
                     })
                   }
                 >
-                  No
+                  Back
                 </Button>
-                <Button
-                  className="ml-4"
-                  onClick={() => {
-                    uploadAbortController.current?.abort();
-                    setPhase({ name: "standby" });
-                  }}
-                >
-                  Yes
+                <Button className="ml-4" onClick={onSubmit}>
+                  Try again
                 </Button>
               </div>
-            )}
-          </CardBottom>
-        </div>
-      )}
-      {phase.name === "done" && (
-        <div className="flex h-full flex-col">
-          <div className="flex flex-1 flex-col items-center">
-            <div className="mt-20 flex h-28 w-28 flex-row items-center justify-center rounded-full bg-green text-white">
-              <Check size={80} />
-            </div>
-            <div className="mt-20 w-full px-5 text-center">
-              <p className="text-xl font-medium text-gray-80">
-                {switchValue === "Send email"
-                  ? "Files sent via email"
-                  : `${filesContext.files.length} ${
-                      filesContext.files.length > 1 ? "files" : "file"
-                    } uploaded`}
-              </p>
-              <p className="text-gray-60">
-                {switchValue === "Send email"
-                  ? "File access will expire in 2 weeks"
-                  : "This link will expire in 2 weeks"}
-              </p>
-              {switchValue === "Send link" && (
-                <Button
-                  className="mx-auto mt-4 flex w-auto flex-row items-center justify-center space-x-2 px-7"
-                  onClick={() => {
-                    copyLinkThrottled();
-                  }}
-                >
-                  <Copy className="text-white" size={24} />
-                  <span>Copy link</span>
-                </Button>
-              )}
-            </div>
+            </CardBottom>
           </div>
-          <CardBottom>
-            <Button
-              outline
-              onClick={() => {
-                setPhase({ name: "standby" });
-                setFormState({
-                  message: "",
-                  sender: "",
-                  sendTo: [],
-                  title: "",
-                  sendToField: "",
-                });
-                filesContext.clear();
-              }}
-            >
-              Send more files
-            </Button>
-          </CardBottom>
-        </div>
-      )}
-      {phase.name === "error" && (
-        <div className="flex h-full flex-col">
-          <div className="flex flex-1 flex-col items-center">
-            <div className="mt-20 flex h-28 w-28 flex-row items-center justify-center rounded-full bg-red-std text-white">
-              <X size={80} />
-            </div>
-            <div className="mt-20 w-full px-5 text-center">
-              <p className="text-xl font-medium text-gray-80">
-                Something went wrong...
-              </p>
-              <p className="text-gray-60">
-                We were unable to{" "}
-                {switchValue === "Send email" ? "send" : "upload"} your files.
-                <br />
-                "Please try again later."
-              </p>
-            </div>
-          </div>
-          <CardBottom>
-            <div className="flex">
-              <Button
-                outline
-                onClick={() =>
-                  setPhase({
-                    name: "standby",
-                  })
-                }
-              >
-                Back
-              </Button>
-              <Button className="ml-4" onClick={onSubmit}>
-                Try again
-              </Button>
-            </div>
-          </CardBottom>
-        </div>
-      )}
-    </Layout>
+        )}
+      </Layout>
+      <FeatureSection />
+      <InfoSection />
+      <FaqSection />
+      <Footer />
+    </div>
   );
 }
 
@@ -342,7 +354,7 @@ function EmailForm({
 }) {
   const { sendTo, sendToField } = value;
   return (
-    <div className="border-t border-gray-5 px-5 py-4">
+    <div className="border-t border-gray-5 px-5">
       <SendTo
         value={{ sendTo, sendToField }}
         onChange={(v) => onChange({ ...value, ...v })}
