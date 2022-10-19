@@ -8,13 +8,6 @@ import HomeView from "./views/HomeView";
 import NotFoundView from "./views/NotFoundView";
 
 function App() {
-  useEffect(() => {
-    if (document) {
-      let vh = window.innerHeight * 0.01;
-      document.documentElement.style.setProperty("--vh", `${vh}px`);
-    }
-  }, []);
-
   return (
     <>
       <BrowserRouter>
