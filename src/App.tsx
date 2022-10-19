@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import RootDropzone from "./components/RootDropzone";
