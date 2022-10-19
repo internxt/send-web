@@ -12,9 +12,7 @@ const FaqSection = () => {
       <div className="flex w-full max-w-screen-sm flex-col pt-10">
         {label.FaqSection.faq.map((item: any, index: number) => (
           <div
-            className={`${
-              index === 0 ? "border-t-1" : "border-t-0"
-            } border border-gray-20 px-5`}
+            className={`border border-t-0 border-gray-20 px-5 first:border-t`}
             key={item.title}
           >
             <FaqAccordion
