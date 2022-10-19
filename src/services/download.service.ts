@@ -1,7 +1,7 @@
 import axios from "axios";
 import fileDownload from "js-file-download";
 
-import { NetworkService } from "./network.service";
+import { NetworkService, ProgressOptions } from "./network.service";
 import { FlatFolderZip } from "./zip/FlatFolderZip";
 
 import { binaryStreamToBlob } from "../network/streams";
@@ -9,11 +9,6 @@ import { SendItem } from "../models/SendItem";
 import { StreamService } from "./stream.service";
 import { getAllItemsList } from "./items.service";
 
-type DownloadFileOptions = {
-  progress?: (totalBytes: number, downloadedBytes: number) => void;
-  abortController?: AbortController;
-  plainCode?: string;
-};
 
 /**
  * This service has *the only responsability* of downloading 
@@ -22,7 +17,7 @@ type DownloadFileOptions = {
 export class DownloadService {
   static async downloadFilesFromLink(
     linkId: string,
-    opts?: DownloadFileOptions
+    opts?: ProgressOptions
   ): Promise<void> {
     const { title, items, code } = await getSendLink(linkId);
     const date = new Date();
@@ -45,19 +40,21 @@ export class DownloadService {
     items: SendItem[],
     networkService: NetworkService,
     plainCode: string,
-    opts?: DownloadFileOptions
+    opts?: ProgressOptions
   ) {
     const totalBytes = items.reduce((a, f) => a + (f.type === 'file' ? f.size : 0), 0);
 
     const itemList = getAllItemsList(items);
 
+    const options = {
+      progress: (downloadedBytes: number) => {
+        opts?.progress?.(opts.totalBytes || totalBytes, Math.min(downloadedBytes, opts.totalBytes || totalBytes));
+      },
+      abortController: opts?.abortController
+    };
+
     if (itemList.length > 1 || (itemList.length === 1 && itemList[0].type === 'folder')) {
-      const zip = new FlatFolderZip(zipName, {
-        progress: (downloadedBytes) => {
-          opts?.progress?.(totalBytes, Math.min(downloadedBytes, totalBytes));
-        },
-        abortController: opts?.abortController
-      });
+      const zip = new FlatFolderZip(zipName, options);
 
       for (const item of itemList) {
         await this.addItemToZip(zip, item, networkService, plainCode, opts);
@@ -78,12 +75,7 @@ export class DownloadService {
           await StreamService.pipeReadableToFileSystemStream(
             itemDownloadStream,
             firstItem.name,
-            {
-              progress: (downloadedBytes) => {
-                opts?.progress?.(totalBytes, Math.min(downloadedBytes, totalBytes));
-              },
-              abortController: opts?.abortController
-            }
+            options
           )
         } else {
           fileDownload(
@@ -92,13 +84,9 @@ export class DownloadService {
           );
         }
       } else if (firstItem.type === 'folder') {
-        const zip = new FlatFolderZip(firstItem.name, {
-          progress: (downloadedBytes) => {
-            opts?.progress?.(totalBytes, Math.min(downloadedBytes, totalBytes));
-          },
-          abortController: opts?.abortController
-        });
+        const zip = new FlatFolderZip(firstItem.name, options);
         await this.addItemToZip(zip, firstItem, networkService, plainCode, opts);
+        await zip.close();
       }
     }
   }
@@ -106,12 +94,11 @@ export class DownloadService {
   static async addItemToZip(zip: FlatFolderZip, item: SendItem,
     networkService: NetworkService,
     plainCode: string,
-    opts?: DownloadFileOptions) {
+    opts?: ProgressOptions) {
     if (item.type === 'file') {
       const itemDownloadStream = await networkService.getDownloadFileStream(
         item,
-        plainCode,
-        opts
+        plainCode
       );
       zip.addFile(item.path || item.name, itemDownloadStream);
     } else if (item.type === 'folder') {

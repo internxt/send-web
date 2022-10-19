@@ -17,6 +17,7 @@ import {
 import * as Sentry from "@sentry/react";
 import { SendItemData } from "../models/SendItem";
 import { getAllItemsList } from "../services/items.service";
+import { ProgressOptions } from "../services/network.service";
 
 export default function DownloadView() {
   const [state, setState] = useState<
@@ -39,7 +40,7 @@ export default function DownloadView() {
       if (!params.shareId) throw new Error();
 
       const details = await getSendLink(params.shareId);
-      setFileList(details.items.filter(item => item.type === 'file') as SendItemData[]);
+      setFileList(details.items.filter(item => item.type === 'file'));
       setState({ status: "ready", details });
     } catch (err) {
       console.error(err);
@@ -65,11 +66,12 @@ export default function DownloadView() {
     });
     try {
       await DownloadService.downloadFilesFromLink(state.details.id, {
+        totalBytes: state.details.size,
         progress: (totalBytes, downloadedBytes) => {
           setState({ status: "downloading", totalBytes, downloadedBytes });
         },
         plainCode: search.get('code') || undefined
-      });
+      } as ProgressOptions);
       setState({ status: "done" });
     } catch (err) {
       console.error(err);

@@ -24,10 +24,12 @@ function getSendAccountParameters(): {
   }
 }
 
-interface DownloadOptions {
-  progress?: (totalBytes: number, downloadedBytes: number) => void,
-  abortController?: AbortController
-}
+export type ProgressOptions = {
+  totalBytes?: number;
+  progress?: (totalBytes: number, downloadedBytes: number) => void;
+  abortController?: AbortController;
+  plainCode?: string;
+};
 
 /**
  * This service has *the only responsability* of providing access
@@ -35,7 +37,7 @@ interface DownloadOptions {
  * Network and how the zero-knowledge is being implemented.
  */
 export class NetworkService {
-  private constructor(private readonly creds: NetworkCredentials) {}
+  private constructor(private readonly creds: NetworkCredentials) { }
   public static getInstance(): NetworkService {
     const accountParams = getSendAccountParameters();
 
@@ -51,7 +53,7 @@ export class NetworkService {
   getDownloadFileStreamV1(
     item: SendItem,
     encryptedCode: string,
-    opts?: DownloadOptions
+    opts?: ProgressOptions
   ): Promise<ReadableStream> {
     const { bucketId, encryptionKey } = getSendAccountParameters();
     const plainCode = aes.decrypt(encryptedCode, encryptionKey);
@@ -63,7 +65,7 @@ export class NetworkService {
       mnemonic: aes.decrypt(item.encryptionKey, plainCode),
       options: {
         notifyProgress: (totalBytes, downloadedBytes) => {
-          opts?.progress?.(totalBytes, downloadedBytes);
+          opts?.progress?.(opts.totalBytes || totalBytes, downloadedBytes);
         },
         abortController: opts?.abortController
       }
@@ -76,7 +78,7 @@ export class NetworkService {
   getDownloadFileStreamV2(
     item: SendItem,
     plainCode: string,
-    opts?: DownloadOptions
+    opts?: ProgressOptions
   ): Promise<ReadableStream> {
     const { bucketId } = getSendAccountParameters();
     const encryptionKey = aes.decrypt(item.encryptionKey, plainCode);
@@ -88,7 +90,7 @@ export class NetworkService {
       mnemonic: encryptionKey,
       options: {
         notifyProgress: (totalBytes, downloadedBytes) => {
-          opts?.progress?.(totalBytes, downloadedBytes);
+          opts?.progress?.(opts.totalBytes || totalBytes, downloadedBytes);
         },
         abortController: opts?.abortController
       }
@@ -98,20 +100,20 @@ export class NetworkService {
   public getDownloadFileStream(
     item: SendItem,
     code: string,
-    opts?: DownloadOptions & { customEncryptionKey?: string }
+    opts?: ProgressOptions & { customEncryptionKey?: string }
   ): Promise<ReadableStream> {
     const requiresVersionTwoDecryption = item.version === 2;
 
     if (requiresVersionTwoDecryption) {
       return this.getDownloadFileStreamV2(
-        item, 
+        item,
         code,
         opts
       );
     } else {
       return this.getDownloadFileStreamV1(
-        item, 
-        code, 
+        item,
+        code,
         opts
       );
     }
@@ -122,7 +124,7 @@ export class NetworkService {
   }
 
   async uploadFile(
-    file: File, 
+    file: File,
     opts?: {
       progress?: (totalBytes: number, downloadedBytes: number) => void,
       abortController?: AbortController
@@ -131,8 +133,8 @@ export class NetworkService {
     const { bucketId, user, pass, encryptionKey } = getSendAccountParameters();
 
     let parts
-    const partSize = 50*1024*1024;
-    const minimumMultipartThreshold = 100*1024*1024;
+    const partSize = 50 * 1024 * 1024;
+    const minimumMultipartThreshold = 100 * 1024 * 1024;
 
     if (file.size > minimumMultipartThreshold) {
       parts = Math.ceil(file.size / partSize);
@@ -170,7 +172,7 @@ export class NetworkService {
       url: requestUrl,
       data: { operation }
     };
-  
+
     const res = await axios.request<{
       bucket: string
       encryptionKey: string,
@@ -183,7 +185,7 @@ export class NetworkService {
   }
 
   async uploadFileForShare(
-    file: File, 
+    file: File,
     opts?: {
       progress?: (totalBytes: number, downloadedBytes: number) => void,
       abortController?: AbortController
@@ -192,8 +194,8 @@ export class NetworkService {
     const { bucketId, user, pass, encryptionKey } = getSendAccountParameters();
 
     let parts
-    const partSize = 100*1024*1024;
-    const minimumMultipartThreshold = 100*1024*1024;
+    const partSize = 100 * 1024 * 1024;
+    const minimumMultipartThreshold = 100 * 1024 * 1024;
 
     if (file.size > minimumMultipartThreshold) {
       parts = Math.ceil(file.size / partSize);
