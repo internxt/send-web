@@ -33,7 +33,7 @@ export default function Layout({ children }: { children: ReactNode }) {
 
   return (
     <div
-      className="relative flex w-auto flex-col bg-white lg:min-h-[800px] lg:bg-black"
+      className="relative flex w-auto flex-col bg-white lg:min-h-[700px] lg:bg-black"
       style={{ height: height }}
     >
       <div
