@@ -13,15 +13,10 @@ import Switch from "../components/Switch";
 import { MAX_RECIPIENTS } from "../constants";
 import { FilesContext } from "../contexts/Files";
 import Layout from "../Layout";
-import notificationsService, {
-  ToastType,
-} from "../services/notifications.service";
-import {
-  UploadService,
-  MaximumItemsNumberLimitReachedError,
-} from "../services/upload.service";
-
+import notificationsService, { ToastType } from "../services/notifications.service";
+import { UploadService } from "../services/upload.service";
 import * as Sentry from "@sentry/react";
+import { getAllItemsArray } from "../services/items.service";
 import FeatureSection from "../components/send/FeatureSection";
 import InfoSection from "../components/send/InfoSection";
 import FaqSection from "../components/send/FaqSection";
@@ -63,13 +58,8 @@ export default function HomeView() {
     filesContext.setEnabled(phase.name === "standby");
   }, [phase, filesContext]);
 
-  const totalSize = filesContext.files.reduce(
-    (prev, current) => prev + current.size,
-    0
-  );
-
   const disableButton =
-    filesContext.files.length === 0 ||
+    filesContext.totalFilesCount === 0 ||
     (switchValue === "Send email" &&
       ((formState.sendTo.length === 0 &&
         !isValidEmail(formState.sendToField)) ||
@@ -79,20 +69,20 @@ export default function HomeView() {
     const abortController = new AbortController();
     uploadAbortController.current = abortController;
 
-    const files = filesContext.files;
+    const items = getAllItemsArray(filesContext.itemList);
 
     const link = await UploadService.uploadFilesAndGetLink(
-      files,
+      items,
       switchValue === "Send email"
         ? {
-            sender: formState.sender,
-            receivers:
-              formState.sendTo.length === 0
-                ? [formState.sendToField]
-                : formState.sendTo,
-            subject: formState.message,
-            title: formState.title,
-          }
+          sender: formState.sender,
+          receivers:
+            formState.sendTo.length === 0
+              ? [formState.sendToField]
+              : formState.sendTo,
+          subject: formState.message,
+          title: formState.title,
+        }
         : undefined,
       {
         progress: (_, uploadedBytes) => cb(uploadedBytes),
@@ -153,16 +143,14 @@ export default function HomeView() {
         {phase.name === "standby" && (
           <>
             <div
-              className={`min-h-0 flex-1 ${
-                switchValue === "Send email"
-                  ? "overflow-hidden overflow-y-auto rounded-t-2xl"
-                  : ""
-              }`}
+              className={`min-h-0 flex-1 ${switchValue === "Send email"
+                ? "overflow-hidden overflow-y-auto lg:rounded-t-2xl"
+                : ""
+                }`}
             >
               <FileArea
-                className={`min-h-[224px] ${
-                  switchValue !== "Send email" && "h-full"
-                }`}
+                className={`min-h-[224px] ${switchValue !== "Send email" && "lg:h-full"
+                  }`}
                 scroll={switchValue === "Send link"}
               />
               {switchValue === "Send email" && (
@@ -172,7 +160,7 @@ export default function HomeView() {
             <div className="min-h-auto flex">
               <CardBottom>
                 <Switch
-                  className="mx-auto flex"
+                  className="mx-auto"
                   options={options}
                   onClick={setSwitchValue}
                   value={switchValue}
@@ -193,19 +181,17 @@ export default function HomeView() {
             <div className="flex flex-1 flex-col items-center">
               <FancySpinner
                 className="mt-20"
-                progress={Math.floor((phase.uploadedBytes / totalSize) * 100)}
+                progress={Math.floor((phase.uploadedBytes / filesContext.totalFilesSize) * 100)}
               />
               <div className="mt-10 text-center">
                 {phase.name === "loading" ? (
                   <>
                     <p className="text-xl font-medium text-gray-80">
                       {switchValue === "Send email" ? "Sending" : "Uploading"}{" "}
-                      {filesContext.files.length}{" "}
-                      {filesContext.files.length > 1 ? "files" : "file"}
+                      {filesContext.totalFilesCount} {filesContext.totalFilesCount > 1 ? "files" : "file"}
                     </p>
                     <p className="mt-1.5 text-gray-60">
-                      {format(phase.uploadedBytes)} of {format(totalSize)}{" "}
-                      uploaded
+                      {format(phase.uploadedBytes)} of {format(filesContext.totalFilesSize)} uploaded
                     </p>
                   </>
                 ) : (
@@ -257,9 +243,8 @@ export default function HomeView() {
                 <p className="text-xl font-medium text-gray-80">
                   {switchValue === "Send email"
                     ? "Files sent via email"
-                    : `${filesContext.files.length} ${
-                        filesContext.files.length > 1 ? "files" : "file"
-                      } uploaded`}
+                    : `${filesContext.totalFilesCount} ${filesContext.totalFilesCount > 1 ? "files" : "file"
+                    } uploaded`}
                 </p>
                 <p className="text-gray-60">
                   {switchValue === "Send email"
@@ -380,7 +365,7 @@ function EmailForm({
       </label>
       <textarea
         className="mt-1 h-20 w-full resize-none rounded-md border border-gray-20 bg-white px-3 py-2 text-lg font-normal text-gray-80 placeholder-gray-30 outline-none 
-				ring-primary ring-opacity-10 hover:border-gray-30 focus:border-primary focus:ring-2 lg:text-base"
+      ring-primary ring-opacity-10 hover:border-gray-30 focus:border-primary focus:ring-2 lg:text-base"
         placeholder="Message"
         onChange={(v) => onChange({ ...value, message: v.target.value })}
         value={value.message}

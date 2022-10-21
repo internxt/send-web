@@ -11,7 +11,7 @@ type FlatFolderZipOpts = {
 function isBrave() {
   const maybeBrave = (window.navigator as { brave?: any }).brave;
 
-  return maybeBrave != undefined && maybeBrave.isBrave.name == "isBrave";
+  return maybeBrave !== undefined && maybeBrave.isBrave.name === "isBrave";
 }
 export class FlatFolderZip {
   private finished!: Promise<void>;
