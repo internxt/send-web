@@ -62,13 +62,12 @@ export default function FileArea({
         <Empty onFileExplorerOpen={onFileExplorerOpen} onFolderExplorerOpen={onFolderExplorerOpen} />
       ) : (
         <>
-          <div className="flex-1 bg-gray-1">
-            <ItemsList
-              items={fileContext.itemList}
-              onRemoveItem={fileContext.removeItem}
-              className={`h-auto bg-gray-1 py-3 px-5 ${scroll ? "overflow-y-auto" : ""} `} // ${existsFolders ? "pt-0" : ""}
-            />
-          </div>
+          <ItemsList
+            items={fileContext.itemList}
+            onRemoveItem={fileContext.removeItem}
+            className={`flex-1 bg-gray-1 py-3 px-5 ${scroll ? "overflow-y-auto" : ""} `}
+          />
+
           <div
             className="flex cursor-pointer select-none items-center bg-gray-1 px-5 py-2.5"
             onClick={onFileExplorerOpen}
@@ -100,7 +99,7 @@ function Empty({
 }) {
   return (
     <div
-      className="flex h-full flex-1 cursor-pointer select-none items-center justify-center py-20 lg:py-0"
+      className="flex h-full flex-1 cursor-pointer select-none items-center justify-center"
       onClick={onFileExplorerOpen}
     >
       <div className="flex cursor-default p-3" onClick={(e) => { e.stopPropagation(); }}>
