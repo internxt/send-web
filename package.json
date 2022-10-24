@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@headlessui/react": "^1.6.5",
+    "@headlessui/react": "^1.6.6",
     "@internxt/inxt-js": "=1.2.21",
     "@internxt/lib": "^1.2.0",
     "@internxt/sdk": "^0.15.5",
@@ -14,7 +14,7 @@
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.11.41",
-    "@types/react": "^18.0.14",
+    "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.5",
     "@types/streamsaver": "^2.0.1",
     "@types/uuid": "^8.3.4",
