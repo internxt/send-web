@@ -52,6 +52,7 @@
   0% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }
@@ -61,4 +62,9 @@ html,
 body {
   background: #ffffff;
   background-color: #ffffff;
+}
+
+.dropdown {
+  top: -90px;
+  left: 20px;
 }

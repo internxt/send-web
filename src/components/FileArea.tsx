@@ -1,9 +1,10 @@
-import { PlusCircle } from "phosphor-react";
-import { ChangeEvent, MouseEvent, useContext, useRef, useState } from "react";
+import { File, Folder, PlusCircle } from "phosphor-react";
+import { ChangeEvent, forwardRef, MouseEvent, ReactNode, useContext, useRef, useState } from "react";
 import { FilesContext } from "../contexts/Files";
 import { format } from "bytes";
 import { MAX_BYTES_PER_SEND, MAX_ITEMS_PER_LINK } from "../constants";
 import ItemsList from "./ItemList";
+import Dropdown from "./Dropdown";
 
 export default function FileArea({
   className = "",
@@ -14,6 +15,7 @@ export default function FileArea({
 }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const folderInputRef = useRef<HTMLInputElement>(null);
+  const dropdownMenuButtonRef = useRef<HTMLButtonElement>(null);
   const [fileInputKey, setFileInputKey] = useState<number>(Date.now());
   const [folderInputKey, setFolderInputKey] = useState<number>(Date.now());
 
@@ -30,11 +32,27 @@ export default function FileArea({
   }
 
   const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files)
+    if (event.target.files) {
       fileContext.addFiles(Array.from(event.target.files));
+    }
+    if (dropdownMenuButtonRef.current?.ariaExpanded === 'true') {
+      dropdownMenuButtonRef.current?.click();
+    }
     setFileInputKey(Date.now());
     setFolderInputKey(Date.now());
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const MenuItem = forwardRef(({ children, onClick }: { children: ReactNode; onClick: (e: MouseEvent) => void }, ref) => {
+    return (
+      <div
+        className="flex cursor-pointer items-center py-1 px-3 text-gray-80 hover:bg-gray-5 active:bg-gray-10"
+        onClick={onClick}
+      >
+        {children}
+      </div>
+    );
+  });
 
   const spaceRemaining = MAX_BYTES_PER_SEND - fileContext.totalFilesSize;
 
@@ -68,22 +86,40 @@ export default function FileArea({
             className={`flex-1 bg-gray-1 py-3 px-5 ${scroll ? "overflow-y-auto" : ""} `}
           />
 
-          <div
-            className="flex cursor-pointer select-none items-center bg-gray-1 px-5 py-2.5"
-            onClick={onFileExplorerOpen}
+          <Dropdown
+            buttonInputRef={dropdownMenuButtonRef}
+            classButton={
+              'flex flex-1 cursor-pointer select-none items-center bg-gray-1 px-5 py-2.5'
+            }
+            openDirection={'left'}
+            classMenuItems={
+              'left-0 w-max rounded-md border border-black border-opacity-8 bg-whitedrop-shadow dropdown'
+            }
+            menuItems={[
+              <MenuItem onClick={onFolderExplorerOpen}>
+                <Folder size={20} />
+                <p className="ml-3">Folders</p>
+              </MenuItem>,
+              <MenuItem onClick={onFileExplorerOpen}>
+                <File size={20} />
+                <p className="ml-3">Files</p>
+              </MenuItem>
+            ]}
           >
-            <PlusCircle className="text-primary" size={28}></PlusCircle>
-            <div className="ml-1.5">
-              <p className="text-sm text-gray-80">Add more files</p>
-              <div className="flex space-x-1.5 text-xs text-gray-50">
-                <p>
-                  {fileContext.totalFilesCount} / {MAX_ITEMS_PER_LINK} {fileContext.totalFilesCount > 1 ? "files" : "file"} added
-                </p>
-                <p className="font-bold text-gray-30">·</p>
-                <p>{format(spaceRemaining)} remaining</p>
+            <>
+              <PlusCircle className="text-primary" size={28}></PlusCircle>
+              <div className="ml-1.5">
+                <p className="text-sm text-gray-80 text-left">Add more items</p>
+                <div className="flex space-x-1.5 text-xs text-gray-50">
+                  <p>
+                    {fileContext.totalFilesCount} / {MAX_ITEMS_PER_LINK} {fileContext.totalFilesCount > 1 ? "files" : "file"} added
+                  </p>
+                  <p className="font-bold text-gray-30">·</p>
+                  <p>{format(spaceRemaining)} remaining</p>
+                </div>
               </div>
-            </div>
-          </div>
+            </>
+          </Dropdown>
         </>
       )}
     </div>
