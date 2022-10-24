@@ -27,7 +27,7 @@ export class DownloadService {
       + String(date.getMilliseconds()).padStart(3, '0');
 
     await DownloadService.downloadFiles(
-      title ?? 'internxt-send_' + now,
+      !title || String(title).trim().length === 0 ? 'internxt-send_' + now : title,
       items,
       NetworkService.getInstance(),
       opts?.plainCode || code,
