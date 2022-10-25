@@ -1,5 +1,13 @@
 import { File, Folder, PlusCircle } from "phosphor-react";
-import { ChangeEvent, forwardRef, MouseEvent, ReactNode, useContext, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  forwardRef,
+  MouseEvent,
+  ReactNode,
+  useContext,
+  useRef,
+  useState,
+} from "react";
 import { FilesContext } from "../contexts/Files";
 import { format } from "bytes";
 import { MAX_BYTES_PER_SEND, MAX_ITEMS_PER_LINK } from "../constants";
@@ -24,35 +32,43 @@ export default function FileArea({
   const onFileExplorerOpen = (e: MouseEvent) => {
     e.preventDefault();
     fileInputRef.current?.click();
-  }
+  };
 
   const onFolderExplorerOpen = (e: MouseEvent) => {
     e.preventDefault();
     folderInputRef.current?.click();
-  }
+  };
 
   const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       fileContext.addFiles(Array.from(event.target.files));
     }
-    if (dropdownMenuButtonRef.current?.ariaExpanded === 'true') {
+    if (dropdownMenuButtonRef.current?.ariaExpanded === "true") {
       dropdownMenuButtonRef.current?.click();
     }
     setFileInputKey(Date.now());
     setFolderInputKey(Date.now());
-  }
+  };
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const MenuItem = forwardRef(({ children, onClick }: { children: ReactNode; onClick: (e: MouseEvent) => void }, ref) => {
-    return (
-      <div
-        className="flex cursor-pointer items-center py-1 px-3 text-gray-80 hover:bg-gray-5 active:bg-gray-10"
-        onClick={onClick}
-      >
-        {children}
-      </div>
-    );
-  });
+  const MenuItem = forwardRef(
+    (
+      {
+        children,
+        onClick,
+      }: { children: ReactNode; onClick: (e: MouseEvent) => void },
+      ref
+    ) => {
+      return (
+        <div
+          className="flex cursor-pointer items-center py-1 px-3 text-gray-80 hover:bg-gray-5 active:bg-gray-10"
+          onClick={onClick}
+        >
+          {children}
+        </div>
+      );
+    }
+  );
 
   const spaceRemaining = MAX_BYTES_PER_SEND - fileContext.totalFilesSize;
 
@@ -77,23 +93,28 @@ export default function FileArea({
         webkitdirectory=""
       />
       {fileContext.itemList.length === 0 ? (
-        <Empty onFileExplorerOpen={onFileExplorerOpen} onFolderExplorerOpen={onFolderExplorerOpen} />
+        <Empty
+          onFileExplorerOpen={onFileExplorerOpen}
+          onFolderExplorerOpen={onFolderExplorerOpen}
+        />
       ) : (
         <>
           <ItemsList
             items={fileContext.itemList}
             onRemoveItem={fileContext.removeItem}
-            className={`flex-1 bg-gray-1 py-3 px-5 ${scroll ? "overflow-y-auto" : ""} `}
+            className={`flex-1 bg-gray-1 py-3 px-5 ${
+              scroll ? "overflow-y-auto" : ""
+            } `}
           />
 
           <Dropdown
             buttonInputRef={dropdownMenuButtonRef}
             classButton={
-              'flex flex-1 cursor-pointer select-none items-center bg-gray-1 px-5 py-2.5'
+              "flex flex-1 cursor-pointer select-none items-center bg-gray-1 px-5 py-2.5"
             }
-            openDirection={'left'}
+            openDirection={"left"}
             classMenuItems={
-              'left-0 w-max rounded-md border border-black border-opacity-8 bg-whitedrop-shadow dropdown'
+              "left-0 w-max rounded-md border border-black border-opacity-8 bg-whitedrop-shadow dropdown"
             }
             menuItems={[
               <MenuItem onClick={onFolderExplorerOpen}>
@@ -103,16 +124,17 @@ export default function FileArea({
               <MenuItem onClick={onFileExplorerOpen}>
                 <File size={20} />
                 <p className="ml-3">Files</p>
-              </MenuItem>
+              </MenuItem>,
             ]}
           >
             <>
               <PlusCircle className="text-primary" size={28}></PlusCircle>
               <div className="ml-1.5">
-                <p className="text-sm text-gray-80 text-left">Add more items</p>
+                <p className="text-left text-sm text-gray-80">Add more items</p>
                 <div className="flex space-x-1.5 text-xs text-gray-50">
                   <p>
-                    {fileContext.totalFilesCount} / {MAX_ITEMS_PER_LINK} {fileContext.totalFilesCount > 1 ? "files" : "file"} added
+                    {fileContext.totalFilesCount} / {MAX_ITEMS_PER_LINK}{" "}
+                    {fileContext.totalFilesCount > 1 ? "files" : "file"} added
                   </p>
                   <p className="font-bold text-gray-30">·</p>
                   <p>{format(spaceRemaining)} remaining</p>
@@ -138,8 +160,18 @@ function Empty({
       className="flex h-full flex-1 cursor-pointer select-none items-center justify-center"
       onClick={onFileExplorerOpen}
     >
-      <div className="flex cursor-default p-3" onClick={(e) => { e.stopPropagation(); }}>
-        <PlusCircle size={48} className="text-primary cursor-pointer" weight="fill" onClick={onFileExplorerOpen} />
+      <div
+        className="flex cursor-default p-3"
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        <PlusCircle
+          size={48}
+          className="cursor-pointer text-primary"
+          weight="fill"
+          onClick={onFileExplorerOpen}
+        />
         <div className="ml-2">
           <h1 className="text-2xl font-medium text-gray-80">Upload files</h1>
           <div onClick={onFolderExplorerOpen} className="cursor-pointer">
@@ -153,7 +185,7 @@ function Empty({
   );
 }
 
-declare module 'react' {
+declare module "react" {
   interface HTMLAttributes<T> extends AriaAttributes, DOMAttributes<T> {
     // extends React's HTMLAttributes
     directory?: string;
