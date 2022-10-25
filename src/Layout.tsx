@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 export default function Layout({ children }: { children: ReactNode }) {
   const backgroundRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
-  let height = window.innerHeight;
+  let height = useRef(window.innerHeight);
 
   useEffect(() => {
     const background = new Image();
@@ -23,7 +23,7 @@ export default function Layout({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     window.addEventListener("resize", () => {
-      height = window.innerHeight;
+      height.current = window.innerHeight;
     });
 
     return () => {
@@ -34,7 +34,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <div
       className="relative flex w-auto flex-col bg-white lg:min-h-[700px] lg:bg-black"
-      style={{ height: height }}
+      style={{ height: height.current }}
     >
       <div
         ref={backgroundRef}
