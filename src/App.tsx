@@ -6,10 +6,15 @@ import DownloadView from "./views/DownloadView";
 import HomeView from "./views/HomeView";
 import NotFoundView from "./views/NotFoundView";
 
+const browserRouterConfig: { basename?: string } = {};
+if (process.env.REACT_APP_BASE_URL) {
+  browserRouterConfig.basename = process.env.REACT_APP_BASE_URL;
+}
+
 function App() {
   return (
     <>
-      <BrowserRouter>
+      <BrowserRouter {...browserRouterConfig}>
         <Routes>
           <Route
             path="/"
