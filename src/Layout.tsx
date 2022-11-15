@@ -4,6 +4,7 @@ import logo_dark from "./logo_dark.svg";
 import Card from "./components/Card";
 import { Link } from "react-router-dom";
 
+const urlPrefix = process.env.REACT_APP_BASE_URL || "";
 export default function Layout({ children }: { children: ReactNode }) {
   const backgroundRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
@@ -11,10 +12,10 @@ export default function Layout({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const background = new Image();
-    background.src = "/bg.png";
+    background.src = `${urlPrefix}/bg.png`;
     background.addEventListener("load", () => {
       if (backgroundRef.current && ctaRef.current) {
-        backgroundRef.current.style.backgroundImage = "url(/bg.png)";
+        backgroundRef.current.style.backgroundImage = `url(${urlPrefix}/bg.png)`;
         backgroundRef.current.style.opacity = "1";
         ctaRef.current.style.opacity = "1";
       }
