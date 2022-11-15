@@ -9,22 +9,22 @@ jobs:
       - uses: actions/checkout@v2
       - run: echo ${{ secrets.SHARE_NGINX_CONFIG }} | base64 -d > ./infrastructure/share/nginx.conf
 
-      - run: echo REACT_APP_SEGMENT_KEY={{ secrets.REACT_APP_SEGMENT_KEY }} >> ./infrastructure/share/share.env
-      - run: echo REACT_APP_CRYPTO_SECRET={{ secrets.REACT_APP_CRYPTO_SECRET }} >> ./infrastructure/share/share.env
-      - run: echo REACT_APP_STRIPE_PK={{ secrets.REACT_APP_STRIPE_PK }} >> ./infrastructure/share/share.env
-      - run: echo REACT_APP_STRIPE_TEST_PK={{ secrets.REACT_APP_STRIPE_TEST_PK }} >> ./infrastructure/share/share.env
-      - run: echo REACT_APP_API_URL={{ secrets.REACT_APP_API_URL }} >> ./infrastructure/share/share.env
-      - run: echo GENERATE_SOURCEMAP={{ secrets.GENERATE_SOURCEMAP }} >> ./infrastructure/share/share.env
-      - run: echo REACT_APP_MAGIC_IV={{ secrets.REACT_APP_MAGIC_IV }} >> ./infrastructure/share/share.env
-      - run: echo REACT_APP_MAGIC_SALT={{ secrets.REACT_APP_MAGIC_SALT }} >> ./infrastructure/share/share.env
-      - run: echo REACT_APP_CRYPTO_SECRET2={{ secrets.REACT_APP_CRYPTO_SECRET2 }} >> ./infrastructure/share/share.env
-      - run: echo REACT_APP_PROXY={{ secrets.REACT_APP_PROXY }} >> ./infrastructure/share/share.env
-      - run: echo REACT_APP_NETWORK_URL={{ secrets.REACT_APP_NETWORK_URL }} >> ./infrastructure/share/share.env
-      - run: echo REACT_APP_SEND_USER={{ secrets.REACT_APP_SEND_USER }} >> ./infrastructure/share/share.env
-      - run: echo REACT_APP_SEND_PASS={{ secrets.REACT_APP_SEND_PASS }} >> ./infrastructure/share/share.env
-      - run: echo REACT_APP_SEND_ENCRYPTION_KEY={{ secrets.REACT_APP_SEND_ENCRYPTION_KEY }} >> ./infrastructure/share/share.env
-      - run: echo REACT_APP_SEND_BUCKET_ID={{ secrets.REACT_APP_SEND_BUCKET_ID }} >> ./infrastructure/share/share.env
-      - run: echo REACT_APP_SENTRY_DSN={{ secrets.REACT_APP_SENTRY_DSN }} >> ./infrastructure/share/share.env
+      - run: echo REACT_APP_SEGMENT_KEY=${{ secrets.REACT_APP_SEGMENT_KEY }} >> ./infrastructure/share/share.env
+      - run: echo REACT_APP_CRYPTO_SECRET=${{ secrets.REACT_APP_CRYPTO_SECRET }} >> ./infrastructure/share/share.env
+      - run: echo REACT_APP_STRIPE_PK=${{ secrets.REACT_APP_STRIPE_PK }} >> ./infrastructure/share/share.env
+      - run: echo REACT_APP_STRIPE_TEST_PK=${{ secrets.REACT_APP_STRIPE_TEST_PK }} >> ./infrastructure/share/share.env
+      - run: echo REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }} >> ./infrastructure/share/share.env
+      - run: echo GENERATE_SOURCEMAP=${{ secrets.GENERATE_SOURCEMAP }} >> ./infrastructure/share/share.env
+      - run: echo REACT_APP_MAGIC_IV=${{ secrets.REACT_APP_MAGIC_IV }} >> ./infrastructure/share/share.env
+      - run: echo REACT_APP_MAGIC_SALT=${{ secrets.REACT_APP_MAGIC_SALT }} >> ./infrastructure/share/share.env
+      - run: echo REACT_APP_CRYPTO_SECRET2=${{ secrets.REACT_APP_CRYPTO_SECRET2 }} >> ./infrastructure/share/share.env
+      - run: echo REACT_APP_PROXY=${{ secrets.REACT_APP_PROXY }} >> ./infrastructure/share/share.env
+      - run: echo REACT_APP_NETWORK_URL=${{ secrets.REACT_APP_NETWORK_URL }} >> ./infrastructure/share/share.env
+      - run: echo REACT_APP_SEND_USER=${{ secrets.REACT_APP_SEND_USER }} >> ./infrastructure/share/share.env
+      - run: echo REACT_APP_SEND_PASS=${{ secrets.REACT_APP_SEND_PASS }} >> ./infrastructure/share/share.env
+      - run: echo REACT_APP_SEND_ENCRYPTION_KEY=${{ secrets.REACT_APP_SEND_ENCRYPTION_KEY }} >> ./infrastructure/share/share.env
+      - run: echo REACT_APP_SEND_BUCKET_ID=${{ secrets.REACT_APP_SEND_BUCKET_ID }} >> ./infrastructure/share/share.env
+      - run: echo REACT_APP_SENTRY_DSN=${{ secrets.REACT_APP_SENTRY_DSN }} >> ./infrastructure/share/share.env
 
       - run: echo "registry=https://registry.yarnpkg.com/" > .npmrc
       - run: echo "@internxt:registry=https://npm.pkg.github.com" >> .npmrc
