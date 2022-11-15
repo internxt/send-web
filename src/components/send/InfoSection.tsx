@@ -1,6 +1,6 @@
-import React from "react";
-
 import label from "../../assets/lang/en/send.json";
+
+const urlPrefix = process.env.REACT_APP_BASE_URL || "";
 
 const InfoSection = () => {
   return (
@@ -20,7 +20,11 @@ const InfoSection = () => {
             </p>
           </div>
           <div className="flex">
-            <img src="/bylink.png" alt="laptop" className="hidden lg:flex" />
+            <img
+              src={`${urlPrefix}/bylink.png`}
+              alt="laptop"
+              className="hidden lg:flex"
+            />
           </div>
         </div>
         <div className="flex w-auto flex-row justify-center rounded-[34px] bg-blue-80 lg:h-[480px] lg:w-[960px]">
@@ -33,7 +37,11 @@ const InfoSection = () => {
             </p>
           </div>
           <div className="flex">
-            <img src="/byemail.png" alt="laptop" className="hidden lg:flex" />
+            <img
+              src={`${urlPrefix}/byemail.png`}
+              alt="laptop"
+              className="hidden lg:flex"
+            />
           </div>
         </div>
       </div>

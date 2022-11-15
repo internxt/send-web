@@ -1,6 +1,6 @@
 import { randomBytes } from "crypto";
 import { queue, QueueObject } from "async";
-import { generateMnemonic } from 'bip39';
+import { generateMnemonic } from "bip39";
 import axios from "axios";
 import { aes } from "@internxt/lib";
 
@@ -38,6 +38,7 @@ interface SendLinkWithFile extends SendLink {
   file: FileWithNetworkId;
 }
 
+const originUrl = process.env.REACT_APP_BASE_URL || window.origin;
 export class UploadService {
   static async uploadFilesAndGetLink(
     itemList: SendItemData[],
@@ -50,26 +51,26 @@ export class UploadService {
     const itemFiles = [] as SendLinkWithFile[];
     const sendLinksFolders = [] as SendLink[];
     itemList.forEach((item) => {
-      if (item.type === 'file') {
+      if (item.type === "file") {
         itemFiles.push({
           id: item.id,
           name: item.name,
           type: item.type,
           size: item.size,
-          encryptionKey: '',
-          networkId: '',
+          encryptionKey: "",
+          networkId: "",
           parent_folder: item.parent_folder,
-          file: item.file as FileWithNetworkId
+          file: item.file as FileWithNetworkId,
         });
-      } else if (item.type === 'folder') {
+      } else if (item.type === "folder") {
         sendLinksFolders.push({
           id: item.id,
           name: item.name,
           type: item.type,
           size: item.size,
-          encryptionKey: '',
-          networkId: '',
-          parent_folder: item.parent_folder
+          encryptionKey: "",
+          networkId: "",
+          parent_folder: item.parent_folder,
         });
       }
     });
@@ -93,12 +94,14 @@ export class UploadService {
       items: itemsWithEncryptionKeyEncrypted,
       code: encryptedCode,
       mnemonic: encryptedMnemonic,
-      plainCode: code
+      plainCode: code,
     } as CreateSendLinksPayload;
 
     const createSendLinkResponse = await storeSendLinks(createSendLinksPayload);
 
-    return window.origin + "/download/" + createSendLinkResponse.id + '?code=' + code;
+    return (
+      originUrl + "/download/" + createSendLinkResponse.id + "?code=" + code
+    );
   }
 
   static async uploadFiles(
@@ -119,7 +122,11 @@ export class UploadService {
       );
     }
 
-    const uploadManager = new UploadManager(files, totalBytes, opts?.abortController);
+    const uploadManager = new UploadManager(
+      files,
+      totalBytes,
+      opts?.abortController
+    );
     return uploadManager.run(opts?.progress);
   }
 }
@@ -134,32 +141,29 @@ class UploadManager {
       concurrency: number;
     }
   > = {
-      [FileSizeType.Big]: {
-        upperBound: Infinity,
-        lowerBound: oneHundredMbytes,
-        concurrency: 1,
-      },
-      [FileSizeType.Medium]: {
-        upperBound: oneHundredMbytes - 1,
-        lowerBound: twentyMbytes,
-        concurrency: 3,
-      },
-      [FileSizeType.Small]: {
-        upperBound: twentyMbytes - 1,
-        lowerBound: 1,
-        concurrency: 6,
-      },
-    };
+    [FileSizeType.Big]: {
+      upperBound: Infinity,
+      lowerBound: oneHundredMbytes,
+      concurrency: 1,
+    },
+    [FileSizeType.Medium]: {
+      upperBound: oneHundredMbytes - 1,
+      lowerBound: twentyMbytes,
+      concurrency: 3,
+    },
+    [FileSizeType.Small]: {
+      upperBound: twentyMbytes - 1,
+      lowerBound: 1,
+      concurrency: 6,
+    },
+  };
 
   private errored = false;
   private uploadsProgress: Record<string, number> = {};
   private uploadQueue: QueueObject<SendLinkWithFile> = queue<SendLinkWithFile>(
     (
       sendLinkWithFile,
-      next: (
-        err: Error | null,
-        res?: SendLinkWithFile
-      ) => void
+      next: (err: Error | null, res?: SendLinkWithFile) => void
     ) => {
       const file = sendLinkWithFile.file;
       const networkService = this.networkService;
@@ -176,7 +180,10 @@ class UploadManager {
         })
         .then((networkId) => {
           const fileObject = Object.assign({}, { ...file, networkId });
-          next(null, Object.assign({}, { ...sendLinkWithFile, file: fileObject }));
+          next(
+            null,
+            Object.assign({}, { ...sendLinkWithFile, file: fileObject })
+          );
         })
         .catch((err) => {
           if (!this.errored) {
@@ -195,13 +202,19 @@ class UploadManager {
   private items: SendLinkWithFile[];
   private totalBytes: number;
 
-  constructor(items: SendLinkWithFile[], totalBytes: number, abortController?: AbortController) {
+  constructor(
+    items: SendLinkWithFile[],
+    totalBytes: number,
+    abortController?: AbortController
+  ) {
     this.items = items;
     this.totalBytes = totalBytes;
     this.abortController = abortController;
   }
 
-  private classifyFilesBySize(files: SendLinkWithFile[]): [SendLinkWithFile[], SendLinkWithFile[], SendLinkWithFile[]] {
+  private classifyFilesBySize(
+    files: SendLinkWithFile[]
+  ): [SendLinkWithFile[], SendLinkWithFile[], SendLinkWithFile[]] {
     return [
       files.filter((f) => f.size >= this.filesGroups.big.lowerBound),
       files.filter(
@@ -233,7 +246,10 @@ class UploadManager {
         this.classifyFilesBySize(this.items);
       const filesReferences: SendLink[] = [];
 
-      const uploadFiles = async (files: SendLinkWithFile[], concurrency: number) => {
+      const uploadFiles = async (
+        files: SendLinkWithFile[],
+        concurrency: number
+      ) => {
         this.uploadQueue.concurrency = concurrency;
 
         const uploadPromises: Promise<SendLinkWithFile>[] =
@@ -248,7 +264,7 @@ class UploadManager {
             networkId: uploadedFile.file.networkId,
             size: uploadedFile.size,
             type: uploadedFile.type,
-            parent_folder: uploadedFile.parent_folder
+            parent_folder: uploadedFile.parent_folder,
           });
         }
       };
@@ -278,7 +294,7 @@ class UploadManager {
 interface SendLink {
   id: string;
   name: string;
-  type: 'file' | 'folder';
+  type: "file" | "folder";
   size: number;
   networkId: string;
   encryptionKey: string;
