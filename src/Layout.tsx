@@ -42,7 +42,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         className="fixed inset-0 block bg-cover bg-center bg-no-repeat opacity-0 transition-opacity duration-500"
       />
       <header className="z-10 flex h-16 w-full flex-shrink-0 items-center justify-center border-b border-gray-5 bg-white px-20 lg:top-0 lg:h-20 lg:justify-start lg:border-b-0 lg:bg-transparent">
-        <Link to="/">
+        <a href={"https://internxt.com"}>
           <img
             className="flex h-3 lg:hidden"
             src={logo_dark}
@@ -53,7 +53,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             src={logo}
             alt="Internxt's logo"
           />
-        </Link>
+        </a>
       </header>
       <div className="relative min-h-0 flex-1 lg:py-0 lg:pt-16 lg:pb-32">
         <div className="relative flex h-full flex-row items-center">
