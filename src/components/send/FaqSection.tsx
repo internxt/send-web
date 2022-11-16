@@ -9,10 +9,10 @@ const FaqSection = () => {
       <div className="center flex flex-col items-center text-center">
         <p className="text-4xl font-semibold">{label.FaqSection.title}</p>
       </div>
-      <div className="flex w-full max-w-screen-sm flex-col pt-10">
+      <div className="flex w-full max-w-screen-sm flex-col space-y-2 pt-10">
         {label.FaqSection.faq.map((item: any, index: number) => (
           <div
-            className={`border border-t-0 border-gray-20 px-5 first:border-t`}
+            className={`rounded-lg border border-gray-20 px-5`}
             key={item.title}
           >
             <FaqAccordion
