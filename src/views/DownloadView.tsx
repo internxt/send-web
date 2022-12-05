@@ -18,6 +18,7 @@ import * as Sentry from "@sentry/react";
 import { SendItemData } from "../models/SendItem";
 import { getAllItemsList } from "../services/items.service";
 import { ProgressOptions } from "../services/network.service";
+import SendBanner from "../components/SendBanner";
 
 export default function DownloadView() {
   const [state, setState] = useState<
@@ -28,6 +29,7 @@ export default function DownloadView() {
     | { status: "downloading"; totalBytes: number; downloadedBytes: number }
   >({ status: "loading" });
   const [fileList, setFileList] = useState<SendItemData[]>([]);
+  const [sendBannerVisible, setSendBannerVisible] = useState(false);
 
   const params = useParams();
   const [search] = useSearchParams();
@@ -40,7 +42,7 @@ export default function DownloadView() {
       if (!params.shareId) throw new Error();
 
       const details = await getSendLink(params.shareId);
-      setFileList(details.items.filter(item => item.type === 'file'));
+      setFileList(details.items.filter((item) => item.type === "file"));
       setState({ status: "ready", details });
     } catch (err) {
       console.error(err);
@@ -70,9 +72,12 @@ export default function DownloadView() {
         progress: (totalBytes, downloadedBytes) => {
           setState({ status: "downloading", totalBytes, downloadedBytes });
         },
-        plainCode: search.get('code') || undefined
+        plainCode: search.get("code") || undefined,
       } as ProgressOptions);
       setState({ status: "done" });
+      setTimeout(() => {
+        setSendBannerVisible(true);
+      }, 3000);
     } catch (err) {
       console.error(err);
       Sentry.captureException(err);
@@ -83,27 +88,29 @@ export default function DownloadView() {
   return (
     <Layout>
       {state.status === "loading" && (
-        <div className="fixed flex flex-row h-screen w-screen overflow-hidden pb-32 items-center justify-center">
-          <Spinner className="h-10 w-10 mt-16" />
+        <div className="fixed flex h-screen w-screen flex-row items-center justify-center overflow-hidden pb-32">
+          <Spinner className="mt-16 h-10 w-10" />
         </div>
       )}
       {state.status === "ready" && (
         <div className="flex h-full flex-col items-center">
           <div className="relative min-h-0 w-full flex-1 overflow-auto">
-
             <div className="flex flex-col bg-white">
               <div className="mx-auto mt-10 flex h-24 w-24 items-center justify-center rounded-full bg-primary/10">
                 <ArrowDown size={64} className="text-primary " />
               </div>
-              <h1 className="mt-4 text-center text-xl font-semibold text-gray-80 px-5">
-                {state.details.title ?? `${fileList.length} ${fileList.length === 1 ? 'File' : 'Files'}`}
+              <h1 className="mt-4 px-5 text-center text-xl font-semibold text-gray-80">
+                {state.details.title ??
+                  `${fileList.length} ${
+                    fileList.length === 1 ? "File" : "Files"
+                  }`}
               </h1>
               {state.details.subject && (
-                <p className="text-center text-gray-60 px-5">
+                <p className="px-5 text-center text-gray-60">
                   {state.details.subject}
                 </p>
               )}
-              <p className="text-center mb-8 text-sm text-gray-50 px-5">
+              <p className="mb-8 px-5 text-center text-sm text-gray-50">
                 Link expires in{" "}
                 {(
                   (new Date(state.details.expirationAt).valueOf() -
@@ -116,18 +123,23 @@ export default function DownloadView() {
 
             <div className="w-full border-t border-gray-5 py-4 px-5">
               <p className="text-lg font-medium text-gray-80">
-                {`${fileList.length} ${fileList.length === 1 ? 'file' : 'files'}`}
+                {`${fileList.length} ${
+                  fileList.length === 1 ? "file" : "files"
+                }`}
               </p>
               <p className="text-sm text-gray-50">
                 {format(state.details.size)} in total
               </p>
-              <ItemsList className="mt-4"
-                items={getAllItemsList(state.details.items)} />
+              <ItemsList
+                className="mt-4"
+                items={getAllItemsList(state.details.items)}
+              />
             </div>
           </div>
           <CardBottom>
             <Button onClick={onDownload}>
-              Download {fileList.length} {fileList.length === 1 ? 'file' : 'files'}
+              Download {fileList.length}{" "}
+              {fileList.length === 1 ? "file" : "files"}
             </Button>
           </CardBottom>
         </div>
@@ -199,6 +211,10 @@ export default function DownloadView() {
           </CardBottom>
         </div>
       )}
+      <SendBanner
+        sendBannerVisible={sendBannerVisible}
+        setIsSendBannerVisible={setSendBannerVisible}
+      />
     </Layout>
   );
 }
