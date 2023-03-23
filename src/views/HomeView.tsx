@@ -24,6 +24,9 @@ import InfoSection from "../components/send/InfoSection";
 import FaqSection from "../components/send/FaqSection";
 import Footer from "../components/footer/Footer";
 
+import schemaMarkup from "../assets/lang/en/send.json";
+import { sm_faq } from "../components/utils/schema-markup-generator";
+
 type EmailFormState = {
   sendTo: string[];
   sender: string;
@@ -335,6 +338,10 @@ export default function HomeView() {
       <InfoSection />
       <FaqSection />
       <Footer />
+
+      <script type="application/ld+json" data-nscript="beforeInteractive">
+        {sm_faq(schemaMarkup.SchemaMarkupQuestions.faq)}
+      </script>
     </div>
   );
 }
