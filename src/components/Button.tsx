@@ -28,7 +28,7 @@ export default function Button({
   return (
     <button
       disabled={disabled}
-      className={`${className} ${background} ${textColor} ${border} h-11 w-full rounded-[100px] font-medium`}
+      className={`${className} ${background} ${textColor} ${border} h-11 w-full rounded-lg font-medium`}
       onClick={onClick}
     >
       {children}

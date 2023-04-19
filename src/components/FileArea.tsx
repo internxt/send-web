@@ -61,7 +61,7 @@ export default function FileArea({
     ) => {
       return (
         <div
-          className="flex cursor-pointer items-center py-1 px-3 text-gray-80 hover:bg-gray-5 active:bg-gray-10"
+          className="flex cursor-pointer items-center px-3 py-1 text-gray-80 hover:bg-gray-5 active:bg-gray-10"
           onClick={onClick}
         >
           {children}
@@ -102,7 +102,7 @@ export default function FileArea({
           <ItemsList
             items={fileContext.itemList}
             onRemoveItem={fileContext.removeItem}
-            className={`flex-1 bg-gray-1 py-3 px-5 ${
+            className={`flex-1 bg-gray-1 px-5 py-3 ${
               scroll ? "overflow-y-auto" : ""
             } `}
           />
@@ -175,7 +175,7 @@ function Empty({
         <div className="ml-2">
           <h1 className="text-2xl font-medium text-gray-80">Upload files</h1>
           <div onClick={onFolderExplorerOpen} className="cursor-pointer">
-            <h2 className="-mt-0.5 text-base leading-4 text-primary underline">
+            <h2 className="-mt-0.5 text-base leading-4 text-primary underline hover:no-underline">
               or select a folder
             </h2>
           </div>

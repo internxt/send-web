@@ -55,6 +55,13 @@
         "fileVirusScan": "File Virus Scanner",
         "passwordChecker": "Password Checker",
         "cyberAwareness": "Cyber Awareness"
+      },
+      "tools": {
+        "title": "Free Tools",
+        "temporaryEmail": "Temporary Email",
+        "fileVirusScan": "File Virus Scanner",
+        "passwordChecker": "Password Checker",
+        "byteConverter": "Byte Converter"
       }
     }
   },
