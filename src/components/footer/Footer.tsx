@@ -75,39 +75,46 @@ export default function Footer() {
                 <div
                   className={`flex flex-col space-y-1.5 text-base text-cool-gray-60`}
                 >
-                  <a href="https://internxt.com/drive">
-                    <a>{label.FooterSection.sections.products.drive}</a>
+                  <a
+                    href="https://internxt.com/drive"
+                    className="hover:text-primary"
+                    target={"_blank"}
+                  >
+                    {label.FooterSection.sections.products.drive}
                   </a>
 
-                  <a href="https://internxt.com/photos">
-                    <a>{label.FooterSection.sections.products.photos}</a>
+                  <a
+                    href="https://internxt.com/photos"
+                    className="hover:text-primary"
+                    target={"_blank"}
+                  >
+                    {label.FooterSection.sections.products.photos}
                   </a>
 
                   <a
                     href="https://send.internxt.com"
-                    target="_blank"
+                    target={"_blank"}
                     rel="noerrer noreferrer"
-                    className="flex flex-row items-center"
+                    className="flex flex-row items-center hover:text-primary"
                   >
                     <div>{label.FooterSection.sections.products.send}</div>
-                    <div className="pointer-events-none ml-2 flex flex-row items-center whitespace-nowrap rounded-full bg-orange bg-opacity-15 px-2 text-supporting-1 font-medium uppercase text-orange">
-                      {label.FooterSection.new}
-                    </div>
                   </a>
 
-                  <a href="https://internxt.com/token">
+                  <a
+                    href="https://internxt.com/token"
+                    className="hover:text-primary"
+                    target={"_blank"}
+                  >
                     <a>{label.FooterSection.sections.products.token}</a>
                   </a>
 
-                  <a href="https://internxt.com/pricing">
+                  <a
+                    href="https://internxt.com/pricing"
+                    className="hover:text-primary"
+                    target={"_blank"}
+                  >
                     <a>{label.FooterSection.sections.products.pricing}</a>
                   </a>
-
-                  {/*
-                    <a h="/security" >
-                      <a>{text.FooterSection.sections.products.security}</a>
-                    </a>
-                    */}
                 </div>
               </div>
             </div>
@@ -120,42 +127,54 @@ export default function Footer() {
                 <div
                   className={`flex flex-col space-y-1.5 text-base text-cool-gray-60`}
                 >
-                  <a href="https://internxt.com/about">
+                  <a
+                    href="https://internxt.com/about"
+                    className="hover:text-primary"
+                    target={"_blank"}
+                  >
                     <a>{label.FooterSection.sections.company.about}</a>
                   </a>
 
-                  <a href="https://internxt.com/privacy">
+                  <a
+                    href="https://internxt.com/privacy"
+                    className="hover:text-primary"
+                    target={"_blank"}
+                  >
                     <a>{label.FooterSection.sections.company.privacy}</a>
                   </a>
 
                   <a
                     href={`https://blog.internxt.com/how-internxt-protects-your-data/
                     `}
-                    target="_blank"
                     rel="noerrer noreferrer"
+                    className="hover:text-primary"
+                    target={"_blank"}
                   >
                     {label.FooterSection.sections.company.security}
                   </a>
 
-                  <a href="https://internxt.com/legal">
+                  <a
+                    href="https://internxt.com/legal"
+                    className="hover:text-primary"
+                    target={"_blank"}
+                  >
                     <a>{label.FooterSection.sections.company.legal}</a>
                   </a>
 
-                  {/*
-                    <a h="/why-internxt" >
-                      <a>{text.FooterSection.sections.company.whyInternxt}</a>
-                    </a>
-                    */}
-
                   <a
                     href="https://help.internxt.com/"
-                    target="_blank"
                     rel="noerrer noreferrer"
+                    className="hover:text-primary"
+                    target={"_blank"}
                   >
                     {label.FooterSection.sections.company.support}
                   </a>
 
-                  <a href="https://internxt.com/cloud-storage-comparison">
+                  <a
+                    href="https://internxt.com/cloud-storage-comparison"
+                    className="hover:text-primary"
+                    target={"_blank"}
+                  >
                     <a>{label.FooterSection.sections.company.comparison}</a>
                   </a>
                 </div>
@@ -170,26 +189,27 @@ export default function Footer() {
                 <div
                   className={`flex flex-col space-y-1.5 text-base text-cool-gray-60`}
                 >
-                  <a href="https://drive.internxt.com/new" target="_top">
+                  <a
+                    href="https://drive.internxt.com/new"
+                    className="hover:text-primary"
+                    target={"_blank"}
+                  >
                     {label.FooterSection.sections.join.signup}
                   </a>
 
-                  <a href="https://drive.internxt.com/login" target="_top">
-                    {label.FooterSection.sections.join.login}
-                  </a>
-
                   <a
-                    href="https://t.me/internxt"
-                    target="_blank"
-                    rel="noerrer noreferrer"
+                    className="hover:text-primary"
+                    target={"_blank"}
+                    href="https://drive.internxt.com/login"
                   >
-                    {label.FooterSection.sections.join.community}
+                    {label.FooterSection.sections.join.login}
                   </a>
 
                   <a
                     href="https://github.com/internxt"
                     target="_blank"
                     rel="noreferrer"
+                    className="hover:text-primary"
                   >
                     {label.FooterSection.sections.join.github}
                   </a>
@@ -205,47 +225,73 @@ export default function Footer() {
                 <div
                   className={`flex flex-col space-y-1.5 text-base text-cool-gray-60`}
                 >
-                  <a href="https://blog.internxt.com/">
+                  <a
+                    className="hover:text-primary"
+                    target={"_blank"}
+                    href="https://blog.internxt.com/"
+                  >
                     {label.FooterSection.sections.resources.blog}
                   </a>
 
-                  <a href="https://internxt.com/privacy-directory">
+                  <a
+                    className="line-clamp-2 max-w-[150px] hover:text-primary"
+                    target={"_blank"}
+                    href="https://internxt.com/privacy-directory"
+                  >
                     {
                       label.FooterSection.sections.resources
                         .directoryOfPrivacyOrganizations
                     }
                   </a>
 
-                  {/*
-                    <a h="/library" >
-                      <a>{text.FooterSection.sections.resources.library}</a>
-                    </a>
-
-                    <a h="/write-for-us" >
-                      <a>{text.FooterSection.sections.resources.writeForUs}</a>
-                    </a>
-
-                    <a h="/glossary" >
-                      <a>{text.FooterSection.sections.resources.cyberSecurityGlossary}</a>
-                    </a>
-                    */}
-
-                  <a href="https://internxt.com/password-checker">
-                    <a>
-                      {label.FooterSection.sections.resources.passwordChecker}
-                    </a>
+                  <a
+                    className="hover:text-primary"
+                    target={"_blank"}
+                    href="https://internxt.com/cyber-awareness"
+                  >
+                    {label.FooterSection.sections.resources.cyberAwareness}
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-1 flex-col items-center lg:flex-none">
+              <div className="flex flex-shrink-0 flex-col space-y-3">
+                <h3 className="text-lg font-medium">
+                  {label.FooterSection.sections.tools.title}
+                </h3>
+                <div
+                  className={`flex flex-col space-y-1.5 text-base text-cool-gray-60`}
+                >
+                  <a
+                    href="https://internxt.com/byte-converter"
+                    className="hover:text-primary"
+                    target={"_blank"}
+                  >
+                    {label.FooterSection.sections.tools.byteConverter}
                   </a>
 
-                  <a href="https://internxt.com/virus-scanner">
-                    <a>
-                      {label.FooterSection.sections.resources.fileVirusScan}
-                    </a>
+                  <a
+                    href="https://internxt.com/temporary-email"
+                    className="hover:text-primary"
+                    target={"_blank"}
+                  >
+                    {label.FooterSection.sections.tools.temporaryEmail}
                   </a>
 
-                  <a href="https://internxt.com/cyber-awareness">
-                    <a>
-                      {label.FooterSection.sections.resources.cyberAwareness}
-                    </a>
+                  <a
+                    href="https://internxt.com/password-checker"
+                    className="hover:text-primary"
+                    target={"_blank"}
+                  >
+                    {label.FooterSection.sections.tools.passwordChecker}
+                  </a>
+
+                  <a
+                    href="https://internxt.com/virus-scanner"
+                    className="hover:text-primary"
+                    target={"_blank"}
+                  >
+                    {label.FooterSection.sections.tools.fileVirusScan}
                   </a>
                 </div>
               </div>
@@ -349,14 +395,14 @@ export default function Footer() {
                   </span>
                   <span className="relative h-5 w-5">
                     <Minus
-                      className={`absolute top-0 left-0 h-full w-full ${
+                      className={`absolute left-0 top-0 h-full w-full ${
                         open ? "text-cool-gray-30" : "text-cool-gray-60"
                       } transition duration-300 ${
                         open ? "text-cool-gray-30" : "-rotate-180"
                       }`}
                     />
                     <Minus
-                      className={`absolute top-0 left-0 h-full w-full ${
+                      className={`absolute left-0 top-0 h-full w-full ${
                         open ? "text-cool-gray-30" : "text-cool-gray-60"
                       } transition duration-300 ${
                         open ? "text-cool-gray-30" : "-rotate-90"
@@ -422,14 +468,14 @@ export default function Footer() {
                   </span>
                   <span className="relative h-5 w-5">
                     <Minus
-                      className={`absolute top-0 left-0 h-full w-full ${
+                      className={`absolute left-0 top-0 h-full w-full ${
                         open ? "text-cool-gray-30" : "text-cool-gray-60"
                       } transition duration-300 ${
                         open ? "text-cool-gray-30" : "-rotate-180"
                       }`}
                     />
                     <Minus
-                      className={`absolute top-0 left-0 h-full w-full ${
+                      className={`absolute left-0 top-0 h-full w-full ${
                         open ? "text-cool-gray-30" : "text-cool-gray-60"
                       } transition duration-300 ${
                         open ? "text-cool-gray-30" : "-rotate-90"
@@ -504,14 +550,14 @@ export default function Footer() {
                   </span>
                   <span className="relative h-5 w-5">
                     <Minus
-                      className={`absolute top-0 left-0 h-full w-full ${
+                      className={`absolute left-0 top-0 h-full w-full ${
                         open ? "text-cool-gray-30" : "text-cool-gray-60"
                       } transition duration-300 ${
                         open ? "text-cool-gray-30" : "-rotate-180"
                       }`}
                     />
                     <Minus
-                      className={`absolute top-0 left-0 h-full w-full ${
+                      className={`absolute left-0 top-0 h-full w-full ${
                         open ? "text-cool-gray-30" : "text-cool-gray-60"
                       } transition duration-300 ${
                         open ? "text-cool-gray-30" : "-rotate-90"
@@ -530,11 +576,11 @@ export default function Footer() {
                     className={`flex flex-col space-y-4
                       p-4 pt-2 text-cool-gray-60`}
                   >
-                    <a href="https://drive.internxt.com/new" target="_top">
+                    <a href="https://drive.internxt.com/new">
                       {label.FooterSection.sections.join.signup}
                     </a>
 
-                    <a href="https://drive.internxt.com/login" target="_top">
+                    <a href="https://drive.internxt.com/login">
                       {label.FooterSection.sections.join.login}
                     </a>
 
@@ -568,14 +614,14 @@ export default function Footer() {
                   </span>
                   <span className="relative h-5 w-5">
                     <Minus
-                      className={`absolute top-0 left-0 h-full w-full ${
+                      className={`absolute left-0 top-0 h-full w-full ${
                         open ? "text-cool-gray-30" : "text-cool-gray-60"
                       } transition duration-300 ${
                         open ? "text-cool-gray-30" : "-rotate-180"
                       }`}
                     />
                     <Minus
-                      className={`absolute top-0 left-0 h-full w-full ${
+                      className={`absolute left-0 top-0 h-full w-full ${
                         open ? "text-cool-gray-30" : "text-cool-gray-60"
                       } transition duration-300 ${
                         open ? "text-cool-gray-30" : "-rotate-90"
@@ -601,15 +647,6 @@ export default function Footer() {
                       {label.FooterSection.sections.resources.blog}
                     </a>
 
-                    <a href="https://internxt.com/privacy-directory">
-                      <a>
-                        {
-                          label.FooterSection.sections.resources
-                            .directoryOfPrivacyOrganizations
-                        }
-                      </a>
-                    </a>
-
                     {/*
                       <a h="/library" >
                         <a>{text.FooterSection.sections.resources.library}</a>
@@ -626,19 +663,86 @@ export default function Footer() {
 
                     <a href="https://internxt.com/password-checker">
                       <a>
-                        {label.FooterSection.sections.resources.passwordChecker}
-                      </a>
-                    </a>
-
-                    <a href="https://internxt.com/virus-scanner">
-                      <a>
-                        {label.FooterSection.sections.resources.fileVirusScan}
+                        {
+                          label.FooterSection.sections.resources
+                            .directoryOfPrivacyOrganizations
+                        }
                       </a>
                     </a>
                     <a href="https://internxt.com/cyber-awareness">
                       <a>
                         {label.FooterSection.sections.resources.cyberAwareness}
                       </a>
+                    </a>
+                  </Disclosure.Panel>
+                </Transition>
+              </div>
+            )}
+          </Disclosure>
+          <Disclosure as="div" className={`border-b border-cool-gray-10`}>
+            {({ open }) => (
+              <div>
+                <Disclosure.Button className="flex w-full items-center justify-between py-4 text-lg font-medium">
+                  <span className="flex flex-row">
+                    {label.FooterSection.sections.tools.title}
+                  </span>
+                  <span className="relative h-5 w-5">
+                    <Minus
+                      className={`absolute left-0 top-0 h-full w-full ${
+                        open ? "text-cool-gray-30" : "text-cool-gray-60"
+                      } transition duration-300 ${
+                        open ? "text-cool-gray-30" : "-rotate-180"
+                      }`}
+                    />
+                    <Minus
+                      className={`absolute left-0 top-0 h-full w-full ${
+                        open ? "text-cool-gray-30" : "text-cool-gray-60"
+                      } transition duration-300 ${
+                        open ? "text-cool-gray-30" : "-rotate-90"
+                      }`}
+                    />
+                  </span>
+                </Disclosure.Button>
+
+                <Transition
+                  enter="transition duration-200 ease-out"
+                  enterFrom="-translate-y-10 opacity-0"
+                  enterTo="translate-y-0 opacity-100"
+                  leave="transition duration-0"
+                >
+                  <Disclosure.Panel
+                    className={`flex flex-col space-y-4 p-4 pt-2 text-cool-gray-60`}
+                  >
+                    <a
+                      href="https://internxt.com/byte-converter"
+                      className="hover:text-primary"
+                      target={"_blank"}
+                    >
+                      {label.FooterSection.sections.tools.byteConverter}
+                    </a>
+
+                    <a
+                      href="https://internxt.com/temporary-email"
+                      className="hover:text-primary"
+                      target={"_blank"}
+                    >
+                      {label.FooterSection.sections.tools.temporaryEmail}
+                    </a>
+
+                    <a
+                      href="https://internxt.com/password-checker"
+                      className="hover:text-primary"
+                      target={"_blank"}
+                    >
+                      {label.FooterSection.sections.tools.passwordChecker}
+                    </a>
+
+                    <a
+                      href="https://internxt.com/virus-scanner"
+                      className="hover:text-primary"
+                      target={"_blank"}
+                    >
+                      {label.FooterSection.sections.tools.fileVirusScan}
                     </a>
                   </Disclosure.Panel>
                 </Transition>
