@@ -3,12 +3,12 @@
     "title": "Secure from the moment you hit send",
     "description": "Files uploaded and sent through Internxt Send use Internxt's disruptive zero-knowledge architecture to maximize the security and privacy of files. Maintain rock-solid confidentiality and safely transmit sensitive information with Internxt Send.",
     "card1": {
-      "title": "User-first the sharing",
+      "title": "User-first file sharing",
       "description": "Internxt Send respects users' right to privacy and doesn't scan, store, or save any information you send through the service."
     },
     "card2": {
-      "title": "Private, encrypted file transfer",
-      "description": "All files and photos are end-to-end encrypted, meaning all your information is scrambled and fragmented before even leaving your device."
+      "title": "100% private file transfer",
+      "description": "All files and photos are end-to-end encrypted, meaning all your information is scrambled and fragmented before ever leaving your device."
     },
     "card3": {
       "title": "Send large files in secrecy",
@@ -16,11 +16,15 @@
     },
     "card4": {
       "title": "Share files and photos of all formats",
-      "description": "All file formats are supported and can easily be encrypted and shared with Internxt Send. PDF, JPEG, DOC, PNG, XLS and many more."
+      "description": "All file formats are supported and can easily be encrypted and shared with Internxt Send. PDF, JPEG, DOC, PNG, XLS, and many more."
     },
     "card5": {
       "title": "Safely send files by link or email",
       "description": "Share files and photos via a password-protected link or email to anyone, whether they have an Internxt account or not."
+    },
+    "card6": {
+      "title": "Open source and transparent",
+      "description": "Internxt Send, like all Internxt services, is open source. All source code is made publicly available for independent verification on GitHub."
     }
   },
   "InfoSection": {
