@@ -28,11 +28,19 @@
     "description": "Simply drag and drop the files you want to share or send into the browser, or select the + icon and manually select the files or photos you wish to send. From there, you will have to choose from two options to complete your encrypted file transfer:",
     "card1": {
       "title": "Share by link",
-      "description": "Select 'Get a link', and a unique sharing link and share it, however, with whoever you wish. Your link will be valid only for 15 days and then automatically expire for your safety."
+      "description": {
+        "line1": "Select \"Get a link\" and a unique sharing link will be automatically generated. ",
+        "line2": "Copy the link and share it, however, with whoever you wish. Your link will be valid only for 15 days and then automatically expire for your safety."
+      },
+      "title3": ""
     },
+
     "card2": {
       "title": "Share by email",
-      "description": "Or, move the slider to 'Send email' and input the email addresses of those you wish to share files and photos with. Add in your email address and an optional subject or message. Then click 'Send files', and your unique sharing link will automatically be sent via email. Your link will also only be valid for 15 days and then automatically expire."
+      "description": {
+        "line1": "Or, move the slider to \"Send email\" and input the email addresses of those you wish to share files and photos with. Add in your email address and an optional subject or message.",
+        "line2": "Then click \"Send files\" and your unique sharing link will automatically be sent via email. Your link will also only be valid for 15 days and then automatically expire."
+      }
     }
   },
   "SchemaMarkupQuestions": {
@@ -64,7 +72,7 @@
     ]
   },
   "FaqSection": {
-    "title": "Frequently asked questions",
+    "title": "Questions? We have answers",
     "faq": [
       {
         "question": "Do I need an Internxt account to use Internxt Send?",
@@ -94,30 +102,6 @@
         "question": "How do I send the secure sharing link to someone?",
         "answer": [
           "You may copy and paste it into whatever messenger service you prefer. You may also send a unique sharing link via email by choosing the \"Send email\" option."
-        ]
-      },
-      {
-        "question": "How to send private files",
-        "answer": [
-          "Internxt Send allows you to securely send any encrypted file to anyone with an easy-to-use sharing link."
-        ]
-      },
-      {
-        "question": "How to send encrypted files",
-        "answer": [
-          "Internxt Send allows you to share files fast without worrying about the security of your documents, images, or videos. Select the files you want to encrypt and send by link or email."
-        ]
-      },
-      {
-        "question": "How to send large files via email",
-        "answer": [
-          "Internxt Send allows you to securely send any encrypted and large file to anyone via email."
-        ]
-      },
-      {
-        "question": "How to send large video files",
-        "answer": [
-          "Internxt Send allows you to share large files fast without worrying about the security of your documents, images, or videos. Select the files you want to encrypt and send by link or email."
         ]
       }
     ]

@@ -14,7 +14,7 @@ export default function Switch<F extends string, S extends string>({
 
   return (
     <div
-      className={`relative flex h-9 w-[280px] rounded-lg bg-gray-5 ${className}`}
+      className={`relative flex h-9 w-full rounded-lg bg-gray-5 ${className}`}
     >
       <div
         className={`absolute h-full w-1/2 transform p-0.5 transition-transform ${

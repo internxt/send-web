@@ -5,7 +5,7 @@ import label from "../../assets/lang/en/send.json";
 
 const FaqSection = () => {
   return (
-    <div className="z-10 flex flex-col items-center bg-gray-1 py-20 lg:px-44">
+    <div className="z-10 flex flex-col items-center bg-white py-20 lg:px-44">
       <div className="center flex flex-col items-center text-center">
         <p className="text-4xl font-semibold">{label.FaqSection.title}</p>
       </div>
