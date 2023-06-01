@@ -1,8 +1,8 @@
 import { ReactNode, useEffect, useRef } from "react";
 import logo from "./logo.svg";
-import logo_dark from "./logo_dark.svg";
+
 import Card from "./components/Card";
-import { Link } from "react-router-dom";
+import Navbar from "./components/Navbar/Navbar";
 
 const urlPrefix = process.env.REACT_APP_BASE_URL || "";
 export default function Layout({ children }: { children: ReactNode }) {
@@ -41,21 +41,10 @@ export default function Layout({ children }: { children: ReactNode }) {
         ref={backgroundRef}
         className="fixed inset-0 block bg-cover bg-center bg-no-repeat opacity-0 transition-opacity duration-500"
       />
-      <header className="z-10 flex h-16 w-full flex-shrink-0 items-center justify-center border-b border-gray-5 bg-white px-20 lg:top-0 lg:h-20 lg:justify-start lg:border-b-0 lg:bg-transparent">
-        <a href={"https://internxt.com"}>
-          <img
-            className="flex h-3 lg:hidden"
-            src={logo_dark}
-            alt="Internxt's logo"
-          />
-          <img
-            className="hidden h-3 lg:flex"
-            src={logo}
-            alt="Internxt's logo"
-          />
-        </a>
-      </header>
-      <div className="relative min-h-0 flex-1 lg:py-0 lg:pt-16 lg:pb-32">
+
+      <Navbar />
+
+      <div className="relative min-h-0 flex-1 lg:py-0 lg:pb-32 lg:pt-24">
         <div className="relative flex h-full flex-row items-center">
           <Card className="flex flex-shrink-0 flex-col lg:ml-20">
             {children}

@@ -24,6 +24,7 @@
     "bip39": "^3.0.4",
     "bytes": "^3.1.2",
     "copy-to-clipboard": "^3.3.1",
+    "hamburger-react": "^2.5.0",
     "js-file-download": "^0.4.12",
     "lodash.throttle": "^4.1.1",
     "phosphor-react": "^1.4.1",

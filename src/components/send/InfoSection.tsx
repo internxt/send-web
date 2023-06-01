@@ -11,7 +11,7 @@ const InfoSection = () => {
       </div>
       <div className="flex w-screen flex-col items-center space-y-10 px-10 py-20 lg:py-40 lg:pt-32">
         <div className="flex w-auto flex-row justify-center rounded-[34px] bg-gray-100 lg:h-[480px] lg:w-[960px]">
-          <div className="flex w-full flex-col items-start justify-center space-y-6 p-10 text-white lg:p-20">
+          <div className="flex w-full flex-col items-center justify-center space-y-6 p-10 text-center text-white lg:items-start lg:p-20 lg:text-left">
             <p className="text-3xl font-semibold">
               {label.InfoSection.card1.title}
             </p>
@@ -31,7 +31,7 @@ const InfoSection = () => {
           </div>
         </div>
         <div className="flex w-auto flex-row justify-center rounded-[34px] bg-gray-100 lg:h-[480px] lg:w-[960px]">
-          <div className="flex w-full flex-col items-start justify-center space-y-6 p-10 text-white lg:p-20">
+          <div className="flex w-full flex-col justify-center space-y-6 p-10 text-center text-white lg:items-start lg:p-20 lg:text-left">
             <p className="text-3xl font-semibold">
               {label.InfoSection.card2.title}
             </p>
