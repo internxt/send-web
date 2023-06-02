@@ -45,26 +45,27 @@ export default function Layout({ children }: { children: ReactNode }) {
       <Navbar />
 
       <div className="relative min-h-0 flex-1 lg:py-0 lg:pb-32 lg:pt-24">
-        <div className="relative flex h-full flex-row items-center">
-          <Card className="flex flex-shrink-0 flex-col lg:ml-20">
-            {children}
-          </Card>
-          <div
-            ref={ctaRef}
-            className="ml-32 hidden text-white opacity-0 transition-opacity duration-500 lg:block"
-          >
-            <h1 className="text-5xl font-medium" style={{ lineHeight: 1 }}>
-              Encrypt and send files
-              <br />
-              in total privacy
-            </h1>
-            <p className="mt-6 w-156 text-lg font-normal">
-              Internxt Send allows you to share files fast without worrying
-              <br />
-              about the security of your documents, images, or videos.
-              <br />
-              Select the files you want to encrypt and send by link or email.
-            </p>
+        <div className="relative mx-auto flex h-full max-w-screen-xl flex-row items-center justify-center">
+          <div className="flex h-full w-full flex-row items-center justify-start">
+            <Card className="flex flex-shrink-0 flex-col">{children}</Card>
+
+            <div
+              ref={ctaRef}
+              className="ml-32 hidden text-white opacity-0 transition-opacity duration-500 lg:block"
+            >
+              <h1 className="text-5xl font-medium" style={{ lineHeight: 1 }}>
+                Encrypt and send files
+                <br />
+                in total privacy
+              </h1>
+              <p className="mt-6 w-156 text-lg font-normal">
+                Internxt Send allows you to share files fast without worrying
+                <br />
+                about the security of your documents, images, or videos.
+                <br />
+                Select the files you want to encrypt and send by link or email.
+              </p>
+            </div>
           </div>
         </div>
       </div>

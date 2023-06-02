@@ -7,6 +7,7 @@ import {
   EnvelopeSimple,
 } from "phosphor-react";
 import label from "../../assets/lang/en/send.json";
+import RevealY from "../RevealY";
 
 const FeatureSection = () => {
   const cards = [
@@ -49,7 +50,7 @@ const FeatureSection = () => {
   ];
 
   return (
-    <div className="relative z-10 flex w-screen flex-col items-center justify-center bg-white px-5 pb-[88px] pt-32 lg:px-0">
+    <div className="relative z-10 flex w-screen flex-col items-center justify-center bg-white px-5 pb-[88px] pt-20 lg:px-0">
       <div className="flex flex-col items-center justify-center space-y-6 pb-16 text-center">
         <p className="w-full max-w-[550px] justify-center text-5xl font-semibold">
           {label.FeatureSection.title}
@@ -58,10 +59,10 @@ const FeatureSection = () => {
           {label.FeatureSection.description}
         </p>
       </div>
-      <div className="grid grid-cols-1 flex-row flex-wrap justify-center gap-8 sm:grid-cols-2">
+      <RevealY className="grid grid-cols-1 flex-row flex-wrap justify-center gap-8 sm:grid-cols-2">
         {cards.map((card) => (
           <div
-            className={`flex flex-col items-start justify-start space-y-6 rounded-2xl bg-gray-1 p-8 sm:p-10 md:max-w-[488px]`}
+            className={` flex flex-col items-start justify-start space-y-6 rounded-2xl bg-gray-1 p-8 sm:p-10 md:max-w-[488px]`}
             key={card.id}
           >
             <card.icon size={32} color="rgb(0,102,255)" />
@@ -71,7 +72,7 @@ const FeatureSection = () => {
             </div>
           </div>
         ))}
-      </div>
+      </RevealY>
     </div>
   );
 };

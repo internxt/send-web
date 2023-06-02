@@ -31,7 +31,7 @@ export default function Navbar() {
        z-30 flex h-20 w-full items-center bg-transparent text-black
       transition-all duration-100 lg:h-16 lg:text-white`}
     >
-      <div className="mx-4 w-full lg:mx-10 xl:mx-32">
+      <div className="mx-4 w-full lg:mx-10 xl:mx-20">
         <div className="navbar mx-auto flex max-w-screen-xl items-center justify-between">
           {/* Left side of navbar: Logo / Hamburguer menu */}
           <div className=" flex flex-1 flex-shrink-0 flex-grow flex-row items-center justify-start space-x-4 lg:space-x-0">
