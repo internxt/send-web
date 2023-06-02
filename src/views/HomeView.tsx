@@ -26,6 +26,7 @@ import Footer from "../components/footer/Footer";
 
 import schemaMarkup from "../assets/lang/en/send.json";
 import { sm_faq } from "../components/utils/schema-markup-generator";
+import CtaSection from "../components/send/CtaSection";
 
 type EmailFormState = {
   sendTo: string[];
@@ -143,7 +144,7 @@ export default function HomeView() {
   const copyLinkThrottled = throttle(copyLink, 5000);
 
   return (
-    <div className="flex flex-col overflow-hidden">
+    <div className="flex w-full flex-col overflow-hidden">
       <Layout>
         {phase.name === "standby" && (
           <>
@@ -164,7 +165,7 @@ export default function HomeView() {
                 <EmailForm value={formState} onChange={setFormState} />
               )}
             </div>
-            <div className="min-h-auto flex">
+            <div className="min-h-auto flex w-full">
               <CardBottom>
                 <Switch
                   className="mx-auto"
@@ -337,6 +338,7 @@ export default function HomeView() {
       <FeatureSection />
       <InfoSection />
       <FaqSection />
+      <CtaSection />
       <Footer />
 
       <script type="application/ld+json" data-nscript="beforeInteractive">
@@ -456,7 +458,7 @@ function SendTo({
     <div>
       <label className={`mt-4 block text-sm font-medium text-gray-80`}>
         Send to
-        <ul className="mt-1 mb-2 space-y-1.5">
+        <ul className="mb-2 mt-1 space-y-1.5">
           {value.sendTo.map((email, i) => (
             <li
               key={email}
@@ -465,7 +467,7 @@ function SendTo({
               {email}
               <div
                 onClick={() => onRemoveEmail(i)}
-                className="absolute right-0 top-0 flex h-full cursor-pointer flex-row items-center pr-2.5 pl-12 lg:hidden lg:bg-gradient-to-r lg:from-transparent lg:via-gray-5 lg:to-gray-5 lg:group-hover:block"
+                className="absolute right-0 top-0 flex h-full cursor-pointer flex-row items-center pl-12 pr-2.5 lg:hidden lg:bg-gradient-to-r lg:from-transparent lg:via-gray-5 lg:to-gray-5 lg:group-hover:block"
               >
                 <div className="flex h-full flex-row items-center">
                   <X size={14} />
