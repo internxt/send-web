@@ -64,7 +64,7 @@ const FeatureSection = () => {
             className={`flex flex-col items-start justify-start space-y-6 rounded-2xl bg-gray-1 p-8 sm:p-10 md:max-w-[488px]`}
             key={card.id}
           >
-            <card.icon size={54} weight="light" color="rgb(0,102,255)" />
+            <card.icon size={32} color="rgb(0,102,255)" />
             <div className="flex  w-full max-w-[408px] flex-col items-center gap-x-40 space-y-5 text-left lg:items-start">
               <p className="text-2xl font-medium">{card.title}</p>
               <p className="text-lg">{card.description}</p>

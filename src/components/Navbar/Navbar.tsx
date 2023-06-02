@@ -61,6 +61,8 @@ export default function Navbar() {
                   <div className="my-6 font-medium">
                     <a
                       href={`${INTERNXT_URL}/pricing`}
+                      target="_blank"
+                      rel="noreferrer"
                       tabIndex={0}
                       onClick={() => {
                         setMenuState(false);
@@ -118,6 +120,8 @@ export default function Navbar() {
                                 <a
                                   href={`${INTERNXT_URL}/drive`}
                                   tabIndex={0}
+                                  target="_blank"
+                                  rel="noreferrer"
                                   onClick={() => {
                                     setMenuState(false);
                                   }}
@@ -129,6 +133,8 @@ export default function Navbar() {
                                 <a
                                   href={`${INTERNXT_URL}/photos`}
                                   tabIndex={0}
+                                  target="_blank"
+                                  rel="noreferrer"
                                   onClick={() => {
                                     setMenuState(false);
                                   }}
@@ -158,6 +164,8 @@ export default function Navbar() {
                     <a
                       href={`${INTERNXT_URL}/privacy`}
                       tabIndex={0}
+                      target="_blank"
+                      rel="noreferrer"
                       onClick={() => {
                         setMenuState(false);
                       }}
@@ -171,6 +179,8 @@ export default function Navbar() {
                     <a
                       href={`${INTERNXT_URL}/about`}
                       tabIndex={0}
+                      target="_blank"
+                      rel="noreferrer"
                       onClick={() => {
                         setMenuState(false);
                       }}
@@ -182,6 +192,8 @@ export default function Navbar() {
                     </a>
 
                     <a
+                      target="_blank"
+                      rel="noreferrer"
                       onClick={() => {
                         setMenuState(false);
                       }}
@@ -200,7 +212,7 @@ export default function Navbar() {
 
             {/* Logo */}
 
-            <a href={"https://internxt.com"}>
+            <a target="_blank" rel="noreferrer" href={"https://internxt.com"}>
               <img
                 className="flex h-3 lg:hidden"
                 src={logo_dark}
@@ -220,6 +232,8 @@ export default function Navbar() {
             <div className="hidden space-x-2 lg:inline-flex">
               <a
                 href={`${INTERNXT_URL}/pricing`}
+                target="_blank"
+                rel="noreferrer"
                 className={`whitespace-nowrap px-4 py-1.5 text-base font-medium transition duration-150 ease-in-out`}
               >
                 {textContent.links.pricing}
@@ -237,6 +251,8 @@ export default function Navbar() {
 
                   <div className="relative grid gap-0 whitespace-nowrap rounded-xl bg-white lg:grid-cols-1 ">
                     <a
+                      target="_blank"
+                      rel="noreferrer"
                       href={`${INTERNXT_URL}/drive`}
                       className={`flex flex-row justify-start rounded-xl px-4 py-2 text-base font-medium text-cool-gray-80 hover:bg-gray-5 `}
                     >
@@ -244,6 +260,8 @@ export default function Navbar() {
                     </a>
 
                     <a
+                      target="_blank"
+                      rel="noreferrer"
                       href={`${INTERNXT_URL}/photos`}
                       className={`flex flex-row justify-start rounded-xl px-4 py-2 text-base font-medium text-cool-gray-80 hover:bg-gray-5 `}
                     >
@@ -263,6 +281,8 @@ export default function Navbar() {
               </div>
 
               <a
+                target="_blank"
+                rel="noreferrer"
                 href={`${INTERNXT_URL}/privacy`}
                 className={`whitespace-nowrap px-4 py-1.5 text-base font-medium transition duration-150 ease-in-out`}
               >
@@ -270,6 +290,8 @@ export default function Navbar() {
               </a>
 
               <a
+                target="_blank"
+                rel="noreferrer"
                 href={`${INTERNXT_URL}/about`}
                 className={`whitespace-nowrap px-4 py-1.5 text-base font-medium text-white transition duration-150 
                          ease-in-out hover:text-cool-gray-20`}

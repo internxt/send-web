@@ -26,6 +26,7 @@ import Footer from "../components/footer/Footer";
 
 import schemaMarkup from "../assets/lang/en/send.json";
 import { sm_faq } from "../components/utils/schema-markup-generator";
+import CtaSection from "../components/send/CtaSection";
 
 type EmailFormState = {
   sendTo: string[];
@@ -38,7 +39,7 @@ type EmailFormState = {
 export default function HomeView() {
   const options = ["Send link", "Send email"] as const;
   const uploadAbortController = useRef<AbortController | null>(null);
-  const [switchValue, setSwitchValue] = useState<(typeof options)[number]>(
+  const [switchValue, setSwitchValue] = useState<typeof options[number]>(
     options[0]
   );
 
@@ -337,6 +338,7 @@ export default function HomeView() {
       <FeatureSection />
       <InfoSection />
       <FaqSection />
+      <CtaSection />
       <Footer />
 
       <script type="application/ld+json" data-nscript="beforeInteractive">
