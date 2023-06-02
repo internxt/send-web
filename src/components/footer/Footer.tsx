@@ -400,10 +400,8 @@ export default function Footer() {
               {label.FooterSection.copyright}
             </p>
 
-            <a href="https://internxt.com/">
-              <a className="flex flex-shrink-0">
-                <img loading="lazy" src={Internxt} alt="Internxt logo" />
-              </a>
+            <a className="flex flex-shrink-0" href="https://internxt.com/">
+              <img loading="lazy" src={Internxt} alt="Internxt logo" />
             </a>
           </div>
         </div>
@@ -445,11 +443,11 @@ export default function Footer() {
                     className={`flex flex-col space-y-4 p-4 pt-2 text-cool-gray-60`}
                   >
                     <a href="https://internxt.com/drive">
-                      <a>{label.FooterSection.sections.products.drive}</a>
+                      {label.FooterSection.sections.products.drive}
                     </a>
 
                     <a href="https://internxt.com/photos">
-                      <a>{label.FooterSection.sections.products.photos}</a>
+                      {label.FooterSection.sections.products.photos}
                     </a>
 
                     <a
@@ -465,11 +463,11 @@ export default function Footer() {
                     </a>
 
                     <a href="https://internxt.com/token">
-                      <a>{label.FooterSection.sections.products.token}</a>
+                      {label.FooterSection.sections.products.token}
                     </a>
 
                     <a href="https://internxt.com/pricing">
-                      <a>{label.FooterSection.sections.products.pricing}</a>
+                      {label.FooterSection.sections.products.pricing}
                     </a>
 
                     {/*
@@ -518,11 +516,11 @@ export default function Footer() {
                     className={`flex flex-col space-y-4 p-4 pt-2 text-cool-gray-60`}
                   >
                     <a href="https://internxt.com/about">
-                      <a>{label.FooterSection.sections.company.about}</a>
+                      {label.FooterSection.sections.company.about}
                     </a>
 
                     <a href="https://internxt.com/privacy">
-                      <a>{label.FooterSection.sections.company.privacy}</a>
+                      {label.FooterSection.sections.company.privacy}
                     </a>
 
                     <a
@@ -535,7 +533,7 @@ export default function Footer() {
                     </a>
 
                     <a href="https://internxt.com/legal">
-                      <a>{label.FooterSection.sections.company.legal}</a>
+                      {label.FooterSection.sections.company.legal}
                     </a>
 
                     <a
@@ -676,17 +674,13 @@ export default function Footer() {
                       */}
 
                     <a href="https://internxt.com/password-checker">
-                      <a>
-                        {
-                          label.FooterSection.sections.resources
-                            .directoryOfPrivacyOrganizations
-                        }
-                      </a>
+                      {
+                        label.FooterSection.sections.resources
+                          .directoryOfPrivacyOrganizations
+                      }
                     </a>
                     <a href="https://internxt.com/cyber-awareness">
-                      <a>
-                        {label.FooterSection.sections.resources.cyberAwareness}
-                      </a>
+                      {label.FooterSection.sections.resources.cyberAwareness}
                     </a>
                   </Disclosure.Panel>
                 </Transition>
@@ -846,10 +840,8 @@ export default function Footer() {
               {label.FooterSection.copyright}
             </p>
 
-            <a href="https://internxt.com/">
-              <a className="flex flex-shrink-0">
-                <img loading="lazy" src={Internxt} alt="Internxt logo" />
-              </a>
+            <a className="flex flex-shrink-0" href="https://internxt.com/">
+              <img loading="lazy" src={Internxt} alt="Internxt logo" />
             </a>
           </div>
         </div>
