@@ -1,5 +1,4 @@
 /* eslint-disable max-len */
-import { useEffect, useState } from "react";
 import { Transition, Disclosure } from "@headlessui/react";
 import { CaretDown } from "phosphor-react";
 import textContent from "../../assets/lang/en/footer.json";
@@ -11,7 +10,6 @@ import YouTube from "../../assets/social/cool-gray-60/youtube.svg";
 import Internxt from "../../assets/Internxt.svg";
 import iosStore from "../../assets/images/footer/app-store.svg";
 import androidStore from "../../assets/images/footer/store-for-android.svg";
-import axios from "axios";
 
 const iosURL = "https://apps.apple.com/es/app/internxt-drive/id1465869889";
 const androidURL =
@@ -25,13 +23,6 @@ export default function Footer({
   darkMode?: boolean;
 }) {
   const lang = "en";
-  const [consentCookie, setConsentCookie] = useState(true);
-
-  useEffect(() => {
-    const cookie = localStorage.getItem("CookieConsent");
-
-    if (!cookie) setConsentCookie(false);
-  }, []);
 
   return (
     <section
@@ -656,9 +647,6 @@ export default function Footer({
                       >
                         <div>
                           {textContent.FooterSection.sections.products.send}
-                        </div>
-                        <div className="pointer-events-none ml-2 flex flex-row items-center whitespace-nowrap rounded-full bg-orange bg-opacity-15 px-2 py-1 text-supporting-1 font-medium uppercase text-orange">
-                          {textContent.FooterSection.new}
                         </div>
                       </a>
 
