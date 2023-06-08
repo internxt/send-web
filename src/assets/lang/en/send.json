@@ -1,4 +1,35 @@
 {
+  "HeroSection": {
+    "index": {
+      "title": "Encrypt and send files in total privacy",
+      "description": "Internxt Send allows you to share files fast without worrying about the security of your documents, images, or videos. Select the files you want to encrypt and send by link or email."
+    },
+    "drive": {
+      "title": "Some things are sensitive",
+      "description": "Safely encrypt and store all of your personal and confidential files with Internxt. No judgment, just privacy!",
+      "cta": "Get Internxt Drive"
+    },
+    "photos": {
+      "title": "Photos are personal",
+      "description": "Keep them that way by encrypting, saving, and sharing your personal images in total privacy with Internxt Photos.",
+      "cta": "Get Internxt Photos"
+    },
+    "privacy": {
+      "title": "We all need our privacy",
+      "description": "Learn all about our commitment to privacy and find out why you should set up a digital safe space with Internxt.",
+      "cta": "More on privacy"
+    },
+    "blog": {
+      "title": "Learning is cool",
+      "description": "Cybersecurity doesn't need to be confusing. Learn all about privacy, encryption, and more with the Internxt Blog.",
+      "cta": "Visit Internxt blog"
+    },
+    "pricing": {
+      "title": "Privacy without the pricetag",
+      "description": "Privacy doesn't have to break the bank. Get secure cloud storage that fits your budget with Internxt.",
+      "cta": "Compare Internxt plans"
+    }
+  },
   "FeatureSection": {
     "title": "Secure from the moment you hit send",
     "description": "Files uploaded and sent through Internxt Send use Internxt's disruptive zero-knowledge architecture to maximize the security and privacy of files. Maintain rock-solid confidentiality and safely transmit sensitive information with Internxt Send.",
