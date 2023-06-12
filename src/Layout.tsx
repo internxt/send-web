@@ -83,6 +83,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   const backgroundRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
+  const [imagesLoaded, setImagesLoaded] = useState<string[]>([]);
   let height = useRef(window.innerHeight);
   const [item, setItem] = useState<Record<string, any>>({
     text: heroSectionTextPaths[0],
@@ -95,6 +96,8 @@ export default function Layout({ children }: { children: ReactNode }) {
     heroSectionImages.forEach((image) => {
       const img = new Image();
       img.src = image;
+
+      setImagesLoaded((prev) => [...prev, img.src]);
     }, []);
 
     const background = new Image();
@@ -115,8 +118,9 @@ export default function Layout({ children }: { children: ReactNode }) {
       }
 
       const newText = heroSectionTextPaths[currentIndex];
-      const newImage = heroSectionImages[currentIndex - 1];
+      const newImage = imagesLoaded[currentIndex - 1];
       const newBg = backgroundColor[currentIndex];
+      console.log("New image", imagesLoaded);
 
       // Fade out
       ctaRef.current?.classList.remove("opacity-100");
@@ -154,7 +158,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     }, 7000); // 10 seconds
 
     return () => clearInterval(interval);
-  }, []);
+  }, [imagesLoaded]);
 
   useEffect(() => {
     window.addEventListener("resize", () => {
