@@ -7,7 +7,6 @@ import lang from "./assets/lang/en/send.json";
 import Privacy from "./assets/images/HeroSectionImages/Privacy.svg";
 import Blog from "./assets/images/HeroSectionImages/Blog.svg";
 import Pricing from "./assets/images/HeroSectionImages/Pricing.svg";
-import background from "./assets/images/bg.png";
 
 const heroSectionTextPaths = [
   lang.HeroSection.index,
@@ -91,15 +90,20 @@ export default function Layout({ children }: { children: ReactNode }) {
     background: backgroundColor[0],
   });
 
-  //Preload images before rendering the component to avoid flickering (heroSectionImages)
   useEffect(() => {
-    //Show bg when loaded
-    backgroundRef.current?.classList.remove("opacity-0");
-    backgroundRef.current?.classList.add("opacity-100");
+    //Preload images before rendering the component to avoid flickering (heroSectionImages)
+    // heroSectionImages.forEach((image) => {
+    //   const img = new Image();
+    //   img.src = image;
+    // });
 
-    heroSectionImages.forEach((image) => {
-      const img = new Image();
-      img.src = image;
+    console.log("height", heroSectionImages);
+
+    // Preload the first bg image before rendering the component to avoid flickering
+    const img = new Image();
+    img.src = `${window.origin}/bg.png`;
+    img.addEventListener("load", () => {
+      backgroundRef.current?.classList.add("opacity-100");
     });
   }, []);
 
