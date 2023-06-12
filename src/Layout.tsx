@@ -47,7 +47,7 @@ const BgLoop = (text: any, ctaRef: RefObject<HTMLDivElement>) => {
   return (
     <div
       ref={ctaRef}
-      className="flex opacity-100 transition-opacity duration-1000"
+      className="flex select-none opacity-100 transition-opacity duration-1000"
     >
       {text.cta ? (
         <div className="flex w-full flex-row justify-end">
