@@ -1,17 +1,13 @@
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { ReactNode, RefObject, useEffect, useRef, useState } from "react";
 
 import Card from "./components/Card";
 import Navbar from "./components/Navbar/Navbar";
-import { ArrowCircleDown, CaretLeft, CaretRight } from "phosphor-react";
+import { ArrowCircleDown, CaretRight } from "phosphor-react";
 import lang from "./assets/lang/en/send.json";
-import Drive from "./assets/images/HeroSectionImages/Drive-1.webp";
-import Photos from "./assets/images/HeroSectionImages/Photos-2.webp";
 import Privacy from "./assets/images/HeroSectionImages/Privacy.svg";
 import Blog from "./assets/images/HeroSectionImages/Blog.svg";
 import Pricing from "./assets/images/HeroSectionImages/Pricing.svg";
 import background from "./assets/images/bg.png";
-
-const urlPrefix = process.env.REACT_APP_BASE_URL || "";
 
 const heroSectionTextPaths = [
   lang.HeroSection.index,
@@ -22,9 +18,15 @@ const heroSectionTextPaths = [
   lang.HeroSection.pricing,
 ];
 
-const heroSectionImages = [Drive, Photos, Privacy, Blog, Pricing];
+const heroSectionImages = [
+  `${window.origin}/Drive-1.webp`,
+  `${window.origin}/Photos-2.webp`,
+  Privacy,
+  Blog,
+  Pricing,
+];
 const backgroundColor = [
-  { backgroundImage: `url(${background})` },
+  { backgroundImage: `url(${window.origin}/bg.png)` },
   {
     background: "radial-gradient(50% 50% at 50% 50%, #00A4C8 0%, #161616 100%)",
   },
@@ -38,14 +40,16 @@ const backgroundColor = [
     background: "radial-gradient(50% 50% at 50% 50%, #0058DB 0%, #161616 100%)",
   },
   {
-    background:
-      "radial-gradient(50% 50% at 50% 50%, #0058DB 0%, #161616 100%);",
+    background: "radial-gradient(50% 50% at 50% 50%, #0058DB 0%, #161616 100%)",
   },
 ];
 
-const BgLoop = (text: any) => {
+const BgLoop = (text: any, ctaRef: RefObject<HTMLDivElement>) => {
   return (
-    <>
+    <div
+      ref={ctaRef}
+      className="flex opacity-100 transition-opacity duration-1000"
+    >
       {text.cta ? (
         <div className="flex w-full flex-row justify-end">
           <div className="flex w-full max-w-[316px] flex-col">
@@ -53,7 +57,12 @@ const BgLoop = (text: any) => {
               {text.title}
             </h1>
             <p className="mt-6 text-xl font-medium">{text.description}</p>
-            <div className="mt-5 flex flex-row items-center space-x-1">
+            <div
+              onClick={() => {
+                window.open(text.ctaLink, "_blank");
+              }}
+              className="mt-5 flex cursor-pointer flex-row items-center space-x-1 hover:underline"
+            >
               <p className="text-lg font-semibold">{text.cta}</p>
               <CaretRight size={16} className="text-white" />
             </div>
@@ -67,17 +76,32 @@ const BgLoop = (text: any) => {
           <p className="mt-6 text-xl font-medium">{text.description}</p>
         </div>
       )}
-    </>
+    </div>
   );
 };
 
 export default function Layout({ children }: { children: ReactNode }) {
   const backgroundRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
   let height = useRef(window.innerHeight);
-  const [text, setText] = useState<any>(heroSectionTextPaths[0]);
-  const [image, setImage] = useState<any>();
-  const [background, setBackground] = useState<any>(backgroundColor[0]);
+  const [item, setItem] = useState<Record<string, any>>({
+    text: heroSectionTextPaths[0],
+    image: "",
+    background: backgroundColor[0],
+  });
+
+  //Preload images before rendering the component to avoid flickering (heroSectionImages)
+  useEffect(() => {
+    //Show bg when loaded
+    backgroundRef.current?.classList.remove("opacity-0");
+    backgroundRef.current?.classList.add("opacity-100");
+
+    heroSectionImages.forEach((image) => {
+      const img = new Image();
+      img.src = image;
+    });
+  }, []);
 
   useEffect(() => {
     let currentIndex = 0;
@@ -97,25 +121,35 @@ export default function Layout({ children }: { children: ReactNode }) {
       ctaRef.current?.classList.add("opacity-0");
       backgroundRef.current?.classList.remove("opacity-100");
       backgroundRef.current?.classList.add("opacity-0");
+      imageRef.current?.classList.remove("opacity-100");
+      imageRef.current?.classList.add("opacity-0");
+
+      // Update text and image
+      setTimeout(() => {
+        if (currentIndex === 0) {
+          setItem({
+            text: newText,
+            background: newBg,
+          });
+        } else {
+          setItem({
+            text: newText,
+            image: newImage,
+            background: newBg,
+          });
+        }
+      }, 800);
 
       setTimeout(() => {
-        // Update text and image
-        if (currentIndex === 0) {
-          setText(heroSectionTextPaths[0]);
-          setBackground(newBg);
-        } else {
-          setText(newText);
-          setImage(newImage);
-          setBackground(newBg);
-        }
-
         // Fade in
         ctaRef.current?.classList.remove("opacity-0");
         ctaRef.current?.classList.add("opacity-100");
         backgroundRef.current?.classList.remove("opacity-0");
         backgroundRef.current?.classList.add("opacity-100");
+        imageRef.current?.classList.remove("opacity-0");
+        imageRef.current?.classList.add("opacity-100");
       }, 1000); // Wait for fade out animation to complete
-    }, 10000); // 10 seconds
+    }, 7000); // 10 seconds
 
     return () => clearInterval(interval);
   }, []);
@@ -139,19 +173,15 @@ export default function Layout({ children }: { children: ReactNode }) {
       >
         <div
           ref={backgroundRef}
-          style={background}
-          className="fixed inset-0 block bg-cover bg-center bg-no-repeat transition-opacity duration-500"
+          style={item.background}
+          className="absolute inset-0 block bg-cover bg-center bg-no-repeat transition-opacity duration-500"
         />
-
         <div className="relative z-20 min-h-0 flex-1 lg:py-0  lg:pt-24">
-          <div className="relative mx-auto flex h-full max-w-screen-xl flex-col items-center justify-center">
-            <div className="flex h-full w-full flex-row items-center justify-start lg:pb-32">
+          <div className="relative flex h-full max-w-screen-xl flex-col items-center justify-center md:px-10 xl:mx-auto xl:px-0">
+            <div className="flex h-full w-full flex-row items-center justify-start space-x-20 lg:pb-32">
               <Card className="flex flex-shrink-0 flex-col">{children}</Card>
-              <div
-                ref={ctaRef}
-                className="ml-32 hidden text-white opacity-100 transition-opacity duration-1000 lg:block"
-              >
-                {BgLoop(text)}
+              <div className="hidden text-white  lg:block">
+                {BgLoop(item.text, ctaRef)}
               </div>
             </div>
             <div className="absolute bottom-12 hidden lg:flex">
@@ -162,14 +192,19 @@ export default function Layout({ children }: { children: ReactNode }) {
             </div>
           </div>
         </div>
-        {text.cta && (
+        {item.image && (
           <div
-            ref={ctaRef}
+            ref={imageRef}
             className={`absolute ${
-              image === Pricing && "bottom-0"
-            } right-0 hidden w-full max-w-[700px] translate-x-56 opacity-100 transition-opacity duration-1000 xl:flex`}
+              item.image === Pricing && "bottom-0"
+            } right-0 z-30 hidden w-full max-w-[700px] translate-x-50 opacity-0 transition-opacity duration-1000 xl:flex`}
           >
-            <img src={image} alt="bg" />
+            <img
+              src={item.image}
+              alt={item.text.title}
+              draggable={false}
+              loading="lazy"
+            />
           </div>
         )}
       </div>
