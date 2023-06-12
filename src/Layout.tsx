@@ -92,17 +92,15 @@ export default function Layout({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     //Preload images before rendering the component to avoid flickering (heroSectionImages)
-    // heroSectionImages.forEach((image) => {
-    //   const img = new Image();
-    //   img.src = image;
-    // });
+    heroSectionImages.forEach((image) => {
+      const img = new Image();
+      img.src = image;
+    }, []);
 
-    console.log("height", heroSectionImages);
-
-    // Preload the first bg image before rendering the component to avoid flickering
-    const img = new Image();
-    img.src = `${window.origin}/bg.png`;
-    img.addEventListener("load", () => {
+    const background = new Image();
+    background.src = `${window.origin}/bg.png`;
+    background.addEventListener("load", () => {
+      backgroundRef.current?.classList.remove("opacity-0");
       backgroundRef.current?.classList.add("opacity-100");
     });
   }, []);
@@ -178,7 +176,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         <div
           ref={backgroundRef}
           style={item.background}
-          className="absolute inset-0 block bg-cover bg-center bg-no-repeat transition-opacity duration-500"
+          className="absolute inset-0 block bg-cover bg-center bg-no-repeat opacity-0 transition-opacity duration-500"
         />
         <div className="relative z-20 min-h-0 flex-1 lg:py-0  lg:pt-24">
           <div className="relative flex h-full max-w-screen-xl flex-col items-center justify-center md:px-10 xl:mx-auto xl:px-0">
