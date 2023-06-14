@@ -105,7 +105,7 @@ export default function Layout({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     //Preload images before rendering the component to avoid flickering (heroSectionImages)
-    if (window.innerWidth >= 1920) {
+    if (window.innerWidth >= 2300) {
       heroSectionImages.forEach((image) => {
         const img = new Image();
         img.src = image;
@@ -127,7 +127,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       backgroundRef.current?.classList.remove("opacity-0");
       backgroundRef.current?.classList.add("opacity-100");
     });
-  }, [window.innerWidth]);
+  }, []);
 
   useEffect(() => {
     let currentIndex = 0;
