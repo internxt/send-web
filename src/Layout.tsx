@@ -141,7 +141,6 @@ export default function Layout({ children }: { children: ReactNode }) {
       const newText = heroSectionTextPaths[currentIndex];
       const newImage = imagesLoaded[currentIndex - 1];
       const newBg = backgroundColor[currentIndex];
-      console.log("New image", imagesLoaded);
 
       // Fade out
       ctaRef.current?.classList.remove("opacity-100");
