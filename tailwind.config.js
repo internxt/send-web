@@ -4,6 +4,10 @@ const defaultTheme = require("tailwindcss/defaultTheme");
 module.exports = {
   content: ["./src/**/*.tsx"],
   theme: {
+    screens: {
+      ...defaultTheme.screens,
+      "3xl": "2350px",
+    },
     extend: {
       backdropInvert: {
         25: "25%",
