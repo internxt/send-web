@@ -149,7 +149,7 @@ export default function HomeView() {
         {phase.name === "standby" && (
           <>
             <div
-              className={`flex min-h-0 flex-1 flex-col justify-center md:justify-start ${
+              className={`flex min-h-0 flex-1 flex-col justify-center lg:justify-start ${
                 switchValue === "Send email"
                   ? "overflow-hidden overflow-y-auto lg:rounded-t-2xl"
                   : ""
