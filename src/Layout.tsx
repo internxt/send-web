@@ -4,9 +4,12 @@ import Card from "./components/Card";
 import Navbar from "./components/Navbar/Navbar";
 import { ArrowCircleDown, CaretRight } from "phosphor-react";
 import lang from "./assets/lang/en/send.json";
-import Privacy from "./assets/images/HeroSectionImages/Privacy.svg";
-import Blog from "./assets/images/HeroSectionImages/Blog.svg";
-import Pricing from "./assets/images/HeroSectionImages/Pricing.svg";
+import Privacy from "./assets/images/HeroSectionImages/Privacy.webp";
+import Blog from "./assets/images/HeroSectionImages/Blog.webp";
+import Pricing from "./assets/images/HeroSectionImages/Pricing.webp";
+import PrivacyLaptop from "./assets/images/HeroSectionImages/Privacy.svg";
+import BlogLaptop from "./assets/images/HeroSectionImages/Blog.svg";
+import PricingLaptop from "./assets/images/HeroSectionImages/Pricing.svg";
 
 const heroSectionTextPaths = [
   lang.HeroSection.index,
@@ -23,6 +26,13 @@ const heroSectionImages = [
   Privacy,
   Blog,
   Pricing,
+];
+const heroSectionImagesForLaptop = [
+  `${window.origin}/Drive-1.webp`,
+  `${window.origin}/Photos-2.webp`,
+  PrivacyLaptop,
+  BlogLaptop,
+  PricingLaptop,
 ];
 const backgroundColor = [
   { backgroundImage: `url(${window.origin}/bg.png)` },
@@ -49,32 +59,34 @@ const BgLoop = (text: any, ctaRef: RefObject<HTMLDivElement>) => {
       ref={ctaRef}
       className="flex select-none opacity-100 transition-opacity duration-1000"
     >
-      {text.cta ? (
-        <div className="flex w-full flex-row justify-end">
-          <div className="flex w-full max-w-[316px] flex-col">
-            <h1 className="text-6xl font-semibold" style={{ lineHeight: 1 }}>
-              {text.title}
-            </h1>
-            <p className="mt-6 text-xl font-medium">{text.description}</p>
+      <div className="flex w-full flex-row justify-end">
+        <div
+          className={`flex w-full ${
+            text.cta ? "max-w-[316px]" : "max-w-[605px]"
+          } flex-col 3xl:max-w-4xl`}
+        >
+          <h1
+            className="text-6xl font-semibold 3xl:text-7xl"
+            style={{ lineHeight: 1 }}
+          >
+            {text.title}
+          </h1>
+          <p className="mt-6 text-xl font-medium 3xl:text-2xl">
+            {text.description}
+          </p>
+          {text.cta ? (
             <div
               onClick={() => {
                 window.open(text.ctaLink, "_blank");
               }}
               className="mt-5 flex cursor-pointer flex-row items-center space-x-1 hover:underline"
             >
-              <p className="text-lg font-semibold">{text.cta}</p>
+              <p className="text-lg font-semibold 3xl:text-2xl">{text.cta}</p>
               <CaretRight size={16} className="text-white" />
             </div>
-          </div>
+          ) : null}
         </div>
-      ) : (
-        <div className="flex w-full max-w-[605px] flex-col">
-          <h1 className="text-6xl font-semibold" style={{ lineHeight: 1 }}>
-            {text.title}
-          </h1>
-          <p className="mt-6 text-xl font-medium">{text.description}</p>
-        </div>
-      )}
+      </div>
     </div>
   );
 };
@@ -83,6 +95,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   const backgroundRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
+  const [imagesLoaded, setImagesLoaded] = useState<string[]>([]);
   let height = useRef(window.innerHeight);
   const [item, setItem] = useState<Record<string, any>>({
     text: heroSectionTextPaths[0],
@@ -92,10 +105,21 @@ export default function Layout({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     //Preload images before rendering the component to avoid flickering (heroSectionImages)
-    heroSectionImages.forEach((image) => {
-      const img = new Image();
-      img.src = image;
-    }, []);
+    if (window.innerWidth >= 2300) {
+      heroSectionImages.forEach((image) => {
+        const img = new Image();
+        img.src = image;
+
+        setImagesLoaded((prev) => [...prev, img.src]);
+      }, []);
+    } else {
+      heroSectionImagesForLaptop.forEach((image) => {
+        const img = new Image();
+        img.src = image;
+
+        setImagesLoaded((prev) => [...prev, img.src]);
+      }, []);
+    }
 
     const background = new Image();
     background.src = `${window.origin}/bg.png`;
@@ -115,7 +139,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       }
 
       const newText = heroSectionTextPaths[currentIndex];
-      const newImage = heroSectionImages[currentIndex - 1];
+      const newImage = imagesLoaded[currentIndex - 1];
       const newBg = backgroundColor[currentIndex];
 
       // Fade out
@@ -154,7 +178,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     }, 7000); // 10 seconds
 
     return () => clearInterval(interval);
-  }, []);
+  }, [imagesLoaded]);
 
   useEffect(() => {
     window.addEventListener("resize", () => {
@@ -170,7 +194,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     <>
       <Navbar />
       <div
-        className="relative flex w-auto flex-col justify-center bg-white lg:min-h-[700px] lg:bg-black"
+        className="relative flex w-auto flex-col justify-center bg-white lg:min-h-[700px] lg:bg-black "
         style={{ height: height.current }}
       >
         <div
@@ -179,9 +203,11 @@ export default function Layout({ children }: { children: ReactNode }) {
           className="absolute inset-0 block bg-cover bg-center bg-no-repeat opacity-0 transition-opacity duration-500"
         />
         <div className="relative z-20 min-h-0 flex-1 lg:py-0  lg:pt-24">
-          <div className="relative flex h-full max-w-screen-xl flex-col items-center justify-center md:px-10 xl:mx-auto xl:px-0">
-            <div className="flex h-full w-full flex-row items-center justify-start space-x-20 lg:pb-32">
-              <Card className="flex flex-shrink-0 flex-col">{children}</Card>
+          <div className="relative flex h-full max-w-screen-xl flex-col items-center justify-center md:px-10 xl:mx-auto xl:px-0 3xl:max-w-full">
+            <div className="relative flex h-full w-full flex-row items-center justify-start space-x-20 lg:pb-32 2xl:translate-x-50">
+              <div className="flex h-full items-center">
+                <Card className="flex flex-shrink-0 flex-col">{children}</Card>
+              </div>
               <div className="hidden text-white  lg:block">
                 {BgLoop(item.text, ctaRef)}
               </div>
@@ -194,12 +220,13 @@ export default function Layout({ children }: { children: ReactNode }) {
             </div>
           </div>
         </div>
+
         {item.image && (
           <div
             ref={imageRef}
             className={`absolute ${
-              item.image === Pricing && "bottom-0"
-            } right-0 z-30 hidden w-full max-w-[700px] translate-x-50 opacity-0 transition-opacity duration-1000 xl:flex`}
+              item.image === imagesLoaded[4] && "bottom-0"
+            } right-0 z-30 hidden w-full max-w-[700px] translate-x-50 opacity-0 transition-opacity duration-1000 xl:flex 3xl:right-10 3xl:w-full 3xl:max-w-4xl 3xl:translate-x-0 3xl:items-center 3xl:justify-center`}
           >
             <img
               src={item.image}
