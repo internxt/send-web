@@ -205,7 +205,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         <div className="relative z-20 min-h-0 flex-1 lg:py-0  lg:pt-24">
           <div className="relative flex h-full max-w-screen-xl flex-col items-center justify-center md:px-10 xl:mx-auto xl:px-0 3xl:max-w-full">
             <div className="relative flex h-full w-full flex-row items-center justify-start space-x-20 lg:pb-32 2xl:translate-x-50">
-              <div className="flex h-full items-center">
+              <div className="flex h-full w-full items-center lg:w-max">
                 <Card className="flex flex-shrink-0 flex-col">{children}</Card>
               </div>
               <div className="hidden text-white  lg:block">
