@@ -456,26 +456,30 @@ function SendTo({
 
   return (
     <div>
-      <label className={`mt-4 block text-sm font-medium text-gray-80`}>
+      <label
+        className={`mt-4 block overflow-hidden text-sm font-medium text-gray-80`}
+      >
         Send to
-        <ul className="mb-2 mt-1 space-y-1.5">
-          {value.sendTo.map((email, i) => (
-            <li
-              key={email}
-              className="group relative w-max max-w-full truncate rounded-full bg-gray-5 px-3.5 py-1.5 pr-9 text-sm font-medium text-gray-80 lg:py-1 lg:pr-3.5"
-            >
-              {email}
-              <div
-                onClick={() => onRemoveEmail(i)}
-                className="absolute right-0 top-0 flex h-full cursor-pointer flex-row items-center pl-12 pr-2.5 lg:hidden lg:bg-gradient-to-r lg:from-transparent lg:via-gray-5 lg:to-gray-5 lg:group-hover:block"
+        <div className="max-h-40 overflow-y-auto">
+          <ul className="mb-2 mt-1 max-h-40 space-y-1.5 overflow-y-auto">
+            {value.sendTo.map((email, i) => (
+              <li
+                key={email}
+                className="group relative w-max max-w-full overflow-hidden truncate rounded-full bg-gray-5 px-3.5 py-1.5 pr-9 text-sm font-medium text-gray-80 lg:py-1 lg:pr-3.5"
               >
-                <div className="flex h-full flex-row items-center">
-                  <X size={14} />
+                {email}
+                <div
+                  onClick={() => onRemoveEmail(i)}
+                  className="absolute right-0 top-0 flex h-full cursor-pointer flex-row items-center overflow-hidden pl-12 pr-2.5 lg:hidden lg:bg-gradient-to-r lg:from-transparent lg:via-gray-5 lg:to-gray-5 lg:group-hover:block"
+                >
+                  <div className="flex h-full flex-row items-center">
+                    <X size={14} />
+                  </div>
                 </div>
-              </div>
-            </li>
-          ))}
-        </ul>
+              </li>
+            ))}
+          </ul>
+        </div>
         <Input
           type="email"
           onKeyDown={onKeyDown}
