@@ -37,7 +37,7 @@ export default function RootDropzone({
           <div className="flex h-full w-full items-center justify-center border-3 border-dashed border-gray-40 lg:rounded-2xl lg:border-white">
             <div className="text-center">
               <h1 className="text-3xl font-medium text-gray-40 lg:text-5xl lg:text-white">
-                Drop files or folders
+                Drop files or folders here
               </h1>
               <h2 className="mt-3  text-lg text-gray-40 lg:text-2xl lg:text-white">
                 Upload up to {maxBytesPerSendDisplay} in total

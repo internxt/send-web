@@ -202,9 +202,9 @@ export default function Layout({ children }: { children: ReactNode }) {
           style={item.background}
           className="absolute inset-0 block bg-cover bg-center bg-no-repeat opacity-0 transition-opacity duration-500"
         />
-        <div className="relative z-20 min-h-0 flex-1 lg:py-0  lg:pt-24">
+        <div className="relative min-h-0 flex-1 lg:py-0  lg:pt-24">
           <div className="relative flex h-full max-w-screen-xl flex-col items-center justify-center md:px-10 xl:mx-auto xl:px-0 3xl:max-w-full">
-            <div className="relative flex h-full w-full flex-row items-center justify-start space-x-20 lg:pb-32 2xl:translate-x-50">
+            <div className="relative flex h-full w-full flex-row items-center justify-start space-x-20 lg:pb-32 3xl:translate-x-50">
               <div className="flex h-full w-full items-center lg:w-max">
                 <Card className="flex flex-shrink-0 flex-col">{children}</Card>
               </div>
@@ -226,7 +226,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             ref={imageRef}
             className={`absolute ${
               item.image === imagesLoaded[4] && "bottom-0"
-            } right-0 z-30 hidden w-full max-w-[700px] translate-x-50 opacity-0 transition-opacity duration-1000 xl:flex 3xl:right-10 3xl:w-full 3xl:max-w-4xl 3xl:translate-x-0 3xl:items-center 3xl:justify-center`}
+            } right-0 hidden w-full max-w-[700px] translate-x-50 opacity-0 transition-opacity duration-1000 xl:flex 3xl:right-10 3xl:w-full 3xl:max-w-4xl 3xl:translate-x-0 3xl:items-center 3xl:justify-center`}
           >
             <img
               src={item.image}
