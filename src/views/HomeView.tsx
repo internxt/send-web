@@ -159,7 +159,7 @@ export default function HomeView() {
                 className={`min-h-[224px] ${
                   switchValue !== "Send email" && "lg:h-full"
                 }`}
-                scroll={switchValue === "Send link"}
+                scroll={true}
               />
               {switchValue === "Send email" && (
                 <EmailForm value={formState} onChange={setFormState} />
