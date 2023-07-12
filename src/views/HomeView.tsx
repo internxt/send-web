@@ -2,7 +2,7 @@ import isValidEmail from "@internxt/lib/dist/src/auth/isValidEmail";
 import { format } from "bytes";
 import copy from "copy-to-clipboard";
 import throttle from "lodash.throttle";
-import { Check, Copy, X } from "phosphor-react";
+import { CheckCircle, Copy, WarningCircle, X } from "phosphor-react";
 import { useContext, useEffect, useRef, useState } from "react";
 import Button from "../components/Button";
 import CardBottom from "../components/CardBotton";
@@ -42,6 +42,9 @@ export default function HomeView() {
   const [switchValue, setSwitchValue] = useState<typeof options[number]>(
     options[0]
   );
+
+  //!TODO: Get 2 weeks from now
+  const expireDate = "2 weeks";
 
   const [phase, setPhase] = useState<
     | { name: "standby" }
@@ -178,7 +181,7 @@ export default function HomeView() {
                   className="mt-4"
                   onClick={onSubmit}
                 >
-                  {switchValue === "Send link" ? "Get a link" : "Send files"}
+                  {switchValue === "Send link" ? "Create a link" : "Send files"}
                 </Button>
               </CardBottom>
             </div>
@@ -208,7 +211,7 @@ export default function HomeView() {
                   </>
                 ) : (
                   <p className="w-64 text-xl font-medium text-gray-80">
-                    Are you sure you want to cancel this transfer?
+                    Are you sure you want to cancel this upload?
                   </p>
                 )}
               </div>
@@ -248,8 +251,8 @@ export default function HomeView() {
         {phase.name === "done" && (
           <div className="flex h-full flex-col">
             <div className="flex flex-1 flex-col items-center">
-              <div className="mt-20 flex h-28 w-28 flex-row items-center justify-center rounded-full bg-green text-white">
-                <Check size={80} />
+              <div className="mt-20 flex h-28 w-28 flex-row items-center justify-center rounded-full text-green">
+                <CheckCircle size={80} weight="thin" />
               </div>
               <div className="mt-20 w-full px-5 text-center">
                 <p className="text-xl font-medium text-gray-80">
@@ -257,12 +260,12 @@ export default function HomeView() {
                     ? "Files sent via email"
                     : `${filesContext.totalFilesCount} ${
                         filesContext.totalFilesCount > 1 ? "files" : "file"
-                      } uploaded`}
+                      } uploaded successfully`}
                 </p>
                 <p className="text-gray-60">
                   {switchValue === "Send email"
-                    ? "File access will expire in 2 weeks"
-                    : "This link will expire in 2 weeks"}
+                    ? `File access will expire on ${expireDate}`
+                    : `This link will expire on ${expireDate}`}
                 </p>
                 {switchValue === "Send link" && (
                   <Button
@@ -300,8 +303,8 @@ export default function HomeView() {
         {phase.name === "error" && (
           <div className="flex h-full flex-col">
             <div className="flex flex-1 flex-col items-center">
-              <div className="mt-20 flex h-28 w-28 flex-row items-center justify-center rounded-full bg-red-std text-white">
-                <X size={80} />
+              <div className="mt-20 flex h-28 w-28 flex-row items-center justify-center rounded-full border border-red-std text-red-std">
+                <WarningCircle size={80} weight="thin" />
               </div>
               <div className="mt-20 w-full px-5 text-center">
                 <p className="text-xl font-medium text-gray-80">
@@ -311,7 +314,7 @@ export default function HomeView() {
                   We were unable to{" "}
                   {switchValue === "Send email" ? "send" : "upload"} your files.
                   <br />
-                  "Please try again later."
+                  Please try again later.
                 </p>
               </div>
             </div>
@@ -365,7 +368,7 @@ function EmailForm({
       <Input
         type="email"
         placeholder="My email address"
-        label="Your email"
+        label="yourname@email.com"
         onChange={(v) => onChange({ ...value, sender: v })}
         value={value.sender}
         onKeyDown={(e) => {
@@ -374,7 +377,7 @@ function EmailForm({
       />
       <label className={`mt-4 block text-sm font-medium text-gray-80`}>
         Transfer info
-        <span className="text-xs font-normal text-gray-40"> (optional)</span>
+        <span className="text-xs font-normal text-gray-40"> (Optional)</span>
         <Input
           placeholder="Title"
           onChange={(v) => onChange({ ...value, title: v })}
@@ -486,7 +489,7 @@ function SendTo({
           value={value.sendToField}
           onChange={onInputChange}
           className="mt-1"
-          placeholder="Send files to..."
+          placeholder="Send files to"
           message={
             maxRecipientsReached
               ? `You can have up to ${MAX_RECIPIENTS} recipients`
