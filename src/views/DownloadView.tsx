@@ -19,6 +19,7 @@ import { SendItemData } from "../models/SendItem";
 import { getAllItemsList } from "../services/items.service";
 import { ProgressOptions } from "../services/network.service";
 import SendBanner from "../components/SendBanner";
+import moment from "moment";
 
 export default function DownloadView() {
   const [state, setState] = useState<
@@ -30,6 +31,10 @@ export default function DownloadView() {
   >({ status: "loading" });
   const [fileList, setFileList] = useState<SendItemData[]>([]);
   const [sendBannerVisible, setSendBannerVisible] = useState(false);
+
+  const expireDate =
+    state.status === "ready" &&
+    moment(state.details.expirationAt).format("MMMM DD[,] YYYY");
 
   const params = useParams();
   const [search] = useSearchParams();
@@ -111,13 +116,7 @@ export default function DownloadView() {
                 </p>
               )}
               <p className="mb-8 px-5 text-center text-sm text-gray-50">
-                Link expires in{" "}
-                {(
-                  (new Date(state.details.expirationAt).valueOf() -
-                    new Date().valueOf()) /
-                  (1000 * 3600 * 24)
-                ).toFixed(0)}{" "}
-                days
+                Link expires in {expireDate}
               </p>
             </div>
 
