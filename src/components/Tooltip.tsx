@@ -19,8 +19,6 @@ export default function Tooltip({
   delayInMs?: number;
   show?: boolean;
 }) {
-  const [visible, setVisible] = useState(true);
-
   let tooltipPosition = "";
   let trianglePosition = "";
   let triangle = "";
@@ -51,13 +49,15 @@ export default function Tooltip({
 
   return (
     <div
-      className={`xs:w-72 ${show ? "flex" : "hidden"} w-max ${className} z-40`}
-      style={{ lineHeight: 0, position: "relative" }}
+      className={`xs:w-72 ${
+        show ? "flex" : "hidden"
+      } w-max ${className} absolute z-40`}
+      style={{ lineHeight: 0 }}
     >
       <div
         className={`pointer-events-none transform ${tooltipPosition} flex items-center ${trianglePosition} transition-all duration-150 ${
           style === "light" ? "drop-shadow-tooltip filter" : ""
-        } ${visible ? "scale-100 opacity-100" : "scale-50 opacity-0"}`}
+        }`}
       >
         <div
           className={`flex w-max flex-col rounded-lg px-4 py-1.5 text-center ${

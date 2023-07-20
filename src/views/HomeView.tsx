@@ -158,7 +158,11 @@ export default function HomeView() {
           <>
             <div
               className={`flex min-h-0 flex-1 flex-col justify-center rounded-t-2xl
-                lg:justify-start`}
+                lg:justify-start ${
+                  switchValue === "Send email"
+                    ? "overflow-y-auto lg:rounded-b-2xl"
+                    : ""
+                }`}
             >
               <FileArea
                 className={`min-h-[224px] ${
