@@ -73,7 +73,7 @@ export default function FileArea({
   const spaceRemaining = MAX_BYTES_PER_SEND - fileContext.totalFilesSize;
 
   return (
-    <div className={`${className} flex flex-col`}>
+    <div className={`${className} flex flex-col overflow-hidden rounded-t-2xl`}>
       <input
         key={`file-${fileInputKey}`}
         type="file"

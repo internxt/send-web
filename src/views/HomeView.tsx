@@ -27,6 +27,8 @@ import Footer from "../components/footer/Footer";
 import schemaMarkup from "../assets/lang/en/send.json";
 import { sm_faq } from "../components/utils/schema-markup-generator";
 import CtaSection from "../components/send/CtaSection";
+import moment from "moment";
+import Tooltip from "../components/Tooltip";
 
 type EmailFormState = {
   sendTo: string[];
@@ -43,8 +45,11 @@ export default function HomeView() {
     options[0]
   );
 
-  //!TODO: Get 2 weeks from now
-  const expireDate = "2 weeks";
+  //!TODO: Get 2 weeks from now and 1 more day
+  const formattedDate = moment()
+    .add(1, "day")
+    .add(2, "weeks")
+    .format("MMMM DD[,] YYYY");
 
   const [phase, setPhase] = useState<
     | { name: "standby" }
@@ -147,16 +152,13 @@ export default function HomeView() {
   const copyLinkThrottled = throttle(copyLink, 5000);
 
   return (
-    <div className="flex w-full flex-col overflow-hidden">
+    <div className="relative flex w-full flex-col">
       <Layout>
         {phase.name === "standby" && (
           <>
             <div
-              className={`flex min-h-0 flex-1 flex-col justify-center lg:justify-start ${
-                switchValue === "Send email"
-                  ? "overflow-hidden overflow-y-auto lg:rounded-t-2xl"
-                  : ""
-              }`}
+              className={`flex min-h-0 flex-1 flex-col justify-center rounded-t-2xl
+                lg:justify-start`}
             >
               <FileArea
                 className={`min-h-[224px] ${
@@ -189,7 +191,7 @@ export default function HomeView() {
         )}
         {(phase.name === "loading" || phase.name === "confirm_cancel") && (
           <div className="flex h-full flex-col">
-            <div className="flex flex-1 flex-col items-center">
+            <div className="flex flex-1 flex-col items-center justify-center">
               <FancySpinner
                 className="mt-20"
                 progress={Math.floor(
@@ -250,22 +252,22 @@ export default function HomeView() {
         )}
         {phase.name === "done" && (
           <div className="flex h-full flex-col">
-            <div className="flex flex-1 flex-col items-center">
-              <div className="mt-20 flex h-28 w-28 flex-row items-center justify-center rounded-full text-green">
-                <CheckCircle size={80} weight="thin" />
+            <div className="flex flex-1 flex-col items-center justify-center">
+              <div className="mt-20 flex flex-row items-center justify-center rounded-full text-green">
+                <CheckCircle size={120} weight="thin" />
               </div>
               <div className="mt-20 w-full px-5 text-center">
                 <p className="text-xl font-medium text-gray-80">
                   {switchValue === "Send email"
-                    ? "Files sent via email"
+                    ? "Files successfully sent via email"
                     : `${filesContext.totalFilesCount} ${
                         filesContext.totalFilesCount > 1 ? "files" : "file"
                       } uploaded successfully`}
                 </p>
                 <p className="text-gray-60">
                   {switchValue === "Send email"
-                    ? `File access will expire on ${expireDate}`
-                    : `This link will expire on ${expireDate}`}
+                    ? `Access will expire on ${formattedDate}`
+                    : `This link will expire on ${formattedDate}`}
                 </p>
                 {switchValue === "Send link" && (
                   <Button
@@ -301,10 +303,10 @@ export default function HomeView() {
           </div>
         )}
         {phase.name === "error" && (
-          <div className="flex h-full flex-col">
-            <div className="flex flex-1 flex-col items-center">
-              <div className="mt-20 flex h-28 w-28 flex-row items-center justify-center rounded-full border border-red-std text-red-std">
-                <WarningCircle size={80} weight="thin" />
+          <div className="flex h-full flex-col items-center">
+            <div className="flex flex-1 flex-col items-center justify-center">
+              <div className="mt-20 flex h-28 w-28 flex-row items-center justify-center rounded-full text-red-std">
+                <WarningCircle size={128} weight="thin" />
               </div>
               <div className="mt-20 w-full px-5 text-center">
                 <p className="text-xl font-medium text-gray-80">
@@ -359,31 +361,52 @@ function EmailForm({
   onChange: (v: EmailFormState) => void;
 }) {
   const { sendTo, sendToField } = value;
+  const [showTooltip, setShowTooltip] = useState(false);
+
   return (
-    <div className="border-t border-gray-5 px-5">
+    <div className="flex w-full flex-col border-t border-gray-5 px-5">
       <SendTo
         value={{ sendTo, sendToField }}
         onChange={(v) => onChange({ ...value, ...v })}
       />
-      <Input
-        type="email"
-        placeholder="My email address"
-        label="yourname@email.com"
-        onChange={(v) => onChange({ ...value, sender: v })}
-        value={value.sender}
-        onKeyDown={(e) => {
-          if (e.key === " ") e.preventDefault();
-        }}
-      />
-      <label className={`mt-4 block text-sm font-medium text-gray-80`}>
-        Transfer info
-        <span className="text-xs font-normal text-gray-40"> (Optional)</span>
+      <div className="flex w-full flex-col">
         <Input
-          placeholder="Title"
-          onChange={(v) => onChange({ ...value, title: v })}
-          value={value.title}
+          type="email"
+          placeholder="yourname@email.com"
+          label="Your email"
+          onChange={(v) => onChange({ ...value, sender: v })}
+          value={value.sender}
+          onKeyDown={(e) => {
+            if (e.key === " ") e.preventDefault();
+          }}
         />
-      </label>
+      </div>
+      <div
+        className={`relative mt-4 flex w-full flex-col text-sm font-medium text-gray-80`}
+      >
+        <p>
+          Transfer info
+          <span className="text-xs font-normal text-gray-40"> (Optional)</span>
+        </p>
+        <div className="relative flex w-full flex-col justify-center">
+          <div className="absolute right-0 flex">
+            <div className="absolute flex">
+              <Tooltip
+                title="Give your file a title to explain its contents."
+                popsFrom="right"
+                show={showTooltip}
+              />
+            </div>
+          </div>
+          <Input
+            onFocus={() => setShowTooltip(true)}
+            onBlur={() => setShowTooltip(false)}
+            placeholder="Title"
+            onChange={(v) => onChange({ ...value, title: v })}
+            value={value.title}
+          />
+        </div>
+      </div>
       <textarea
         className="mt-1 h-20 w-full resize-none rounded-md border border-gray-20 bg-white px-3 py-2 text-lg font-normal text-gray-80 placeholder-gray-30 outline-none 
       ring-primary ring-opacity-10 hover:border-gray-30 focus:border-primary focus:ring-2 lg:text-base"
@@ -468,7 +491,7 @@ function SendTo({
             {value.sendTo.map((email, i) => (
               <li
                 key={email}
-                className="group relative w-max max-w-full overflow-hidden truncate rounded-full bg-gray-5 px-3.5 py-1.5 pr-9 text-sm font-medium text-gray-80 lg:py-1 lg:pr-3.5"
+                className="group relative w-max max-w-full overflow-hidden truncate rounded-full bg-gray-5 px-3.5 py-1.5 pr-9 text-xs font-medium text-gray-80 lg:py-1 lg:pr-3.5"
               >
                 {email}
                 <div
@@ -493,7 +516,7 @@ function SendTo({
           message={
             maxRecipientsReached
               ? `You can have up to ${MAX_RECIPIENTS} recipients`
-              : "Separate multiple emails with commas"
+              : "Separate multiple emails with commas or press enter to add"
           }
           disabled={maxRecipientsReached}
           accent={maxRecipientsReached ? "warning" : undefined}
