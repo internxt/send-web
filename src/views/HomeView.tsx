@@ -151,8 +151,14 @@ export default function HomeView() {
 
   const copyLinkThrottled = throttle(copyLink, 5000);
 
+  const titleRef = useRef<any>(null);
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [titleInputPosition, setTitleInputPosition] = useState(
+    titleRef.current?.getBoundingClientRect()
+  );
+
   return (
-    <div className="relative flex w-full flex-col">
+    <div className="relative flex w-full flex-col overflow-hidden">
       <Layout>
         {phase.name === "standby" && (
           <>
@@ -163,6 +169,11 @@ export default function HomeView() {
                     ? "overflow-y-auto lg:rounded-b-2xl"
                     : ""
                 }`}
+              onScroll={() => {
+                setTitleInputPosition(
+                  titleRef.current?.getBoundingClientRect()
+                );
+              }}
             >
               <FileArea
                 className={`min-h-[224px] ${
@@ -171,7 +182,30 @@ export default function HomeView() {
                 scroll={true}
               />
               {switchValue === "Send email" && (
-                <EmailForm value={formState} onChange={setFormState} />
+                <div>
+                  <EmailForm
+                    setShowTooltip={setShowTooltip}
+                    inputTitleRef={titleRef}
+                    value={formState}
+                    onChange={setFormState}
+                  />
+                  <div
+                    style={{
+                      zIndex: 100,
+                      position: "fixed",
+                      top:
+                        titleInputPosition?.y + titleInputPosition?.height / 2,
+                      left:
+                        titleInputPosition?.x + titleInputPosition?.width + 4,
+                    }}
+                  >
+                    <Tooltip
+                      show={showTooltip}
+                      popsFrom="right"
+                      title="Give your file a title to explain its contents."
+                    />
+                  </div>
+                </div>
               )}
             </div>
             <div className="min-h-auto flex w-full">
@@ -360,12 +394,15 @@ export default function HomeView() {
 function EmailForm({
   value,
   onChange,
+  setShowTooltip,
+  inputTitleRef,
 }: {
   value: EmailFormState;
   onChange: (v: EmailFormState) => void;
+  setShowTooltip: (v: boolean) => void;
+  inputTitleRef: React.MutableRefObject<any>;
 }) {
   const { sendTo, sendToField } = value;
-  const [showTooltip, setShowTooltip] = useState(false);
 
   return (
     <div className="flex w-full flex-col border-t border-gray-5 px-5">
@@ -392,24 +429,14 @@ function EmailForm({
           Transfer info
           <span className="text-xs font-normal text-gray-40"> (Optional)</span>
         </p>
-        <div className="relative flex w-full flex-col justify-center">
-          <div className="absolute right-0 flex">
-            <div className="absolute flex">
-              <Tooltip
-                title="Give your file a title to explain its contents."
-                popsFrom="right"
-                show={showTooltip}
-              />
-            </div>
-          </div>
-          <Input
-            onFocus={() => setShowTooltip(true)}
-            onBlur={() => setShowTooltip(false)}
-            placeholder="Title"
-            onChange={(v) => onChange({ ...value, title: v })}
-            value={value.title}
-          />
-        </div>
+        <Input
+          refForInput={inputTitleRef}
+          onMouseEnter={() => setShowTooltip(true)}
+          onMouseLeave={() => setShowTooltip(false)}
+          placeholder="Title"
+          onChange={(v) => onChange({ ...value, title: v })}
+          value={value.title}
+        />
       </div>
       <textarea
         className="mt-1 h-20 w-full resize-none rounded-md border border-gray-20 bg-white px-3 py-2 text-lg font-normal text-gray-80 placeholder-gray-30 outline-none 

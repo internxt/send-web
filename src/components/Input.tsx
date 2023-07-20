@@ -14,6 +14,9 @@ export default function Input({
   onBlur,
   onPaste,
   onKeyDown,
+  refForInput,
+  onMouseEnter,
+  onMouseLeave,
 }: {
   className?: string;
   label?: string;
@@ -29,6 +32,9 @@ export default function Input({
   onBlur?: () => void;
   message?: string;
   type?: string;
+  refForInput?: React.RefObject<HTMLInputElement>;
+  onMouseEnter?: React.MouseEventHandler;
+  onMouseLeave?: React.MouseEventHandler;
 }): JSX.Element {
   let focusColor: string;
 
@@ -59,6 +65,9 @@ export default function Input({
   const input = (
     <div className="relative">
       <input
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+        ref={refForInput}
         disabled={disabled}
         className={`inxt-input h-11 w-full rounded-md border text-lg font-normal text-gray-80 outline-none ring-opacity-10 focus:ring-2 disabled:text-gray-40 disabled:placeholder-gray-20 md:h-9 lg:text-base 
 				${borderColor} ${focusColor} ${placeholderColor} ${backgroundColor} ${padding}`}

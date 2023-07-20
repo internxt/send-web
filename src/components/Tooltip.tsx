@@ -9,6 +9,7 @@ export default function Tooltip({
   className,
   delayInMs,
   show,
+  position,
 }: {
   children?: ReactNode;
   title: string;
@@ -18,6 +19,7 @@ export default function Tooltip({
   className?: string;
   delayInMs?: number;
   show?: boolean;
+  position?: number;
 }) {
   let tooltipPosition = "";
   let trianglePosition = "";
