@@ -61,7 +61,7 @@ export default function FileArea({
     ) => {
       return (
         <div
-          className="flex cursor-pointer items-center px-3 py-1 text-gray-80 hover:bg-gray-5 active:bg-gray-10"
+          className="flex cursor-pointer items-center rounded-md px-3 py-1 text-gray-80 hover:bg-primary hover:text-white active:bg-primary-dark"
           onClick={onClick}
         >
           {children}
@@ -73,7 +73,7 @@ export default function FileArea({
   const spaceRemaining = MAX_BYTES_PER_SEND - fileContext.totalFilesSize;
 
   return (
-    <div className={`${className} flex flex-col`}>
+    <div className={`${className} flex flex-col overflow-hidden rounded-t-2xl`}>
       <input
         key={`file-${fileInputKey}`}
         type="file"

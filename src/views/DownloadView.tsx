@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import { format } from "bytes";
-import { ArrowDown, Check, X } from "phosphor-react";
+import { ArrowCircleDown, CheckCircle, LinkBreak, X } from "phosphor-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import Button from "../components/Button";
@@ -19,6 +19,7 @@ import { SendItemData } from "../models/SendItem";
 import { getAllItemsList } from "../services/items.service";
 import { ProgressOptions } from "../services/network.service";
 import SendBanner from "../components/SendBanner";
+import moment from "moment";
 
 export default function DownloadView() {
   const [state, setState] = useState<
@@ -30,6 +31,10 @@ export default function DownloadView() {
   >({ status: "loading" });
   const [fileList, setFileList] = useState<SendItemData[]>([]);
   const [sendBannerVisible, setSendBannerVisible] = useState(false);
+
+  const expireDate =
+    state.status === "ready" &&
+    moment(state.details.expirationAt).format("MMMM DD[,] YYYY");
 
   const params = useParams();
   const [search] = useSearchParams();
@@ -95,9 +100,13 @@ export default function DownloadView() {
       {state.status === "ready" && (
         <div className="flex h-full flex-col items-center">
           <div className="relative min-h-0 w-full flex-1 overflow-auto">
-            <div className="flex flex-col bg-white">
-              <div className="mx-auto mt-10 flex h-24 w-24 items-center justify-center rounded-full bg-primary/10">
-                <ArrowDown size={64} className="text-primary " />
+            <div className="flex flex-col rounded-t-2xl bg-white">
+              <div className="mx-auto mt-10 flex items-center justify-center">
+                <ArrowCircleDown
+                  size={96}
+                  className="text-primary "
+                  weight="thin"
+                />
               </div>
               <h1 className="mt-4 px-5 text-center text-xl font-semibold text-gray-80">
                 {state.details.title ??
@@ -111,13 +120,7 @@ export default function DownloadView() {
                 </p>
               )}
               <p className="mb-8 px-5 text-center text-sm text-gray-50">
-                Link expires in{" "}
-                {(
-                  (new Date(state.details.expirationAt).valueOf() -
-                    new Date().valueOf()) /
-                  (1000 * 3600 * 24)
-                ).toFixed(0)}{" "}
-                days
+                Link will expire on {expireDate}
               </p>
             </div>
 
@@ -166,8 +169,8 @@ export default function DownloadView() {
       {state.status === "done" && (
         <div className="flex h-full flex-col">
           <div className="flex flex-1 flex-col items-center">
-            <div className="mt-20 flex h-28 w-28 flex-row items-center justify-center rounded-full bg-green text-white">
-              <Check size={80} />
+            <div className="mt-20 flex h-28 w-28 flex-row items-center justify-center rounded-full text-green">
+              <CheckCircle size={128} />
             </div>
             <div className="mt-20 w-full px-5 text-center">
               <p className="text-xl font-medium text-gray-80">
@@ -188,14 +191,15 @@ export default function DownloadView() {
       )}
       {state.status === "error" && (
         <div className="flex h-full flex-col">
-          <div className="flex flex-1 flex-col items-center">
-            <div className="mt-20 flex h-28 w-28 flex-row items-center justify-center rounded-full bg-red-std text-white">
-              <X size={80} />
+          <div className="flex flex-1 flex-col items-center justify-center">
+            <div className="mt-20 flex flex-row items-center justify-center rounded-full text-red-std">
+              <LinkBreak size={128} weight="thin" />
             </div>
-            <div className="mt-20 w-full px-5 text-center">
-              <p className="text-xl font-medium text-gray-80">
+            <div className="mt-10 w-full space-y-1.5 px-5 text-center">
+              <p className="text-xl font-medium text-gray-80">Invalid link</p>
+              <p className="text-gray-60">
                 {state.reason === "not_found"
-                  ? "This link has expired"
+                  ? "Sorry, this link has expired."
                   : "Something went wrong..."}
               </p>
             </div>

@@ -2,7 +2,7 @@ import isValidEmail from "@internxt/lib/dist/src/auth/isValidEmail";
 import { format } from "bytes";
 import copy from "copy-to-clipboard";
 import throttle from "lodash.throttle";
-import { Check, Copy, X } from "phosphor-react";
+import { CheckCircle, Copy, WarningCircle, X } from "phosphor-react";
 import { useContext, useEffect, useRef, useState } from "react";
 import Button from "../components/Button";
 import CardBottom from "../components/CardBotton";
@@ -27,6 +27,8 @@ import Footer from "../components/footer/Footer";
 import schemaMarkup from "../assets/lang/en/send.json";
 import { sm_faq } from "../components/utils/schema-markup-generator";
 import CtaSection from "../components/send/CtaSection";
+import moment from "moment";
+import Tooltip from "../components/Tooltip";
 
 type EmailFormState = {
   sendTo: string[];
@@ -42,6 +44,12 @@ export default function HomeView() {
   const [switchValue, setSwitchValue] = useState<typeof options[number]>(
     options[0]
   );
+
+  //!TODO: Get 2 weeks from now and 1 more day
+  const formattedDate = moment()
+    .add(1, "day")
+    .add(2, "weeks")
+    .format("MMMM DD[,] YYYY");
 
   const [phase, setPhase] = useState<
     | { name: "standby" }
@@ -143,17 +151,29 @@ export default function HomeView() {
 
   const copyLinkThrottled = throttle(copyLink, 5000);
 
+  const titleRef = useRef<any>(null);
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [titleInputPosition, setTitleInputPosition] = useState(
+    titleRef.current?.getBoundingClientRect()
+  );
+
   return (
-    <div className="flex w-full flex-col overflow-hidden">
+    <div className="relative flex w-full flex-col overflow-hidden">
       <Layout>
         {phase.name === "standby" && (
           <>
             <div
-              className={`flex min-h-0 flex-1 flex-col justify-center lg:justify-start ${
-                switchValue === "Send email"
-                  ? "overflow-hidden overflow-y-auto lg:rounded-t-2xl"
-                  : ""
-              }`}
+              className={`flex min-h-0 flex-1 flex-col justify-center rounded-t-2xl
+                lg:justify-start ${
+                  switchValue === "Send email"
+                    ? "overflow-y-auto lg:rounded-b-2xl"
+                    : ""
+                }`}
+              onScroll={() => {
+                setTitleInputPosition(
+                  titleRef.current?.getBoundingClientRect()
+                );
+              }}
             >
               <FileArea
                 className={`min-h-[224px] ${
@@ -162,7 +182,30 @@ export default function HomeView() {
                 scroll={true}
               />
               {switchValue === "Send email" && (
-                <EmailForm value={formState} onChange={setFormState} />
+                <div>
+                  <EmailForm
+                    setShowTooltip={setShowTooltip}
+                    inputTitleRef={titleRef}
+                    value={formState}
+                    onChange={setFormState}
+                  />
+                  <div
+                    style={{
+                      zIndex: 100,
+                      position: "fixed",
+                      top:
+                        titleInputPosition?.y + titleInputPosition?.height / 2,
+                      left:
+                        titleInputPosition?.x + titleInputPosition?.width + 4,
+                    }}
+                  >
+                    <Tooltip
+                      show={showTooltip}
+                      popsFrom="right"
+                      title="Give your file a title to explain its contents."
+                    />
+                  </div>
+                </div>
               )}
             </div>
             <div className="min-h-auto flex w-full">
@@ -178,7 +221,7 @@ export default function HomeView() {
                   className="mt-4"
                   onClick={onSubmit}
                 >
-                  {switchValue === "Send link" ? "Get a link" : "Send files"}
+                  {switchValue === "Send link" ? "Create a link" : "Send files"}
                 </Button>
               </CardBottom>
             </div>
@@ -186,7 +229,7 @@ export default function HomeView() {
         )}
         {(phase.name === "loading" || phase.name === "confirm_cancel") && (
           <div className="flex h-full flex-col">
-            <div className="flex flex-1 flex-col items-center">
+            <div className="flex flex-1 flex-col items-center justify-center">
               <FancySpinner
                 className="mt-20"
                 progress={Math.floor(
@@ -208,7 +251,7 @@ export default function HomeView() {
                   </>
                 ) : (
                   <p className="w-64 text-xl font-medium text-gray-80">
-                    Are you sure you want to cancel this transfer?
+                    Are you sure you want to cancel this upload?
                   </p>
                 )}
               </div>
@@ -247,22 +290,22 @@ export default function HomeView() {
         )}
         {phase.name === "done" && (
           <div className="flex h-full flex-col">
-            <div className="flex flex-1 flex-col items-center">
-              <div className="mt-20 flex h-28 w-28 flex-row items-center justify-center rounded-full bg-green text-white">
-                <Check size={80} />
+            <div className="flex flex-1 flex-col items-center justify-center">
+              <div className="mt-20 flex flex-row items-center justify-center rounded-full text-green">
+                <CheckCircle size={120} weight="thin" />
               </div>
               <div className="mt-20 w-full px-5 text-center">
                 <p className="text-xl font-medium text-gray-80">
                   {switchValue === "Send email"
-                    ? "Files sent via email"
+                    ? "Files successfully sent via email"
                     : `${filesContext.totalFilesCount} ${
                         filesContext.totalFilesCount > 1 ? "files" : "file"
-                      } uploaded`}
+                      } uploaded successfully`}
                 </p>
                 <p className="text-gray-60">
                   {switchValue === "Send email"
-                    ? "File access will expire in 2 weeks"
-                    : "This link will expire in 2 weeks"}
+                    ? `Access will expire on ${formattedDate}`
+                    : `This link will expire on ${formattedDate}`}
                 </p>
                 {switchValue === "Send link" && (
                   <Button
@@ -298,10 +341,10 @@ export default function HomeView() {
           </div>
         )}
         {phase.name === "error" && (
-          <div className="flex h-full flex-col">
-            <div className="flex flex-1 flex-col items-center">
-              <div className="mt-20 flex h-28 w-28 flex-row items-center justify-center rounded-full bg-red-std text-white">
-                <X size={80} />
+          <div className="flex h-full flex-col items-center">
+            <div className="flex flex-1 flex-col items-center justify-center">
+              <div className="mt-20 flex h-28 w-28 flex-row items-center justify-center rounded-full text-red-std">
+                <WarningCircle size={128} weight="thin" />
               </div>
               <div className="mt-20 w-full px-5 text-center">
                 <p className="text-xl font-medium text-gray-80">
@@ -311,7 +354,7 @@ export default function HomeView() {
                   We were unable to{" "}
                   {switchValue === "Send email" ? "send" : "upload"} your files.
                   <br />
-                  "Please try again later."
+                  Please try again later.
                 </p>
               </div>
             </div>
@@ -351,36 +394,50 @@ export default function HomeView() {
 function EmailForm({
   value,
   onChange,
+  setShowTooltip,
+  inputTitleRef,
 }: {
   value: EmailFormState;
   onChange: (v: EmailFormState) => void;
+  setShowTooltip: (v: boolean) => void;
+  inputTitleRef: React.MutableRefObject<any>;
 }) {
   const { sendTo, sendToField } = value;
+
   return (
-    <div className="border-t border-gray-5 px-5">
+    <div className="flex w-full flex-col border-t border-gray-5 px-5">
       <SendTo
         value={{ sendTo, sendToField }}
         onChange={(v) => onChange({ ...value, ...v })}
       />
-      <Input
-        type="email"
-        placeholder="My email address"
-        label="Your email"
-        onChange={(v) => onChange({ ...value, sender: v })}
-        value={value.sender}
-        onKeyDown={(e) => {
-          if (e.key === " ") e.preventDefault();
-        }}
-      />
-      <label className={`mt-4 block text-sm font-medium text-gray-80`}>
-        Transfer info
-        <span className="text-xs font-normal text-gray-40"> (optional)</span>
+      <div className="flex w-full flex-col">
         <Input
+          type="email"
+          placeholder="yourname@email.com"
+          label="Your email"
+          onChange={(v) => onChange({ ...value, sender: v })}
+          value={value.sender}
+          onKeyDown={(e) => {
+            if (e.key === " ") e.preventDefault();
+          }}
+        />
+      </div>
+      <div
+        className={`relative mt-4 flex w-full flex-col text-sm font-medium text-gray-80`}
+      >
+        <p>
+          Transfer info
+          <span className="text-xs font-normal text-gray-40"> (Optional)</span>
+        </p>
+        <Input
+          refForInput={inputTitleRef}
+          onMouseEnter={() => setShowTooltip(true)}
+          onMouseLeave={() => setShowTooltip(false)}
           placeholder="Title"
           onChange={(v) => onChange({ ...value, title: v })}
           value={value.title}
         />
-      </label>
+      </div>
       <textarea
         className="mt-1 h-20 w-full resize-none rounded-md border border-gray-20 bg-white px-3 py-2 text-lg font-normal text-gray-80 placeholder-gray-30 outline-none 
       ring-primary ring-opacity-10 hover:border-gray-30 focus:border-primary focus:ring-2 lg:text-base"
@@ -465,7 +522,7 @@ function SendTo({
             {value.sendTo.map((email, i) => (
               <li
                 key={email}
-                className="group relative w-max max-w-full overflow-hidden truncate rounded-full bg-gray-5 px-3.5 py-1.5 pr-9 text-sm font-medium text-gray-80 lg:py-1 lg:pr-3.5"
+                className="group relative w-max max-w-full overflow-hidden truncate rounded-full bg-gray-5 px-3.5 py-1.5 pr-9 text-xs font-medium text-gray-80 lg:py-1 lg:pr-3.5"
               >
                 {email}
                 <div
@@ -486,11 +543,11 @@ function SendTo({
           value={value.sendToField}
           onChange={onInputChange}
           className="mt-1"
-          placeholder="Send files to..."
+          placeholder="Send files to"
           message={
             maxRecipientsReached
               ? `You can have up to ${MAX_RECIPIENTS} recipients`
-              : "Separate multiple emails with commas"
+              : "Separate multiple emails with commas or press enter to add"
           }
           disabled={maxRecipientsReached}
           accent={maxRecipientsReached ? "warning" : undefined}

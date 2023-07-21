@@ -14,11 +14,7 @@ export default function ItemList({
   return (
     <div className={`${className}`}>
       {items.map((item) => (
-        <Item
-          key={item.id}
-          item={item}
-          onRemove={onRemoveItem}
-        />
+        <Item key={item.id} item={item} onRemove={onRemoveItem} />
       ))}
     </div>
   );
@@ -31,26 +27,36 @@ function Item({
   item: SendItemData;
   onRemove?: (item: SendItemData) => void;
 }) {
-  const extension = item.type === 'file' && item.name.includes('.') && item.name.split(".").pop();
+  const extension =
+    item.type === "file" &&
+    item.name.includes(".") &&
+    item.name.split(".").pop();
 
   return (
     <div className="group relative border-b border-gray-5 py-2.5">
       <h1 className="truncate text-base text-gray-80">{item.name}</h1>
       <div className="flex space-x-1.5 text-xs text-gray-50">
-        {item.type === 'folder' &&
+        {item.type === "folder" && (
           <>
             <p>Folder</p>
             <p className="font-bold text-gray-30">·</p>
-            {item.countFiles && <>
-              <p>{item.countFiles} {item.countFiles === 1 ? 'file' : 'files'}</p>
-              <p className="font-bold text-gray-30">·</p>
-            </>}
-          </>}
+            {item.countFiles && (
+              <>
+                <p>
+                  {item.countFiles} {item.countFiles === 1 ? "file" : "files"}
+                </p>
+                <p className="font-bold text-gray-30">·</p>
+              </>
+            )}
+          </>
+        )}
         <p>{bytes.format(item.size)}</p>
-        {extension && <>
-          <p className="font-bold text-gray-30">·</p>
-          <p>{extension}</p>
-        </>}
+        {extension && (
+          <>
+            <p className="font-bold text-gray-30">·</p>
+            <p>{extension}</p>
+          </>
+        )}
       </div>
       {onRemove && (
         <button

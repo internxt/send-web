@@ -1,14 +1,21 @@
-import { Environment } from '@internxt/inxt-js';
-import { Network as NetworkModule } from '@internxt/sdk';
-import { createCipheriv, createDecipheriv, randomBytes } from 'crypto';
-import { validateMnemonic } from 'bip39';
-import { uploadFile, uploadMultipartFile } from '@internxt/sdk/dist/network/upload';
-import { downloadFile } from '@internxt/sdk/dist/network/download';
+import { Environment } from "@internxt/inxt-js";
+import { Network as NetworkModule } from "@internxt/sdk";
+import { createCipheriv, createDecipheriv, randomBytes } from "crypto";
+import { validateMnemonic } from "bip39";
+import {
+  uploadFile,
+  uploadMultipartFile,
+} from "@internxt/sdk/dist/network/upload";
+import { downloadFile } from "@internxt/sdk/dist/network/download";
 
-import { encryptStreamInParts, getEncryptedFile, processEveryFileBlobReturnHash } from './crypto';
-import { DownloadProgressCallback, getDecryptedStream } from './download';
-import { uploadFileBlob, UploadProgressCallback } from './upload';
-import { buildProgressStream } from './streams';
+import {
+  encryptStreamInParts,
+  getEncryptedFile,
+  processEveryFileBlobReturnHash,
+} from "./crypto";
+import { DownloadProgressCallback, getDecryptedStream } from "./download";
+import { uploadFileBlob, UploadProgressCallback } from "./upload";
+import { buildProgressStream } from "./streams";
 
 interface UploadOptions {
   uploadingCallback: UploadProgressCallback;
@@ -27,7 +34,7 @@ interface DownloadOptions {
 }
 
 /**
- * The entry point for interacting with the network 
+ * The entry point for interacting with the network
  */
 export class NetworkFacade {
   private cryptoLib: NetworkModule.Crypto;
@@ -42,14 +49,19 @@ export class NetworkFacade {
         return Environment.utils.generateFileKey(
           mnemonic,
           bucketId,
-          (index as Buffer)
+          index as Buffer
         );
       },
-      randomBytes
+      randomBytes,
     };
   }
 
-  upload(bucketId: string, mnemonic: string, file: File, options: UploadOptions): Promise<string> {
+  upload(
+    bucketId: string,
+    mnemonic: string,
+    file: File,
+    options: UploadOptions
+  ): Promise<string> {
     let fileToUpload: Blob;
     let fileHash: string;
 
@@ -60,24 +72,27 @@ export class NetworkFacade {
       mnemonic,
       file.size,
       async (algorithm, key, iv) => {
-        const cipher = createCipheriv('aes-256-ctr', (key as Buffer), (iv as Buffer));
+        const cipher = createCipheriv(
+          "aes-256-ctr",
+          key as Buffer,
+          iv as Buffer
+        );
         const [encryptedFile, hash] = await getEncryptedFile(file, cipher);
 
         fileToUpload = encryptedFile;
         fileHash = hash;
       },
       async (url: string) => {
-        const useProxy = process.env.REACT_APP_DONT_USE_PROXY !== 'true' && !new URL(url).hostname.includes('internxt');
-        const fetchUrl = (useProxy ? process.env.REACT_APP_PROXY + '/' : '') + url;
+        const useProxy =
+          process.env.REACT_APP_DONT_USE_PROXY !== "true" &&
+          !new URL(url).hostname.includes("internxt");
+        const fetchUrl =
+          (useProxy ? process.env.REACT_APP_PROXY + "/" : "") + url;
 
-        await uploadFileBlob(
-          fileToUpload,
-          fetchUrl,
-          {
-            progressCallback: options.uploadingCallback,
-            abortController: options.abortController
-          }
-        );
+        await uploadFileBlob(fileToUpload, fetchUrl, {
+          progressCallback: options.uploadingCallback,
+          abortController: options.abortController,
+        });
 
         /**
          * TODO: Memory leak here, probably due to closures usage with this variable.
@@ -90,11 +105,16 @@ export class NetworkFacade {
     );
   }
 
-  uploadMultipart(bucketId: string, mnemonic: string, file: File, options: UploadMultipartOptions): Promise<string> {
+  uploadMultipart(
+    bucketId: string,
+    mnemonic: string,
+    file: File,
+    options: UploadMultipartOptions
+  ): Promise<string> {
     let fileReadable: ReadableStream<Uint8Array>;
 
-    console.log('bucket', bucketId);
-    console.log('mnemonic', mnemonic);
+    console.log("bucket", bucketId);
+    console.log("mnemonic", mnemonic);
 
     const partsUploadedBytes: Record<number, number> = {};
 
@@ -102,9 +122,9 @@ export class NetworkFacade {
       partsUploadedBytes[partId] = uploadedBytes;
 
       options.uploadingCallback(
-        file.size, 
-        Object.values(partsUploadedBytes).reduce((a,p) => a+p, 0)
-      )
+        file.size,
+        Object.values(partsUploadedBytes).reduce((a, p) => a + p, 0)
+      );
     }
 
     return uploadMultipartFile(
@@ -114,49 +134,64 @@ export class NetworkFacade {
       mnemonic,
       file.size,
       async (algorithm, key, iv) => {
-        const cipher = createCipheriv('aes-256-ctr', key as Buffer, iv as Buffer);
+        const cipher = createCipheriv(
+          "aes-256-ctr",
+          key as Buffer,
+          iv as Buffer
+        );
         fileReadable = encryptStreamInParts(file, cipher, options.parts);
       },
       async (urls: string[]) => {
         const fileParts: { PartNumber: number; ETag: string }[] = [];
 
         let currentUrlIndex = 0;
-        const fileHash = await processEveryFileBlobReturnHash(fileReadable, async (blob) => {
-          const currentUrl = urls[currentUrlIndex];
+        const fileHash = await processEveryFileBlobReturnHash(
+          fileReadable,
+          async (blob) => {
+            const currentUrl = urls[currentUrlIndex];
+            console.log("currentUrl", currentUrl);
 
-          const useProxy =
-            process.env.REACT_APP_DONT_USE_PROXY !== 'true' && !new URL(currentUrl).hostname.includes('internxt');
-          const putUrl = (useProxy ? process.env.REACT_APP_PROXY + '/' : '') + currentUrl;
+            const useProxy =
+              process.env.REACT_APP_DONT_USE_PROXY !== "true" &&
+              !new URL(currentUrl).hostname.includes("internxt");
+            const putUrl =
+              (useProxy ? process.env.REACT_APP_PROXY + "/" : "") + currentUrl;
 
-          console.log('Uploading chunk of %s bytes to url %s, part %s', blob.size, putUrl, currentUrlIndex);
-          const response = await uploadFileBlob(blob, putUrl, {
-            progressCallback: (_, uploadedBytes) => {
-              notifyProgress(currentUrlIndex, uploadedBytes);
-            },
-            abortController: options.abortController,
-          });
+            console.log(
+              "Uploading chunk of %s bytes to url %s, part %s",
+              blob.size,
+              putUrl,
+              currentUrlIndex
+            );
+            const response = await uploadFileBlob(blob, putUrl, {
+              progressCallback: (_, uploadedBytes) => {
+                notifyProgress(currentUrlIndex, uploadedBytes);
+              },
+              abortController: options.abortController,
+            });
 
-          blob = new Blob([]);
+            blob = new Blob([]);
 
-          const ETag = response.getResponseHeader('etag');
+            const ETag = response.getResponseHeader("etag");
 
-          if (!ETag) {
-            throw new Error('ETag header was not returned');
+            if (!ETag) {
+              throw new Error("ETag header was not returned");
+            }
+            fileParts.push({
+              ETag,
+              PartNumber: currentUrlIndex + 1,
+            });
+
+            currentUrlIndex += 1;
           }
-          fileParts.push({
-            ETag,
-            PartNumber: currentUrlIndex + 1,
-          });
-
-          currentUrlIndex += 1;
-        });
+        );
 
         return {
           hash: fileHash,
           parts: fileParts,
         };
       },
-      options.parts,
+      options.parts
     );
   }
 
@@ -181,20 +216,25 @@ export class NetworkFacade {
       async (downloadables) => {
         for (const downloadable of downloadables) {
           if (options?.abortController?.signal.aborted) {
-            throw new Error('Download aborted');
+            throw new Error("Download aborted");
           }
 
-          const useProxy = process.env.REACT_APP_DONT_USE_PROXY !== 'true' && !new URL(downloadable.url).hostname.includes('internxt');
-          const fetchUrl = (useProxy ? process.env.REACT_APP_PROXY + '/' : '') + downloadable.url;
+          const useProxy =
+            process.env.REACT_APP_DONT_USE_PROXY !== "true" &&
+            !new URL(downloadable.url).hostname.includes("internxt");
+          const fetchUrl =
+            (useProxy ? process.env.REACT_APP_PROXY + "/" : "") +
+            downloadable.url;
 
-          const encryptedContentStream = await fetch(fetchUrl, { signal: options?.abortController?.signal })
-            .then((res) => {
-              if (!res.body) {
-                throw new Error('No content received');
-              }
+          const encryptedContentStream = await fetch(fetchUrl, {
+            signal: options?.abortController?.signal,
+          }).then((res) => {
+            if (!res.body) {
+              throw new Error("No content received");
+            }
 
-              return res.body;
-            });
+            return res.body;
+          });
 
           encryptedContentStreams.push(encryptedContentStream);
         }
@@ -202,14 +242,20 @@ export class NetworkFacade {
       async (algorithm, key, iv, fileSize) => {
         const decryptedStream = getDecryptedStream(
           encryptedContentStreams,
-          createDecipheriv('aes-256-ctr', options?.key || (key as Buffer), (iv as Buffer)),
+          createDecipheriv(
+            "aes-256-ctr",
+            options?.key || (key as Buffer),
+            iv as Buffer
+          )
         );
 
         fileStream = buildProgressStream(decryptedStream, (readBytes) => {
-          options && options.downloadingCallback && options.downloadingCallback(fileSize, readBytes);
+          options &&
+            options.downloadingCallback &&
+            options.downloadingCallback(fileSize, readBytes);
         });
       },
-      options && options.token && { token: options.token } || undefined
+      (options && options.token && { token: options.token }) || undefined
     );
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
