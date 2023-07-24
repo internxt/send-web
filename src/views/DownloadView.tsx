@@ -168,14 +168,15 @@ export default function DownloadView() {
       )}
       {state.status === "done" && (
         <div className="flex h-full flex-col">
-          <div className="flex flex-1 flex-col items-center">
-            <div className="mt-20 flex h-28 w-28 flex-row items-center justify-center rounded-full text-green">
-              <CheckCircle size={128} />
+          <div className="flex flex-1 flex-col items-center justify-center">
+            <div className="mt-20 flex flex-row items-center justify-center rounded-full text-green">
+              <CheckCircle size={128} weight="thin" />
             </div>
             <div className="mt-20 w-full px-5 text-center">
               <p className="text-xl font-medium text-gray-80">
-                Download completed
+                Download successful
               </p>
+              <p className="text-gray-60">You can now access your files.</p>
             </div>
           </div>
           <CardBottom>
@@ -184,7 +185,7 @@ export default function DownloadView() {
                 router("/");
               }}
             >
-              Create another send
+              Create another link
             </Button>
           </CardBottom>
         </div>
