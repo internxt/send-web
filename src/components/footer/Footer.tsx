@@ -469,6 +469,19 @@ export default function Footer({
                     >
                       {textContent.FooterSection.sections.tools.fileVirusScan}
                     </a>
+
+                    <a
+                      href="https://internxt.com/password-generator"
+                      className="flex items-center hover:text-primary"
+                    >
+                      {
+                        textContent.FooterSection.sections.tools
+                          .passwordGenerator
+                      }
+                      <div className="ml-2 flex h-max items-center justify-center rounded-full bg-primary bg-opacity-15 py-1 px-2 text-xs font-medium uppercase text-primary">
+                        {textContent.FooterSection.new}
+                      </div>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -994,6 +1007,18 @@ export default function Footer({
                         rel="noreferrer"
                       >
                         {textContent.FooterSection.sections.tools.fileVirusScan}
+                      </a>
+                      <a
+                        href="https://internxt.com/password-generator"
+                        className="flex items-center hover:text-primary"
+                      >
+                        {
+                          textContent.FooterSection.sections.tools
+                            .passwordGenerator
+                        }
+                        <div className="ml-2 flex h-max items-center justify-center rounded-full bg-primary bg-opacity-15 py-1 px-2 text-xs font-medium uppercase text-primary">
+                          {textContent.FooterSection.new}
+                        </div>
                       </a>
                     </Disclosure.Panel>
                   </Transition>
