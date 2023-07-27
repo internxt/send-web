@@ -10,6 +10,7 @@ import YouTube from "../../assets/social/cool-gray-60/youtube.svg";
 import Internxt from "../../assets/Internxt.svg";
 import iosStore from "../../assets/images/footer/app-store.svg";
 import androidStore from "../../assets/images/footer/store-for-android.svg";
+import urls from "../../lib/urls";
 
 const iosURL = "https://apps.apple.com/es/app/internxt-drive/id1465869889";
 const androidURL =
@@ -119,11 +120,7 @@ export default function Footer({
                 </form>
                 <span className="text-sm text-gray-40">
                   {textContent.NewsletterSection.privacy}{" "}
-                  <a
-                    href="https://internxt.com/legal"
-                    target={"_blank"}
-                    rel="noreferrer"
-                  >
+                  <a href={urls.legal} target={"_blank"} rel="noreferrer">
                     <span className="cursor-pointer underline">
                       {textContent.NewsletterSection.privacyLink}
                     </span>
@@ -178,11 +175,7 @@ export default function Footer({
                 />
                 <span className="text-xs text-cool-gray-40 sm:text-supporting-2">
                   {textContent.NewsletterSection.privacy}{" "}
-                  <a
-                    href="https://internxt.com/legal"
-                    target={"_blank"}
-                    rel="noreferrer"
-                  >
+                  <a href={urls.legal} target={"_blank"} rel="noreferrer">
                     <span className="cursor-pointer underline">
                       {textContent.NewsletterSection.privacyLink}
                     </span>
@@ -218,7 +211,7 @@ export default function Footer({
                     }`}
                   >
                     <a
-                      href="https://internxt.com/drive"
+                      href={urls.products.drive}
                       target={"_blank"}
                       rel="noreferrer"
                       className="hover:text-primary"
@@ -227,7 +220,7 @@ export default function Footer({
                     </a>
 
                     <a
-                      href="https://internxt.com/photos"
+                      href={urls.products.photos}
                       target={"_blank"}
                       rel="noreferrer"
                       className="hover:text-primary"
@@ -236,7 +229,7 @@ export default function Footer({
                     </a>
 
                     <a
-                      href="https://send.internxt.com"
+                      href={urls.products.send}
                       target="_blank"
                       rel="noreferrer"
                       className="flex flex-row items-center hover:text-primary"
@@ -250,7 +243,7 @@ export default function Footer({
                     </a>
 
                     <a
-                      href="https://internxt.com/pricing"
+                      href={urls.products.pricing}
                       target={"_blank"}
                       rel="noreferrer"
                       className="hover:text-primary"
@@ -272,7 +265,7 @@ export default function Footer({
                     }`}
                   >
                     <a
-                      href="https://internxt.com/about"
+                      href={urls.company.about}
                       target={"_blank"}
                       rel="noreferrer"
                       className="hover:text-primary"
@@ -281,7 +274,7 @@ export default function Footer({
                     </a>
 
                     <a
-                      href="https://internxt.com/privacy"
+                      href={urls.company.privacy}
                       target={"_blank"}
                       rel="noreferrer"
                       className="hover:text-primary"
@@ -290,7 +283,7 @@ export default function Footer({
                     </a>
 
                     <a
-                      href={`https://blog.internxt.com/how-internxt-protects-your-data`}
+                      href={urls.company.security}
                       target="_blank"
                       rel="noreferrer"
                       className="hover:text-primary"
@@ -299,7 +292,7 @@ export default function Footer({
                     </a>
 
                     <a
-                      href="https://internxt.com/legal"
+                      href={urls.company.support}
                       className="hover:text-primary"
                     >
                       {textContent.FooterSection.sections.company.legal}
@@ -328,7 +321,7 @@ export default function Footer({
                     }`}
                   >
                     <a
-                      href="https://drive.internxt.com/new"
+                      href={urls.join.signup}
                       target="_top"
                       className="hover:text-primary"
                     >
@@ -336,7 +329,7 @@ export default function Footer({
                     </a>
 
                     <a
-                      href="https://drive.internxt.com/login"
+                      href={urls.join.login}
                       target="_top"
                       className="hover:text-primary"
                     >
@@ -344,7 +337,7 @@ export default function Footer({
                     </a>
 
                     <a
-                      href="https://github.com/internxt"
+                      href={urls.join.github}
                       target="_blank"
                       rel="noreferrer"
                       className="hover:text-primary"
@@ -366,7 +359,7 @@ export default function Footer({
                     }`}
                   >
                     <a
-                      href={`https://blog.internxt.com/`}
+                      href={urls.resources.blog}
                       target="_blank"
                       rel="noreferrer"
                       className="hover:text-primary"
@@ -375,7 +368,7 @@ export default function Footer({
                     </a>
 
                     <a
-                      href="https://internxt.com/cloud-storage-comparison"
+                      href={urls.resources.storageComparison}
                       target={"_blank"}
                       rel="noreferrer"
                       className="w-full max-w-[160px] hover:text-primary"
@@ -384,7 +377,7 @@ export default function Footer({
                     </a>
 
                     <a
-                      href="https://internxt.com/privacy-directory"
+                      href={urls.resources.privacyDirectory}
                       target={"_blank"}
                       rel="noreferrer"
                       className="w-full max-w-[265px] hover:text-primary"
@@ -396,7 +389,7 @@ export default function Footer({
                     </a>
 
                     <a
-                      href="https://internxt.com/cyber-awareness"
+                      href={urls.resources.cyberAwareness}
                       target={"_blank"}
                       rel="noreferrer"
                       className="hover:text-primary"
@@ -409,7 +402,7 @@ export default function Footer({
 
                     <a
                       className="flex  items-center hover:text-primary"
-                      href="https://internxt.com/what-does-google-know-about-me"
+                      href={urls.resources.whatGoogleKnows}
                       target={"_blank"}
                       rel="noreferrer"
                     >
@@ -436,7 +429,7 @@ export default function Footer({
                   >
                     <a
                       className="hover:text-primary"
-                      href="https://internxt.com/byte-converter"
+                      href={urls.tools.byteConverter}
                       target={"_blank"}
                       rel="noreferrer"
                     >
@@ -444,7 +437,7 @@ export default function Footer({
                     </a>
 
                     <a
-                      href="https://internxt.com/temporary-email"
+                      href={urls.tools.tempMail}
                       target={"_blank"}
                       rel="noreferrer"
                       className="hover:text-primary"
@@ -454,7 +447,7 @@ export default function Footer({
 
                     <a
                       className="hover:text-primary"
-                      href="https://internxt.com/password-checker"
+                      href={urls.tools.passwordChecker}
                       target={"_blank"}
                       rel="noreferrer"
                     >
@@ -462,12 +455,25 @@ export default function Footer({
                     </a>
 
                     <a
-                      href="https://internxt.com/virus-scanner"
+                      href={urls.tools.virusScanner}
                       rel="noreferrer"
                       target={"_blank"}
                       className="hover:text-primary"
                     >
                       {textContent.FooterSection.sections.tools.fileVirusScan}
+                    </a>
+
+                    <a
+                      href={urls.tools.passwordGenerator}
+                      className="flex items-center hover:text-primary"
+                    >
+                      {
+                        textContent.FooterSection.sections.tools
+                          .passwordGenerator
+                      }
+                      <div className="ml-2 flex h-max items-center justify-center rounded-full bg-primary bg-opacity-15 py-1 px-2 text-xs font-medium uppercase text-primary">
+                        {textContent.FooterSection.new}
+                      </div>
                     </a>
                   </div>
                 </div>
@@ -503,7 +509,7 @@ export default function Footer({
               </div>
               <div className="flex flex-row space-x-1">
                 <a
-                  href="https://twitter.com/Internxt"
+                  href={urls.social.twitter}
                   target="_blank"
                   className="h-6 py-1.5 pr-2"
                   rel="noreferrer"
@@ -517,7 +523,7 @@ export default function Footer({
                   />
                 </a>
                 <a
-                  href="https://www.facebook.com/internxt"
+                  href={urls.social.facebook}
                   target="_blank"
                   className="h-6 py-1.5 pr-2"
                   rel="noreferrer"
@@ -531,7 +537,7 @@ export default function Footer({
                   />
                 </a>
                 <a
-                  href="https://linkedin.com/company/internxt"
+                  href={urls.social.linkedin}
                   target="_blank"
                   className="h-6 py-1.5 pr-2"
                   rel="noreferrer"
@@ -545,7 +551,7 @@ export default function Footer({
                   />
                 </a>
                 <a
-                  href="https://www.youtube.com/channel/UCW2SxWdVEAEACYuejCgpGwg/featured"
+                  href={urls.social.youtube}
                   target="_blank"
                   className="h-6 py-1.5 pr-2"
                   rel="noreferrer"
@@ -559,7 +565,7 @@ export default function Footer({
                   />
                 </a>
                 <a
-                  href="https://instagram.com/internxt/"
+                  href={urls.social.instagram}
                   target="_blank"
                   className="h-6 py-1.5 pr-2"
                   rel="noreferrer"
@@ -624,7 +630,7 @@ export default function Footer({
                       } space-y-4 p-4 pt-2`}
                     >
                       <a
-                        href="https://internxt.com/drive"
+                        href={urls.products.drive}
                         rel="noreferrer"
                         target={"_blank"}
                       >
@@ -632,7 +638,7 @@ export default function Footer({
                       </a>
 
                       <a
-                        href="https://internxt.com/photos"
+                        href={urls.products.photos}
                         rel="noreferrer"
                         target={"_blank"}
                       >
@@ -640,7 +646,7 @@ export default function Footer({
                       </a>
 
                       <a
-                        href="https://send.internxt.com"
+                        href={urls.products.send}
                         target="_blank"
                         rel="noreferrer"
                         className="flex flex-row items-center"
@@ -651,7 +657,7 @@ export default function Footer({
                       </a>
 
                       <a
-                        href="https://internxt.com/pricing"
+                        href={urls.products.pricing}
                         target={"_blank"}
                         rel="noreferrer"
                       >
@@ -709,36 +715,32 @@ export default function Footer({
                       } space-y-4 p-4 pt-2`}
                     >
                       <a
-                        href="https://internxt.com/about"
+                        href={urls.company.about}
                         target={"_blank"}
                         rel="noreferrer"
                       >
                         {textContent.FooterSection.sections.company.about}
                       </a>
 
-                      <a href="https://internxt.com/privacy">
+                      <a href={urls.company.privacy}>
                         {textContent.FooterSection.sections.company.privacy}
                       </a>
 
                       <a
-                        href={`https://blog.internxt.com/how-internxt-protects-your-data/`}
+                        href={urls.company.security}
                         target="_blank"
                         rel="noreferrer"
                       >
                         {textContent.FooterSection.sections.company.security}
                       </a>
 
-                      <a
-                        href="https://internxt.com/legal"
-                        target={"_blank"}
-                        rel="noreferrer"
-                      >
+                      <a href={urls.legal} target={"_blank"} rel="noreferrer">
                         {textContent.FooterSection.sections.company.legal}
                       </a>
 
                       <p
                         onClick={() => {
-                          window.open("https://help.internxt.com", "_blank");
+                          window.open(urls.company.support, "_blank");
                         }}
                       >
                         {textContent.FooterSection.sections.company.support}
@@ -794,16 +796,16 @@ export default function Footer({
                         darkMode ? "text-cool-gray-30" : "text-cool-gray-60"
                       } space-y-4 p-4 pt-2`}
                     >
-                      <a href="https://drive.internxt.com/new" target="_top">
+                      <a href={urls.join.signup} target="_top">
                         {textContent.FooterSection.sections.join.signup}
                       </a>
 
-                      <a href="https://drive.internxt.com/login" target="_top">
+                      <a href={urls.join.login} target="_top">
                         {textContent.FooterSection.sections.join.login}
                       </a>
 
                       <a
-                        href="https://github.com/internxt"
+                        href={urls.join.github}
                         target="_blank"
                         rel="noreferrer"
                       >
@@ -861,14 +863,14 @@ export default function Footer({
                       } space-y-4 p-4 pt-2`}
                     >
                       <a
-                        href={`https://blog.internxt.com/`}
+                        href={urls.resources.blog}
                         target="_blank"
                         rel="noreferrer"
                       >
                         {textContent.FooterSection.sections.resources.blog}
                       </a>
 
-                      <a href="https://internxt.com/privacy-directory">
+                      <a href={urls.resources.privacyDirectory}>
                         {
                           textContent.FooterSection.sections.resources
                             .directoryOfPrivacyOrganizations
@@ -876,7 +878,7 @@ export default function Footer({
                       </a>
 
                       <a
-                        href="https://internxt.com/cloud-storage-comparison"
+                        href={urls.resources.storageComparison}
                         target={"_blank"}
                         rel="noreferrer"
                       >
@@ -887,7 +889,7 @@ export default function Footer({
                       </a>
 
                       <a
-                        href="https://internxt.com/cyber-awareness"
+                        href={urls.resources.cyberAwareness}
                         target={"_blank"}
                         rel="noreferrer"
                       >
@@ -898,7 +900,7 @@ export default function Footer({
                       </a>
 
                       <a
-                        href="https://intrnxt.com/what-does-google-know-about-me"
+                        href={urls.resources.whatGoogleKnows}
                         target={"_blank"}
                         rel="noreferrer"
                       >
@@ -958,7 +960,7 @@ export default function Footer({
                       } space-y-4 p-4 pt-2`}
                     >
                       <a
-                        href={"https:internxt.com/byte-converter"}
+                        href={urls.tools.byteConverter}
                         lang={lang}
                         target="_blank"
                         rel="noreferrer"
@@ -967,7 +969,7 @@ export default function Footer({
                       </a>
 
                       <a
-                        href="https://internxt.com/temporary-email"
+                        href={urls.tools.tempMail}
                         target={"_blank"}
                         rel="noreferrer"
                       >
@@ -978,7 +980,7 @@ export default function Footer({
                       </a>
 
                       <a
-                        href="https://interxt.com/password-checker"
+                        href={urls.tools.passwordChecker}
                         target={"_blank"}
                         rel="noreferrer"
                       >
@@ -989,11 +991,23 @@ export default function Footer({
                       </a>
 
                       <a
-                        href="https://internxt.com/virus-scanner"
+                        href={urls.tools.virusScanner}
                         target={"_blank"}
                         rel="noreferrer"
                       >
                         {textContent.FooterSection.sections.tools.fileVirusScan}
+                      </a>
+                      <a
+                        href={urls.tools.passwordGenerator}
+                        className="flex items-center hover:text-primary"
+                      >
+                        {
+                          textContent.FooterSection.sections.tools
+                            .passwordGenerator
+                        }
+                        <div className="ml-2 flex h-max items-center justify-center rounded-full bg-primary bg-opacity-15 py-1 px-2 text-xs font-medium uppercase text-primary">
+                          {textContent.FooterSection.new}
+                        </div>
                       </a>
                     </Disclosure.Panel>
                   </Transition>
@@ -1004,7 +1018,7 @@ export default function Footer({
             <div className="mt-16 flex flex-col items-center space-y-4">
               <div className="flex flex-row space-x-1">
                 <a
-                  href="https://twitter.com/Internxt"
+                  href={urls.social.twitter}
                   target="_blank"
                   className="h-8 py-1.5 pr-6"
                   rel="noreferrer"
@@ -1018,7 +1032,7 @@ export default function Footer({
                   />
                 </a>
                 <a
-                  href="https://www.facebook.com/internxt"
+                  href={urls.social.facebook}
                   target="_blank"
                   className="h-8 py-1.5 pr-6"
                   rel="noreferrer"
@@ -1032,7 +1046,7 @@ export default function Footer({
                   />
                 </a>
                 <a
-                  href="https://linkedin.com/company/internxt"
+                  href={urls.social.linkedin}
                   target="_blank"
                   className="h-8 py-1.5 pr-6"
                   rel="noreferrer"
@@ -1046,7 +1060,7 @@ export default function Footer({
                   />
                 </a>
                 <a
-                  href="https://www.youtube.com/channel/UCW2SxWdVEAEACYuejCgpGwg/featured"
+                  href={urls.social.youtube}
                   target="_blank"
                   className="h-8 py-1.5 pr-6"
                   rel="noreferrer"
@@ -1060,7 +1074,7 @@ export default function Footer({
                   />
                 </a>
                 <a
-                  href="https://instagram.com/internxt/"
+                  href={urls.social.instagram}
                   target="_blank"
                   className="h-8 py-1.5 pr-6"
                   rel="noreferrer"

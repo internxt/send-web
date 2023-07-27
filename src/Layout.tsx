@@ -129,6 +129,8 @@ export default function Layout({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  ctaRef.current?.classList.add("opacity-100");
+
   useEffect(() => {
     let currentIndex = 0;
     const interval = setInterval(() => {
