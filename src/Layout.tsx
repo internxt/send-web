@@ -129,8 +129,9 @@ export default function Layout({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  ctaRef.current?.classList.add("opacity-100");
+
   useEffect(() => {
-    ctaRef.current?.classList.add("opacity-100");
     let currentIndex = 0;
     const interval = setInterval(() => {
       if (currentIndex === heroSectionTextPaths.length - 1) {
