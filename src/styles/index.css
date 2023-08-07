@@ -48,6 +48,11 @@
   transition-timing-function: ease-in-out;
 }
 
+iframe {
+  overflow: hidden;
+  height: 0;
+}
+
 @keyframes FadeIn {
   0% {
     opacity: 0;
