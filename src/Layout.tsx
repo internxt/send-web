@@ -196,7 +196,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     <>
       <Navbar />
       <div
-        className="relative flex w-auto flex-col justify-center bg-white lg:min-h-[700px] lg:bg-black "
+        className="relative flex w-auto flex-col justify-center overflow-hidden bg-white lg:min-h-[700px] lg:bg-black "
         style={{ height: height.current }}
       >
         <div
