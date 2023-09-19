@@ -283,6 +283,32 @@ export default function Footer({
                     </a>
 
                     <a
+                      href={urls.company.openSource}
+                      target={"_blank"}
+                      rel="noreferrer"
+                      className="flex max-w-[200px] flex-row items-center hover:text-primary"
+                    >
+                      {textContent.FooterSection.sections.company.openSource}
+                      {lang !== "en" && (
+                        <div className=" ml-2 flex h-max items-center justify-center rounded-full bg-primary bg-opacity-15 py-1 px-2 text-xs font-medium uppercase text-primary">
+                          {textContent.FooterSection.new}
+                        </div>
+                      )}
+                    </a>
+
+                    <a
+                      href={urls.company.mediaArea}
+                      className="flex max-w-[200px] flex-row items-center hover:text-primary"
+                      target={"_blank"}
+                      rel="noreferrer"
+                    >
+                      {textContent.FooterSection.sections.company.mediaArea}
+                      <div className=" ml-2 flex h-max items-center justify-center rounded-full bg-primary bg-opacity-15 py-1 px-2 text-xs font-medium uppercase text-primary">
+                        {textContent.FooterSection.new}
+                      </div>
+                    </a>
+
+                    <a
                       href={urls.company.security}
                       target="_blank"
                       rel="noreferrer"
@@ -292,20 +318,13 @@ export default function Footer({
                     </a>
 
                     <a
-                      href={urls.company.support}
+                      href={urls.company.legal}
                       className="hover:text-primary"
+                      target={"_blank"}
+                      rel="noreferrer"
                     >
                       {textContent.FooterSection.sections.company.legal}
                     </a>
-
-                    <p
-                      onClick={() => {
-                        window.open("https://help.internxt.com", "_blank");
-                      }}
-                      className="cursor-pointer hover:text-primary"
-                    >
-                      {textContent.FooterSection.sections.company.support}
-                    </p>
                   </div>
                 </div>
               </div>
@@ -329,6 +348,13 @@ export default function Footer({
                     </a>
 
                     <a
+                      href={urls.join.support}
+                      className="cursor-pointer hover:text-primary"
+                    >
+                      {textContent.FooterSection.sections.join.support}
+                    </a>
+
+                    <a
                       href={urls.join.login}
                       target="_top"
                       className="hover:text-primary"
@@ -343,6 +369,14 @@ export default function Footer({
                       className="hover:text-primary"
                     >
                       {textContent.FooterSection.sections.join.github}
+                    </a>
+                    <a
+                      href={urls.join.affiliates}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="hover:text-primary"
+                    >
+                      {textContent.FooterSection.sections.join.affiliates}
                     </a>
                   </div>
                 </div>
@@ -410,14 +444,11 @@ export default function Footer({
                         textContent.FooterSection.sections.resources
                           .whatGoogleKnowsAboutMe
                       }
-                      <div className=" ml-2 flex h-max items-center justify-center rounded-full bg-primary bg-opacity-15 py-1 px-2 text-xs font-medium uppercase text-primary">
-                        {textContent.FooterSection.new}
-                      </div>
                     </a>
                   </div>
                 </div>
               </div>
-              <div className="flex max-w-[180px] flex-col items-center lg:flex-none">
+              <div className="flex max-w-[220px] flex-col items-center lg:flex-none">
                 <div className="flex flex-shrink-0 flex-col space-y-3">
                   <h3 className="text-lg font-medium">
                     {textContent.FooterSection.sections.tools.title}
@@ -466,6 +497,8 @@ export default function Footer({
                     <a
                       href={urls.tools.passwordGenerator}
                       className="flex items-center hover:text-primary"
+                      target={"_blank"}
+                      rel="noreferrer"
                     >
                       {
                         textContent.FooterSection.sections.tools
@@ -727,6 +760,30 @@ export default function Footer({
                       </a>
 
                       <a
+                        href={urls.company.openSource}
+                        target={"_blank"}
+                        rel="noreferrer"
+                      >
+                        {textContent.FooterSection.sections.company.openSource}
+                        {lang !== "en" && (
+                          <div className=" ml-2 flex h-max items-center justify-center rounded-full bg-primary bg-opacity-15 py-1 px-2 text-xs font-medium uppercase text-primary">
+                            {textContent.FooterSection.new}
+                          </div>
+                        )}
+                      </a>
+
+                      <a
+                        href={urls.company.mediaArea}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {textContent.FooterSection.sections.company.mediaArea}
+                        <div className=" ml-2 flex h-max items-center justify-center rounded-full bg-primary bg-opacity-15 py-1 px-2 text-xs font-medium uppercase text-primary">
+                          {textContent.FooterSection.new}
+                        </div>
+                      </a>
+
+                      <a
                         href={urls.company.security}
                         target="_blank"
                         rel="noreferrer"
@@ -740,10 +797,10 @@ export default function Footer({
 
                       <p
                         onClick={() => {
-                          window.open(urls.company.support, "_blank");
+                          window.open(urls.company.legal, "_blank");
                         }}
                       >
-                        {textContent.FooterSection.sections.company.support}
+                        {textContent.FooterSection.sections.company.legal}
                       </p>
                     </Disclosure.Panel>
                   </Transition>
@@ -799,6 +856,13 @@ export default function Footer({
                       <a href={urls.join.signup} target="_top">
                         {textContent.FooterSection.sections.join.signup}
                       </a>
+                      <a
+                        href={urls.join.support}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {textContent.FooterSection.sections.join.support}
+                      </a>
 
                       <a href={urls.join.login} target="_top">
                         {textContent.FooterSection.sections.join.login}
@@ -810,6 +874,14 @@ export default function Footer({
                         rel="noreferrer"
                       >
                         {textContent.FooterSection.sections.join.github}
+                      </a>
+
+                      <a
+                        href={urls.join.affiliates}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {textContent.FooterSection.sections.join.affiliates}
                       </a>
                     </Disclosure.Panel>
                   </Transition>
