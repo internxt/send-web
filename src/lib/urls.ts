@@ -13,11 +13,15 @@ const urls = {
     about: `${INXT_URL}/about`,
     privacy: `${INXT_URL}/privacy`,
     security: "https://blog.internxt.com/how-internxt-protects-your-data",
-    support: "https://help.internxt.com",
+    openSource: `${INXT_URL}/open-source`,
+    mediaArea: `${INXT_URL}/media-area`,
+    legal: `${INXT_URL}/legal`,
   },
   join: {
     signup: `${INXT_DRIVE_URL}/new`,
     login: `${INXT_DRIVE_URL}/login`,
+    support: "https://help.internxt.com",
+    affiliates: "https://internxt.com/affiliates",
     github: "https://github.com/internxt",
   },
   resources: {
