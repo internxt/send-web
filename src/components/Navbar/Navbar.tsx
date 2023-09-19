@@ -6,6 +6,7 @@ import { Squeeze as Hamburger } from "hamburger-react";
 import { goToLoginURL, goToSignUpURL } from "../../lib/auth";
 import logo from "../../logo.svg";
 import logo_dark from "../../logo_dark.svg";
+import urls from "../../lib/urls";
 
 const INTERNXT_URL = "https://internxt.com";
 
@@ -161,20 +162,80 @@ export default function Navbar() {
                       )}
                     </Disclosure>
 
-                    <a
-                      href={`${INTERNXT_URL}/privacy`}
-                      tabIndex={0}
-                      target="_blank"
-                      rel="noreferrer"
-                      onClick={() => {
-                        setMenuState(false);
-                      }}
-                      className={`flex w-full translate-y-0 cursor-pointer px-8 py-3 outline-none transition delay-200 duration-300 ${
-                        menuState ? "opacity-100" : "-translate-y-4 opacity-0"
-                      }`}
-                    >
-                      {textContent.links.privacy}
-                    </a>
+                    <Disclosure as="div">
+                      {({ open }) => (
+                        <div
+                          className={`translate-y-0 transition delay-150 duration-300 ${
+                            menuState
+                              ? "opacity-100"
+                              : "-translate-y-4 opacity-0"
+                          }`}
+                        >
+                          <div className={`${open ? "bg-cool-gray-5" : ""}`}>
+                            <Disclosure.Button
+                              className={`flex w-full items-center justify-between px-8 py-3 font-medium ${
+                                open ? "bg-cool-gray-10" : ""
+                              }`}
+                            >
+                              <span>{textContent.links.ourValues}</span>
+                              <span className="relative h-6 w-6">
+                                <UserCircleMinus
+                                  className={`absolute left-0 top-0 h-6 w-6 transition duration-300 ${
+                                    open
+                                      ? "text-cool-gray-60"
+                                      : "-rotate-180 text-cool-gray-40"
+                                  }`}
+                                />
+                                <UserCircleMinus
+                                  className={`absolute left-0 top-0 h-6 w-6 transition duration-300 ${
+                                    open
+                                      ? "text-cool-gray-60"
+                                      : "-rotate-90 text-cool-gray-40"
+                                  }`}
+                                />
+                              </span>
+                            </Disclosure.Button>
+
+                            <Transition
+                              enter="transition duration-200 ease-out"
+                              enterFrom="scale-95 opacity-0"
+                              enterTo="scale-100 opacity-100"
+                              leave="transition duration-200 ease-out"
+                              leaveFrom="scale-100 opacity-100"
+                              leaveTo="scale-95 opacity-0"
+                            >
+                              <Disclosure.Panel className="mb-4 flex flex-col py-3 text-cool-gray-80">
+                                <a
+                                  href={urls.company.privacy}
+                                  tabIndex={0}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  onClick={() => {
+                                    setMenuState(false);
+                                  }}
+                                  className="flex w-full justify-start px-8 py-3 text-lg font-medium text-cool-gray-80 outline-none"
+                                >
+                                  {textContent.ourValues.privacy}
+                                </a>
+
+                                <a
+                                  href={urls.company.openSource}
+                                  tabIndex={0}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  onClick={() => {
+                                    setMenuState(false);
+                                  }}
+                                  className="flex w-full justify-start px-8 py-3 text-lg font-medium text-cool-gray-80 outline-none"
+                                >
+                                  {textContent.ourValues.openSource}
+                                </a>
+                              </Disclosure.Panel>
+                            </Transition>
+                          </div>
+                        </div>
+                      )}
+                    </Disclosure>
 
                     <a
                       href={`${INTERNXT_URL}/about`}
@@ -283,14 +344,39 @@ export default function Navbar() {
                 </div>
               </div>
 
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href={`${INTERNXT_URL}/privacy`}
-                className={`whitespace-nowrap px-4 py-1.5 text-base font-medium transition duration-150 ease-in-out`}
+              <div
+                className={`'text-cool-gray-70 hover:text-primary' group relative flex cursor-default space-x-1 rounded-lg py-1.5 px-4 pr-2 
+                      font-medium transition duration-150 ease-in-out
+                  hover:bg-cool-gray-100 hover:bg-opacity-5`}
               >
-                {textContent.links.privacy}
-              </a>
+                <span>{textContent.links.ourValues}</span>
+                <CaretDown className="h-6 w-6 translate-y-px text-gray-40 transition duration-150 ease-in-out group-hover:text-cool-gray-30" />
+
+                {/* Menu items */}
+                <div className="pointer-events-none absolute top-full left-1/2 z-50 w-52 -translate-x-1/2 translate-y-0 rounded-xl border border-black border-opacity-5 bg-white p-1.5 opacity-0 shadow-subtle transition duration-150 ease-in-out group-hover:pointer-events-auto group-hover:translate-y-1 group-hover:opacity-100">
+                  <div className="absolute -top-4 left-1/2 h-4 w-4/5 -translate-x-1/2" />
+
+                  <div className="relative grid gap-0 lg:grid-cols-1">
+                    <a
+                      href={urls.company.privacy}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={`flex flex-row justify-start rounded-xl px-4 py-2 text-base font-medium text-cool-gray-80 hover:bg-gray-5 `}
+                    >
+                      {textContent.ourValues.privacy}
+                    </a>
+
+                    <a
+                      href={urls.company.openSource}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={`flex flex-row justify-start rounded-xl px-4 py-2 text-base font-medium text-cool-gray-80 hover:bg-gray-5 `}
+                    >
+                      {textContent.ourValues.openSource}
+                    </a>
+                  </div>
+                </div>
+              </div>
 
               <a
                 target="_blank"

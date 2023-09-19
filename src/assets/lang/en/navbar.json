@@ -2,18 +2,22 @@
   "links": {
     "products": "Products",
     "about": "About us",
-    "privacy": "Privacy",
     "pricing": "Pricing",
+    "ourValues": "Our values",
     "login": "Log in",
     "getStarted": "Get started",
     "checkout": "Claim now!"
   },
   "products": {
-    "drive": "Drive",
-    "photos": "Photos",
-    "send": "Send",
+    "drive": "Internxt Drive",
+    "photos": "Internxt Photos",
+    "send": "Internxt Send",
     "comingSoon": "Coming soon",
     "new": "New"
+  },
+  "ourValues": {
+    "privacy": "Privacy",
+    "openSource": "Open Source"
   },
   "Auth": {
     "SignUp": {
