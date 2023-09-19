@@ -2,45 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: "NeueEinstellung";
-  font-weight: 400;
-  font-style: normal;
-  font-display: auto;
-  src: url(./fonts/NeueEinstellung-Regular.ttf) format("truetype"),
-    url(./fonts/NeueEinstellung-Regular.woff) format("woff"),
-    url(./fonts/NeueEinstellung-Regular.woff2) format("woff2");
-}
-
-@font-face {
-  font-family: "NeueEinstellung";
-  font-weight: 500;
-  font-style: normal;
-  font-display: auto;
-  src: url(./fonts/NeueEinstellung-Medium.ttf) format("truetype"),
-    url(./fonts/NeueEinstellung-Medium.woff) format("woff"),
-    url(./fonts/NeueEinstellung-Medium.woff2) format("woff2");
-}
-
-@font-face {
-  font-family: "NeueEinstellung";
-  font-weight: 600;
-  font-style: normal;
-  font-display: auto;
-  src: url(./fonts/NeueEinstellung-Semibold.ttf) format("truetype"),
-    url(./fonts/NeueEinstellung-Semibold.woff) format("woff"),
-    url(./fonts/NeueEinstellung-Semibold.woff2) format("woff2");
-}
-
-@font-face {
-  font-family: "NeueEinstellung";
-  font-weight: 700;
-  font-style: normal;
-  font-display: auto;
-  src: url(./fonts/NeueEinstellung-Bold.ttf) format("truetype"),
-    url(./fonts/NeueEinstellung-Bold.woff) format("woff"),
-    url(./fonts/NeueEinstellung-Bold.woff2) format("woff2");
-}
+@import url('./fonts/InstrumentSans/font.css');
 
 .fade-in-animation {
   animation-name: FadeIn;

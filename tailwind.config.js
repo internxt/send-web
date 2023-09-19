@@ -174,7 +174,7 @@ module.exports = {
         "subtle-hard": "0 32px 40px 0 rgba(18, 22, 25, 0.08)",
       },
       fontFamily: {
-        sans: ["NeueEinstellung", ...defaultTheme.fontFamily.sans],
+        sans: ["Instrument Sans", ...defaultTheme.fontFamily.sans],
       },
     },
     colors: {
