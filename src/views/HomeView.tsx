@@ -80,47 +80,50 @@ export default function HomeView() {
         !isValidEmail(formState.sender)));
 
   async function uploadFiles(cb: (progress: number) => void) {
-    const abortController = new AbortController();
-    uploadAbortController.current = abortController;
-    let link: string | undefined;
+    return new Promise<string>(async (resolve, reject) => {
+      const abortController = new AbortController();
+      uploadAbortController.current = abortController;
+      let link: string = "";
 
-    const items = getAllItemsArray(filesContext.itemList);
+      const items = getAllItemsArray(filesContext.itemList);
 
-    try {
-      window.grecaptcha.ready(async () => {
-        const token = await window.grecaptcha.execute(
-          process.env.REACT_APP_RECAPTCHA_V3 as string,
-          {
-            action: "Send items",
-          }
-        );
+      try {
+        window.grecaptcha.ready(async () => {
+          const token = await window.grecaptcha.execute(
+            process.env.REACT_APP_RECAPTCHA_V3 as string,
+            {
+              action: "SendItems",
+            }
+          );
 
-        link = await UploadService.uploadFilesAndGetLink(
-          items,
-          token,
-          switchValue === "Send email"
-            ? {
-                sender: formState.sender,
-                receivers:
-                  formState.sendTo.length === 0
-                    ? [formState.sendToField]
-                    : formState.sendTo,
-                subject: formState.message,
-                title: formState.title,
-              }
-            : undefined,
-          {
-            progress: (_, uploadedBytes) => cb(uploadedBytes),
-            abortController,
-          }
-        );
-      });
-    } catch (error) {
-      const err = error as Error;
-      console.error(err);
-    } finally {
-      return link ?? "";
-    }
+          link = await UploadService.uploadFilesAndGetLink(
+            items,
+            token,
+            switchValue === "Send email"
+              ? {
+                  sender: formState.sender,
+                  receivers:
+                    formState.sendTo.length === 0
+                      ? [formState.sendToField]
+                      : formState.sendTo,
+                  subject: formState.message,
+                  title: formState.title,
+                }
+              : undefined,
+            {
+              progress: (_, uploadedBytes) => cb(uploadedBytes),
+              abortController,
+            }
+          );
+
+          resolve(link);
+        });
+      } catch (error) {
+        const err = error as Error;
+        console.error(err);
+        reject(err);
+      }
+    });
   }
 
   function cancelUpload() {
