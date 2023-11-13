@@ -29,6 +29,7 @@ import { sm_faq } from "../components/utils/schema-markup-generator";
 import CtaSection from "../components/send/CtaSection";
 import moment from "moment";
 import Tooltip from "../components/Tooltip";
+import { getCaptchaToken } from "../lib/auth";
 
 type EmailFormState = {
   sendTo: string[];
@@ -79,24 +80,17 @@ export default function HomeView() {
         !isValidEmail(formState.sendToField)) ||
         !isValidEmail(formState.sender)));
 
-  async function uploadFiles(cb: (progress: number) => void) {
-    return new Promise<string>(async (resolve, reject) => {
-      const abortController = new AbortController();
-      uploadAbortController.current = abortController;
-      let link: string = "";
+  async function uploadFiles(cb: (progress: number) => void): Promise<string> {
+    const abortController = new AbortController();
+    uploadAbortController.current = abortController;
 
-      const items = getAllItemsArray(filesContext.itemList);
+    return new Promise<string>((resolve, reject) => {
+      window.grecaptcha.ready(async () => {
+        try {
+          const token = await getCaptchaToken();
 
-      try {
-        window.grecaptcha.ready(async () => {
-          const token = await window.grecaptcha.execute(
-            process.env.REACT_APP_RECAPTCHA_V3 as string,
-            {
-              action: "SendItems",
-            }
-          );
-
-          link = await UploadService.uploadFilesAndGetLink(
+          const items = getAllItemsArray(filesContext.itemList);
+          const link = await UploadService.uploadFilesAndGetLink(
             items,
             token,
             switchValue === "Send email"
@@ -117,12 +111,12 @@ export default function HomeView() {
           );
 
           resolve(link);
-        });
-      } catch (error) {
-        const err = error as Error;
-        console.error(err);
-        reject(err);
-      }
+        } catch (error) {
+          const err = error as Error;
+          console.error(err);
+          reject(err);
+        }
+      });
     });
   }
 
