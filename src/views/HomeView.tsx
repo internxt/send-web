@@ -86,37 +86,41 @@ export default function HomeView() {
 
     const items = getAllItemsArray(filesContext.itemList);
 
-    window.grecaptcha.ready(() => {
-      window.grecaptcha
-        .execute(process.env.REACT_APP_RECAPTCHA_V3 as string, {
-          action: "Send items",
-        })
-        .then(async (token) => {
-          link = await UploadService.uploadFilesAndGetLink(
-            items,
-            token,
-            switchValue === "Send email"
-              ? {
-                  sender: formState.sender,
-                  receivers:
-                    formState.sendTo.length === 0
-                      ? [formState.sendToField]
-                      : formState.sendTo,
-                  subject: formState.message,
-                  title: formState.title,
-                }
-              : undefined,
-            {
-              progress: (_, uploadedBytes) => cb(uploadedBytes),
-              abortController,
-            }
-          );
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    });
-    return link ?? "";
+    try {
+      window.grecaptcha.ready(async () => {
+        const token = await window.grecaptcha.execute(
+          process.env.REACT_APP_RECAPTCHA_V3 as string,
+          {
+            action: "Send items",
+          }
+        );
+
+        link = await UploadService.uploadFilesAndGetLink(
+          items,
+          token,
+          switchValue === "Send email"
+            ? {
+                sender: formState.sender,
+                receivers:
+                  formState.sendTo.length === 0
+                    ? [formState.sendToField]
+                    : formState.sendTo,
+                subject: formState.message,
+                title: formState.title,
+              }
+            : undefined,
+          {
+            progress: (_, uploadedBytes) => cb(uploadedBytes),
+            abortController,
+          }
+        );
+      });
+    } catch (error) {
+      const err = error as Error;
+      console.error(err);
+    } finally {
+      return link ?? "";
+    }
   }
 
   function cancelUpload() {
