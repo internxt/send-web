@@ -82,29 +82,41 @@ export default function HomeView() {
   async function uploadFiles(cb: (progress: number) => void) {
     const abortController = new AbortController();
     uploadAbortController.current = abortController;
+    let link: string | undefined;
 
     const items = getAllItemsArray(filesContext.itemList);
 
-    const link = await UploadService.uploadFilesAndGetLink(
-      items,
-      switchValue === "Send email"
-        ? {
-            sender: formState.sender,
-            receivers:
-              formState.sendTo.length === 0
-                ? [formState.sendToField]
-                : formState.sendTo,
-            subject: formState.message,
-            title: formState.title,
-          }
-        : undefined,
-      {
-        progress: (_, uploadedBytes) => cb(uploadedBytes),
-        abortController,
-      }
-    );
-
-    return link;
+    window.grecaptcha.ready(() => {
+      window.grecaptcha
+        .execute(process.env.REACT_APP_RECAPTCHA_V3 as string, {
+          action: "register",
+        })
+        .then(async (token) => {
+          link = await UploadService.uploadFilesAndGetLink(
+            items,
+            switchValue === "Send email"
+              ? {
+                  sender: formState.sender,
+                  receivers:
+                    formState.sendTo.length === 0
+                      ? [formState.sendToField]
+                      : formState.sendTo,
+                  subject: formState.message,
+                  title: formState.title,
+                }
+              : undefined,
+            {
+              progress: (_, uploadedBytes) => cb(uploadedBytes),
+              abortController,
+              recapchaToken: switchValue === "Send email" ? token : undefined,
+            }
+          );
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    });
+    return link ?? "";
   }
 
   function cancelUpload() {

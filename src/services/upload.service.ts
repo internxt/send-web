@@ -46,6 +46,7 @@ export class UploadService {
     opts?: {
       progress?: (totalBytes: number, uploadedBytes: number) => void;
       abortController?: AbortController;
+      recapchaToken?: string;
     }
   ): Promise<string> {
     const itemFiles = [] as SendLinkWithFile[];
@@ -76,7 +77,6 @@ export class UploadService {
     });
     const sendLinksFiles = await UploadService.uploadFiles(itemFiles, opts);
     const items = [...sendLinksFolders, ...sendLinksFiles];
-
     const randomMnemonic = generateMnemonic(256);
     const code = randomBytes(32).toString("hex");
     const encryptedCode = aes.encrypt(code, randomMnemonic);
@@ -98,7 +98,6 @@ export class UploadService {
     } as CreateSendLinksPayload;
 
     const createSendLinkResponse = await storeSendLinks(createSendLinksPayload);
-
     return (
       originUrl + "/download/" + createSendLinkResponse.id + "?code=" + code
     );

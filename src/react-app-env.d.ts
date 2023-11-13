@@ -17,3 +17,10 @@ declare namespace NodeJS {
     REACT_APP_BASE_URL: string;
   }
 }
+
+interface Window {
+  grecaptcha: {
+    ready: (cb: () => void) => void;
+    execute: (siteKey: string, { action: string }) => Promise<string>;
+  };
+}
