@@ -89,11 +89,12 @@ export default function HomeView() {
     window.grecaptcha.ready(() => {
       window.grecaptcha
         .execute(process.env.REACT_APP_RECAPTCHA_V3 as string, {
-          action: "register",
+          action: "Send items",
         })
         .then(async (token) => {
           link = await UploadService.uploadFilesAndGetLink(
             items,
+            token,
             switchValue === "Send email"
               ? {
                   sender: formState.sender,
@@ -108,7 +109,6 @@ export default function HomeView() {
             {
               progress: (_, uploadedBytes) => cb(uploadedBytes),
               abortController,
-              recapchaToken: switchValue === "Send email" ? token : undefined,
             }
           );
         })
