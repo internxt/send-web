@@ -42,6 +42,7 @@ const originUrl = process.env.REACT_APP_BASE_URL || window.origin;
 export class UploadService {
   static async uploadFilesAndGetLink(
     itemList: SendItemData[],
+    recapchaToken: string,
     emailInfo?: EmailInfo,
     opts?: {
       progress?: (totalBytes: number, uploadedBytes: number) => void;
@@ -76,7 +77,6 @@ export class UploadService {
     });
     const sendLinksFiles = await UploadService.uploadFiles(itemFiles, opts);
     const items = [...sendLinksFolders, ...sendLinksFiles];
-
     const randomMnemonic = generateMnemonic(256);
     const code = randomBytes(32).toString("hex");
     const encryptedCode = aes.encrypt(code, randomMnemonic);
@@ -97,8 +97,10 @@ export class UploadService {
       plainCode: code,
     } as CreateSendLinksPayload;
 
-    const createSendLinkResponse = await storeSendLinks(createSendLinksPayload);
-
+    const createSendLinkResponse = await storeSendLinks(
+      createSendLinksPayload,
+      recapchaToken
+    );
     return (
       originUrl + "/download/" + createSendLinkResponse.id + "?code=" + code
     );
@@ -326,10 +328,18 @@ interface CreateSendLinksResponse {
   expirationAt: string;
 }
 
-async function storeSendLinks(payload: CreateSendLinksPayload) {
+async function storeSendLinks(
+  payload: CreateSendLinksPayload,
+  recapchaToken: string
+) {
   const res = await axios.post<CreateSendLinksResponse>(
     process.env.REACT_APP_API_URL + "/api/links",
-    payload
+    payload,
+    {
+      headers: {
+        "X-Internxt-Captcha": recapchaToken,
+      },
+    }
   );
 
   return res.data;

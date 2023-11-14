@@ -29,6 +29,7 @@ import { sm_faq } from "../components/utils/schema-markup-generator";
 import CtaSection from "../components/send/CtaSection";
 import moment from "moment";
 import Tooltip from "../components/Tooltip";
+import { getCaptchaToken } from "../lib/auth";
 
 type EmailFormState = {
   sendTo: string[];
@@ -79,32 +80,43 @@ export default function HomeView() {
         !isValidEmail(formState.sendToField)) ||
         !isValidEmail(formState.sender)));
 
-  async function uploadFiles(cb: (progress: number) => void) {
+  async function uploadFiles(cb: (progress: number) => void): Promise<string> {
     const abortController = new AbortController();
     uploadAbortController.current = abortController;
 
     const items = getAllItemsArray(filesContext.itemList);
 
-    const link = await UploadService.uploadFilesAndGetLink(
-      items,
-      switchValue === "Send email"
-        ? {
-            sender: formState.sender,
-            receivers:
-              formState.sendTo.length === 0
-                ? [formState.sendToField]
-                : formState.sendTo,
-            subject: formState.message,
-            title: formState.title,
-          }
-        : undefined,
-      {
-        progress: (_, uploadedBytes) => cb(uploadedBytes),
-        abortController,
-      }
-    );
+    try {
+      await new Promise<void>((r) => window.grecaptcha.ready(r));
 
-    return link;
+      const token = await getCaptchaToken();
+
+      const link = await UploadService.uploadFilesAndGetLink(
+        items,
+        token,
+        switchValue === "Send email"
+          ? {
+              sender: formState.sender,
+              receivers:
+                formState.sendTo.length === 0
+                  ? [formState.sendToField]
+                  : formState.sendTo,
+              subject: formState.message,
+              title: formState.title,
+            }
+          : undefined,
+        {
+          progress: (_, uploadedBytes) => cb(uploadedBytes),
+          abortController,
+        }
+      );
+
+      return link;
+    } catch (error) {
+      const err = error as Error;
+      console.error(err);
+      throw err;
+    }
   }
 
   function cancelUpload() {
