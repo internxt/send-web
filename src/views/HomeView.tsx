@@ -87,11 +87,7 @@ export default function HomeView() {
     const items = getAllItemsArray(filesContext.itemList);
 
     try {
-      await new Promise<void>((resolve, reject) => {
-        window.grecaptcha.ready(async () => {
-          resolve();
-        });
-      });
+      await new Promise<void>((r) => window.grecaptcha.ready(r));
 
       const token = await getCaptchaToken();
 
