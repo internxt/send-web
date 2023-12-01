@@ -141,6 +141,7 @@ export default function HomeView() {
         });
       });
       setPhase({ name: "done", link });
+      window.gtag("event", "send_files");
     } catch (err) {
       console.error(err);
 
