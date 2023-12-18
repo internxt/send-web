@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('./fonts/InstrumentSans/font.css');
+@import url("./fonts/InstrumentSans/font.css");
 
 .fade-in-animation {
   animation-name: FadeIn;
@@ -29,6 +29,10 @@ html,
 body {
   background: #ffffff;
   background-color: #ffffff;
+}
+
+.grecaptcha-badge {
+  visibility: hidden !important;
 }
 
 .dropdown {

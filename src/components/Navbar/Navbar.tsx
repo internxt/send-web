@@ -345,12 +345,13 @@ export default function Navbar() {
               </div>
 
               <div
-                className={`'text-cool-gray-70 hover:text-primary' group relative flex cursor-default space-x-1 rounded-lg py-1.5 px-4 pr-2 
-                      font-medium transition duration-150 ease-in-out
-                  hover:bg-cool-gray-100 hover:bg-opacity-5`}
+                className={`group relative flex cursor-default items-center space-x-1 rounded-lg px-4 py-1.5 pr-2 font-medium transition duration-150 ease-in-out`}
               >
                 <span>{textContent.links.ourValues}</span>
-                <CaretDown className="h-6 w-6 translate-y-px text-gray-40 transition duration-150 ease-in-out group-hover:text-cool-gray-30" />
+                <CaretDown
+                  size={16}
+                  className="translate-y-px text-white transition duration-150 ease-in-out group-hover:text-cool-gray-30"
+                />
 
                 {/* Menu items */}
                 <div className="pointer-events-none absolute top-full left-1/2 z-50 w-52 -translate-x-1/2 translate-y-0 rounded-xl border border-black border-opacity-5 bg-white p-1.5 opacity-0 shadow-subtle transition duration-150 ease-in-out group-hover:pointer-events-auto group-hover:translate-y-1 group-hover:opacity-100">
