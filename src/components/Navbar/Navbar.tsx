@@ -28,13 +28,13 @@ export default function Navbar() {
   return (
     <div
       id="navbar"
-      className={`absolute
-       z-30 flex h-20 w-full items-center bg-transparent text-black
-      transition-all duration-100 lg:h-16 lg:text-white`}
+      className={`fixed z-50
+       flex h-20 w-full items-center bg-white text-black transition-all duration-100
+      lg:absolute lg:h-16 lg:bg-transparent lg:text-white`}
     >
       <div className="mx-4 w-full lg:mx-10 xl:mx-20">
         <div className="navbar mx-auto flex max-w-screen-xl items-center justify-between">
-          {/* Left side of navbar: Logo / Hamburguer menu */}
+          {/* Left side of navbar: Logo / Hamburger menu */}
           <div className=" flex flex-1 flex-shrink-0 flex-grow flex-row items-center justify-start space-x-4 lg:space-x-0">
             <div className="flex lg:hidden">
               <Hamburger

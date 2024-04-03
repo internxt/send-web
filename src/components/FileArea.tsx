@@ -127,20 +127,18 @@ export default function FileArea({
               </MenuItem>,
             ]}
           >
-            <>
-              <PlusCircle className="text-primary" size={28}></PlusCircle>
-              <div className="ml-1.5">
-                <p className="text-left text-sm text-gray-80">Add more items</p>
-                <div className="flex space-x-1.5 text-xs text-gray-50">
-                  <p>
-                    {fileContext.totalFilesCount} / {MAX_ITEMS_PER_LINK}{" "}
-                    {fileContext.totalFilesCount > 1 ? "files" : "file"} added
-                  </p>
-                  <p className="font-bold text-gray-30">·</p>
-                  <p>{format(spaceRemaining)} remaining</p>
-                </div>
+            <PlusCircle className="text-primary" size={28}></PlusCircle>
+            <div className="ml-1.5">
+              <p className="text-left text-sm text-gray-80">Add more items</p>
+              <div className="flex space-x-1.5 text-xs text-gray-50">
+                <p>
+                  {fileContext.totalFilesCount} / {MAX_ITEMS_PER_LINK}{" "}
+                  {fileContext.totalFilesCount > 1 ? "files" : "file"} added
+                </p>
+                <p className="font-bold text-gray-30">·</p>
+                <p>{format(spaceRemaining)} remaining</p>
               </div>
-            </>
+            </div>
           </Dropdown>
         </>
       )}

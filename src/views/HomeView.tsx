@@ -189,9 +189,7 @@ export default function HomeView() {
               }}
             >
               <FileArea
-                className={`min-h-[224px] ${
-                  switchValue !== "Send email" && "lg:h-full"
-                }`}
+                className={`h-full min-h-[224px] pt-20 lg:pt-0`}
                 scroll={true}
               />
               {switchValue === "Send email" && (
