@@ -14,7 +14,6 @@ import PricingLaptop from "./assets/images/HeroSectionImages/Pricing.svg";
 const heroSectionTextPaths = [
   lang.HeroSection.index,
   lang.HeroSection.drive,
-  lang.HeroSection.photos,
   lang.HeroSection.privacy,
   lang.HeroSection.blog,
   lang.HeroSection.pricing,
@@ -22,14 +21,12 @@ const heroSectionTextPaths = [
 
 const heroSectionImages = [
   `${window.origin}/Drive-1.webp`,
-  `${window.origin}/Photos-2.webp`,
   Privacy,
   Blog,
   Pricing,
 ];
 const heroSectionImagesForLaptop = [
   `${window.origin}/Drive-1.webp`,
-  `${window.origin}/Photos-2.webp`,
   PrivacyLaptop,
   BlogLaptop,
   PricingLaptop,
@@ -38,9 +35,6 @@ const backgroundColor = [
   { backgroundImage: `url(${window.origin}/bg.png)` },
   {
     background: "radial-gradient(50% 50% at 50% 50%, #00A4C8 0%, #161616 100%)",
-  },
-  {
-    background: "radial-gradient(50% 50% at 50% 50%, #31A8FF 0%, #161616 100%)",
   },
   {
     background: "radial-gradient(50% 50% at 50% 50%, #905CFF 0%, #161616 100%)",
@@ -229,7 +223,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           <div
             ref={imageRef}
             className={`absolute ${
-              item.image === imagesLoaded[4] && "bottom-0"
+              item.image === imagesLoaded[3] && "bottom-0"
             } right-0 hidden w-full max-w-[700px] translate-x-50 opacity-0 transition-opacity duration-1000 xl:flex 3xl:right-10 3xl:w-full 3xl:max-w-4xl 3xl:translate-x-0 3xl:items-center 3xl:justify-center`}
           >
             <img
