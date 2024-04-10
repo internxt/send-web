@@ -220,15 +220,6 @@ export default function Footer({
                     </a>
 
                     <a
-                      href={urls.products.photos}
-                      target={"_blank"}
-                      rel="noreferrer"
-                      className="hover:text-primary"
-                    >
-                      {textContent.FooterSection.sections.products.photos}
-                    </a>
-
-                    <a
                       href={urls.products.send}
                       target="_blank"
                       rel="noreferrer"
@@ -668,14 +659,6 @@ export default function Footer({
                         target={"_blank"}
                       >
                         {textContent.FooterSection.sections.products.drive}
-                      </a>
-
-                      <a
-                        href={urls.products.photos}
-                        rel="noreferrer"
-                        target={"_blank"}
-                      >
-                        {textContent.FooterSection.sections.products.photos}
                       </a>
 
                       <a

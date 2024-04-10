@@ -132,19 +132,6 @@ export default function Navbar() {
                                 </a>
 
                                 <a
-                                  href={`${INTERNXT_URL}/photos`}
-                                  tabIndex={0}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                  onClick={() => {
-                                    setMenuState(false);
-                                  }}
-                                  className="flex w-full justify-start px-8 py-3 text-lg font-medium text-cool-gray-80 outline-none"
-                                >
-                                  {textContent.products.photos}
-                                </a>
-
-                                <a
                                   href="https://send.internxt.com"
                                   target="_blank"
                                   rel="noreferrer"
@@ -321,15 +308,6 @@ export default function Navbar() {
                       className={`flex flex-row justify-start rounded-xl px-4 py-2 text-base font-medium text-cool-gray-80 hover:bg-gray-5 `}
                     >
                       {textContent.products.drive}
-                    </a>
-
-                    <a
-                      target="_blank"
-                      rel="noreferrer"
-                      href={`${INTERNXT_URL}/photos`}
-                      className={`flex flex-row justify-start rounded-xl px-4 py-2 text-base font-medium text-cool-gray-80 hover:bg-gray-5 `}
-                    >
-                      {textContent.products.photos}
                     </a>
 
                     <a
