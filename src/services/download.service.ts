@@ -139,7 +139,7 @@ export async function getSendLink(
   linkId: string
 ): Promise<GetSendLinkResponse> {
   const res = await axios.get<GetSendLinkResponse>(
-    process.env.REACT_APP_API_URL + "/api/links/" + linkId
+    process.env.REACT_APP_SEND_API_URL + "/links/" + linkId
   );
 
   return res.data;
