@@ -56,7 +56,7 @@ jobs:
         uses: steebchen/kubectl@v2.0.0
         with: # defaults to latest kubectl binary version
           config: ${{ secrets.KUBE_CONFIG_DRIVE_SERVER }}
-          command: set image --record deployment/send-web-share-dp send-web-share-dp=${{ secrets.DOCKERHUB_USERNAME }}/send-web:${{ github.sha }} -n drive
+          command: set image --record deployment/send-web-share-dp send-web-share=${{ secrets.DOCKERHUB_USERNAME }}/send-web:${{ github.sha }} -n drive
       - name: Verify deployment
         uses: steebchen/kubectl@v2.0.0
         with:
