@@ -333,7 +333,7 @@ async function storeSendLinks(
   recapchaToken: string
 ) {
   const res = await axios.post<CreateSendLinksResponse>(
-    process.env.REACT_APP_API_URL + "/api/links",
+    process.env.REACT_APP_SEND_API_URL + "/links",
     payload,
     {
       headers: {
