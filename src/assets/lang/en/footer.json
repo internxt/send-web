@@ -14,7 +14,10 @@
   },
   "FooterSection": {
     "description": "Internxt’s mission is to help shape a world that respects humanity’s privacy rights. To do so, we are releasing a series of services, which all have the common goal of helping humanity protect this fundamental right.",
-    "copyright": "Copyright © 2023, Internxt Universal Technologies SL",
+    "copyright": {
+      "line1": "Copyright © ",
+      "line2": ", Internxt Universal Technologies SL"
+    },
     "comingSoon": "Coming soon",
     "new": "New",
     "sections": {
@@ -23,6 +26,7 @@
         "drive": "Internxt Drive",
         "photos": "Internxt Photos",
         "send": "Internxt Send",
+        "webDAV": "WebDAV",
         "token": "Token",
         "pricing": "Pricing"
       },
@@ -32,18 +36,22 @@
         "privacy": "Privacy",
         "openSource": "Open Source",
         "mediaArea": "Media Area",
+        "useCases": "Use Cases",
         "security": "Security",
         "legal": "Legal",
         "whyInternxt": "Why Internxt?"
       },
       "join": {
         "title": "Join Us",
+        "newsletter": "Newsletter",
         "affiliates": "Affiliates",
+        "storageForEducation": "Internxt for Education",
         "signup": "Create Account",
         "support": "Support",
         "login": "Log In",
         "community": "Community",
         "github": "GitHub",
+        "whitePaper": "White Paper",
         "twitter": "Twitter",
         "facebook": "Facebook",
         "linkedin": "LinkedIn",
@@ -58,7 +66,8 @@
         "directoryOfPrivacyOrganizations": "Directory of Privacy Organizations",
         "library": "Library",
         "cyberAwareness": "Cyber Awareness",
-        "whatGoogleKnowsAboutMe": "What Google Knows"
+        "whatGoogleKnowsAboutMe": "What Google Knows",
+        "inxtLibrary": "Library"
       },
       "tools": {
         "title": "Free Tools",
@@ -66,7 +75,8 @@
         "fileVirusScan": "File Virus Scanner",
         "passwordChecker": "Password Checker",
         "byteConverter": "Byte Converter",
-        "passwordGenerator": "Password Generator"
+        "passwordGenerator": "Password Generator",
+        "fileConverter": "File Converter"
       }
     }
   },

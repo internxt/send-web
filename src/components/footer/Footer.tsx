@@ -1,6 +1,8 @@
 /* eslint-disable max-len */
 import { Transition, Disclosure } from "@headlessui/react";
 import { CaretDown } from "phosphor-react";
+import moment from "moment";
+
 import textContent from "../../assets/lang/en/footer.json";
 import Facebook from "../../assets/social/cool-gray-60/facebook.svg";
 import Instagram from "../../assets/social/cool-gray-60/instagram.svg";
@@ -19,11 +21,12 @@ const androidURL =
 export default function Footer({
   hideNewsletter,
   darkMode,
-}: {
+}: Readonly<{
   hideNewsletter?: boolean;
   darkMode?: boolean;
-}) {
+}>) {
   const lang = "en";
+  const year = moment().format("YYYY");
 
   return (
     <section
@@ -228,9 +231,20 @@ export default function Footer({
                       <div>
                         {textContent.FooterSection.sections.products.send}
                       </div>
-                      {/* <div className="pointer-events-none ml-2 flex flex-row items-center whitespace-nowrap rounded-full bg-orange bg-opacity-15 px-2 text-supporting-1 font-medium uppercase text-orange">
+                    </a>
+
+                    <a
+                      href={urls.products.webdav}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex flex-row items-center hover:text-primary"
+                    >
+                      <div>
+                        {textContent.FooterSection.sections.products.webDAV}
+                      </div>
+                      <div className=" ml-2 flex h-max items-center justify-center rounded-full bg-primary bg-opacity-15 py-1 px-2 text-xs font-medium uppercase text-primary">
                         {textContent.FooterSection.new}
-                      </div> */}
+                      </div>
                     </a>
 
                     <a
@@ -274,6 +288,15 @@ export default function Footer({
                     </a>
 
                     <a
+                      href={urls.company.security}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="hover:text-primary"
+                    >
+                      {textContent.FooterSection.sections.company.security}
+                    </a>
+
+                    <a
                       href={urls.company.openSource}
                       target={"_blank"}
                       rel="noreferrer"
@@ -288,33 +311,30 @@ export default function Footer({
                     </a>
 
                     <a
-                      href={urls.company.mediaArea}
-                      className="flex max-w-[200px] flex-row items-center hover:text-primary"
-                      target={"_blank"}
-                      rel="noreferrer"
-                    >
-                      {textContent.FooterSection.sections.company.mediaArea}
-                      <div className=" ml-2 flex h-max items-center justify-center rounded-full bg-primary bg-opacity-15 py-1 px-2 text-xs font-medium uppercase text-primary">
-                        {textContent.FooterSection.new}
-                      </div>
-                    </a>
-
-                    <a
-                      href={urls.company.security}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="hover:text-primary"
-                    >
-                      {textContent.FooterSection.sections.company.security}
-                    </a>
-
-                    <a
                       href={urls.company.legal}
                       className="hover:text-primary"
                       target={"_blank"}
                       rel="noreferrer"
                     >
                       {textContent.FooterSection.sections.company.legal}
+                    </a>
+
+                    <a
+                      href={urls.company.mediaArea}
+                      className="flex max-w-[200px] flex-row items-center hover:text-primary"
+                      target={"_blank"}
+                      rel="noreferrer"
+                    >
+                      {textContent.FooterSection.sections.company.mediaArea}
+                    </a>
+
+                    <a
+                      href={urls.company.useCases}
+                      className="hover:text-primary"
+                      target={"_blank"}
+                      rel="noreferrer"
+                    >
+                      {textContent.FooterSection.sections.company.useCases}
                     </a>
                   </div>
                 </div>
@@ -330,6 +350,14 @@ export default function Footer({
                       darkMode ? "text-cool-gray-30" : "text-cool-gray-60"
                     }`}
                   >
+                    <a
+                      href={urls.join.newsletter}
+                      target="_top"
+                      className="hover:text-primary"
+                    >
+                      {textContent.FooterSection.sections.join.newsletter}
+                    </a>
+
                     <a
                       href={urls.join.signup}
                       target="_top"
@@ -361,6 +389,15 @@ export default function Footer({
                     >
                       {textContent.FooterSection.sections.join.github}
                     </a>
+
+                    <a
+                      href={urls.join.whitePaper}
+                      download
+                      className="hover:text-primary"
+                      rel="noreferrer"
+                    >
+                      {textContent.FooterSection.sections.join.whitePaper}
+                    </a>
                     <a
                       href={urls.join.affiliates}
                       target="_blank"
@@ -368,6 +405,17 @@ export default function Footer({
                       className="hover:text-primary"
                     >
                       {textContent.FooterSection.sections.join.affiliates}
+                    </a>
+                    <a
+                      href={urls.join.storageForEducation}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="hover:text-primary"
+                    >
+                      {
+                        textContent.FooterSection.sections.join
+                          .storageForEducation
+                      }
                     </a>
                   </div>
                 </div>
@@ -436,6 +484,15 @@ export default function Footer({
                           .whatGoogleKnowsAboutMe
                       }
                     </a>
+
+                    <a
+                      className="flex  items-center hover:text-primary"
+                      href={urls.resources.whatGoogleKnows}
+                      target={"_blank"}
+                      rel="noreferrer"
+                    >
+                      {textContent.FooterSection.sections.resources.library}
+                    </a>
                   </div>
                 </div>
               </div>
@@ -495,6 +552,15 @@ export default function Footer({
                         textContent.FooterSection.sections.tools
                           .passwordGenerator
                       }
+                    </a>
+
+                    <a
+                      href={urls.tools.fileConverter}
+                      className="flex items-center hover:text-primary"
+                      target={"_blank"}
+                      rel="noreferrer"
+                    >
+                      {textContent.FooterSection.sections.tools.fileConverter}
                       <div className="ml-2 flex h-max items-center justify-center rounded-full bg-primary bg-opacity-15 py-1 px-2 text-xs font-medium uppercase text-primary">
                         {textContent.FooterSection.new}
                       </div>
@@ -528,7 +594,9 @@ export default function Footer({
                     darkMode ? "text-cool-gray-30" : "text-cool-gray-60"
                   }`}
                 >
-                  {textContent.FooterSection.copyright}
+                  {textContent.FooterSection.copyright.line1 +
+                    year +
+                    textContent.FooterSection.copyright.line2}
                 </p>
               </div>
               <div className="flex flex-row space-x-1">
@@ -655,8 +723,9 @@ export default function Footer({
                     >
                       <a
                         href={urls.products.drive}
-                        rel="noreferrer"
                         target={"_blank"}
+                        rel="noreferrer"
+                        className="hover:text-primary"
                       >
                         {textContent.FooterSection.sections.products.drive}
                       </a>
@@ -665,7 +734,7 @@ export default function Footer({
                         href={urls.products.send}
                         target="_blank"
                         rel="noreferrer"
-                        className="flex flex-row items-center"
+                        className="flex flex-row items-center hover:text-primary"
                       >
                         <div>
                           {textContent.FooterSection.sections.products.send}
@@ -673,9 +742,24 @@ export default function Footer({
                       </a>
 
                       <a
+                        href={urls.products.webdav}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex flex-row items-center hover:text-primary"
+                      >
+                        <div>
+                          {textContent.FooterSection.sections.products.webDAV}
+                        </div>
+                        <div className=" ml-2 flex h-max items-center justify-center rounded-full bg-primary bg-opacity-15 py-1 px-2 text-xs font-medium uppercase text-primary">
+                          {textContent.FooterSection.new}
+                        </div>
+                      </a>
+
+                      <a
                         href={urls.products.pricing}
                         target={"_blank"}
                         rel="noreferrer"
+                        className="hover:text-primary"
                       >
                         {textContent.FooterSection.sections.products.pricing}
                       </a>
@@ -734,18 +818,34 @@ export default function Footer({
                         href={urls.company.about}
                         target={"_blank"}
                         rel="noreferrer"
+                        className="hover:text-primary"
                       >
                         {textContent.FooterSection.sections.company.about}
                       </a>
 
-                      <a href={urls.company.privacy}>
+                      <a
+                        href={urls.company.privacy}
+                        target={"_blank"}
+                        rel="noreferrer"
+                        className="hover:text-primary"
+                      >
                         {textContent.FooterSection.sections.company.privacy}
+                      </a>
+
+                      <a
+                        href={urls.company.security}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="hover:text-primary"
+                      >
+                        {textContent.FooterSection.sections.company.security}
                       </a>
 
                       <a
                         href={urls.company.openSource}
                         target={"_blank"}
                         rel="noreferrer"
+                        className="flex max-w-[200px] flex-row items-center hover:text-primary"
                       >
                         {textContent.FooterSection.sections.company.openSource}
                         {lang !== "en" && (
@@ -756,35 +856,31 @@ export default function Footer({
                       </a>
 
                       <a
-                        href={urls.company.mediaArea}
-                        target="_blank"
+                        href={urls.company.legal}
+                        className="hover:text-primary"
+                        target={"_blank"}
                         rel="noreferrer"
                       >
-                        {textContent.FooterSection.sections.company.mediaArea}
-                        <div className=" ml-2 flex h-max items-center justify-center rounded-full bg-primary bg-opacity-15 py-1 px-2 text-xs font-medium uppercase text-primary">
-                          {textContent.FooterSection.new}
-                        </div>
+                        {textContent.FooterSection.sections.company.legal}
                       </a>
 
                       <a
-                        href={urls.company.security}
-                        target="_blank"
+                        href={urls.company.mediaArea}
+                        className="flex max-w-[200px] flex-row items-center hover:text-primary"
+                        target={"_blank"}
                         rel="noreferrer"
                       >
-                        {textContent.FooterSection.sections.company.security}
+                        {textContent.FooterSection.sections.company.mediaArea}
                       </a>
 
-                      <a href={urls.legal} target={"_blank"} rel="noreferrer">
-                        {textContent.FooterSection.sections.company.legal}
-                      </a>
-
-                      <p
-                        onClick={() => {
-                          window.open(urls.company.legal, "_blank");
-                        }}
+                      <a
+                        href={urls.company.useCases}
+                        className="hover:text-primary"
+                        target={"_blank"}
+                        rel="noreferrer"
                       >
-                        {textContent.FooterSection.sections.company.legal}
-                      </p>
+                        {textContent.FooterSection.sections.company.useCases}
+                      </a>
                     </Disclosure.Panel>
                   </Transition>
                 </div>
@@ -836,18 +932,34 @@ export default function Footer({
                         darkMode ? "text-cool-gray-30" : "text-cool-gray-60"
                       } space-y-4 p-4 pt-2`}
                     >
-                      <a href={urls.join.signup} target="_top">
+                      <a
+                        href={urls.join.newsletter}
+                        target="_top"
+                        className="hover:text-primary"
+                      >
+                        {textContent.FooterSection.sections.join.newsletter}
+                      </a>
+
+                      <a
+                        href={urls.join.signup}
+                        target="_top"
+                        className="hover:text-primary"
+                      >
                         {textContent.FooterSection.sections.join.signup}
                       </a>
+
                       <a
                         href={urls.join.support}
-                        target="_blank"
-                        rel="noreferrer"
+                        className="cursor-pointer hover:text-primary"
                       >
                         {textContent.FooterSection.sections.join.support}
                       </a>
 
-                      <a href={urls.join.login} target="_top">
+                      <a
+                        href={urls.join.login}
+                        target="_top"
+                        className="hover:text-primary"
+                      >
                         {textContent.FooterSection.sections.join.login}
                       </a>
 
@@ -855,16 +967,37 @@ export default function Footer({
                         href={urls.join.github}
                         target="_blank"
                         rel="noreferrer"
+                        className="hover:text-primary"
                       >
                         {textContent.FooterSection.sections.join.github}
                       </a>
 
                       <a
+                        href={urls.join.whitePaper}
+                        download
+                        className="hover:text-primary"
+                        rel="noreferrer"
+                      >
+                        {textContent.FooterSection.sections.join.whitePaper}
+                      </a>
+                      <a
                         href={urls.join.affiliates}
                         target="_blank"
                         rel="noreferrer"
+                        className="hover:text-primary"
                       >
                         {textContent.FooterSection.sections.join.affiliates}
+                      </a>
+                      <a
+                        href={urls.join.storageForEducation}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="hover:text-primary"
+                      >
+                        {
+                          textContent.FooterSection.sections.join
+                            .storageForEducation
+                        }
                       </a>
                     </Disclosure.Panel>
                   </Transition>
@@ -1060,6 +1193,15 @@ export default function Footer({
                           textContent.FooterSection.sections.tools
                             .passwordGenerator
                         }
+                      </a>
+
+                      <a
+                        href={urls.tools.fileConverter}
+                        className="flex items-center hover:text-primary"
+                        target={"_blank"}
+                        rel="noreferrer"
+                      >
+                        {textContent.FooterSection.sections.tools.fileConverter}
                         <div className="ml-2 flex h-max items-center justify-center rounded-full bg-primary bg-opacity-15 py-1 px-2 text-xs font-medium uppercase text-primary">
                           {textContent.FooterSection.new}
                         </div>
@@ -1149,7 +1291,9 @@ export default function Footer({
                   darkMode ? "text-cool-gray-30" : "text-cool-gray-60"
                 }`}
               >
-                {textContent.FooterSection.copyright}
+                {textContent.FooterSection.copyright.line1 +
+                  year +
+                  textContent.FooterSection.copyright.line2}
               </p>
 
               <a href="https://internxt.com" className="flex flex-shrink-0">
