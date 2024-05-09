@@ -6,6 +6,7 @@ const urls = {
   products: {
     drive: `${INXT_URL}/drive`,
     photos: `${INXT_URL}/photos`,
+    webdav: `${INXT_URL}/webdav`,
     send: "https://send.internxt.com",
     pricing: `${INXT_URL}/pricing`,
   },
@@ -16,13 +17,17 @@ const urls = {
     openSource: `${INXT_URL}/open-source`,
     mediaArea: `${INXT_URL}/media-area`,
     legal: `${INXT_URL}/legal`,
+    useCases: `${INXT_URL}/use-cases`,
   },
   join: {
+    newsletter: `${INXT_URL}/newsletter-subscribe`,
     signup: `${INXT_DRIVE_URL}/new`,
     login: `${INXT_DRIVE_URL}/login`,
     support: "https://help.internxt.com",
     affiliates: "https://internxt.com/affiliates",
     github: "https://github.com/internxt",
+    whitePaper: `/whitepaper/internxt-white-paper.pdf`,
+    storageForEducation: `${INXT_URL}/cloud-storage-for-education`,
   },
   resources: {
     blog: "https://blog.internxt.com/",
@@ -30,6 +35,7 @@ const urls = {
     privacyDirectory: `${INXT_URL}/privacy-directory`,
     cyberAwareness: `${INXT_URL}/cyber-awareness`,
     whatGoogleKnows: `${INXT_URL}/what-does-google-know-about-me`,
+    library: `${INXT_URL}/internxt-library`,
   },
   tools: {
     byteConverter: `${INXT_URL}/byte-converter`,
@@ -37,6 +43,7 @@ const urls = {
     passwordGenerator: `${INXT_URL}/password-generator`,
     passwordChecker: `${INXT_URL}/password-checker`,
     virusScanner: `${INXT_URL}/virus-scanner`,
+    fileConverter: `${INXT_URL}/file-converter`,
   },
   social: {
     twitter: "https://twitter.com/Internxt",
