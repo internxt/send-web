@@ -9,6 +9,7 @@ const urls = {
     webdav: `${INXT_URL}/webdav`,
     send: "https://send.internxt.com",
     pricing: `${INXT_URL}/pricing`,
+    vpn: `${INXT_URL}/vpn`,
   },
   company: {
     about: `${INXT_URL}/about`,

@@ -223,6 +223,20 @@ export default function Footer({
                     </a>
 
                     <a
+                      href={urls.products.webdav}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex flex-row items-center hover:text-primary"
+                    >
+                      <div>
+                        {textContent.FooterSection.sections.products.webDAV}
+                      </div>
+                      <div className=" ml-2 flex h-max items-center justify-center rounded-full bg-primary bg-opacity-15 py-1 px-2 text-xs font-medium uppercase text-primary">
+                        {textContent.FooterSection.new}
+                      </div>
+                    </a>
+
+                    <a
                       href={urls.products.send}
                       target="_blank"
                       rel="noreferrer"
@@ -234,13 +248,13 @@ export default function Footer({
                     </a>
 
                     <a
-                      href={urls.products.webdav}
+                      href={urls.products.vpn}
                       target="_blank"
                       rel="noreferrer"
                       className="flex flex-row items-center hover:text-primary"
                     >
                       <div>
-                        {textContent.FooterSection.sections.products.webDAV}
+                        {textContent.FooterSection.sections.products.vpn}
                       </div>
                       <div className=" ml-2 flex h-max items-center justify-center rounded-full bg-primary bg-opacity-15 py-1 px-2 text-xs font-medium uppercase text-primary">
                         {textContent.FooterSection.new}
@@ -731,6 +745,20 @@ export default function Footer({
                       </a>
 
                       <a
+                        href={urls.products.webdav}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex flex-row items-center hover:text-primary"
+                      >
+                        <div>
+                          {textContent.FooterSection.sections.products.webDAV}
+                        </div>
+                        <div className=" ml-2 flex h-max items-center justify-center rounded-full bg-primary bg-opacity-15 py-1 px-2 text-xs font-medium uppercase text-primary">
+                          {textContent.FooterSection.new}
+                        </div>
+                      </a>
+
+                      <a
                         href={urls.products.send}
                         target="_blank"
                         rel="noreferrer"
@@ -742,13 +770,13 @@ export default function Footer({
                       </a>
 
                       <a
-                        href={urls.products.webdav}
+                        href={urls.products.vpn}
                         target="_blank"
                         rel="noreferrer"
                         className="flex flex-row items-center hover:text-primary"
                       >
                         <div>
-                          {textContent.FooterSection.sections.products.webDAV}
+                          {textContent.FooterSection.sections.products.vpn}
                         </div>
                         <div className=" ml-2 flex h-max items-center justify-center rounded-full bg-primary bg-opacity-15 py-1 px-2 text-xs font-medium uppercase text-primary">
                           {textContent.FooterSection.new}
