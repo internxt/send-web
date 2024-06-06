@@ -47,7 +47,6 @@ export default function HomeView() {
     options[0]
   );
 
-  //!TODO: Get 2 weeks from now and 1 more day
   const formattedDate = moment()
     .add(1, "day")
     .add(2, "weeks")
