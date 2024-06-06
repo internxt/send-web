@@ -1,8 +1,10 @@
+const CONTEXT_APP_NAME = "send-web";
+
 const track = (eventName: string, dataToSend: Record<string, any>) => {
   window.rudderanalytics.track(eventName, dataToSend, {
     context: {
       app: {
-        name: "send-web",
+        name: CONTEXT_APP_NAME,
       },
     },
   });
