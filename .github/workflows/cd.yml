@@ -1,17 +1,72 @@
 name: Send Web CD
 on:
   push:
-    branches: [master]
+    branches: [master, feat/cd]
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    strategy:
+      matrix:
+        node-version: [16.x]
     steps:
-      - name: Add SSH Key
-        uses: shimataro/ssh-key-action@v2
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # Setup node
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
         with:
-          key: ${{ secrets.PRODUCTION_MACHINE_PRIVATE_KEY }}
-          known_hosts: 'undetermined-yet'
-      - name: Adding Known Hosts
-        run: ssh-keyscan -H ${{ secrets.PRODUCTION_MACHINE_HOSTNAME }} >> ~/.ssh/known_hosts
-      - name: Run Deploy Script
-        run: "ssh -t ${{ secrets.PRODUCTION_MACHINE_USER }}@${{ secrets.PRODUCTION_MACHINE_HOSTNAME }} './deploy.sh'"
+          node-version: ${{ matrix.node-version }}
+
+      # Setup dependencies
+      - run: yarn
+        env: 
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      # Build
+      - run: yarn run build
+
+      # Upload build directory as an artifact
+      - name: Upload build directory
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: build/
+
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    name: Publish to Cloudflare Pages
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # Download the build artifact
+      - name: Download build artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: build
+          path: build
+
+      # Run a build step here if your project requires
+      # - name: Publish to Cloudflare Pages
+      #   uses: cloudflare/pages-action@v1
+      #   with:
+      #     apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      #     accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      #     projectName: send-web
+      #     directory: build
+      #     # Optional: Enable this if you want to have GitHub Deployments triggered
+      #     # gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+      #     # Optional: Switch what branch you are publishing to.
+      #     # By default this will be the branch which triggered this workflow
+      #     branch: master
+      #     # Optional: Change the working directory
+      #     # workingDirectory: my-site
+      #     # Optional: Change the Wrangler version, allows you to point to a specific version or a tag such as `beta`
+      #     wranglerVersion: '3'
