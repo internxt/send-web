@@ -36,6 +36,8 @@ jobs:
       
       # Build
       - run: yarn run build
+        env:
+          CI: false
 
       # Upload build directory as an artifact
       - name: Upload build directory
