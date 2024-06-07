@@ -64,7 +64,6 @@ jobs:
           name: build
           path: build
 
-      Run a build step here if your project requires
       - name: Publish to Cloudflare Pages
         uses: cloudflare/pages-action@v1
         with:
