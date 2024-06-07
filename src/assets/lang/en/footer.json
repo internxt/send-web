@@ -27,6 +27,7 @@
         "photos": "Internxt Photos",
         "send": "Internxt Send",
         "webDAV": "WebDAV",
+        "vpn": "Internxt VPN",
         "token": "Token",
         "pricing": "Pricing"
       },
@@ -64,6 +65,7 @@
         "blog": "Blog",
         "comparison": "Cloud Storage Comparison",
         "directoryOfPrivacyOrganizations": "Directory of Privacy Organizations",
+        "pCloudAlternative": "pCloud Alternative",
         "library": "Library",
         "cyberAwareness": "Cyber Awareness",
         "whatGoogleKnowsAboutMe": "What Google Knows",

@@ -9,6 +9,7 @@ const urls = {
     webdav: `${INXT_URL}/webdav`,
     send: "https://send.internxt.com",
     pricing: `${INXT_URL}/pricing`,
+    vpn: `${INXT_URL}/vpn`,
   },
   company: {
     about: `${INXT_URL}/about`,
@@ -33,6 +34,7 @@ const urls = {
     blog: "https://blog.internxt.com/",
     storageComparison: `${INXT_URL}/cloud-storage-comparison`,
     privacyDirectory: `${INXT_URL}/privacy-directory`,
+    pCloudAlternatives: `${INXT_URL}/pcloud-alternative`,
     cyberAwareness: `${INXT_URL}/cyber-awareness`,
     whatGoogleKnows: `${INXT_URL}/what-does-google-know-about-me`,
     library: `${INXT_URL}/internxt-library`,

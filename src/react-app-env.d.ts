@@ -24,4 +24,5 @@ interface Window {
     execute: (siteKey: string, { action: string }) => Promise<string>;
   };
   gtag: any;
+  rudderanalytics: any;
 }

@@ -138,6 +138,15 @@ export default function Navbar() {
                                   className="flex w-full items-center justify-start px-8 py-3 text-lg font-medium text-cool-gray-80 outline-none"
                                 >
                                   <span>{textContent.products.send}</span>
+                                </a>
+
+                                <a
+                                  href={urls.products.vpn}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="flex w-full items-center justify-start px-8 py-3 text-lg font-medium text-cool-gray-80 outline-none"
+                                >
+                                  <span>{textContent.products.vpn}</span>
                                   <span className="pointer-events-none ml-2 flex flex-row items-center whitespace-nowrap rounded-full bg-orange bg-opacity-15 px-2 text-supporting-2 font-medium uppercase text-orange">
                                     {textContent.products.new}
                                   </span>
@@ -317,6 +326,15 @@ export default function Navbar() {
                       className={`flex flex-row items-center justify-start rounded-xl px-4 py-2 text-base font-medium text-cool-gray-80 hover:bg-gray-5`}
                     >
                       <span>{textContent.products.send}</span>
+                    </a>
+
+                    <a
+                      href={urls.products.vpn}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={`flex flex-row items-center justify-start rounded-xl px-4 py-2 text-base font-medium text-cool-gray-80 hover:bg-gray-5`}
+                    >
+                      <span>{textContent.products.vpn}</span>
                     </a>
                   </div>
                 </div>
