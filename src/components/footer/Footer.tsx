@@ -341,15 +341,6 @@ export default function Footer({
                     >
                       {textContent.FooterSection.sections.company.mediaArea}
                     </a>
-
-                    <a
-                      href={urls.company.useCases}
-                      className="hover:text-primary"
-                      target={"_blank"}
-                      rel="noreferrer"
-                    >
-                      {textContent.FooterSection.sections.company.useCases}
-                    </a>
                   </div>
                 </div>
               </div>
@@ -509,15 +500,6 @@ export default function Footer({
                         textContent.FooterSection.sections.resources
                           .whatGoogleKnowsAboutMe
                       }
-                    </a>
-
-                    <a
-                      className="flex  items-center hover:text-primary"
-                      href={urls.resources.library}
-                      target={"_blank"}
-                      rel="noreferrer"
-                    >
-                      {textContent.FooterSection.sections.resources.library}
                     </a>
                   </div>
                 </div>
@@ -912,15 +894,6 @@ export default function Footer({
                       >
                         {textContent.FooterSection.sections.company.mediaArea}
                       </a>
-
-                      <a
-                        href={urls.company.useCases}
-                        className="hover:text-primary"
-                        target={"_blank"}
-                        rel="noreferrer"
-                      >
-                        {textContent.FooterSection.sections.company.useCases}
-                      </a>
                     </Disclosure.Panel>
                   </Transition>
                 </div>
@@ -1091,79 +1064,67 @@ export default function Footer({
                       } space-y-4 p-4 pt-2`}
                     >
                       <a
-                      href={urls.resources.blog}
-                      target="_blank"
-                      rel="noreferrer"
-                      
-                    >
-                      {textContent.FooterSection.sections.resources.blog}
-                    </a>
+                        href={urls.resources.blog}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {textContent.FooterSection.sections.resources.blog}
+                      </a>
 
-                    <a
-                      href={urls.resources.storageComparison}
-                      target={"_blank"}
-                      rel="noreferrer"
-                      
-                    >
-                      {textContent.FooterSection.sections.resources.comparison}
-                    </a>
+                      <a
+                        href={urls.resources.storageComparison}
+                        target={"_blank"}
+                        rel="noreferrer"
+                      >
+                        {
+                          textContent.FooterSection.sections.resources
+                            .comparison
+                        }
+                      </a>
 
-                    <a
-                      href={urls.resources.pCloudAlternatives}
-                      target={"_blank"}
-                      rel="noreferrer"
-                      
-                    >
-                      {
-                        textContent.FooterSection.sections.resources
-                          .pCloudAlternative
-                      }
-                    </a>
+                      <a
+                        href={urls.resources.pCloudAlternatives}
+                        target={"_blank"}
+                        rel="noreferrer"
+                      >
+                        {
+                          textContent.FooterSection.sections.resources
+                            .pCloudAlternative
+                        }
+                      </a>
 
-                    <a
-                      href={urls.resources.privacyDirectory}
-                      target={"_blank"}
-                      rel="noreferrer"
-                      
-                    >
-                      {
-                        textContent.FooterSection.sections.resources
-                          .directoryOfPrivacyOrganizations
-                      }
-                    </a>
+                      <a
+                        href={urls.resources.privacyDirectory}
+                        target={"_blank"}
+                        rel="noreferrer"
+                      >
+                        {
+                          textContent.FooterSection.sections.resources
+                            .directoryOfPrivacyOrganizations
+                        }
+                      </a>
 
-                    <a
-                      href={urls.resources.cyberAwareness}
-                      target={"_blank"}
-                      rel="noreferrer"
-                      
-                    >
-                      {
-                        textContent.FooterSection.sections.resources
-                          .cyberAwareness
-                      }
-                    </a>
+                      <a
+                        href={urls.resources.cyberAwareness}
+                        target={"_blank"}
+                        rel="noreferrer"
+                      >
+                        {
+                          textContent.FooterSection.sections.resources
+                            .cyberAwareness
+                        }
+                      </a>
 
-                    <a
-                      
-                      href={urls.resources.whatGoogleKnows}
-                      target={"_blank"}
-                      rel="noreferrer"
-                    >
-                      {
-                        textContent.FooterSection.sections.resources
-                          .whatGoogleKnowsAboutMe
-                      }
-                    </a>
-
-                    <a
-                      
-                      href={urls.resources.whatGoogleKnows}
-                      target={"_blank"}
-                      rel="noreferrer"
-                    >
-                      {textContent.FooterSection.sections.resources.library}
-                    </a>
+                      <a
+                        href={urls.resources.whatGoogleKnows}
+                        target={"_blank"}
+                        rel="noreferrer"
+                      >
+                        {
+                          textContent.FooterSection.sections.resources
+                            .whatGoogleKnowsAboutMe
+                        }
+                      </a>
                     </Disclosure.Panel>
                   </Transition>
                 </div>

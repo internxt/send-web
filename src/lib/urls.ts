@@ -18,7 +18,6 @@ const urls = {
     openSource: `${INXT_URL}/open-source`,
     mediaArea: `${INXT_URL}/media-area`,
     legal: `${INXT_URL}/legal`,
-    useCases: `${INXT_URL}/use-cases`,
   },
   join: {
     newsletter: `${INXT_URL}/newsletter-subscribe`,
@@ -37,7 +36,6 @@ const urls = {
     pCloudAlternatives: `${INXT_URL}/pcloud-alternative`,
     cyberAwareness: `${INXT_URL}/cyber-awareness`,
     whatGoogleKnows: `${INXT_URL}/what-does-google-know-about-me`,
-    library: `${INXT_URL}/internxt-library`,
   },
   tools: {
     byteConverter: `${INXT_URL}/byte-converter`,
