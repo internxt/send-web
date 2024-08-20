@@ -10,6 +10,7 @@ const urls = {
     send: "https://send.internxt.com",
     pricing: `${INXT_URL}/pricing`,
     vpn: `${INXT_URL}/vpn`,
+    business: `${INXT_URL}/business`,
   },
   company: {
     about: `${INXT_URL}/about`,
