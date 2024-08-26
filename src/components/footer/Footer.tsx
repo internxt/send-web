@@ -359,19 +359,19 @@ export default function Footer({
                     }`}
                   >
                     <a
-                      href={urls.join.newsletter}
-                      target="_top"
-                      className="hover:text-primary"
-                    >
-                      {textContent.FooterSection.sections.join.newsletter}
-                    </a>
-
-                    <a
                       href={urls.join.signup}
                       target="_top"
                       className="hover:text-primary"
                     >
                       {textContent.FooterSection.sections.join.signup}
+                    </a>
+
+                    <a
+                      href={urls.join.login}
+                      target="_top"
+                      className="hover:text-primary"
+                    >
+                      {textContent.FooterSection.sections.join.login}
                     </a>
 
                     <a
@@ -382,11 +382,20 @@ export default function Footer({
                     </a>
 
                     <a
-                      href={urls.join.login}
+                      href={urls.join.whitePaper}
+                      download
+                      className="hover:text-primary"
+                      rel="noreferrer"
+                    >
+                      {textContent.FooterSection.sections.join.whitePaper}
+                    </a>
+
+                    <a
+                      href={urls.join.newsletter}
                       target="_top"
                       className="hover:text-primary"
                     >
-                      {textContent.FooterSection.sections.join.login}
+                      {textContent.FooterSection.sections.join.newsletter}
                     </a>
 
                     <a
@@ -399,14 +408,6 @@ export default function Footer({
                     </a>
 
                     <a
-                      href={urls.join.whitePaper}
-                      download
-                      className="hover:text-primary"
-                      rel="noreferrer"
-                    >
-                      {textContent.FooterSection.sections.join.whitePaper}
-                    </a>
-                    <a
                       href={urls.join.affiliates}
                       target="_blank"
                       rel="noreferrer"
@@ -414,6 +415,7 @@ export default function Footer({
                     >
                       {textContent.FooterSection.sections.join.affiliates}
                     </a>
+
                     <a
                       href={urls.join.storageForEducation}
                       target="_blank"
@@ -949,26 +951,11 @@ export default function Footer({
                       } space-y-4 p-4 pt-2`}
                     >
                       <a
-                        href={urls.join.newsletter}
-                        target="_top"
-                        className="hover:text-primary"
-                      >
-                        {textContent.FooterSection.sections.join.newsletter}
-                      </a>
-
-                      <a
                         href={urls.join.signup}
                         target="_top"
                         className="hover:text-primary"
                       >
                         {textContent.FooterSection.sections.join.signup}
-                      </a>
-
-                      <a
-                        href={urls.join.support}
-                        className="cursor-pointer hover:text-primary"
-                      >
-                        {textContent.FooterSection.sections.join.support}
                       </a>
 
                       <a
@@ -980,12 +967,10 @@ export default function Footer({
                       </a>
 
                       <a
-                        href={urls.join.github}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="hover:text-primary"
+                        href={urls.join.support}
+                        className="cursor-pointer hover:text-primary"
                       >
-                        {textContent.FooterSection.sections.join.github}
+                        {textContent.FooterSection.sections.join.support}
                       </a>
 
                       <a
@@ -996,6 +981,24 @@ export default function Footer({
                       >
                         {textContent.FooterSection.sections.join.whitePaper}
                       </a>
+
+                      <a
+                        href={urls.join.newsletter}
+                        target="_top"
+                        className="hover:text-primary"
+                      >
+                        {textContent.FooterSection.sections.join.newsletter}
+                      </a>
+
+                      <a
+                        href={urls.join.github}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="hover:text-primary"
+                      >
+                        {textContent.FooterSection.sections.join.github}
+                      </a>
+
                       <a
                         href={urls.join.affiliates}
                         target="_blank"
