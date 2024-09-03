@@ -48,7 +48,7 @@ const urls = {
   },
   social: {
     twitter: "https://twitter.com/Internxt",
-    facebook: "https://www.facebook.com/internxt",
+    reddit: "https://www.reddit.com/r/internxt/",
     linkedin: "https://linkedin.com/company/internxt",
     instagram: "https://instagram.com/internxt",
     youtube:

@@ -4,7 +4,8 @@ import { CaretDown } from "phosphor-react";
 import moment from "moment";
 
 import textContent from "../../assets/lang/en/footer.json";
-import Facebook from "../../assets/social/cool-gray-60/facebook.svg";
+import GDPR from "../../assets/social/gdpr-internxt.svg";
+import Reddit from "../../assets/social/reddit.svg";
 import Instagram from "../../assets/social/cool-gray-60/instagram.svg";
 import LinkedIn from "../../assets/social/cool-gray-60/linkedin.svg";
 import Twitter from "../../assets/social/cool-gray-60/twitter.svg";
@@ -359,19 +360,19 @@ export default function Footer({
                     }`}
                   >
                     <a
-                      href={urls.join.newsletter}
-                      target="_top"
-                      className="hover:text-primary"
-                    >
-                      {textContent.FooterSection.sections.join.newsletter}
-                    </a>
-
-                    <a
                       href={urls.join.signup}
                       target="_top"
                       className="hover:text-primary"
                     >
                       {textContent.FooterSection.sections.join.signup}
+                    </a>
+
+                    <a
+                      href={urls.join.login}
+                      target="_top"
+                      className="hover:text-primary"
+                    >
+                      {textContent.FooterSection.sections.join.login}
                     </a>
 
                     <a
@@ -382,11 +383,20 @@ export default function Footer({
                     </a>
 
                     <a
-                      href={urls.join.login}
+                      href={urls.join.whitePaper}
+                      download
+                      className="hover:text-primary"
+                      rel="noreferrer"
+                    >
+                      {textContent.FooterSection.sections.join.whitePaper}
+                    </a>
+
+                    <a
+                      href={urls.join.newsletter}
                       target="_top"
                       className="hover:text-primary"
                     >
-                      {textContent.FooterSection.sections.join.login}
+                      {textContent.FooterSection.sections.join.newsletter}
                     </a>
 
                     <a
@@ -399,14 +409,6 @@ export default function Footer({
                     </a>
 
                     <a
-                      href={urls.join.whitePaper}
-                      download
-                      className="hover:text-primary"
-                      rel="noreferrer"
-                    >
-                      {textContent.FooterSection.sections.join.whitePaper}
-                    </a>
-                    <a
                       href={urls.join.affiliates}
                       target="_blank"
                       rel="noreferrer"
@@ -414,6 +416,7 @@ export default function Footer({
                     >
                       {textContent.FooterSection.sections.join.affiliates}
                     </a>
+
                     <a
                       href={urls.join.storageForEducation}
                       target="_blank"
@@ -586,7 +589,8 @@ export default function Footer({
             />
 
             {/* Logos */}
-            <div className="flex w-full max-w-[900px] flex-row justify-between">
+            <div className="flex w-screen max-w-[1140px] flex-row justify-between px-5">
+              <img src={GDPR} alt="GDPR Internxt" width={146} height={48} />
               <div className="flex flex-row items-center space-x-4">
                 <a
                   href="https://internxt.com"
@@ -623,7 +627,7 @@ export default function Footer({
                   />
                 </a>
                 <a
-                  href={urls.social.facebook}
+                  href={urls.social.reddit}
                   target="_blank"
                   className="h-6 py-1.5 pr-2"
                   rel="noreferrer"
@@ -631,9 +635,9 @@ export default function Footer({
                   <img
                     loading="lazy"
                     className="h-4"
-                    src={Facebook}
+                    src={Reddit}
                     draggable="false"
-                    alt="facebook icon"
+                    alt="Reddit icon"
                   />
                 </a>
                 <a
@@ -949,26 +953,11 @@ export default function Footer({
                       } space-y-4 p-4 pt-2`}
                     >
                       <a
-                        href={urls.join.newsletter}
-                        target="_top"
-                        className="hover:text-primary"
-                      >
-                        {textContent.FooterSection.sections.join.newsletter}
-                      </a>
-
-                      <a
                         href={urls.join.signup}
                         target="_top"
                         className="hover:text-primary"
                       >
                         {textContent.FooterSection.sections.join.signup}
-                      </a>
-
-                      <a
-                        href={urls.join.support}
-                        className="cursor-pointer hover:text-primary"
-                      >
-                        {textContent.FooterSection.sections.join.support}
                       </a>
 
                       <a
@@ -980,12 +969,10 @@ export default function Footer({
                       </a>
 
                       <a
-                        href={urls.join.github}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="hover:text-primary"
+                        href={urls.join.support}
+                        className="cursor-pointer hover:text-primary"
                       >
-                        {textContent.FooterSection.sections.join.github}
+                        {textContent.FooterSection.sections.join.support}
                       </a>
 
                       <a
@@ -996,6 +983,24 @@ export default function Footer({
                       >
                         {textContent.FooterSection.sections.join.whitePaper}
                       </a>
+
+                      <a
+                        href={urls.join.newsletter}
+                        target="_top"
+                        className="hover:text-primary"
+                      >
+                        {textContent.FooterSection.sections.join.newsletter}
+                      </a>
+
+                      <a
+                        href={urls.join.github}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="hover:text-primary"
+                      >
+                        {textContent.FooterSection.sections.join.github}
+                      </a>
+
                       <a
                         href={urls.join.affiliates}
                         target="_blank"
@@ -1257,7 +1262,7 @@ export default function Footer({
                   />
                 </a>
                 <a
-                  href={urls.social.facebook}
+                  href={urls.social.reddit}
                   target="_blank"
                   className="h-8 py-1.5 pr-6"
                   rel="noreferrer"
@@ -1265,9 +1270,9 @@ export default function Footer({
                   <img
                     loading="lazy"
                     className="h-5"
-                    src={Facebook}
+                    src={Reddit}
                     draggable="false"
-                    alt="facebook icon"
+                    alt="Reddit icon"
                   />
                 </a>
                 <a
