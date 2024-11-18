@@ -204,81 +204,71 @@ export default function Footer({
           <div className="hidden w-full flex-col items-center justify-center md:space-y-16 lg:flex">
             <div className="flex w-full flex-row justify-between md:justify-center lg:space-x-20">
               <div className="flex flex-1 flex-col items-center lg:flex-none">
-                <div className="flex flex-shrink-0 flex-col space-y-3">
-                  <h3 className="text-lg font-medium">
-                    {textContent.FooterSection.sections.products.title}
-                  </h3>
+              <div className="flex flex-shrink-0 flex-col space-y-3">
+                  <h3 className="text-lg font-medium">{textContent.FooterSection.sections.products.title}</h3>
                   <div
                     className={`flex flex-col space-y-1.5 text-base ${
-                      darkMode ? "text-cool-gray-30" : "text-cool-gray-60"
+                      darkMode ? 'text-cool-gray-30' : 'text-cool-gray-60'
                     }`}
                   >
-                    <a
-                      href={urls.products.drive}
-                      target={"_blank"}
-                      rel="noreferrer"
-                      className="hover:text-primary"
-                    >
+                    <Link href="/drive" locale={lang} passHref className="hover:text-primary">
                       {textContent.FooterSection.sections.products.drive}
-                    </a>
+                    </Link>
 
-                    <a
-                      href={urls.products.webdav}
+                    <Link
+                      href="/cloud-object-storage"
                       target="_blank"
                       rel="noreferrer"
                       className="flex flex-row items-center hover:text-primary"
                     >
-                      <div>
-                        {textContent.FooterSection.sections.products.webDAV}
-                      </div>
-                    </a>
-
-                    <a
-                      href={urls.products.send}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="flex flex-row items-center hover:text-primary"
-                    >
-                      <div>
-                        {textContent.FooterSection.sections.products.send}
-                      </div>
-                    </a>
-
-                    <a
-                      href={urls.products.vpn}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="flex flex-row items-center hover:text-primary"
-                    >
-                      <div>
-                        {textContent.FooterSection.sections.products.vpn}
-                      </div>
-                    </a>
-
-                    <a
-                      href={urls.products.business}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="flex flex-row items-center hover:text-primary"
-                    >
-                      <div>
-                        {textContent.FooterSection.sections.products.business}
-                      </div>
-                      <div className=" ml-2 flex h-max items-center justify-center rounded-full bg-primary bg-opacity-15 py-1 px-2 text-xs font-medium uppercase text-primary">
+                      <div className="flex flex-row">{textContent.FooterSection.sections.products.objStorage}</div>
+                      <div className="ml-2 flex h-max items-center justify-center rounded-full bg-primary bg-opacity-15 px-2 py-1 text-xs font-medium uppercase text-primary">
                         {textContent.FooterSection.new}
                       </div>
-                    </a>
+                    </Link>
 
                     <a
-                      href={urls.products.pricing}
-                      target={"_blank"}
+                      href="https://send.internxt.com"
+                      target="_blank"
                       rel="noreferrer"
-                      className="hover:text-primary"
+                      className="flex flex-row items-center hover:text-primary"
                     >
-                      {textContent.FooterSection.sections.products.pricing}
+                      <div>{textContent.FooterSection.sections.products.send}</div>
                     </a>
+
+                    <Link href="/vpn" locale={lang} passHref className="flex items-center hover:text-primary">
+                      {textContent.FooterSection.sections.products.vpn}
+                    </Link>
+                    <Link
+                      href="/business"
+                      locale={'en'}
+                      passHref
+                      className="flex max-w-[250px] items-center hover:text-primary"
+                    >
+                      {textContent.FooterSection.sections.products.business}
+                      <div className="ml-2 flex h-max items-center justify-center rounded-full bg-primary bg-opacity-15 px-2 py-1 text-xs font-medium uppercase text-primary">
+                        {textContent.FooterSection.new}
+                      </div>
+                    </Link>
+
+                    <Link
+                      href="/family"
+                      locale={'en'}
+                      passHref
+                      className="flex max-w-[250px] items-center hover:text-primary"
+                    >
+                      {textContent.FooterSection.sections.products.family}
+                      <div className="ml-2 flex h-max items-center justify-center rounded-full bg-primary bg-opacity-15 px-2 py-1 text-xs font-medium uppercase text-primary">
+                        {textContent.FooterSection.new}
+                      </div>
+                    </Link>
+
+                    <Link href="/pricing" locale={lang} passHref className="hover:text-primary">
+                      {textContent.FooterSection.sections.products.pricing}
+                    </Link>
                   </div>
                 </div>
+              </div>
               </div>
 
               <div className="flex flex-1 flex-col items-center lg:flex-none">
