@@ -7,10 +7,12 @@ const urls = {
     drive: `${INXT_URL}/drive`,
     photos: `${INXT_URL}/photos`,
     webdav: `${INXT_URL}/webdav`,
+    objStorage: `${INXT_URL}/cloud-object-storage`,
     send: "https://send.internxt.com",
     pricing: `${INXT_URL}/pricing`,
     vpn: `${INXT_URL}/vpn`,
     business: `${INXT_URL}/business`,
+    family: `${INXT_URL}/family`,
   },
   company: {
     about: `${INXT_URL}/about`,
