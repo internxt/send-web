@@ -113,6 +113,9 @@ export class NetworkFacade {
   ): Promise<string> {
     let fileReadable: ReadableStream<Uint8Array>;
 
+    console.log("bucket", bucketId);
+    console.log("mnemonic", mnemonic);
+
     const partsUploadedBytes: Record<number, number> = {};
 
     function notifyProgress(partId: number, uploadedBytes: number) {
@@ -146,6 +149,7 @@ export class NetworkFacade {
           fileReadable,
           async (blob) => {
             const currentUrl = urls[currentUrlIndex];
+            console.log("currentUrl", currentUrl);
 
             const useProxy =
               process.env.REACT_APP_DONT_USE_PROXY !== "true" &&
@@ -153,6 +157,12 @@ export class NetworkFacade {
             const putUrl =
               (useProxy ? process.env.REACT_APP_PROXY + "/" : "") + currentUrl;
 
+            console.log(
+              "Uploading chunk of %s bytes to url %s, part %s",
+              blob.size,
+              putUrl,
+              currentUrlIndex
+            );
             const response = await uploadFileBlob(blob, putUrl, {
               progressCallback: (_, uploadedBytes) => {
                 notifyProgress(currentUrlIndex, uploadedBytes);
