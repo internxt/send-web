@@ -14,15 +14,19 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
         with:
+          node-version: ${{ matrix.node-version }}
           registry-url: "https://npm.pkg.github.com"
+      - run: echo REACT_APP_SEND_USER=${{ secrets.REACT_APP_SEND_USER }} >> ./.env
+      - run: echo REACT_APP_SEND_PASS=${{ secrets.REACT_APP_SEND_PASS }} >> ./.env
       - run: echo REACT_APP_SEGMENT_KEY=${{ secrets.REACT_APP_SEGMENT_KEY }} >> ./.env
       - run: echo REACT_APP_GA_ID=${{ secrets.REACT_APP_GA_ID }} >> ./.env
       - run: echo REACT_APP_CRYPTO_SECRET=${{ secrets.REACT_APP_CRYPTO_SECRET }} >> ./.env
       - run: echo REACT_APP_STRIPE_PK=${{ secrets.REACT_APP_STRIPE_PK }} >> ./.env
       - run: echo REACT_APP_STRIPE_TEST_PK=${{ secrets.REACT_APP_STRIPE_TEST_PK }} >> ./.env
       - run: echo REACT_APP_SEND_API_URL=${{ secrets.REACT_APP_SEND_API_URL }} >> ./.env
-      - run: echo GENERATE_SOURCEMAP=${{ secrets.GENERATE_SOURCEMAP }} >> ./.env
       - run: echo REACT_APP_MAGIC_IV=${{ secrets.REACT_APP_MAGIC_IV }} >> ./.env
       - run: echo REACT_APP_MAGIC_SALT=${{ secrets.REACT_APP_MAGIC_SALT }} >> ./.env
       - run: echo REACT_APP_CRYPTO_SECRET2=${{ secrets.REACT_APP_CRYPTO_SECRET2 }} >> ./.env
@@ -30,8 +34,6 @@ jobs:
       - run: echo REACT_APP_DONT_USE_PROXY=${{ secrets.REACT_APP_DONT_USE_PROXY }} >> ./.env
       - run: echo REACT_APP_NETWORK_URL=${{ secrets.REACT_APP_NETWORK_URL }} >> ./.env
       - run: echo REACT_APP_RECAPTCHA_V3=${{ secrets.REACT_APP_RECAPTCHA_V3 }} >> ./.env
-      - run: echo REACT_APP_SEND_USER=${{ secrets.REACT_APP_SEND_USER }} >> ./.env
-      - run: echo REACT_APP_SEND_PASS=${{ secrets.REACT_APP_SEND_PASS }} >> ./.env
       - run: echo REACT_APP_SEND_ENCRYPTION_KEY=${{ secrets.REACT_APP_SEND_ENCRYPTION_KEY }} >> ./.env
       - run: echo REACT_APP_SEND_BUCKET_ID=${{ secrets.REACT_APP_SEND_BUCKET_ID }} >> ./.env
       - run: echo REACT_APP_SENTRY_DSN=${{ secrets.REACT_APP_SENTRY_DSN }} >> ./.env
