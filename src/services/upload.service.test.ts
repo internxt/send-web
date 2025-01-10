@@ -80,7 +80,6 @@ const mockCreateSendLinksResponse: CreateSendLinksResponse = {
 
 beforeEach(() => {
   vi.clearAllMocks();
-  (getCaptchaToken as Mock).mockResolvedValue("mock-token");
   (axios.post as Mock).mockResolvedValue({ data: mockCreateSendLinksResponse });
 });
 
@@ -88,6 +87,7 @@ describe("upload.service", () => {
   it("When the uploadFiles() is done, then should call storeSendLinks() and ensure getCaptchaToken() is called once", async () => {
     const uploadFilesSpy = vi.spyOn(UploadService, "uploadFiles");
     const storeSendLinksSpy = vi.spyOn(UploadService, "storeSendLinks");
+    (getCaptchaToken as Mock).mockResolvedValue("mock-token");
 
     const axiosPostSpy = vi.spyOn(axios, "post");
 
@@ -132,10 +132,11 @@ describe("upload.service", () => {
     expect(result).toContain("?code=");
   });
 
-  it("When storeSendLinks() is called, then getCaptchaToken() should be called before all", async () => {
+  it("When links are sent to be created, the captcha is generated before that", async () => {
     const storeSendLinksSpy = vi.spyOn(UploadService, "storeSendLinks");
-    vi.spyOn(UploadService, "uploadFiles").mockResolvedValue([mockSendLink]);
     const axiosPostSpy = vi.spyOn(axios, "post");
+    (getCaptchaToken as Mock).mockResolvedValue("mock-token");
+    vi.spyOn(UploadService, "uploadFiles").mockResolvedValue([mockSendLink]);
 
     await UploadService.uploadFilesAndGetLink([
       {
@@ -155,5 +156,40 @@ describe("upload.service", () => {
     expect((getCaptchaToken as Mock).mock.invocationCallOrder[0]).toBeLessThan(
       axiosPostSpy.mock.invocationCallOrder[0]
     );
+  });
+
+  it("When an error is thrown before getCaptchaToken, then getCaptchaToken is not called", async () => {
+    const uploadFilesSpy = vi
+      .spyOn(UploadService, "uploadFiles")
+      .mockImplementation(() => {
+        throw new Error("Error before captcha");
+      });
+
+    await expect(
+      UploadService.uploadFilesAndGetLink([
+        {
+          id: "1",
+          name: "file1.txt",
+          type: "file",
+          size: 100,
+          file: {} as unknown as FileWithPath,
+        } as unknown as SendItemData,
+      ])
+    ).rejects.toThrow("Error before captcha");
+
+    expect(uploadFilesSpy).toHaveBeenCalled();
+    expect(UploadService.storeSendLinks).not.toHaveBeenCalled();
+    expect(getCaptchaToken).not.toHaveBeenCalled();
+  });
+
+  it("When an error is thrown in getCaptchaToken, then storeSendLinks is not called", async () => {
+    vi.spyOn(UploadService, "uploadFiles").mockResolvedValue([mockSendLink]);
+    (getCaptchaToken as Mock).mockRejectedValue(new Error("Captcha error"));
+    const axiosPostSpy = vi.spyOn(axios, "post");
+
+    await expect(UploadService.storeSendLinks).rejects.toThrow("Captcha error");
+
+    expect(getCaptchaToken).toHaveBeenCalled();
+    expect(axiosPostSpy).not.toHaveBeenCalled();
   });
 });
