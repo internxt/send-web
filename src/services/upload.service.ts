@@ -7,6 +7,7 @@ import { aes } from "@internxt/lib";
 import { MAX_ITEMS_PER_LINK, MAX_BYTES_PER_SEND } from "../constants";
 import { NetworkService } from "./network.service";
 import { SendItemData } from "../models/SendItem";
+import { getCaptchaToken } from "../lib/auth";
 
 interface FileWithNetworkId extends File {
   networkId: string;
@@ -40,9 +41,23 @@ interface SendLinkWithFile extends SendLink {
 
 const originUrl = process.env.REACT_APP_BASE_URL || window.origin;
 export class UploadService {
+  static async storeSendLinks(payload: CreateSendLinksPayload) {
+    const token = await getCaptchaToken();
+    const res = await axios.post<CreateSendLinksResponse>(
+      process.env.REACT_APP_SEND_API_URL + "/links",
+      payload,
+      {
+        headers: {
+          "x-internxt-captcha": token,
+        },
+      }
+    );
+
+    return res.data;
+  }
+
   static async uploadFilesAndGetLink(
     itemList: SendItemData[],
-    recapchaToken: string,
     emailInfo?: EmailInfo,
     opts?: {
       progress?: (totalBytes: number, uploadedBytes: number) => void;
@@ -97,9 +112,8 @@ export class UploadService {
       plainCode: code,
     } as CreateSendLinksPayload;
 
-    const createSendLinkResponse = await storeSendLinks(
-      createSendLinksPayload,
-      recapchaToken
+    const createSendLinkResponse = await UploadService.storeSendLinks(
+      createSendLinksPayload
     );
     return (
       originUrl + "/download/" + createSendLinkResponse.id + "?code=" + code
@@ -293,7 +307,7 @@ class UploadManager {
 /**
  * TODO: SDK
  */
-interface SendLink {
+export interface SendLink {
   id: string;
   name: string;
   type: "file" | "folder";
@@ -303,7 +317,7 @@ interface SendLink {
   parent_folder: string | null;
 }
 
-interface CreateSendLinksPayload {
+export interface CreateSendLinksPayload {
   sender?: string;
   receivers?: string[];
   code: string;
@@ -313,7 +327,7 @@ interface CreateSendLinksPayload {
   mnemonic: string;
 }
 
-interface CreateSendLinksResponse {
+export interface CreateSendLinksResponse {
   id: string;
   title: string;
   subject: string;
@@ -326,21 +340,4 @@ interface CreateSendLinksResponse {
   createdAt: string;
   updatedAt: string;
   expirationAt: string;
-}
-
-async function storeSendLinks(
-  payload: CreateSendLinksPayload,
-  recapchaToken: string
-) {
-  const res = await axios.post<CreateSendLinksResponse>(
-    process.env.REACT_APP_SEND_API_URL + "/links",
-    payload,
-    {
-      headers: {
-        "X-Internxt-Captcha": recapchaToken,
-      },
-    }
-  );
-
-  return res.data;
 }
