@@ -49,7 +49,7 @@
     "start:css": "tailwindcss -w -i ./src/styles/index.css -o ./src/styles/index.generated.css",
     "build:css": "tailwindcss -m -i ./src/styles/index.css -o ./src/styles/index.generated.css",
     "add:npmrc": "echo \"registry=https://registry.yarnpkg.com/\" >> .npmrc && echo \"@internxt:registry=https://npm.pkg.github.com\" >> .npmrc && echo \"//npm.pkg.github.com/:_authToken=$NPM_TOKEN\" >> .npmrc && echo \"always-auth=true\" >> .npmrc",
-    "vercel:install": "yarn run add:npmrc && yarn install"
+    "vercel:install": "yarn run add:npmrc && yarn install --ignore-engines"
   },
   "eslintConfig": {
     "extends": [
