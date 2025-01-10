@@ -44,7 +44,7 @@
   "scripts": {
     "start": "concurrently \"yarn start:css\" \"react-scripts start\"",
     "build": "yarn run build:css && react-scripts build",
-    "test": "react-scripts test",
+    "test": "vitest run src/",
     "eject": "react-scripts eject",
     "start:css": "tailwindcss -w -i ./src/styles/index.css -o ./src/styles/index.generated.css",
     "build:css": "tailwindcss -m -i ./src/styles/index.css -o ./src/styles/index.generated.css",
@@ -74,12 +74,14 @@
     "@types/bytes": "^3.1.1",
     "@types/lodash.throttle": "^4.1.7",
     "@types/mime-types": "^2.1.1",
+    "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.7",
     "concurrently": "^7.2.2",
     "postcss": "^8.4.14",
     "postcss-cli": "^9.1.0",
     "prettier": "^2.7.1",
     "prettier-plugin-tailwindcss": "^0.1.11",
-    "tailwindcss": "^3.1.4"
+    "tailwindcss": "^3.1.4",
+    "vitest": "^2.1.8"
   }
 }
