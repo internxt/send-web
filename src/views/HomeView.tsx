@@ -29,7 +29,6 @@ import { sm_faq } from "../components/utils/schema-markup-generator";
 import CtaSection from "../components/send/CtaSection";
 import moment from "moment";
 import Tooltip from "../components/Tooltip";
-import { getCaptchaToken } from "../lib/auth";
 import analyticsService from "../services/analytics.service";
 
 type EmailFormState = {
@@ -89,11 +88,8 @@ export default function HomeView() {
     try {
       await new Promise<void>((r) => window.grecaptcha.ready(r));
 
-      const token = await getCaptchaToken();
-
       const link = await UploadService.uploadFilesAndGetLink(
         items,
-        token,
         switchValue === "Send email"
           ? {
               sender: formState.sender,
