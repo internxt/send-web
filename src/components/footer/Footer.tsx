@@ -224,13 +224,16 @@ export default function Footer({
                     </a>
 
                     <a
-                      href={urls.products.webdav}
+                      href={urls.products.objStorage}
                       target="_blank"
                       rel="noreferrer"
                       className="flex flex-row items-center hover:text-primary"
                     >
                       <div>
-                        {textContent.FooterSection.sections.products.webDAV}
+                        {textContent.FooterSection.sections.products.objStorage}
+                      </div>
+                      <div className=" ml-2 flex h-max items-center justify-center rounded-full bg-primary bg-opacity-15 py-1 px-2 text-xs font-medium uppercase text-primary">
+                        {textContent.FooterSection.new}
                       </div>
                     </a>
 
@@ -264,6 +267,20 @@ export default function Footer({
                     >
                       <div>
                         {textContent.FooterSection.sections.products.business}
+                      </div>
+                      <div className=" ml-2 flex h-max items-center justify-center rounded-full bg-primary bg-opacity-15 py-1 px-2 text-xs font-medium uppercase text-primary">
+                        {textContent.FooterSection.new}
+                      </div>
+                    </a>
+                    
+                    <a
+                      href={urls.products.family}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex flex-row items-center hover:text-primary"
+                    >
+                      <div>
+                        {textContent.FooterSection.sections.products.family}
                       </div>
                       <div className=" ml-2 flex h-max items-center justify-center rounded-full bg-primary bg-opacity-15 py-1 px-2 text-xs font-medium uppercase text-primary">
                         {textContent.FooterSection.new}
