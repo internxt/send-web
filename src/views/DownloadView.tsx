@@ -1,8 +1,8 @@
 import { AxiosError } from "axios";
 import { format } from "bytes";
-import { ArrowCircleDown, CheckCircle, LinkBreak, X } from "phosphor-react";
+import { ArrowCircleDown, CheckCircle, LinkBreak } from "phosphor-react";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Button from "../components/Button";
 import CardBottom from "../components/CardBotton";
 import FancySpinner from "../components/FancySpinner";
@@ -20,6 +20,7 @@ import { getAllItemsList } from "../services/items.service";
 import { ProgressOptions } from "../services/network.service";
 import SendBanner from "../components/SendBanner";
 import moment from "moment";
+import { decodeSendId } from "../lib/stringUtils";
 
 export default function DownloadView() {
   const [state, setState] = useState<
@@ -37,16 +38,17 @@ export default function DownloadView() {
     moment(state.details.expirationAt).format("MMMM DD[,] YYYY");
 
   const params = useParams();
-  const [search] = useSearchParams();
+
+  const sendId = decodeSendId(params.sendId ?? '');
 
   const router = useNavigate();
 
   async function fetchDetails() {
     setState({ status: "loading" });
     try {
-      if (!params.shareId) throw new Error();
+      if (!sendId) throw new Error('Invalid sendId');
 
-      const details = await getSendLink(params.shareId);
+      const details = await getSendLink(sendId);
       setFileList(details.items.filter((item) => item.type === "file"));
       setState({ status: "ready", details });
     } catch (err) {
@@ -77,7 +79,7 @@ export default function DownloadView() {
         progress: (totalBytes, downloadedBytes) => {
           setState({ status: "downloading", totalBytes, downloadedBytes });
         },
-        plainCode: search.get("code") || undefined,
+        plainCode: params.code,
       } as ProgressOptions);
       setState({ status: "done" });
       setTimeout(() => {
