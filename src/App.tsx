@@ -1,5 +1,5 @@
 import { Toaster } from "react-hot-toast";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes, useParams, useSearchParams } from "react-router-dom";
 import RootDropzone from "./components/RootDropzone";
 import { FilesProvider } from "./contexts/Files";
 import DownloadView from "./views/DownloadView";
@@ -9,6 +9,14 @@ import NotFoundView from "./views/NotFoundView";
 const browserRouterConfig: { basename?: string } = {};
 if (process.env.REACT_APP_BASE_URL) {
   browserRouterConfig.basename = process.env.REACT_APP_BASE_URL;
+}
+
+function DownloadRedirectWrapper() {
+  const { sendId } = useParams();
+  const [searchParams] = useSearchParams();
+  const code = searchParams.get("code") ?? '';
+
+  return <Navigate to={`/d/${sendId}/${code}`} replace />;
 }
 
 function App() {
@@ -26,7 +34,8 @@ function App() {
               </FilesProvider>
             }
           />
-          <Route path="/download/:shareId" element={<DownloadView />} />
+          <Route path="/download/:sendId" element={<DownloadRedirectWrapper />} />
+          <Route path="/d/:sendId/:code" element={<DownloadView />} />
           <Route path="*" element={<NotFoundView />} />
         </Routes>
       </BrowserRouter>

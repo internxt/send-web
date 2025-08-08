@@ -8,6 +8,7 @@ import { MAX_ITEMS_PER_LINK, MAX_BYTES_PER_SEND } from "../constants";
 import { NetworkService } from "./network.service";
 import { SendItemData } from "../models/SendItem";
 import { getCaptchaToken } from "../lib/auth";
+import { encodeSendId, generateRandomStringUrlSafe } from "../lib/stringUtils";
 
 interface FileWithNetworkId extends File {
   networkId: string;
@@ -93,7 +94,7 @@ export class UploadService {
     const sendLinksFiles = await UploadService.uploadFiles(itemFiles, opts);
     const items = [...sendLinksFolders, ...sendLinksFiles];
     const randomMnemonic = generateMnemonic(256);
-    const code = randomBytes(32).toString("hex");
+    const code = generateRandomStringUrlSafe(8);
     const encryptedCode = aes.encrypt(code, randomMnemonic);
     const encryptedMnemonic = aes.encrypt(randomMnemonic, code);
 
@@ -115,9 +116,10 @@ export class UploadService {
     const createSendLinkResponse = await UploadService.storeSendLinks(
       createSendLinksPayload
     );
-    return (
-      originUrl + "/download/" + createSendLinkResponse.id + "?code=" + code
-    );
+
+    const encodedSendId = encodeSendId(createSendLinkResponse.id);
+
+    return (`${originUrl}/d/${encodedSendId}/${code}`);
   }
 
   static async uploadFiles(
