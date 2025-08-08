@@ -18,7 +18,7 @@ describe('stringUtils', () => {
     it('does not modify already URL-safe Base64 strings', () => {
       const base64 = 'KHh-VVwlYjs_J3E';
       const urlSafe = toBase64UrlSafe(base64);
-      expect(urlSafe).toBe('KHh-VVwlYjs_J3E');
+      expect(urlSafe).toBe(base64);
     });
   });
 
@@ -32,7 +32,7 @@ describe('stringUtils', () => {
     it('does not modify already standard Base64 strings', () => {
       const urlSafe = 'KHh+VVwlYjs/J3FiYw==';
       const base64 = fromBase64UrlSafe(urlSafe);
-      expect(base64).toBe('KHh+VVwlYjs/J3FiYw==');
+      expect(base64).toBe(urlSafe);
     });
   });
 
