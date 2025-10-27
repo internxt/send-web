@@ -42,20 +42,12 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "concurrently \"yarn start:css\" \"react-scripts start\"",
-    "build": "yarn run build:css && react-scripts build",
+    "dev": "vite",
+    "start": "vite preview",
+    "build": "vite build",
     "test": "vitest run src/",
-    "eject": "react-scripts eject",
-    "start:css": "tailwindcss -w -i ./src/styles/index.css -o ./src/styles/index.generated.css",
-    "build:css": "tailwindcss -m -i ./src/styles/index.css -o ./src/styles/index.generated.css",
-    "add:npmrc": "echo \"registry=https://registry.yarnpkg.com/\" >> .npmrc && echo \"@internxt:registry=https://npm.pkg.github.com\" >> .npmrc && echo \"//npm.pkg.github.com/:_authToken=$NPM_TOKEN\" >> .npmrc && echo \"always-auth=true\" >> .npmrc",
-    "vercel:install": "yarn run add:npmrc && yarn install --ignore-engines"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "add:npmrc": "cp .npmrc.template .npmrc",
+    "vercel:install": "yarn run add:npmrc && yarn install"
   },
   "browserslist": {
     "production": [
