@@ -1,11 +1,8 @@
 {
   "compilerOptions": {
+    "baseUrl": "./src",
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -18,9 +15,12 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "noImplicitAny": false,
+    "downlevelIteration": true,
+    "incremental": true,
+    "types": ["vite/client", "vite-plugin-svgr/client"]
   },
-  "include": [
-    "src"
-  ]
+  "types": ["filesystem", "@types/react"],
+  "include": ["src", "vite-env.d.ts"]
 }
