@@ -1,10 +1,12 @@
-import * as Sentry from "@sentry/react";
 import { Network } from "@internxt/sdk/dist/network";
 import { ErrorWithContext } from "@internxt/sdk/dist/network/errors";
 
-import { sha256 } from "./crypto";
+import { getSha256 } from "./crypto";
 import { NetworkFacade } from "./NetworkFacade";
 import { reportError } from "../services/error-reporting.service";
+import axios, { AxiosError, AxiosProgressEvent } from "axios";
+import envService from "../services/env.service";
+import packageJson from '../../package.json';
 
 export type UploadProgressCallback = (
   totalBytes: number,
@@ -26,94 +28,71 @@ interface IUploadParams {
   parts?: number;
 }
 
-export function uploadFileBlob(
-  encryptedFile: Blob,
+export async function uploadFileUint8Array(
+  content: Uint8Array,
   url: string,
   opts: {
     progressCallback: UploadProgressCallback;
     abortController?: AbortController;
-  }
-): Promise<XMLHttpRequest> {
-  const uploadRequest = new XMLHttpRequest();
+  },
+): Promise<{ etag: string | undefined }> {
+  try {
+    const res = await axios.create()({
+      url,
+      method: 'PUT',
+      data: content,
+      headers: {
+        'content-type': 'application/octet-stream',
+      },
+      onUploadProgress: (progress: AxiosProgressEvent) => {
+        opts.progressCallback(progress.total ?? 0, progress.loaded);
+      },
+      signal: opts.abortController?.signal,
+    });
 
-  if (opts.abortController?.signal && opts.abortController.signal.aborted) {
-    throw new Error("Upload aborted");
-  }
+    return { etag: res.headers.etag };
+  } catch (err) {
+    const error = err as AxiosError<any>;
 
-  opts.abortController?.signal.addEventListener(
-    "abort",
-    () => {
-      uploadRequest.abort();
-    },
-    { once: true }
-  );
-
-  uploadRequest.upload.addEventListener("progress", (e) => {
-    opts.progressCallback(e.total, e.loaded);
-  });
-  uploadRequest.upload.addEventListener("loadstart", (e) =>
-    opts.progressCallback(e.total, 0)
-  );
-  uploadRequest.upload.addEventListener("loadend", (e) =>
-    opts.progressCallback(e.total, e.total)
-  );
-
-  const uploadFinishedPromise = new Promise<XMLHttpRequest>(
-    (resolve, reject) => {
-      uploadRequest.onload = () => {
-        if (uploadRequest.status !== 200) {
-          return reject(
-            new Error(
-              "Upload failed with code " +
-                uploadRequest.status +
-                " message " +
-                uploadRequest.response
-            )
-          );
-        }
-        resolve(uploadRequest);
-      };
-      uploadRequest.onerror = reject;
-      uploadRequest.onabort = () => reject(new Error("Upload aborted"));
-      uploadRequest.ontimeout = () => reject(new Error("Request timeout"));
+    if (axios.isCancel(error)) {
+      throw new Error('Upload aborted');
+    } else if ((error as AxiosError).response && (error as AxiosError)?.response?.status === 403) {
+      throw new Error('Request has expired');
+    } else if ((error as AxiosError).message === 'Network Error') {
+      throw error;
+    } else {
+      throw new Error('Unknown error');
     }
-  );
-
-  uploadRequest.open("PUT", url);
-  // ! Uncomment this line for multipart to work:
-  // uploadRequest.setRequestHeader('Content-Type', '');
-  uploadRequest.send(encryptedFile);
-
-  return uploadFinishedPromise;
+  }
 }
 
-function getAuthFromCredentials(creds: NetworkCredentials): {
+async function getAuthFromCredentials(creds: NetworkCredentials): Promise<{
   username: string;
   password: string;
-} {
+}> {
   return {
     username: creds.user,
-    password: sha256(Buffer.from(creds.pass)).toString("hex"),
+    password: await getSha256(creds.pass),
   };
 }
 
-export function uploadFile(
+export async function uploadFile(
   bucketId: string,
   params: IUploadParams
 ): Promise<string> {
   const file: File = params.filecontent;
 
-  const auth = getAuthFromCredentials({
+  const auth = await getAuthFromCredentials({
     user: params.creds.user,
     pass: params.creds.pass,
   });
 
   const facade = new NetworkFacade(
     Network.client(
-      process.env.REACT_APP_NETWORK_URL as string,
+      envService.getVariable("networkUrl"),
       {
-        clientName: "drive-web",
-        clientVersion: "1.0",
+        clientName: packageJson.name,
+        clientVersion: packageJson.version
       },
       {
         bridgeUser: auth.username,

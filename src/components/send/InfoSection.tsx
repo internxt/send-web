@@ -1,8 +1,6 @@
 import label from "../../assets/lang/en/send.json";
 import RevealX from "../RevealX";
 
-const urlPrefix = process.env.REACT_APP_BASE_URL || "";
-
 const InfoSection = () => {
   return (
     <div className="z-10 flex flex-col items-center justify-center bg-gray-1 px-10 pt-20">
@@ -32,7 +30,7 @@ const InfoSection = () => {
 
           <div className="lg:pl-15 relative mt-16 flex self-stretch  lg:mt-0">
             <div className="hidden lg:flex lg:max-w-[480px]">
-              <img src={`${urlPrefix}/bylink.png`} alt="Internxt Photos" />
+              <img src="/bylink.png" alt="Internxt Photos" />
             </div>
           </div>
         </RevealX>
@@ -58,7 +56,7 @@ const InfoSection = () => {
 
           <div className="lg:pl-15 relative mt-16 flex self-stretch  lg:mt-0">
             <div className="hidden lg:flex lg:max-w-[480px]">
-              <img src={`${urlPrefix}/byemail.png`} alt="Internxt Photos" />
+              <img src="/byemail.png" alt="Internxt Photos" />
             </div>
           </div>
         </RevealX>

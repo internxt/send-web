@@ -3,7 +3,7 @@ import { format } from "bytes";
 import copy from "copy-to-clipboard";
 import throttle from "lodash.throttle";
 import { CheckCircle, Copy, WarningCircle, X } from "phosphor-react";
-import { useContext, useEffect, useRef, useState } from "react";
+import { RefObject, useContext, useEffect, useRef, useState } from "react";
 import Button from "../components/Button";
 import CardBottom from "../components/CardBotton";
 import FancySpinner from "../components/FancySpinner";
@@ -423,7 +423,7 @@ function EmailForm({
   value: EmailFormState;
   onChange: (v: EmailFormState) => void;
   setShowTooltip: (v: boolean) => void;
-  inputTitleRef: React.MutableRefObject<any>;
+  inputTitleRef: RefObject<HTMLInputElement>;
 }) {
   const { sendTo, sendToField } = value;
 
@@ -462,8 +462,8 @@ function EmailForm({
         />
       </div>
       <textarea
-        className="mt-1 h-20 w-full resize-none rounded-md border border-gray-20 bg-white px-3 py-2 text-lg font-normal text-gray-80 placeholder-gray-30 outline-none 
-      ring-primary ring-opacity-10 hover:border-gray-30 focus:border-primary focus:ring-2 lg:text-base"
+        className="mt-1 h-20 w-full resize-none rounded-md border border-gray-20 bg-white px-3 py-2 text-lg font-normal text-gray-80 placeholder-gray-30 outline-hidden 
+      ring-primary ring-opacity-10 hover:border-gray-30 focus:border-primary lg:text-base"
         placeholder="Message"
         onChange={(v) => onChange({ ...value, message: v.target.value })}
         value={value.message}
@@ -550,7 +550,7 @@ function SendTo({
                 {email}
                 <div
                   onClick={() => onRemoveEmail(i)}
-                  className="absolute right-0 top-0 flex h-full cursor-pointer flex-row items-center overflow-hidden pl-12 pr-2.5 lg:hidden lg:bg-gradient-to-r lg:from-transparent lg:via-gray-5 lg:to-gray-5 lg:group-hover:block"
+                  className="absolute right-0 top-0 flex h-full cursor-pointer flex-row items-center overflow-hidden pl-12 pr-2.5 lg:hidden lg:bg-linear-to-r lg:from-transparent lg:via-gray-5 lg:to-gray-5 lg:group-hover:block"
                 >
                   <div className="flex h-full flex-row items-center">
                     <X size={14} />

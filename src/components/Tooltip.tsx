@@ -63,7 +63,7 @@ export default function Tooltip({
       >
         <div
           className={`flex w-max flex-col rounded-lg px-4 py-1.5 text-center ${
-            style === "dark" ? "bg-gray-90" : "bg-primary bg-opacity-10"
+            style === "dark" ? "bg-gray-90" : "bg-primary/10"
           }`}
         >
           <h1
@@ -89,7 +89,7 @@ export default function Tooltip({
             popsFrom === "bottom" || popsFrom === "top"
               ? "h-1.5 w-4"
               : "h-4 w-1.5"
-          } ${style === "dark" ? "bg-gray-90" : "bg-primary bg-opacity-10"}`}
+          } ${style === "dark" ? "bg-gray-90" : "bg-primary/10"}`}
           style={{
             clipPath: triangle,
             marginTop: popsFrom === "top" ? "-1px" : undefined,

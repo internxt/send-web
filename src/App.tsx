@@ -6,10 +6,6 @@ import DownloadView from "./views/DownloadView";
 import HomeView from "./views/HomeView";
 import NotFoundView from "./views/NotFoundView";
 
-const browserRouterConfig: { basename?: string } = {};
-if (process.env.REACT_APP_BASE_URL) {
-  browserRouterConfig.basename = process.env.REACT_APP_BASE_URL;
-}
 
 function DownloadRedirectWrapper() {
   const { sendId } = useParams();
@@ -22,7 +18,7 @@ function DownloadRedirectWrapper() {
 function App() {
   return (
     <>
-      <BrowserRouter {...browserRouterConfig}>
+      <BrowserRouter>
         <Routes>
           <Route
             path="/"

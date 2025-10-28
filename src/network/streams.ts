@@ -2,7 +2,7 @@ type BinaryStream = ReadableStream<Uint8Array>;
 
 export async function binaryStreamToBlob(stream: BinaryStream): Promise<Blob> {
   const reader = stream.getReader();
-  const slices: Uint8Array[] = [];
+  const slices: BlobPart[] = [];
 
   let finish = false;
 
@@ -10,7 +10,7 @@ export async function binaryStreamToBlob(stream: BinaryStream): Promise<Blob> {
     const { done, value } = await reader.read();
 
     if (!done) {
-      slices.push(value as Uint8Array);
+      slices.push(value as Uint8Array<ArrayBuffer>);
     }
 
     finish = done;
@@ -119,12 +119,12 @@ export function joinReadableBinaryStreams(streams: BinaryStream[]): ReadableStre
       }
 
       controller.enqueue(buffer.slice(0, chunkSize));
-      buffer = new Uint8Array(buffer.slice(chunkSize));
+      buffer = buffer.slice(chunkSize);
     },
   });
 }
 
-function mergeBuffers(buffer1: Uint8Array, buffer2: Uint8Array): Uint8Array {
+function mergeBuffers(buffer1: Uint8Array, buffer2: Uint8Array): Uint8Array<ArrayBuffer> {
   const mergedBuffer = new Uint8Array(buffer1.length + buffer2.length);
   mergedBuffer.set(buffer1);
   mergedBuffer.set(buffer2, buffer1.length);

@@ -114,7 +114,7 @@ export default function FileArea({
             }
             openDirection={"left"}
             classMenuItems={
-              "left-0 w-max rounded-md border border-black border-opacity-8 bg-white drop-shadow dropdown"
+              "left-0 w-max rounded-md border-opacity-8 bg-white drop-shadow-sm dropdown"
             }
             menuItems={[
               <MenuItem onClick={onFolderExplorerOpen}>

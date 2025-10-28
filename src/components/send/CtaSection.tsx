@@ -1,9 +1,8 @@
-import React from "react";
 import textContent from "../../assets/lang/en/send.json";
 
 const CtaSection = () => {
   return (
-    <section className="z-10 overflow-hidden bg-gradient-to-l from-primary to-primary-dark">
+    <section className="z-10 overflow-hidden bg-linear-to-l from-primary to-primary-dark">
       <div className="flex flex-col items-center justify-center py-12 pb-12 lg:px-20">
         <div className="flex flex-col text-center text-white">
           <p className="text-3xl font-semibold">

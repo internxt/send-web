@@ -47,7 +47,7 @@ const backgroundColor = [
   },
 ];
 
-const BgLoop = (text: any, ctaRef: RefObject<HTMLDivElement>) => {
+const BgLoop = (text: any, ctaRef: RefObject<HTMLDivElement | null>) => {
   return (
     <div
       ref={ctaRef}
@@ -85,7 +85,13 @@ const BgLoop = (text: any, ctaRef: RefObject<HTMLDivElement>) => {
   );
 };
 
-export default function Layout({ children }: { children: ReactNode }) {
+export default function Layout({
+  children,
+  hasContentBelow = true,
+}: {
+  children: ReactNode;
+  hasContentBelow?: boolean;
+}) {
   const backgroundRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
@@ -202,7 +208,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           <div className="relative flex h-full max-w-screen-xl flex-col items-center justify-center md:px-10 xl:mx-auto xl:px-0 3xl:max-w-full">
             <div className="relative flex h-full w-full flex-row items-center justify-start space-x-20 lg:pb-32 3xl:translate-x-50">
               <div className="relative flex h-full w-full items-center lg:w-max">
-                <Card className="relative z-30 flex flex-shrink-0 flex-col pt-12 md:pt-0">
+                <Card className="relative z-30 flex shrink-0 flex-col pt-12 md:pt-0">
                   {children}
                 </Card>
               </div>
@@ -210,12 +216,14 @@ export default function Layout({ children }: { children: ReactNode }) {
                 {BgLoop(item.text, ctaRef)}
               </div>
             </div>
-            <div className="absolute bottom-12 hidden lg:flex">
-              <ArrowCircleDown
-                size={32}
-                className="animate-bounce text-white"
-              />
-            </div>
+            {hasContentBelow &&
+              <div className="absolute bottom-12 hidden lg:flex">
+                <ArrowCircleDown
+                  size={32}
+                  className="animate-bounce text-white"
+                />
+              </div>
+            }
           </div>
         </div>
 

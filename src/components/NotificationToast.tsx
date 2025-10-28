@@ -1,6 +1,7 @@
 import { Transition } from "@headlessui/react";
 import { CheckCircle, Info, Warning, WarningOctagon, X } from "phosphor-react";
 import { ToastShowProps, ToastType } from "../services/notifications.service";
+import { JSX } from "react";
 
 const NotificationToast = ({
   text,
@@ -54,7 +55,7 @@ const NotificationToast = ({
           <Icon weight="fill" className={`${IconColor} mr-1.5`} size={24} />
         )}
 
-        <p className="line-clamp-2 flex-1 break-words text-gray-80">{text}</p>
+        <p className="line-clamp-2 flex-1 wrap-break-word text-gray-80">{text}</p>
         {action && (
           <button
             onClick={action.onClick}

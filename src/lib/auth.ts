@@ -1,3 +1,5 @@
+import envService from "../services/env.service";
+
 export const IFRAME_AUTH_ENABLED = false;
 export const REDIRECT_AUTH_ENABLED = true;
 const AUTH_FLOW_URL = "https://drive.internxt.com";
@@ -254,7 +256,7 @@ export function checkout({
 
 export async function getCaptchaToken(): Promise<string> {
   const token = await window.grecaptcha.execute(
-    process.env.REACT_APP_RECAPTCHA_V3 as string,
+    envService.getVariable("recaptchaV3"),
     {
       action: "SendItems",
     }

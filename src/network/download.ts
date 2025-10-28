@@ -1,11 +1,11 @@
 import { Network } from '@internxt/sdk/dist/network';
-import { Decipher } from 'crypto';
-import * as Sentry from '@sentry/react';
+import { Decipheriv } from 'crypto';
 
-import { sha256 } from './crypto';
+import { getSha256 } from './crypto';
 import { NetworkFacade } from './NetworkFacade';
-import { Abortable } from './requests';
 import { joinReadableBinaryStreams } from './streams';
+import envService from '../services/env.service';
+import packageJson from '../../package.json';
 
 export type DownloadProgressCallback = (totalBytes: number, downloadedBytes: number) => void;
 export type Downloadable = { fileId: string; bucketId: string };
@@ -26,7 +26,7 @@ type BinaryStream = ReadableStream<Uint8Array>;
 
 export async function binaryStreamToBlob(stream: BinaryStream): Promise<Blob> {
   const reader = stream.getReader();
-  const slices: Uint8Array[] = [];
+  const slices: BlobPart[] = [];
 
   let finish = false;
 
@@ -34,7 +34,7 @@ export async function binaryStreamToBlob(stream: BinaryStream): Promise<Blob> {
     const { done, value } = await reader.read();
 
     if (!done) {
-      slices.push(value as Uint8Array);
+      slices.push(value as Uint8Array<ArrayBuffer>);
     }
 
     finish = done;
@@ -43,27 +43,9 @@ export async function binaryStreamToBlob(stream: BinaryStream): Promise<Blob> {
   return new Blob(slices);
 }
 
-interface FileInfo {
-  bucket: string;
-  mimetype: string;
-  filename: string;
-  frame: string;
-  size: number;
-  id: string;
-  created: Date;
-  hmac: {
-    value: string;
-    type: string;
-  };
-  erasure?: {
-    type: string;
-  };
-  index: string;
-}
-
 export function getDecryptedStream(
   encryptedContentSlices: ReadableStream<Uint8Array>[],
-  decipher: Decipher,
+  decipher: Decipheriv,
 ): ReadableStream<Uint8Array> {
   const encryptedStream = joinReadableBinaryStreams(encryptedContentSlices);
 
@@ -92,44 +74,9 @@ export function getDecryptedStream(
   return decryptedStream;
 }
 
-async function getFileDownloadStream(
-  downloadUrls: string[],
-  decipher: Decipher,
-  abortController?: AbortController,
-): Promise<ReadableStream> {
-  const encryptedContentParts: ReadableStream<Uint8Array>[] = [];
-
-  for (const downloadUrl of downloadUrls) {
-    const encryptedStream = await fetch(downloadUrl, { signal: abortController?.signal }).then((res) => {
-      if (!res.body) {
-        throw new Error('No content received');
-      }
-
-      return res.body;
-    });
-
-    encryptedContentParts.push(encryptedStream);
-  }
-
-  return getDecryptedStream(encryptedContentParts, decipher);
-}
-
 interface NetworkCredentials {
   user: string;
   pass: string;
-}
-
-interface IDownloadParams {
-  bucketId: string;
-  fileId: string;
-  creds?: NetworkCredentials;
-  mnemonic?: string;
-  encryptionKey?: Buffer;
-  token?: string;
-  options?: {
-    notifyProgress: DownloadProgressCallback;
-    abortController?: AbortController;
-  };
 }
 
 type FileStream = ReadableStream<Uint8Array>;
@@ -160,50 +107,27 @@ interface DownloadSharedFileParams extends DownloadFileParams {
   encryptionKey: string
 }
 
-type DownloadSharedFileFunction = (params: DownloadSharedFileParams) => DownloadFileResponse;
 type DownloadOwnFileFunction = (params: DownloadOwnFileParams) => DownloadFileResponse;
 type DownloadFileFunction = (params: DownloadSharedFileParams | DownloadOwnFileParams) => DownloadFileResponse;
 
-const downloadSharedFile: DownloadSharedFileFunction = (params) => {
-  const { bucketId, fileId, encryptionKey, token, options } = params;
 
-  return new NetworkFacade(
-    Network.client(
-      process.env.REACT_APP_NETWORK_URL as string,
-      {
-        clientName: 'drive-web',
-        clientVersion: '1.0'
-      },
-      {
-        bridgeUser: '',
-        userId: ''
-      }
-    )
-  ).download(bucketId, fileId, '', {
-    key: Buffer.from(encryptionKey, 'hex'),
-    token,
-    downloadingCallback: options?.notifyProgress,
-    abortController: options?.abortController
-  });
-};
-
-function getAuthFromCredentials(creds: NetworkCredentials): { username: string, password: string } {
+async function getAuthFromCredentials(creds: NetworkCredentials): Promise<{ username: string, password: string }> {
   return {
     username: creds.user,
-    password: sha256(Buffer.from(creds.pass)).toString('hex'),
+    password: await getSha256(creds.pass),
   };
 }
 
-const downloadOwnFile: DownloadOwnFileFunction = (params) => {
+const downloadOwnFile: DownloadOwnFileFunction = async (params) => {
   const { bucketId, fileId, mnemonic, options } = params;
-  const auth = getAuthFromCredentials(params.creds);
+  const auth = await getAuthFromCredentials(params.creds);
 
   return new NetworkFacade(
     Network.client(
-      process.env.REACT_APP_NETWORK_URL as string,
+      envService.getVariable("networkUrl"),
       {
-        clientName: 'drive-web',
-        clientVersion: '1.0'
+        clientName: packageJson.name,
+        clientVersion: packageJson.version
       },
       {
         bridgeUser: auth.username,
@@ -217,9 +141,7 @@ const downloadOwnFile: DownloadOwnFileFunction = (params) => {
 };
 
 const downloadFile: DownloadFileFunction = (params) => {
-  if (params.token && params.encryptionKey) {
-    return downloadSharedFile(params);
-  } else if (params.creds && params.mnemonic) {
+  if (params.creds && params.mnemonic) {
     return downloadOwnFile(params);
   } else {
     throw new Error('DOWNLOAD ERRNO. 0');

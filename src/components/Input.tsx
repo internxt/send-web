@@ -1,4 +1,5 @@
 import { WarningOctagon, Warning, CheckCircle } from "phosphor-react";
+import { JSX } from "react";
 
 export default function Input({
   className = "",
@@ -69,8 +70,9 @@ export default function Input({
         onMouseLeave={onMouseLeave}
         ref={refForInput}
         disabled={disabled}
-        className={`inxt-input h-11 w-full rounded-md border text-lg font-normal text-gray-80 outline-none ring-opacity-10 focus:ring-2 disabled:text-gray-40 disabled:placeholder-gray-20 md:h-9 lg:text-base 
-				${borderColor} ${focusColor} ${placeholderColor} ${backgroundColor} ${padding}`}
+        className={`inxt-input h-11 w-full rounded-md border text-lg font-normal text-gray-80 outline-hidden ring-opacity-10 disabled:text-gray-40 disabled:placeholder-gray-20 md:h-9 lg:text-base 
+          ${borderColor} ${focusColor} ${placeholderColor} ${backgroundColor} ${padding}`
+        }
         type={type ?? "text"}
         placeholder={placeholder}
         onChange={(e) => onChange && onChange(e.target.value)}
@@ -111,9 +113,8 @@ export default function Input({
     <div className={`${className}`}>
       {label ? (
         <label
-          className={`text-sm font-medium ${
-            disabled ? "text-gray-40" : "text-gray-80"
-          }`}
+          className={`text-sm font-medium ${disabled ? "text-gray-40" : "text-gray-80"
+            }`}
         >
           {label} {input}
         </label>

@@ -1,5 +1,5 @@
 import { Menu, Transition } from '@headlessui/react';
-import { ReactNode, Ref } from 'react';
+import { JSX, ReactNode, Ref } from 'react';
 
 export default function Dropdown({
   children,
@@ -19,7 +19,7 @@ export default function Dropdown({
   return (
     <Menu>
       <div className="relative flex items-center">
-        <Menu.Button className={`outline-none cursor-pointer ${classButton}`} ref={buttonInputRef}>{children}</Menu.Button>
+        <Menu.Button className={`outline-hidden cursor-pointer ${classButton}`} ref={buttonInputRef}>{children}</Menu.Button>
 
         <Transition
           className={`absolute ${openDirection === 'left' ? 'left-0' : 'right-0'}`}

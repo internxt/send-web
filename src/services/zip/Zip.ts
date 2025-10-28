@@ -78,7 +78,7 @@ const pump = (zipObj: ZipObject) => zipObj.reader.read().then((chunk: {
   done: boolean, value: Uint8Array
 }) => {
   if (chunk.done) return zipObj.writeFooter();
-  const outputData = chunk.value;
+  const outputData = chunk.value as Uint8Array<ArrayBuffer>;
   zipObj.crc?.append(outputData);
   zipObj.uncompressedLength += outputData.length;
   zipObj.compressedLength += outputData.length;

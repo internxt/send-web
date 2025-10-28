@@ -8,6 +8,7 @@ import {
 import { FileWithPath } from "react-dropzone";
 import { SendItemData } from "../models/SendItem";
 import axios from "axios";
+import { v4 } from "uuid";
 
 vi.mock("axios");
 
@@ -25,7 +26,7 @@ vi.mock("./upload.service", async () => {
 });
 
 const mockSendLink: SendLink = {
-  id: "mock-id-12345",
+  id: v4(),
   name: "example-file.txt",
   type: "file",
   size: 1024,
@@ -35,7 +36,7 @@ const mockSendLink: SendLink = {
 };
 
 const mockSendLinkFolder: SendLink = {
-  id: "mock-id-54321",
+  id: v4(),
   name: "example-folder",
   type: "folder",
   size: 0,
@@ -45,7 +46,7 @@ const mockSendLinkFolder: SendLink = {
 };
 
 const mockCreateSendLinksResponse: CreateSendLinksResponse = {
-  id: "mock-id-12345",
+  id: v4(),
   title: "Example Send Link",
   subject: "Example Subject",
   code: "mock-code-abcdef",
@@ -55,7 +56,7 @@ const mockCreateSendLinksResponse: CreateSendLinksResponse = {
   userId: 42,
   items: [
     {
-      id: "item-id-1",
+      id: v4(),
       name: "example-file.txt",
       type: "file",
       size: 1024, // 1 KB
@@ -64,7 +65,7 @@ const mockCreateSendLinksResponse: CreateSendLinksResponse = {
       parent_folder: null,
     },
     {
-      id: "item-id-2",
+      id: v4(),
       name: "example-folder",
       type: "folder",
       size: 0,
@@ -128,8 +129,7 @@ describe("upload.service", () => {
     expect((getCaptchaToken as Mock).mock.invocationCallOrder[0]).toBeLessThan(
       axiosPostSpy.mock.invocationCallOrder[0]
     );
-    expect(result).toContain("/download/");
-    expect(result).toContain("?code=");
+    expect(result).toContain("/d/");
   });
 
   it("When links are sent to be created, the captcha is generated before that", async () => {

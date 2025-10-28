@@ -1,6 +1,5 @@
 import { X } from "phosphor-react";
-import React from "react";
-import { ReactComponent as SendIcon } from "../assets/images/share-file/visual.svg";
+import SendIcon from "../assets/images/share-file/visual.svg?react";
 import BackgroundImage from "../assets/images/share-file/banner-bg.png";
 
 export interface Props {
@@ -17,7 +16,7 @@ const SendBanner = (props: Props) => {
     <div
       className={`${
         props.sendBannerVisible ? "flex" : "hidden"
-      }  fixed top-0 left-0 right-0 bottom-0 z-50 h-screen bg-black bg-opacity-50 px-10 lg:px-0`}
+      }  fixed top-0 left-0 right-0 bottom-0 z-50 h-screen bg-black bg-black/50 px-10 lg:px-0`}
     >
       <div
         className={`${
@@ -47,7 +46,7 @@ const SendBanner = (props: Props) => {
             </div>
             <div className="flex pt-6">
               <button
-                className="relative flex h-14 w-48 flex-row items-center justify-center space-x-4 rounded-full bg-primary px-8 text-base text-white transition duration-100 focus:outline-none focus-visible:bg-primary-dark active:bg-primary-dark sm:text-lg"
+                className="relative flex h-14 w-48 flex-row items-center justify-center space-x-4 rounded-full bg-primary px-8 text-base text-white transition duration-100 focus:outline-hidden focus-visible:bg-primary-dark active:bg-primary-dark sm:text-lg"
                 onClick={() => {
                   window.location.replace("https://internxt.com");
                 }}

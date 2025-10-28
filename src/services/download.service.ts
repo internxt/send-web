@@ -8,6 +8,7 @@ import { binaryStreamToBlob } from "../network/streams";
 import { SendItem } from "../models/SendItem";
 import { StreamService } from "./stream.service";
 import { getAllItemsList } from "./items.service";
+import envService from "./env.service";
 
 
 /**
@@ -139,7 +140,7 @@ export async function getSendLink(
   linkId: string
 ): Promise<GetSendLinkResponse> {
   const res = await axios.get<GetSendLinkResponse>(
-    process.env.REACT_APP_SEND_API_URL + "/links/" + linkId
+    envService.getVariable("sendApiUrl") + "/links/" + linkId
   );
 
   return res.data;
