@@ -1,5 +1,3 @@
-@import url('./fonts/InstrumentSans/font.css') layer(utilities);
-
 @import 'tailwindcss';
 
 @config '../../tailwind.config.js';
