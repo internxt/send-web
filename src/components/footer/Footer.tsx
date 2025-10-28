@@ -108,10 +108,10 @@ export default function Footer({
                     name="fields[email]"
                     type="email"
                     placeholder={`${textContent.NewsletterSection.input}`}
-                    className={`flex h-auto w-full flex-row rounded-lg px-4 py-3 text-lg outline-none sm:py-2 sm:text-base md:w-64 ${
+                    className={`flex h-auto w-full flex-row rounded-lg px-4 py-3 text-lg outline-hidden sm:py-2 sm:text-base md:w-64 ${
                       darkMode
-                        ? "border-cool-gray-70 bg-cool-gray-90 focus:border-primary focus:ring-opacity-30"
-                        : "border-cool-gray-20 bg-white focus:border-blue-50 focus:ring-opacity-20"
+                        ? "border-cool-gray-70 bg-cool-gray-90 focus:border-primary focus:ring-black/30"
+                        : "border-cool-gray-20 bg-white focus:border-blue-50 focus:ring-black/20"
                     } mb-2 appearance-none border text-left transition-all duration-150 focus:ring focus:ring-primary`}
                     required
                   />
@@ -119,7 +119,7 @@ export default function Footer({
                     name="signup"
                     type="submit"
                     value={`${textContent.NewsletterSection.cta}`}
-                    className="ml-2 flex w-full cursor-pointer items-center justify-center rounded-lg border border-transparent bg-primary px-4 py-3 text-lg font-medium text-white transition-all duration-75 hover:bg-primary-dark focus:outline-none active:bg-primary-dark sm:mb-2 sm:py-2 sm:text-base"
+                    className="ml-2 flex w-full cursor-pointer items-center justify-center rounded-lg border border-transparent bg-primary px-4 py-3 text-lg font-medium text-white transition-all duration-75 hover:bg-primary-dark focus:outline-hidden active:bg-primary-dark sm:mb-2 sm:py-2 sm:text-base"
                   />
                 </form>
                 <span className="text-sm text-gray-40">
@@ -164,10 +164,10 @@ export default function Footer({
                   name="fields[email]"
                   type="email"
                   placeholder={`${textContent.NewsletterSection.input}`}
-                  className={`flex h-auto w-full flex-row rounded-lg px-4 py-3 text-lg outline-none sm:py-2 sm:text-base md:w-64 ${
+                  className={`flex h-auto w-full flex-row rounded-lg px-4 py-3 text-lg outline-hidden sm:py-2 sm:text-base md:w-64 ${
                     darkMode
-                      ? "border-cool-gray-70 bg-cool-gray-90 focus:border-primary focus:ring-opacity-30"
-                      : "border-cool-gray-20 bg-white focus:border-blue-50 focus:ring-opacity-20"
+                      ? "border-cool-gray-70 bg-cool-gray-90 focus:border-primary focus:ring-black/30"
+                      : "border-cool-gray-20 bg-white focus:border-blue-50 focus:ring-black/20"
                   } mb-2 appearance-none border text-left transition-all duration-150 focus:ring focus:ring-primary`}
                   required
                 />
@@ -175,7 +175,7 @@ export default function Footer({
                   name="signup"
                   type="submit"
                   value={`${textContent.NewsletterSection.cta}`}
-                  className="mb-6 flex w-full cursor-pointer items-center justify-center rounded-lg border border-transparent bg-primary px-4 py-3 text-lg font-medium text-white transition-all duration-75 hover:bg-primary-dark focus:outline-none active:bg-primary-dark sm:mb-2 sm:py-2 sm:text-base"
+                  className="mb-6 flex w-full cursor-pointer items-center justify-center rounded-lg border border-transparent bg-primary px-4 py-3 text-lg font-medium text-white transition-all duration-75 hover:bg-primary-dark focus:outline-hidden active:bg-primary-dark sm:mb-2 sm:py-2 sm:text-base"
                 />
                 <span className="text-xs text-cool-gray-40 sm:text-supporting-2">
                   {textContent.NewsletterSection.privacy}{" "}
@@ -205,7 +205,7 @@ export default function Footer({
           <div className="hidden w-full flex-col items-center justify-center md:space-y-16 lg:flex">
             <div className="flex w-full flex-row justify-between md:justify-center lg:space-x-20">
               <div className="flex flex-1 flex-col items-center lg:flex-none">
-                <div className="flex flex-shrink-0 flex-col space-y-3">
+                <div className="flex shrink-0 flex-col space-y-3">
                   <h3 className="text-lg font-medium">
                     {textContent.FooterSection.sections.products.title}
                   </h3>
@@ -265,7 +265,7 @@ export default function Footer({
                       <div>
                         {textContent.FooterSection.sections.products.business}
                       </div>
-                      <div className=" ml-2 flex h-max items-center justify-center rounded-full bg-primary bg-opacity-15 py-1 px-2 text-xs font-medium uppercase text-primary">
+                      <div className="ml-2 flex h-max items-center justify-center rounded-full bg-primary/15 py-1 px-2 text-xs font-medium uppercase text-primary">
                         {textContent.FooterSection.new}
                       </div>
                     </a>
@@ -283,7 +283,7 @@ export default function Footer({
               </div>
 
               <div className="flex flex-1 flex-col items-center lg:flex-none">
-                <div className="flex flex-shrink-0 flex-col space-y-3">
+                <div className="flex shrink-0 flex-col space-y-3">
                   <h3 className="text-lg font-medium">
                     {textContent.FooterSection.sections.company.title}
                   </h3>
@@ -350,7 +350,7 @@ export default function Footer({
               </div>
 
               <div className="flex flex-1 flex-col items-center lg:flex-none">
-                <div className="flex flex-shrink-0 flex-col space-y-3">
+                <div className="flex shrink-0 flex-col space-y-3">
                   <h3 className="text-lg font-medium">
                     {textContent.FooterSection.sections.join.title}
                   </h3>
@@ -433,7 +433,7 @@ export default function Footer({
               </div>
 
               <div className="flex max-w-[180px] flex-col items-center lg:flex-none">
-                <div className="flex flex-shrink-0 flex-col space-y-3">
+                <div className="flex shrink-0 flex-col space-y-3">
                   <h3 className="text-lg font-medium">
                     {textContent.FooterSection.sections.resources.title}
                   </h3>
@@ -511,7 +511,7 @@ export default function Footer({
                 </div>
               </div>
               <div className="flex max-w-[220px] flex-col items-center lg:flex-none">
-                <div className="flex flex-shrink-0 flex-col space-y-3">
+                <div className="flex shrink-0 flex-col space-y-3">
                   <h3 className="text-lg font-medium">
                     {textContent.FooterSection.sections.tools.title}
                   </h3>
@@ -596,7 +596,7 @@ export default function Footer({
                   href="https://internxt.com"
                   target={"_blank"}
                   rel="noreferrer"
-                  className="flex flex-shrink-0"
+                  className="flex shrink-0"
                 >
                   <img loading="lazy" src={Internxt} alt="Internxt logo" />
                 </a>
@@ -784,7 +784,7 @@ export default function Footer({
                         <div>
                           {textContent.FooterSection.sections.products.business}
                         </div>
-                        <div className=" ml-2 flex h-max items-center justify-center rounded-full bg-primary bg-opacity-15 py-1 px-2 text-xs font-medium uppercase text-primary">
+                        <div className="ml-2 flex h-max items-center justify-center rounded-full bg-primary/15 py-1 px-2 text-xs font-medium uppercase text-primary">
                           {textContent.FooterSection.new}
                         </div>
                       </a>
@@ -1329,7 +1329,7 @@ export default function Footer({
                   textContent.FooterSection.copyright.line2}
               </p>
 
-              <a href="https://internxt.com" className="flex flex-shrink-0">
+              <a href="https://internxt.com" className="flex shrink-0">
                 <img loading="lazy" src={Internxt} alt="Internxt logo" />
               </a>
             </div>

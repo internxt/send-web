@@ -35,7 +35,7 @@ export default function Navbar() {
       <div className="mx-4 w-full lg:mx-10 xl:mx-20">
         <div className="navbar mx-auto flex max-w-screen-xl items-center justify-between">
           {/* Left side of navbar: Logo / Hamburger menu */}
-          <div className=" flex w-full flex-grow flex-row items-center justify-start space-x-4 lg:space-x-0">
+          <div className=" flex w-full grow flex-row items-center justify-start space-x-4 lg:space-x-0">
             <div className="flex lg:hidden">
               <Hamburger
                 label="Show menu"
@@ -68,7 +68,7 @@ export default function Navbar() {
                       onClick={() => {
                         setMenuState(false);
                       }}
-                      className={`flex w-full translate-y-0 px-8 py-3 outline-none transition delay-100 duration-300 ${
+                      className={`flex w-full translate-y-0 px-8 py-3 outline-hidden transition delay-100 duration-300 ${
                         menuState ? "opacity-100" : "-translate-y-4 opacity-0"
                       }`}
                     >
@@ -126,7 +126,7 @@ export default function Navbar() {
                                   onClick={() => {
                                     setMenuState(false);
                                   }}
-                                  className="flex w-full justify-start px-8 py-3 text-lg font-medium text-cool-gray-80 outline-none"
+                                  className="flex w-full justify-start px-8 py-3 text-lg font-medium text-cool-gray-80 outline-hidden"
                                 >
                                   {textContent.products.drive}
                                 </a>
@@ -139,7 +139,7 @@ export default function Navbar() {
                                   onClick={() => {
                                     setMenuState(false);
                                   }}
-                                  className="flex w-full justify-start px-8 py-3 text-lg font-medium text-cool-gray-80 outline-none"
+                                  className="flex w-full justify-start px-8 py-3 text-lg font-medium text-cool-gray-80 outline-hidden"
                                 >
                                   {textContent.products.s3}
                                 </a>
@@ -148,7 +148,7 @@ export default function Navbar() {
                                   href="https://send.internxt.com"
                                   target="_blank"
                                   rel="noreferrer"
-                                  className="flex w-full items-center justify-start px-8 py-3 text-lg font-medium text-cool-gray-80 outline-none"
+                                  className="flex w-full items-center justify-start px-8 py-3 text-lg font-medium text-cool-gray-80 outline-hidden"
                                 >
                                   <span>{textContent.products.send}</span>
                                 </a>
@@ -157,10 +157,10 @@ export default function Navbar() {
                                   href={urls.products.vpn}
                                   target="_blank"
                                   rel="noreferrer"
-                                  className="flex w-full items-center justify-start px-8 py-3 text-lg font-medium text-cool-gray-80 outline-none"
+                                  className="flex w-full items-center justify-start px-8 py-3 text-lg font-medium text-cool-gray-80 outline-hidden"
                                 >
                                   <span>{textContent.products.vpn}</span>
-                                  <span className="pointer-events-none ml-2 flex flex-row items-center whitespace-nowrap rounded-full bg-orange bg-opacity-15 px-2 text-supporting-2 font-medium uppercase text-orange">
+                                  <span className="pointer-events-none ml-2 flex flex-row items-center whitespace-nowrap rounded-full bg-orange bg-black/15 px-2 text-supporting-2 font-medium uppercase text-orange">
                                     {textContent.products.new}
                                   </span>
                                 </a>
@@ -222,7 +222,7 @@ export default function Navbar() {
                                   onClick={() => {
                                     setMenuState(false);
                                   }}
-                                  className="flex w-full justify-start px-8 py-3 text-lg font-medium text-cool-gray-80 outline-none"
+                                  className="flex w-full justify-start px-8 py-3 text-lg font-medium text-cool-gray-80 outline-hidden"
                                 >
                                   {textContent.ourValues.privacy}
                                 </a>
@@ -235,7 +235,7 @@ export default function Navbar() {
                                   onClick={() => {
                                     setMenuState(false);
                                   }}
-                                  className="flex w-full justify-start px-8 py-3 text-lg font-medium text-cool-gray-80 outline-none"
+                                  className="flex w-full justify-start px-8 py-3 text-lg font-medium text-cool-gray-80 outline-hidden"
                                 >
                                   {textContent.ourValues.openSource}
                                 </a>
@@ -254,7 +254,7 @@ export default function Navbar() {
                       onClick={() => {
                         setMenuState(false);
                       }}
-                      className={`delay-250 flex w-full translate-y-0 cursor-pointer px-8 py-3 outline-none transition duration-300 ${
+                      className={`delay-250 flex w-full translate-y-0 cursor-pointer px-8 py-3 outline-hidden transition duration-300 ${
                         menuState ? "opacity-100" : "-translate-y-4 opacity-0"
                       }`}
                     >
@@ -269,7 +269,7 @@ export default function Navbar() {
                       }}
                       tabIndex={0}
                       href="https://drive.internxt.com/login"
-                      className={`flex w-full translate-y-0 px-8 py-3 text-primary outline-none transition delay-300 duration-300 ${
+                      className={`flex w-full translate-y-0 px-8 py-3 text-primary outline-hidden transition delay-300 duration-300 ${
                         menuState ? "opacity-100" : "-translate-y-4 opacity-0"
                       }`}
                     >
@@ -322,7 +322,7 @@ export default function Navbar() {
                   />
 
                   {/* Menu items */}
-                  <div className="pointer-events-none absolute left-1/2 top-full z-50 w-52 -translate-x-1/2 translate-y-0 border border-black border-opacity-5 bg-transparent bg-white p-1.5 opacity-0 shadow-subtle transition duration-150 ease-in-out group-hover:pointer-events-auto group-hover:translate-y-1 group-hover:opacity-100">
+                  <div className="pointer-events-none absolute left-1/2 top-full z-50 w-52 -translate-x-1/2 translate-y-0 border border-black border-black/5 bg-transparent bg-white p-1.5 opacity-0 shadow-subtle transition duration-150 ease-in-out group-hover:pointer-events-auto group-hover:translate-y-1 group-hover:opacity-100">
                     <div className="absolute -top-4 left-1/2 h-4 w-4/5 -translate-x-1/2" />
 
                     <div className="relative grid gap-0 whitespace-nowrap rounded-xl bg-white lg:grid-cols-1 ">
@@ -379,7 +379,7 @@ export default function Navbar() {
                   />
 
                   {/* Menu items */}
-                  <div className="pointer-events-none absolute top-full left-1/2 z-50 w-52 -translate-x-1/2 translate-y-0 rounded-xl border border-black border-opacity-5 bg-white p-1.5 opacity-0 shadow-subtle transition duration-150 ease-in-out group-hover:pointer-events-auto group-hover:translate-y-1 group-hover:opacity-100">
+                  <div className="pointer-events-none absolute top-full left-1/2 z-50 w-52 -translate-x-1/2 translate-y-0 rounded-xl border border-black border-black/5 bg-white p-1.5 opacity-0 shadow-subtle transition duration-150 ease-in-out group-hover:pointer-events-auto group-hover:translate-y-1 group-hover:opacity-100">
                     <div className="absolute -top-4 left-1/2 h-4 w-4/5 -translate-x-1/2" />
 
                     <div className="relative grid gap-0 lg:grid-cols-1">
@@ -418,10 +418,10 @@ export default function Navbar() {
           </div>
 
           {/* Login and CTA */}
-          <div className="flex flex-1 flex-shrink-0 flex-grow flex-row items-center justify-end">
+          <div className="flex flex-1 shrink-0 grow flex-row items-center justify-end">
             <button
               onClick={() => goToLoginURL()}
-              className={`mr-2 hidden whitespace-nowrap rounded-lg border px-4 py-1.5 text-sm font-medium transition duration-150 ease-in-out focus:border focus:outline-none md:flex`}
+              className={`mr-2 hidden whitespace-nowrap rounded-lg border px-4 py-1.5 text-sm font-medium transition duration-150 ease-in-out focus:border focus:outline-hidden md:flex`}
             >
               {textContent.links.login}
             </button>
@@ -429,7 +429,7 @@ export default function Navbar() {
             <a
               href={`${INTERNXT_URL}/pricing`}
               id="get-started-link"
-              className={`flex justify-center rounded-lg border border-transparent bg-primary px-4 py-1.5 text-sm font-medium text-white transition-all duration-75 focus:outline-none sm:inline-flex`}
+              className={`flex justify-center rounded-lg border border-transparent bg-primary px-4 py-1.5 text-sm font-medium text-white transition-all duration-75 focus:outline-hidden sm:inline-flex`}
             >
               <p className="whitespace-nowrap">
                 {textContent.links.getStarted}

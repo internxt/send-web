@@ -60,7 +60,7 @@ function Item({
       </div>
       {onRemove && (
         <button
-          className="absolute right-0 top-0 flex h-full items-center justify-end bg-gradient-to-r from-transparent via-gray-1 to-gray-1 pl-12 lg:hidden lg:group-hover:flex"
+          className="absolute right-0 top-0 flex h-full items-center justify-end bg-linear-to-r from-transparent via-gray-1 to-gray-1 pl-12 lg:hidden lg:group-hover:flex"
           onClick={() => onRemove(item)}
         >
           <X size={20} className="text-gray-80" />
