@@ -322,7 +322,7 @@ export default function Navbar() {
                   />
 
                   {/* Menu items */}
-                  <div className="pointer-events-none absolute left-1/2 top-full z-50 w-52 -translate-x-1/2 translate-y-0 border border-black border-black/5 bg-transparent bg-white p-1.5 opacity-0 shadow-subtle transition duration-150 ease-in-out group-hover:pointer-events-auto group-hover:translate-y-1 group-hover:opacity-100">
+                  <div className="pointer-events-none absolute left-1/2 top-full z-50 w-52 -translate-x-1/2 translate-y-0 border border-black border-black/5 bg-transparent bg-white rounded-xl p-1.5 opacity-0 shadow-subtle transition duration-150 ease-in-out group-hover:pointer-events-auto group-hover:translate-y-1 group-hover:opacity-100">
                     <div className="absolute -top-4 left-1/2 h-4 w-4/5 -translate-x-1/2" />
 
                     <div className="relative grid gap-0 whitespace-nowrap rounded-xl bg-white lg:grid-cols-1 ">
