@@ -1,0 +1,37 @@
+name: CI Tests
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24.x'
+          cache: yarn
+
+      - name: Add .env
+        run: cp .env.template .env
+
+      - name: Add .npmrc
+        run: cp .npmrc.template .npmrc
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Build
+        run: yarn build
+
+      - name: Run tests
+        run: yarn test
