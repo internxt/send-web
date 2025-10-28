@@ -72,7 +72,6 @@
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",
     "@types/streamsaver": "2.0.5",
-    "@types/uuid": "11.0.0",
     "@vitejs/plugin-react": "5.1.0",
     "autoprefixer": "10.4.21",
     "dotenv": "17.2.3",
