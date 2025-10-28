@@ -8,7 +8,7 @@
     "dev": "vite",
     "start": "vite build && vite preview",
     "build": "vite build",
-    "test": "vitest run src/",
+    "test": "vitest run --coverage",
     "add:npmrc": "cp .npmrc.template .npmrc",
     "vercel:install": "yarn run add:npmrc && yarn install",
     "lint": "eslint ."
@@ -76,6 +76,7 @@
     "@types/streamsaver": "2.0.5",
     "@types/uuid": "11.0.0",
     "@vitejs/plugin-react": "5.1.0",
+    "@vitest/coverage-istanbul": "4.0.4",
     "autoprefixer": "10.4.21",
     "dotenv": "17.2.3",
     "eslint": "9.38.0",
