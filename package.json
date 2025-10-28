@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "start": "vite preview",
+    "start": "vite build && vite preview",
     "build": "vite build",
     "test": "vitest run src/",
     "add:npmrc": "cp .npmrc.template .npmrc",
