@@ -44,24 +44,6 @@ export async function binaryStreamToBlob(stream: BinaryStream): Promise<Blob> {
   return new Blob(slices);
 }
 
-interface FileInfo {
-  bucket: string;
-  mimetype: string;
-  filename: string;
-  frame: string;
-  size: number;
-  id: string;
-  created: Date;
-  hmac: {
-    value: string;
-    type: string;
-  };
-  erasure?: {
-    type: string;
-  };
-  index: string;
-}
-
 export function getDecryptedStream(
   encryptedContentSlices: ReadableStream<Uint8Array>[],
   decipher: Decipher,
@@ -93,44 +75,9 @@ export function getDecryptedStream(
   return decryptedStream;
 }
 
-async function getFileDownloadStream(
-  downloadUrls: string[],
-  decipher: Decipher,
-  abortController?: AbortController,
-): Promise<ReadableStream> {
-  const encryptedContentParts: ReadableStream<Uint8Array>[] = [];
-
-  for (const downloadUrl of downloadUrls) {
-    const encryptedStream = await fetch(downloadUrl, { signal: abortController?.signal }).then((res) => {
-      if (!res.body) {
-        throw new Error('No content received');
-      }
-
-      return res.body;
-    });
-
-    encryptedContentParts.push(encryptedStream);
-  }
-
-  return getDecryptedStream(encryptedContentParts, decipher);
-}
-
 interface NetworkCredentials {
   user: string;
   pass: string;
-}
-
-interface IDownloadParams {
-  bucketId: string;
-  fileId: string;
-  creds?: NetworkCredentials;
-  mnemonic?: string;
-  encryptionKey?: Buffer;
-  token?: string;
-  options?: {
-    notifyProgress: DownloadProgressCallback;
-    abortController?: AbortController;
-  };
 }
 
 type FileStream = ReadableStream<Uint8Array>;
@@ -161,32 +108,9 @@ interface DownloadSharedFileParams extends DownloadFileParams {
   encryptionKey: string
 }
 
-type DownloadSharedFileFunction = (params: DownloadSharedFileParams) => DownloadFileResponse;
 type DownloadOwnFileFunction = (params: DownloadOwnFileParams) => DownloadFileResponse;
 type DownloadFileFunction = (params: DownloadSharedFileParams | DownloadOwnFileParams) => DownloadFileResponse;
 
-const downloadSharedFile: DownloadSharedFileFunction = (params) => {
-  const { bucketId, fileId, encryptionKey, token, options } = params;
-
-  return new NetworkFacade(
-    Network.client(
-      process.env.REACT_APP_NETWORK_URL as string,
-      {
-        clientName: 'drive-web',
-        clientVersion: '1.0'
-      },
-      {
-        bridgeUser: '',
-        userId: ''
-      }
-    )
-  ).download(bucketId, fileId, '', {
-    key: Buffer.from(encryptionKey, 'hex'),
-    token,
-    downloadingCallback: options?.notifyProgress,
-    abortController: options?.abortController
-  });
-};
 
 function getAuthFromCredentials(creds: NetworkCredentials): { username: string, password: string } {
   return {
