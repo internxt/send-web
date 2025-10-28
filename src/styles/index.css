@@ -20,6 +20,10 @@
   }
 }
 
+div:focus-visible {
+  outline: none;
+}
+
 .fade-in-animation {
   animation-name: FadeIn;
   animation-duration: 500ms;
@@ -52,7 +56,7 @@ body {
 }
 
 .dropdown {
-  top: -90px;
+  top: -60px;
   left: 20px;
 }
 
