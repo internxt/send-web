@@ -85,7 +85,13 @@ const BgLoop = (text: any, ctaRef: RefObject<HTMLDivElement | null>) => {
   );
 };
 
-export default function Layout({ children }: { children: ReactNode }) {
+export default function Layout({
+  children,
+  hasContentBelow = true,
+}: {
+  children: ReactNode;
+  hasContentBelow?: boolean;
+}) {
   const backgroundRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
@@ -210,12 +216,14 @@ export default function Layout({ children }: { children: ReactNode }) {
                 {BgLoop(item.text, ctaRef)}
               </div>
             </div>
-            <div className="absolute bottom-12 hidden lg:flex">
-              <ArrowCircleDown
-                size={32}
-                className="animate-bounce text-white"
-              />
-            </div>
+            {hasContentBelow &&
+              <div className="absolute bottom-12 hidden lg:flex">
+                <ArrowCircleDown
+                  size={32}
+                  className="animate-bounce text-white"
+                />
+              </div>
+            }
           </div>
         </div>
 

@@ -93,7 +93,7 @@ export default function DownloadView() {
   }
 
   return (
-    <Layout>
+    <Layout hasContentBelow={false}>
       {state.status === "loading" && (
         <div className="fixed flex h-screen w-screen flex-row items-center justify-center overflow-hidden pb-32">
           <Spinner className="mt-16 h-10 w-10" />
