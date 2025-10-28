@@ -6,6 +6,7 @@ import { NetworkFacade } from "./NetworkFacade";
 import { reportError } from "../services/error-reporting.service";
 import axios, { AxiosError, AxiosProgressEvent } from "axios";
 import envService from "../services/env.service";
+import packageJson from '../../package.json';
 
 export type UploadProgressCallback = (
   totalBytes: number,
@@ -90,8 +91,8 @@ export async function uploadFile(
     Network.client(
       envService.getVariable("networkUrl"),
       {
-        clientName: "drive-web",
-        clientVersion: "1.0",
+        clientName: packageJson.name,
+        clientVersion: packageJson.version
       },
       {
         bridgeUser: auth.username,

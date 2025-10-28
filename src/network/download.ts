@@ -5,6 +5,7 @@ import { getSha256 } from './crypto';
 import { NetworkFacade } from './NetworkFacade';
 import { joinReadableBinaryStreams } from './streams';
 import envService from '../services/env.service';
+import packageJson from '../../package.json';
 
 export type DownloadProgressCallback = (totalBytes: number, downloadedBytes: number) => void;
 export type Downloadable = { fileId: string; bucketId: string };
@@ -125,8 +126,8 @@ const downloadOwnFile: DownloadOwnFileFunction = async (params) => {
     Network.client(
       envService.getVariable("networkUrl"),
       {
-        clientName: 'drive-web',
-        clientVersion: '1.0'
+        clientName: packageJson.name,
+        clientVersion: packageJson.version
       },
       {
         bridgeUser: auth.username,
