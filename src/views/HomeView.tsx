@@ -3,7 +3,7 @@ import { format } from "bytes";
 import copy from "copy-to-clipboard";
 import throttle from "lodash.throttle";
 import { CheckCircle, Copy, WarningCircle, X } from "phosphor-react";
-import { useContext, useEffect, useRef, useState } from "react";
+import { RefObject, useContext, useEffect, useRef, useState } from "react";
 import Button from "../components/Button";
 import CardBottom from "../components/CardBotton";
 import FancySpinner from "../components/FancySpinner";
@@ -423,7 +423,7 @@ function EmailForm({
   value: EmailFormState;
   onChange: (v: EmailFormState) => void;
   setShowTooltip: (v: boolean) => void;
-  inputTitleRef: React.MutableRefObject<any>;
+  inputTitleRef: RefObject<HTMLInputElement>;
 }) {
   const { sendTo, sendToField } = value;
 

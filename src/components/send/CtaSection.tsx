@@ -1,4 +1,3 @@
-import React from "react";
 import textContent from "../../assets/lang/en/send.json";
 
 const CtaSection = () => {

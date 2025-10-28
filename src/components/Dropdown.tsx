@@ -1,5 +1,5 @@
 import { Menu, Transition } from '@headlessui/react';
-import { ReactNode, Ref } from 'react';
+import { JSX, ReactNode, Ref } from 'react';
 
 export default function Dropdown({
   children,

@@ -47,7 +47,7 @@ const backgroundColor = [
   },
 ];
 
-const BgLoop = (text: any, ctaRef: RefObject<HTMLDivElement>) => {
+const BgLoop = (text: any, ctaRef: RefObject<HTMLDivElement | null>) => {
   return (
     <div
       ref={ctaRef}

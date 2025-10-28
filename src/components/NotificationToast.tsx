@@ -1,6 +1,7 @@
 import { Transition } from "@headlessui/react";
 import { CheckCircle, Info, Warning, WarningOctagon, X } from "phosphor-react";
 import { ToastShowProps, ToastType } from "../services/notifications.service";
+import { JSX } from "react";
 
 const NotificationToast = ({
   text,

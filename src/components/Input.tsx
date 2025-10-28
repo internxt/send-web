@@ -1,4 +1,5 @@
 import { WarningOctagon, Warning, CheckCircle } from "phosphor-react";
+import { JSX } from "react";
 
 export default function Input({
   className = "",

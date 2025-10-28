@@ -1,3 +1,5 @@
+import { JSX } from "react";
+
 export default function Switch<F extends string, S extends string>({
   className = "",
   options,

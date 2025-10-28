@@ -1,3 +1,5 @@
+import { JSX } from "react";
+
 const Spinner = ({ className = "" }: { className?: string }): JSX.Element => {
   return (
     <svg

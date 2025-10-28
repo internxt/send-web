@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { PlusCircle } from "phosphor-react";
 import ReactMarkdown from "react-markdown";
 

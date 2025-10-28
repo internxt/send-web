@@ -1,6 +1,5 @@
 import { X } from "phosphor-react";
-import React from "react";
-import { ReactComponent as SendIcon } from "../assets/images/share-file/visual.svg";
+import SendIcon from "../assets/images/share-file/visual.svg?react";
 import BackgroundImage from "../assets/images/share-file/banner-bg.png";
 
 export interface Props {
