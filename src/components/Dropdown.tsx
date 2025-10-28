@@ -24,7 +24,6 @@ export default function Dropdown({
         </Menu.Button>
 
         <Transition
-          className={`absolute ${openDirection === 'left' ? 'left-0' : 'right-0'}`}
           enter="transform transition duration-50 ease-out"
           enterFrom="scale-98 opacity-0"
           enterTo="scale-100 opacity-100"
@@ -32,7 +31,7 @@ export default function Dropdown({
           leaveFrom="scale-98 opacity-100"
           leaveTo="scale-100 opacity-0"
         >
-          <Menu.Items className={`absolute ${classMenuItems}`}>
+          <Menu.Items className={`absolute ${classMenuItems} ${openDirection === 'left' ? 'left-0' : 'right-0'}`}>
             {menuItems && (
               <div className="w-full max-w-xs">
                 {menuItems?.map((item, index) => (
