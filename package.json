@@ -13,7 +13,7 @@
     "vercel:install": "yarn run add:npmrc && yarn install"
   },
   "dependencies": {
-    "@headlessui/react": "1.7.19",
+    "@headlessui/react": "2.2.9",
     "@internxt/lib": "1.3.1",
     "@internxt/sdk": "1.11.12",
     "@sentry/react": "10.22.0",
