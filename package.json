@@ -12,7 +12,8 @@
     "add:npmrc": "cp .npmrc.template .npmrc",
     "vercel:install": "yarn run add:npmrc && yarn install",
     "lint": "eslint .",
-    "pretty": "prettier --write **/*.{js,jsx,tsx,ts}"
+    "pretty": "prettier --write **/*.{js,jsx,tsx,ts}",
+    "prepare": "husky"
   },
   "dependencies": {
     "@headlessui/react": "1.7.19",
@@ -82,6 +83,7 @@
     "autoprefixer": "10.4.21",
     "dotenv": "17.2.3",
     "eslint": "9.38.0",
+    "husky": "9.1.7",
     "jsdom": "27.0.1",
     "lint-staged": "16.2.6",
     "postcss": "8.5.6",
