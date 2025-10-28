@@ -1,6 +1,8 @@
 {
+  "author": "Internxt <hello@internxt.com>",
   "name": "send-web",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "description": "Secure, end-to-end encrypted file sharing by Internxt",
   "private": true,
   "dependencies": {
     "@headlessui/react": "^1.6.6",
