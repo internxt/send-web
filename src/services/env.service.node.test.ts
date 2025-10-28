@@ -10,7 +10,6 @@ describe('Check that env variables are loaded correctly', () => {
     const result = dotenv.config({ path: envPath });
 
     if (result.error) {
-      console.error('Error loading .env.example:', result.error);
       throw result.error;
     }
     vi.clearAllMocks();

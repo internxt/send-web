@@ -1,17 +1,14 @@
-import { Network } from "@internxt/sdk/dist/network";
-import { ErrorWithContext } from "@internxt/sdk/dist/network/errors";
+import { Network } from '@internxt/sdk/dist/network';
+import { ErrorWithContext } from '@internxt/sdk/dist/network/errors';
 
-import { getSha256 } from "./crypto";
-import { NetworkFacade } from "./NetworkFacade";
-import { reportError } from "../services/error-reporting.service";
-import axios, { AxiosError, AxiosProgressEvent } from "axios";
-import envService from "../services/env.service";
+import { getSha256 } from './crypto';
+import { NetworkFacade } from './NetworkFacade';
+import { reportError } from '../services/error-reporting.service';
+import axios, { AxiosError, AxiosProgressEvent } from 'axios';
+import envService from '../services/env.service';
 import packageJson from '../../package.json';
 
-export type UploadProgressCallback = (
-  totalBytes: number,
-  uploadedBytes: number
-) => void;
+export type UploadProgressCallback = (totalBytes: number, uploadedBytes: number) => void;
 
 interface NetworkCredentials {
   user: string;
@@ -52,7 +49,7 @@ export async function uploadFileUint8Array(
 
     return { etag: res.headers.etag };
   } catch (err) {
-    const error = err as AxiosError<any>;
+    const error = err as AxiosError;
 
     if (axios.isCancel(error)) {
       throw new Error('Upload aborted');
@@ -76,10 +73,7 @@ async function getAuthFromCredentials(creds: NetworkCredentials): Promise<{
   };
 }
 
-export async function uploadFile(
-  bucketId: string,
-  params: IUploadParams
-): Promise<string> {
+export async function uploadFile(bucketId: string, params: IUploadParams): Promise<string> {
   const file: File = params.filecontent;
 
   const auth = await getAuthFromCredentials({
@@ -89,16 +83,16 @@ export async function uploadFile(
 
   const facade = new NetworkFacade(
     Network.client(
-      envService.getVariable("networkUrl"),
+      envService.getVariable('networkUrl'),
       {
         clientName: packageJson.name,
-        clientVersion: packageJson.version
+        clientVersion: packageJson.version,
       },
       {
         bridgeUser: auth.username,
         userId: auth.password,
-      }
-    )
+      },
+    ),
   );
 
   if (params.parts) {

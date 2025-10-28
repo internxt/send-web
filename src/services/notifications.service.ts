@@ -1,12 +1,12 @@
-import { createElement } from "react";
-import toast from "react-hot-toast";
-import NotificationToast from "../components/NotificationToast";
+import { createElement } from 'react';
+import toast from 'react-hot-toast';
+import NotificationToast from '../components/NotificationToast';
 
 export enum ToastType {
-  Success = "success",
-  Error = "error",
-  Warning = "warning",
-  Info = "info",
+  Success = 'success',
+  Error = 'error',
+  Warning = 'warning',
+  Info = 'info',
 }
 
 export type ToastShowProps = {
@@ -18,13 +18,7 @@ export type ToastShowProps = {
 };
 
 const notificationsService = {
-  show: ({
-    text,
-    type,
-    action,
-    duration = 5000,
-    closable = true,
-  }: ToastShowProps): string => {
+  show: ({ text, type, action, duration = 5000, closable = true }: ToastShowProps): string => {
     const id = toast.custom(
       (t) =>
         createElement(NotificationToast, {
@@ -37,7 +31,7 @@ const notificationsService = {
             toast.dismiss(id);
           },
         }),
-      { duration }
+      { duration },
     );
     return id;
   },

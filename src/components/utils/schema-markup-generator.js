@@ -18,7 +18,7 @@ export const sm_faq = (faq) => {
           "text": "`;
 
     if (item.answer.length > 1) {
-      item.answer.forEach((answer, i, arr) => {
+      item.answer.forEach((answer) => {
         data += `<p>${answer}</p>`;
       });
     } else {
@@ -27,8 +27,8 @@ export const sm_faq = (faq) => {
 
     data += `"
       }}`;
-    if (i + 1 < arr.length) data += ",";
+    if (i + 1 < arr.length) data += ',';
   });
-  data += `]}`;
+  data += ']}';
   return data;
 };

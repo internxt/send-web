@@ -38,15 +38,15 @@ export function buildProgressStream(source: BinaryStream, onRead: (readBytes: nu
     },
     cancel() {
       return reader.cancel();
-    }
+    },
   });
 }
 
 export function joinReadableBinaryStreams(streams: BinaryStream[]): ReadableStream {
-  const streamsCopy = streams.map(s => s);
+  const streamsCopy = streams.map((s) => s);
   let keepReading = true;
 
-  const flush = () => streamsCopy.forEach(s => s.cancel());
+  const flush = () => streamsCopy.forEach((s) => s.cancel());
 
   const stream = new ReadableStream({
     async pull(controller) {
@@ -75,7 +75,7 @@ export function joinReadableBinaryStreams(streams: BinaryStream[]): ReadableStre
     },
     cancel() {
       keepReading = false;
-    }
+    },
   });
 
   return stream;
@@ -87,7 +87,7 @@ export function joinReadableBinaryStreams(streams: BinaryStream[]): ReadableStre
  * @param chunkSize The chunkSize in bytes that we want each chunk to be
  * @returns A readable whose output is chunks of the file of size chunkSize
  */
- export function streamFileIntoChunks(
+export function streamFileIntoChunks(
   readable: ReadableStream<Uint8Array>,
   chunkSize: number,
 ): ReadableStream<Uint8Array> {

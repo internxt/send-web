@@ -1,23 +1,24 @@
 import fileDownload from 'js-file-download';
 import streamSaver from 'streamsaver';
 
-import { loadWritableStreamPonyfill } from "../network/download";
+import { loadWritableStreamPonyfill } from '../network/download';
 import { binaryStreamToBlob, buildProgressStream } from '../network/streams';
 
 function isBrave() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const maybeBrave = (window.navigator as { brave?: any }).brave;
 
-  return maybeBrave !== undefined && maybeBrave.isBrave.name === "isBrave";
+  return maybeBrave !== undefined && maybeBrave.isBrave.name === 'isBrave';
 }
 
 export class StreamService {
   static async pipeReadableToFileSystemStream(
-    readable: ReadableStream, 
+    readable: ReadableStream,
     fileSystemName: string,
     opts: {
-      progress: (readBytes: number) => void,
-      abortController?: AbortController
-    }
+      progress: (readBytes: number) => void;
+      abortController?: AbortController;
+    },
   ): Promise<void> {
     const { progress } = opts;
     const passThrough = progress ? buildProgressStream(readable, progress) : readable;
@@ -34,9 +35,6 @@ export class StreamService {
       streamSaver.WritableStream = window.WritableStream;
     }
 
-    await passThrough.pipeTo(
-      streamSaver.createWriteStream(fileSystemName),
-      { signal: opts.abortController?.signal }
-    );
+    await passThrough.pipeTo(streamSaver.createWriteStream(fileSystemName), { signal: opts.abortController?.signal });
   }
 }

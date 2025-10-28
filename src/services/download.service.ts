@@ -1,38 +1,38 @@
-import axios from "axios";
-import fileDownload from "js-file-download";
+import axios from 'axios';
+import fileDownload from 'js-file-download';
 
-import { NetworkService, ProgressOptions } from "./network.service";
-import { FlatFolderZip } from "./zip/FlatFolderZip";
+import { NetworkService, ProgressOptions } from './network.service';
+import { FlatFolderZip } from './zip/FlatFolderZip';
 
-import { binaryStreamToBlob } from "../network/streams";
-import { SendItem } from "../models/SendItem";
-import { StreamService } from "./stream.service";
-import { getAllItemsList } from "./items.service";
-import envService from "./env.service";
-
+import { binaryStreamToBlob } from '../network/streams';
+import { SendItem } from '../models/SendItem';
+import { StreamService } from './stream.service';
+import { getAllItemsList } from './items.service';
+import envService from './env.service';
 
 /**
- * This service has *the only responsability* of downloading 
+ * This service has *the only responsability* of downloading
  * the content via browser to the user filesystem.
  */
 export class DownloadService {
-  static async downloadFilesFromLink(
-    linkId: string,
-    opts?: ProgressOptions
-  ): Promise<void> {
+  static async downloadFilesFromLink(linkId: string, opts?: ProgressOptions): Promise<void> {
     const { title, items, code } = await getSendLink(linkId);
     const date = new Date();
-    const now = date.getFullYear() + String(date.getMonth() + 1).padStart(2, '0')
-      + String(date.getDate()).padStart(2, '0') + String(date.getHours()).padStart(2, '0')
-      + String(date.getMinutes()).padStart(2, '0') + String(date.getSeconds()).padStart(2, '0')
-      + String(date.getMilliseconds()).padStart(3, '0');
+    const now =
+      date.getFullYear() +
+      String(date.getMonth() + 1).padStart(2, '0') +
+      String(date.getDate()).padStart(2, '0') +
+      String(date.getHours()).padStart(2, '0') +
+      String(date.getMinutes()).padStart(2, '0') +
+      String(date.getSeconds()).padStart(2, '0') +
+      String(date.getMilliseconds()).padStart(3, '0');
 
     await DownloadService.downloadFiles(
       title && String(title).trim().length > 0 ? title : 'internxt-send_' + now,
       items,
       NetworkService.getInstance(),
       opts?.plainCode || code,
-      opts
+      opts,
     );
   }
 
@@ -41,7 +41,7 @@ export class DownloadService {
     items: SendItem[],
     networkService: NetworkService,
     plainCode: string,
-    opts?: ProgressOptions
+    opts?: ProgressOptions,
   ) {
     const totalBytes = items.reduce((a, f) => a + (f.type === 'file' ? f.size : 0), 0);
 
@@ -51,7 +51,7 @@ export class DownloadService {
       progress: (downloadedBytes: number) => {
         opts?.progress?.(opts.totalBytes || totalBytes, Math.min(downloadedBytes, opts.totalBytes || totalBytes));
       },
-      abortController: opts?.abortController
+      abortController: opts?.abortController,
     };
 
     if (itemList.length > 1 || (itemList.length === 1 && itemList[0].type === 'folder')) {
@@ -65,24 +65,13 @@ export class DownloadService {
     } else {
       const [firstItem] = itemList;
       if (firstItem.type === 'file') {
-        const itemDownloadStream = await networkService.getDownloadFileStream(
-          firstItem,
-          plainCode,
-          opts
-        );
+        const itemDownloadStream = await networkService.getDownloadFileStream(firstItem, plainCode, opts);
 
         const oneGigabyte = 1 * 1024 * 1024 * 1024;
         if (firstItem.size > oneGigabyte) {
-          await StreamService.pipeReadableToFileSystemStream(
-            itemDownloadStream,
-            firstItem.name,
-            options
-          )
+          await StreamService.pipeReadableToFileSystemStream(itemDownloadStream, firstItem.name, options);
         } else {
-          fileDownload(
-            await binaryStreamToBlob(itemDownloadStream),
-            firstItem.name
-          );
+          fileDownload(await binaryStreamToBlob(itemDownloadStream), firstItem.name);
         }
       } else if (firstItem.type === 'folder') {
         const zip = new FlatFolderZip(firstItem.name, options);
@@ -92,29 +81,33 @@ export class DownloadService {
     }
   }
 
-  static async addItemToZip(zip: FlatFolderZip, item: SendItem,
+  static async addItemToZip(
+    zip: FlatFolderZip,
+    item: SendItem,
     networkService: NetworkService,
     plainCode: string,
-    opts?: ProgressOptions) {
+    opts?: ProgressOptions,
+  ) {
     if (item.type === 'file') {
-      const itemDownloadStream = await networkService.getDownloadFileStream(
-        item,
-        plainCode
-      );
+      const itemDownloadStream = await networkService.getDownloadFileStream(item, plainCode);
       zip.addFile(item.path || item.name, itemDownloadStream);
     } else if (item.type === 'folder') {
       zip.addFolder(item.path || item.name);
     }
     if (item.childrenFiles && item.childrenFiles.length > 0) {
-      await Promise.all(item.childrenFiles.map((childrenFile) => {
-        return this.addItemToZip(zip, childrenFile, networkService, plainCode, opts);
-      }));
+      await Promise.all(
+        item.childrenFiles.map((childrenFile) => {
+          return this.addItemToZip(zip, childrenFile, networkService, plainCode, opts);
+        }),
+      );
     }
 
     if (item.childrenFolders && item.childrenFolders.length > 0) {
-      await Promise.all(item.childrenFolders.map((childrenFolder) => {
-        return this.addItemToZip(zip, childrenFolder, networkService, plainCode, opts);
-      }));
+      await Promise.all(
+        item.childrenFolders.map((childrenFolder) => {
+          return this.addItemToZip(zip, childrenFolder, networkService, plainCode, opts);
+        }),
+      );
     }
   }
 }
@@ -136,12 +129,8 @@ export interface GetSendLinkResponse {
   size: number;
 }
 
-export async function getSendLink(
-  linkId: string
-): Promise<GetSendLinkResponse> {
-  const res = await axios.get<GetSendLinkResponse>(
-    envService.getVariable("sendApiUrl") + "/links/" + linkId
-  );
+export async function getSendLink(linkId: string): Promise<GetSendLinkResponse> {
+  const res = await axios.get<GetSendLinkResponse>(envService.getVariable('sendApiUrl') + '/links/' + linkId);
 
   return res.data;
 }

@@ -1,16 +1,15 @@
-import { Toaster } from "react-hot-toast";
-import { BrowserRouter, Navigate, Route, Routes, useParams, useSearchParams } from "react-router-dom";
-import RootDropzone from "./components/RootDropzone";
-import { FilesProvider } from "./contexts/Files";
-import DownloadView from "./views/DownloadView";
-import HomeView from "./views/HomeView";
-import NotFoundView from "./views/NotFoundView";
-
+import { Toaster } from 'react-hot-toast';
+import { BrowserRouter, Navigate, Route, Routes, useParams, useSearchParams } from 'react-router-dom';
+import RootDropzone from './components/RootDropzone';
+import { FilesProvider } from './contexts/Files';
+import DownloadView from './views/DownloadView';
+import HomeView from './views/HomeView';
+import NotFoundView from './views/NotFoundView';
 
 function DownloadRedirectWrapper() {
   const { sendId } = useParams();
   const [searchParams] = useSearchParams();
-  const code = searchParams.get("code") ?? '';
+  const code = searchParams.get('code') ?? '';
 
   return <Navigate to={`/d/${sendId}/${code}`} replace />;
 }

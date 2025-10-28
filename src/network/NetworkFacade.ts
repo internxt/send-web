@@ -1,21 +1,13 @@
-import { Network as NetworkModule } from "@internxt/sdk";
-import { createCipheriv, createDecipheriv, randomBytes } from "crypto";
-import { validateMnemonic } from "bip39";
-import {
-  uploadFile,
-  uploadMultipartFile,
-} from "@internxt/sdk/dist/network/upload";
-import { downloadFile } from "@internxt/sdk/dist/network/download";
+import { Network as NetworkModule } from '@internxt/sdk';
+import { createCipheriv, createDecipheriv, randomBytes } from 'crypto';
+import { validateMnemonic } from 'bip39';
+import { uploadFile, uploadMultipartFile } from '@internxt/sdk/dist/network/upload';
+import { downloadFile } from '@internxt/sdk/dist/network/download';
 
-import {
-  encryptStreamInParts,
-  generateFileKey,
-  getEncryptedFile,
-  processEveryFileBlobReturnHash,
-} from "./crypto";
-import { DownloadProgressCallback, getDecryptedStream } from "./download";
-import { uploadFileUint8Array, UploadProgressCallback } from "./upload";
-import { buildProgressStream } from "./streams";
+import { encryptStreamInParts, generateFileKey, getEncryptedFile, processEveryFileBlobReturnHash } from './crypto';
+import { DownloadProgressCallback, getDecryptedStream } from './download';
+import { uploadFileUint8Array, UploadProgressCallback } from './upload';
+import { buildProgressStream } from './streams';
 
 interface UploadOptions {
   uploadingCallback: UploadProgressCallback;
@@ -46,22 +38,13 @@ export class NetworkFacade {
         return validateMnemonic(mnemonic);
       },
       generateFileKey: (mnemonic, bucketId, index) => {
-        return generateFileKey(
-          mnemonic,
-          bucketId,
-          index as Buffer
-        );
+        return generateFileKey(mnemonic, bucketId, index as Buffer);
       },
       randomBytes,
     };
   }
 
-  upload(
-    bucketId: string,
-    mnemonic: string,
-    file: File,
-    options: UploadOptions
-  ): Promise<string> {
+  upload(bucketId: string, mnemonic: string, file: File, options: UploadOptions): Promise<string> {
     let fileToUpload: Uint8Array;
     let fileHash: string;
 
@@ -72,11 +55,7 @@ export class NetworkFacade {
       mnemonic,
       file.size,
       async (algorithm, key, iv) => {
-        const cipher = createCipheriv(
-          "aes-256-ctr",
-          key as Buffer,
-          iv as Buffer
-        );
+        const cipher = createCipheriv('aes-256-ctr', key as Buffer, iv as Buffer);
         const [encryptedFile, hash] = await getEncryptedFile(file, cipher, file.size);
 
         fileToUpload = encryptedFile;
@@ -95,16 +74,11 @@ export class NetworkFacade {
         fileToUpload = new Uint8Array();
 
         return fileHash;
-      }
+      },
     );
   }
 
-  uploadMultipart(
-    bucketId: string,
-    mnemonic: string,
-    file: File,
-    options: UploadMultipartOptions
-  ): Promise<string> {
+  uploadMultipart(bucketId: string, mnemonic: string, file: File, options: UploadMultipartOptions): Promise<string> {
     let fileReadable: ReadableStream<Uint8Array>;
 
     const partsUploadedBytes: Record<number, number> = {};
@@ -114,7 +88,7 @@ export class NetworkFacade {
 
       options.uploadingCallback(
         file.size,
-        Object.values(partsUploadedBytes).reduce((a, p) => a + p, 0)
+        Object.values(partsUploadedBytes).reduce((a, p) => a + p, 0),
       );
     }
 
@@ -125,51 +99,44 @@ export class NetworkFacade {
       mnemonic,
       file.size,
       async (algorithm, key, iv) => {
-        const cipher = createCipheriv(
-          "aes-256-ctr",
-          key as Buffer,
-          iv as Buffer
-        );
+        const cipher = createCipheriv('aes-256-ctr', key as Buffer, iv as Buffer);
         fileReadable = encryptStreamInParts(file, cipher, options.parts);
       },
       async (urls: string[]) => {
         const fileParts: { PartNumber: number; ETag: string }[] = [];
 
         let currentUrlIndex = 0;
-        const fileHash = await processEveryFileBlobReturnHash(
-          fileReadable,
-          async (blob) => {
-            const currentUrl = urls[currentUrlIndex];
+        const fileHash = await processEveryFileBlobReturnHash(fileReadable, async (blob) => {
+          const currentUrl = urls[currentUrlIndex];
 
-            const response = await uploadFileUint8Array(blob, currentUrl, {
-              progressCallback: (_, uploadedBytes) => {
-                notifyProgress(currentUrlIndex, uploadedBytes);
-              },
-              abortController: options.abortController,
-            });
+          const response = await uploadFileUint8Array(blob, currentUrl, {
+            progressCallback: (_, uploadedBytes) => {
+              notifyProgress(currentUrlIndex, uploadedBytes);
+            },
+            abortController: options.abortController,
+          });
 
-            blob = new Uint8Array();
+          blob = new Uint8Array();
 
-            const ETag = response.etag;
+          const ETag = response.etag;
 
-            if (!ETag) {
-              throw new Error("ETag header was not returned");
-            }
-            fileParts.push({
-              ETag,
-              PartNumber: currentUrlIndex + 1,
-            });
-
-            currentUrlIndex += 1;
+          if (!ETag) {
+            throw new Error('ETag header was not returned');
           }
-        );
+          fileParts.push({
+            ETag,
+            PartNumber: currentUrlIndex + 1,
+          });
+
+          currentUrlIndex += 1;
+        });
 
         return {
           hash: fileHash,
           parts: fileParts,
         };
       },
-      options.parts
+      options.parts,
     );
   }
 
@@ -177,7 +144,7 @@ export class NetworkFacade {
     bucketId: string,
     fileId: string,
     mnemonic: string,
-    options?: DownloadOptions
+    options?: DownloadOptions,
   ): Promise<ReadableStream> {
     const encryptedContentStreams: ReadableStream<Uint8Array>[] = [];
     let fileStream: ReadableStream<Uint8Array>;
@@ -194,7 +161,7 @@ export class NetworkFacade {
       async (downloadables) => {
         for (const downloadable of downloadables) {
           if (options?.abortController?.signal.aborted) {
-            throw new Error("Download aborted");
+            throw new Error('Download aborted');
           }
 
           const fetchUrl = downloadable.url;
@@ -203,7 +170,7 @@ export class NetworkFacade {
             signal: options?.abortController?.signal,
           }).then((res) => {
             if (!res.body) {
-              throw new Error("No content received");
+              throw new Error('No content received');
             }
 
             return res.body;
@@ -215,23 +182,16 @@ export class NetworkFacade {
       async (algorithm, key, iv, fileSize) => {
         const decryptedStream = getDecryptedStream(
           encryptedContentStreams,
-          createDecipheriv(
-            "aes-256-ctr",
-            options?.key || (key as Buffer),
-            iv as Buffer
-          )
+          createDecipheriv('aes-256-ctr', options?.key || (key as Buffer), iv as Buffer),
         );
 
         fileStream = buildProgressStream(decryptedStream, (readBytes) => {
-          options &&
-            options.downloadingCallback &&
-            options.downloadingCallback(fileSize, readBytes);
+          options?.downloadingCallback?.(fileSize, readBytes);
         });
       },
-      (options && options.token && { token: options.token }) || undefined
+      (options && options.token && { token: options.token }) || undefined,
     );
 
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return fileStream!;
   }
 }

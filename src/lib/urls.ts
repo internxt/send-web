@@ -1,5 +1,5 @@
-const INXT_URL = "https://internxt.com";
-const INXT_DRIVE_URL = "https://drive.internxt.com";
+const INXT_URL = 'https://internxt.com';
+const INXT_DRIVE_URL = 'https://drive.internxt.com';
 
 const urls = {
   legal: `${INXT_URL}/legal`,
@@ -7,7 +7,7 @@ const urls = {
     drive: `${INXT_URL}/drive`,
     photos: `${INXT_URL}/photos`,
     webdav: `${INXT_URL}/webdav`,
-    send: "https://send.internxt.com",
+    send: 'https://send.internxt.com',
     pricing: `${INXT_URL}/pricing`,
     vpn: `${INXT_URL}/vpn`,
     business: `${INXT_URL}/business`,
@@ -15,7 +15,7 @@ const urls = {
   company: {
     about: `${INXT_URL}/about`,
     privacy: `${INXT_URL}/privacy`,
-    security: "https://blog.internxt.com/how-internxt-protects-your-data",
+    security: 'https://blog.internxt.com/how-internxt-protects-your-data',
     openSource: `${INXT_URL}/open-source`,
     mediaArea: `${INXT_URL}/media-area`,
     legal: `${INXT_URL}/legal`,
@@ -24,14 +24,14 @@ const urls = {
     newsletter: `${INXT_URL}/newsletter-subscribe`,
     signup: `${INXT_DRIVE_URL}/new`,
     login: `${INXT_DRIVE_URL}/login`,
-    support: "https://help.internxt.com",
-    affiliates: "https://internxt.com/affiliates",
-    github: "https://github.com/internxt",
-    whitePaper: `/whitepaper/internxt-white-paper.pdf`,
+    support: 'https://help.internxt.com',
+    affiliates: 'https://internxt.com/affiliates',
+    github: 'https://github.com/internxt',
+    whitePaper: '/whitepaper/internxt-white-paper.pdf',
     storageForEducation: `${INXT_URL}/cloud-storage-for-education`,
   },
   resources: {
-    blog: "https://blog.internxt.com/",
+    blog: 'https://blog.internxt.com/',
     storageComparison: `${INXT_URL}/cloud-storage-comparison`,
     privacyDirectory: `${INXT_URL}/privacy-directory`,
     pCloudAlternatives: `${INXT_URL}/pcloud-alternative`,
@@ -47,12 +47,11 @@ const urls = {
     fileConverter: `${INXT_URL}/file-converter`,
   },
   social: {
-    twitter: "https://twitter.com/Internxt",
-    reddit: "https://www.reddit.com/r/internxt/",
-    linkedin: "https://linkedin.com/company/internxt",
-    instagram: "https://instagram.com/internxt",
-    youtube:
-      "https://www.youtube.com/channel/UCW2SxWdVEAEACYuejCgpGwg/featured",
+    twitter: 'https://twitter.com/Internxt',
+    reddit: 'https://www.reddit.com/r/internxt/',
+    linkedin: 'https://linkedin.com/company/internxt',
+    instagram: 'https://instagram.com/internxt',
+    youtube: 'https://www.youtube.com/channel/UCW2SxWdVEAEACYuejCgpGwg/featured',
   },
 };
 

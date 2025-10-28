@@ -81,37 +81,36 @@ interface NetworkCredentials {
 
 type FileStream = ReadableStream<Uint8Array>;
 type DownloadFileResponse = Promise<FileStream>;
-type DownloadFileOptions = { notifyProgress: DownloadProgressCallback, abortController?: AbortController };
+type DownloadFileOptions = { notifyProgress: DownloadProgressCallback; abortController?: AbortController };
 interface NetworkCredentials {
   user: string;
   pass: string;
 }
 
 interface DownloadFileParams {
-  bucketId: string
-  fileId: string
-  options?: DownloadFileOptions
+  bucketId: string;
+  fileId: string;
+  options?: DownloadFileOptions;
 }
 
 interface DownloadOwnFileParams extends DownloadFileParams {
-  creds: NetworkCredentials
-  mnemonic: string
-  token?: never
-  encryptionKey?: never
+  creds: NetworkCredentials;
+  mnemonic: string;
+  token?: never;
+  encryptionKey?: never;
 }
 
 interface DownloadSharedFileParams extends DownloadFileParams {
-  creds?: never
-  mnemonic?: never
-  token: string
-  encryptionKey: string
+  creds?: never;
+  mnemonic?: never;
+  token: string;
+  encryptionKey: string;
 }
 
 type DownloadOwnFileFunction = (params: DownloadOwnFileParams) => DownloadFileResponse;
 type DownloadFileFunction = (params: DownloadSharedFileParams | DownloadOwnFileParams) => DownloadFileResponse;
 
-
-async function getAuthFromCredentials(creds: NetworkCredentials): Promise<{ username: string, password: string }> {
+async function getAuthFromCredentials(creds: NetworkCredentials): Promise<{ username: string; password: string }> {
   return {
     username: creds.user,
     password: await getSha256(creds.pass),
@@ -124,19 +123,19 @@ const downloadOwnFile: DownloadOwnFileFunction = async (params) => {
 
   return new NetworkFacade(
     Network.client(
-      envService.getVariable("networkUrl"),
+      envService.getVariable('networkUrl'),
       {
         clientName: packageJson.name,
-        clientVersion: packageJson.version
+        clientVersion: packageJson.version,
       },
       {
         bridgeUser: auth.username,
-        userId: auth.password
-      }
-    )
+        userId: auth.password,
+      },
+    ),
   ).download(bucketId, fileId, mnemonic, {
     downloadingCallback: options?.notifyProgress,
-    abortController: options?.abortController
+    abortController: options?.abortController,
   });
 };
 

@@ -1,26 +1,12 @@
-import { File, Folder, PlusCircle } from "phosphor-react";
-import {
-  ChangeEvent,
-  forwardRef,
-  MouseEvent,
-  ReactNode,
-  useContext,
-  useRef,
-  useState,
-} from "react";
-import { FilesContext } from "../contexts/Files";
-import { format } from "bytes";
-import { MAX_BYTES_PER_SEND, MAX_ITEMS_PER_LINK } from "../constants";
-import ItemsList from "./ItemList";
-import Dropdown from "./Dropdown";
+import { File, Folder, PlusCircle } from 'phosphor-react';
+import { ChangeEvent, forwardRef, MouseEvent, ReactNode, useContext, useRef, useState } from 'react';
+import { FilesContext } from '../contexts/Files';
+import { format } from 'bytes';
+import { MAX_BYTES_PER_SEND, MAX_ITEMS_PER_LINK } from '../constants';
+import ItemsList from './ItemList';
+import Dropdown from './Dropdown';
 
-export default function FileArea({
-  className = "",
-  scroll,
-}: {
-  className?: string;
-  scroll: boolean;
-}) {
+export default function FileArea({ className = '', scroll }: { className?: string; scroll: boolean }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const folderInputRef = useRef<HTMLInputElement>(null);
   const dropdownMenuButtonRef = useRef<HTMLButtonElement>(null);
@@ -43,31 +29,26 @@ export default function FileArea({
     if (event.target.files) {
       fileContext.addFiles(Array.from(event.target.files));
     }
-    if (dropdownMenuButtonRef.current?.ariaExpanded === "true") {
+    if (dropdownMenuButtonRef.current?.ariaExpanded === 'true') {
       dropdownMenuButtonRef.current?.click();
     }
     setFileInputKey(Date.now());
     setFolderInputKey(Date.now());
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const MenuItem = forwardRef(
-    (
-      {
-        children,
-        onClick,
-      }: { children: ReactNode; onClick: (e: MouseEvent) => void },
-      ref
-    ) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    ({ children, onClick }: { children: ReactNode; onClick: (e: MouseEvent) => void }, ref) => {
       return (
         <div
-          className="flex cursor-pointer items-center rounded-md px-3 py-1 text-gray-80 hover:bg-primary hover:text-white active:bg-primary-dark"
+          className="flex cursor-pointer items-center rounded-md px-3 py-1 text-gray-80 hover:bg-primary
+            hover:text-white active:bg-primary-dark"
           onClick={onClick}
         >
           {children}
         </div>
       );
-    }
+    },
   );
 
   const spaceRemaining = MAX_BYTES_PER_SEND - fileContext.totalFilesSize;
@@ -93,29 +74,20 @@ export default function FileArea({
         webkitdirectory=""
       />
       {fileContext.itemList.length === 0 ? (
-        <Empty
-          onFileExplorerOpen={onFileExplorerOpen}
-          onFolderExplorerOpen={onFolderExplorerOpen}
-        />
+        <Empty onFileExplorerOpen={onFileExplorerOpen} onFolderExplorerOpen={onFolderExplorerOpen} />
       ) : (
         <>
           <ItemsList
             items={fileContext.itemList}
             onRemoveItem={fileContext.removeItem}
-            className={`flex-1 bg-gray-1 px-5 py-3 ${
-              scroll ? "overflow-y-auto" : ""
-            } `}
+            className={`flex-1 bg-gray-1 px-5 py-3 ${scroll ? 'overflow-y-auto' : ''} `}
           />
 
           <Dropdown
             buttonInputRef={dropdownMenuButtonRef}
-            classButton={
-              "flex flex-1 cursor-pointer select-none items-center bg-gray-1 px-5 py-2.5"
-            }
-            openDirection={"left"}
-            classMenuItems={
-              "left-0 w-max rounded-md border-opacity-8 bg-white drop-shadow-sm dropdown"
-            }
+            classButton={'flex flex-1 cursor-pointer select-none items-center bg-gray-1 px-5 py-2.5'}
+            openDirection={'left'}
+            classMenuItems={'left-0 w-max rounded-md border-opacity-8 bg-white drop-shadow-sm dropdown'}
             menuItems={[
               <MenuItem onClick={onFolderExplorerOpen}>
                 <Folder size={20} />
@@ -132,8 +104,8 @@ export default function FileArea({
               <p className="text-left text-sm text-gray-80">Add more items</p>
               <div className="flex space-x-1.5 text-xs text-gray-50">
                 <p>
-                  {fileContext.totalFilesCount} / {MAX_ITEMS_PER_LINK}{" "}
-                  {fileContext.totalFilesCount > 1 ? "files" : "file"} added
+                  {fileContext.totalFilesCount} / {MAX_ITEMS_PER_LINK}{' '}
+                  {fileContext.totalFilesCount > 1 ? 'files' : 'file'} added
                 </p>
                 <p className="font-bold text-gray-30">·</p>
                 <p>{format(spaceRemaining)} remaining</p>
@@ -164,12 +136,7 @@ function Empty({
           e.stopPropagation();
         }}
       >
-        <PlusCircle
-          size={48}
-          className="cursor-pointer text-primary"
-          weight="fill"
-          onClick={onFileExplorerOpen}
-        />
+        <PlusCircle size={48} className="cursor-pointer text-primary" weight="fill" onClick={onFileExplorerOpen} />
         <div className="ml-2">
           <h1 className="text-2xl font-medium text-gray-80">Upload files</h1>
           <div onClick={onFolderExplorerOpen} className="cursor-pointer">
@@ -183,7 +150,7 @@ function Empty({
   );
 }
 
-declare module "react" {
+declare module 'react' {
   interface HTMLAttributes<T> extends AriaAttributes, DOMAttributes<T> {
     // extends React's HTMLAttributes
     directory?: string;
