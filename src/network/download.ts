@@ -6,6 +6,7 @@ import { sha256 } from './crypto';
 import { NetworkFacade } from './NetworkFacade';
 import { Abortable } from './requests';
 import { joinReadableBinaryStreams } from './streams';
+import envService from '../services/env.service';
 
 export type DownloadProgressCallback = (totalBytes: number, downloadedBytes: number) => void;
 export type Downloadable = { fileId: string; bucketId: string };
@@ -200,7 +201,7 @@ const downloadOwnFile: DownloadOwnFileFunction = (params) => {
 
   return new NetworkFacade(
     Network.client(
-      process.env.REACT_APP_NETWORK_URL as string,
+      envService.getVariable("networkUrl"),
       {
         clientName: 'drive-web',
         clientVersion: '1.0'

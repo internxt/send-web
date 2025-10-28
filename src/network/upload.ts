@@ -5,6 +5,7 @@ import { ErrorWithContext } from "@internxt/sdk/dist/network/errors";
 import { sha256 } from "./crypto";
 import { NetworkFacade } from "./NetworkFacade";
 import { reportError } from "../services/error-reporting.service";
+import envService from "../services/env.service";
 
 export type UploadProgressCallback = (
   totalBytes: number,
@@ -110,7 +111,7 @@ export function uploadFile(
 
   const facade = new NetworkFacade(
     Network.client(
-      process.env.REACT_APP_NETWORK_URL as string,
+      envService.getVariable("networkUrl"),
       {
         clientName: "drive-web",
         clientVersion: "1.0",

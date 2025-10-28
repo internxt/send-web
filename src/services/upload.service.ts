@@ -9,6 +9,7 @@ import { NetworkService } from "./network.service";
 import { SendItemData } from "../models/SendItem";
 import { getCaptchaToken } from "../lib/auth";
 import { encodeSendId, generateRandomStringUrlSafe } from "../lib/stringUtils";
+import envService from "./env.service";
 
 interface FileWithNetworkId extends File {
   networkId: string;
@@ -40,12 +41,12 @@ interface SendLinkWithFile extends SendLink {
   file: FileWithNetworkId;
 }
 
-const originUrl = process.env.REACT_APP_BASE_URL || window.origin;
+const originUrl = window.origin;
 export class UploadService {
   static async storeSendLinks(payload: CreateSendLinksPayload) {
     const token = await getCaptchaToken();
     const res = await axios.post<CreateSendLinksResponse>(
-      process.env.REACT_APP_SEND_API_URL + "/links",
+      envService.getVariable("sendApiUrl") + "/links",
       payload,
       {
         headers: {

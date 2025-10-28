@@ -4,6 +4,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 import { createHash } from 'crypto';
 import { aes } from "@internxt/lib";
 import { SendItem } from "../models/SendItem";
+import envService from "./env.service";
 
 interface NetworkCredentials {
   user: string;
@@ -17,10 +18,10 @@ function getSendAccountParameters(): {
   encryptionKey: string
 } {
   return {
-    bucketId: process.env.REACT_APP_SEND_BUCKET_ID,
-    user: process.env.REACT_APP_SEND_USER,
-    pass: process.env.REACT_APP_SEND_PASS,
-    encryptionKey: process.env.REACT_APP_SEND_ENCRYPTION_KEY
+    bucketId: envService.getVariable("sendBucketId"),
+    user: envService.getVariable("sendUser"),
+    pass: envService.getVariable("sendPass"),
+    encryptionKey: envService.getVariable("sendEncryptionKey")
   }
 }
 
@@ -120,7 +121,7 @@ export class NetworkService {
   }
 
   get encryptionKey(): string {
-    return process.env.REACT_APP_SEND_ENCRYPTION_KEY;
+    return envService.getVariable("sendEncryptionKey");
   }
 
   async uploadFile(
