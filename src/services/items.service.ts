@@ -11,8 +11,11 @@ export const getPathFromFile = (file: FileWithPath): string => {
     filePath = file.webkitRelativePath;
   }
 
-  if (filePath.charAt(0) === '/') {
+  if (filePath.startsWith('/')) {
     filePath = filePath.substring(1);
+  }
+  if (filePath.startsWith('./')) {
+    filePath = filePath.substring(2);
   }
   return filePath;
 };
