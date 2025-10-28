@@ -1,8 +1,7 @@
-// vitest.config.ts
 import replace from "@rollup/plugin-replace";
 import react from "@vitejs/plugin-react";
 import path from "path";
-import { defineConfig } from "vitest/config";
+import { coverageConfigDefaults, defineConfig } from "vitest/config";
 
 export default defineConfig({
   plugins: [
@@ -14,9 +13,8 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      // eslint-disable-next-line no-undef
       app: path.resolve(__dirname, "./src/app"),
-      crypto: "crypto-browserify", // Resolve `crypto` to `crypto-browserify`
+      crypto: "crypto-browserify",
       stream: "stream-browserify",
     },
   },
@@ -24,17 +22,22 @@ export default defineConfig({
     environment: "jsdom",
     globals: true,
     setupFiles: "./src/setupTests.ts",
-    exclude: ["node_modules", "dist"],
+    exclude: ["node_modules", "build"],
     include: [
       "src/**/*.test.{ts,tsx,js,jsx}",
       "test/unit/**/*.test.{ts,tsx,js,jsx}",
     ],
-    // coverage: {
-    //   provider: "istanbul",
-    //   reporter: ["text", "lcov"],
-    //   reportsDirectory: "./coverage",
-    //   include: ["src/**/*.{js,ts,jsx,tsx}", "test/unit/**/*.{js,ts,jsx,tsx}"],
-    // },
+    coverage: {
+      provider: "istanbul",
+      reporter: ["text", "lcov"],
+      include: [
+        "src/**/*.{js,ts,jsx,tsx}",
+        "test/unit/**/*.{js,ts,jsx,tsx}"
+      ],
+      exclude: [
+        ...coverageConfigDefaults.exclude
+      ]
+    },
   },
   optimizeDeps: {
     esbuildOptions: {

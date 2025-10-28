@@ -8,9 +8,11 @@
     "dev": "vite",
     "start": "vite build && vite preview",
     "build": "vite build",
-    "test": "vitest run src/",
+    "test": "vitest run --coverage",
     "add:npmrc": "cp .npmrc.template .npmrc",
-    "vercel:install": "yarn run add:npmrc && yarn install"
+    "vercel:install": "yarn run add:npmrc && yarn install",
+    "lint": "eslint .",
+    "pretty": "prettier --write **/*.{js,jsx,tsx,ts}"
   },
   "dependencies": {
     "@headlessui/react": "1.7.19",
@@ -63,6 +65,8 @@
     ]
   },
   "devDependencies": {
+    "@internxt/eslint-config-internxt": "2.0.1",
+    "@internxt/prettier-config": "internxt/prettier-config#v1.0.2",
     "@rollup/plugin-replace": "6.0.2",
     "@tailwindcss/vite": "4.1.16",
     "@testing-library/jest-dom": "6.9.1",
@@ -74,9 +78,12 @@
     "@types/streamsaver": "2.0.5",
     "@types/uuid": "11.0.0",
     "@vitejs/plugin-react": "5.1.0",
+    "@vitest/coverage-istanbul": "4.0.4",
     "autoprefixer": "10.4.21",
     "dotenv": "17.2.3",
+    "eslint": "9.38.0",
     "jsdom": "27.0.1",
+    "lint-staged": "16.2.6",
     "postcss": "8.5.6",
     "prettier": "3.6.2",
     "tailwindcss": "4.1.16",
@@ -85,5 +92,10 @@
     "vite-plugin-node-polyfills": "0.24.0",
     "vite-plugin-svgr": "4.5.0",
     "vitest": "4.0.4"
+  },
+  "lint-staged": {
+    "*.{js,jsx,tsx,ts}": [
+      "prettier --write"
+    ]
   }
 }
