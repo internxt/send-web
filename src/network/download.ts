@@ -1,10 +1,8 @@
 import { Network } from '@internxt/sdk/dist/network';
-import { Decipher } from 'crypto';
-import * as Sentry from '@sentry/react';
+import { Decipheriv } from 'crypto';
 
-import { sha256 } from './crypto';
+import { getSha256 } from './crypto';
 import { NetworkFacade } from './NetworkFacade';
-import { Abortable } from './requests';
 import { joinReadableBinaryStreams } from './streams';
 import envService from '../services/env.service';
 
@@ -27,7 +25,7 @@ type BinaryStream = ReadableStream<Uint8Array>;
 
 export async function binaryStreamToBlob(stream: BinaryStream): Promise<Blob> {
   const reader = stream.getReader();
-  const slices: Uint8Array[] = [];
+  const slices: BlobPart[] = [];
 
   let finish = false;
 
@@ -35,7 +33,7 @@ export async function binaryStreamToBlob(stream: BinaryStream): Promise<Blob> {
     const { done, value } = await reader.read();
 
     if (!done) {
-      slices.push(value as Uint8Array);
+      slices.push(value as Uint8Array<ArrayBuffer>);
     }
 
     finish = done;
@@ -46,7 +44,7 @@ export async function binaryStreamToBlob(stream: BinaryStream): Promise<Blob> {
 
 export function getDecryptedStream(
   encryptedContentSlices: ReadableStream<Uint8Array>[],
-  decipher: Decipher,
+  decipher: Decipheriv,
 ): ReadableStream<Uint8Array> {
   const encryptedStream = joinReadableBinaryStreams(encryptedContentSlices);
 
@@ -112,16 +110,16 @@ type DownloadOwnFileFunction = (params: DownloadOwnFileParams) => DownloadFileRe
 type DownloadFileFunction = (params: DownloadSharedFileParams | DownloadOwnFileParams) => DownloadFileResponse;
 
 
-function getAuthFromCredentials(creds: NetworkCredentials): { username: string, password: string } {
+async function getAuthFromCredentials(creds: NetworkCredentials): Promise<{ username: string, password: string }> {
   return {
     username: creds.user,
-    password: sha256(Buffer.from(creds.pass)).toString('hex'),
+    password: await getSha256(creds.pass),
   };
 }
 
-const downloadOwnFile: DownloadOwnFileFunction = (params) => {
+const downloadOwnFile: DownloadOwnFileFunction = async (params) => {
   const { bucketId, fileId, mnemonic, options } = params;
-  const auth = getAuthFromCredentials(params.creds);
+  const auth = await getAuthFromCredentials(params.creds);
 
   return new NetworkFacade(
     Network.client(
@@ -142,9 +140,7 @@ const downloadOwnFile: DownloadOwnFileFunction = (params) => {
 };
 
 const downloadFile: DownloadFileFunction = (params) => {
-  if (params.token && params.encryptionKey) {
-    return downloadSharedFile(params);
-  } else if (params.creds && params.mnemonic) {
+  if (params.creds && params.mnemonic) {
     return downloadOwnFile(params);
   } else {
     throw new Error('DOWNLOAD ERRNO. 0');

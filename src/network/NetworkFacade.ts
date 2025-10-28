@@ -1,4 +1,3 @@
-import { Environment } from "@internxt/inxt-js";
 import { Network as NetworkModule } from "@internxt/sdk";
 import { createCipheriv, createDecipheriv, randomBytes } from "crypto";
 import { validateMnemonic } from "bip39";
@@ -10,11 +9,12 @@ import { downloadFile } from "@internxt/sdk/dist/network/download";
 
 import {
   encryptStreamInParts,
+  generateFileKey,
   getEncryptedFile,
   processEveryFileBlobReturnHash,
 } from "./crypto";
 import { DownloadProgressCallback, getDecryptedStream } from "./download";
-import { uploadFileBlob, UploadProgressCallback } from "./upload";
+import { uploadFileUint8Array, UploadProgressCallback } from "./upload";
 import { buildProgressStream } from "./streams";
 
 interface UploadOptions {
@@ -46,7 +46,7 @@ export class NetworkFacade {
         return validateMnemonic(mnemonic);
       },
       generateFileKey: (mnemonic, bucketId, index) => {
-        return Environment.utils.generateFileKey(
+        return generateFileKey(
           mnemonic,
           bucketId,
           index as Buffer
@@ -62,7 +62,7 @@ export class NetworkFacade {
     file: File,
     options: UploadOptions
   ): Promise<string> {
-    let fileToUpload: Blob;
+    let fileToUpload: Uint8Array;
     let fileHash: string;
 
     return uploadFile(
@@ -77,19 +77,13 @@ export class NetworkFacade {
           key as Buffer,
           iv as Buffer
         );
-        const [encryptedFile, hash] = await getEncryptedFile(file, cipher);
+        const [encryptedFile, hash] = await getEncryptedFile(file, cipher, file.size);
 
         fileToUpload = encryptedFile;
         fileHash = hash;
       },
       async (url: string) => {
-        const useProxy =
-          process.env.REACT_APP_DONT_USE_PROXY !== "true" &&
-          !new URL(url).hostname.includes("internxt");
-        const fetchUrl =
-          (useProxy ? process.env.REACT_APP_PROXY + "/" : "") + url;
-
-        await uploadFileBlob(fileToUpload, fetchUrl, {
+        await uploadFileUint8Array(fileToUpload, url, {
           progressCallback: options.uploadingCallback,
           abortController: options.abortController,
         });
@@ -98,7 +92,7 @@ export class NetworkFacade {
          * TODO: Memory leak here, probably due to closures usage with this variable.
          * Pending to be solved, do not remove this line unless the leak is solved.
          */
-        fileToUpload = new Blob([]);
+        fileToUpload = new Uint8Array();
 
         return fileHash;
       }
@@ -147,22 +141,16 @@ export class NetworkFacade {
           async (blob) => {
             const currentUrl = urls[currentUrlIndex];
 
-            const useProxy =
-              process.env.REACT_APP_DONT_USE_PROXY !== "true" &&
-              !new URL(currentUrl).hostname.includes("internxt");
-            const putUrl =
-              (useProxy ? process.env.REACT_APP_PROXY + "/" : "") + currentUrl;
-
-            const response = await uploadFileBlob(blob, putUrl, {
+            const response = await uploadFileUint8Array(blob, currentUrl, {
               progressCallback: (_, uploadedBytes) => {
                 notifyProgress(currentUrlIndex, uploadedBytes);
               },
               abortController: options.abortController,
             });
 
-            blob = new Blob([]);
+            blob = new Uint8Array();
 
-            const ETag = response.getResponseHeader("etag");
+            const ETag = response.etag;
 
             if (!ETag) {
               throw new Error("ETag header was not returned");
@@ -209,12 +197,7 @@ export class NetworkFacade {
             throw new Error("Download aborted");
           }
 
-          const useProxy =
-            process.env.REACT_APP_DONT_USE_PROXY !== "true" &&
-            !new URL(downloadable.url).hostname.includes("internxt");
-          const fetchUrl =
-            (useProxy ? process.env.REACT_APP_PROXY + "/" : "") +
-            downloadable.url;
+          const fetchUrl = downloadable.url;
 
           const encryptedContentStream = await fetch(fetchUrl, {
             signal: options?.abortController?.signal,
