@@ -3,7 +3,8 @@ export default {
     const response = await env.ASSETS.fetch(request);
 
     if (response.status === 404) {
-      const indexResponse = await env.ASSETS.fetch('http://ignored/index.html');
+      const url = new URL('/index.html', request.url);
+      const indexResponse = await env.ASSETS.fetch(url.toString(), request);
 
       return new Response(indexResponse.body, {
         headers: indexResponse.headers,
