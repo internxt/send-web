@@ -2,9 +2,9 @@
   "name": "send-web",
   "main": "./cloudflare/worker.ts",
   "assets": {
-    "directory": "./dist"
+    "directory": "./dist",
+    "binding": "ASSETS"
   },
   "compatibility_date": "2025-10-28",
-  "compatibility_flags": ["nodejs_compat"],
-  "observability": { "enabled": true }
+  "compatibility_flags": ["nodejs_compat"]
 }
