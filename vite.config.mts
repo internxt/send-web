@@ -6,7 +6,6 @@ import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import svgr from 'vite-plugin-svgr';
 import tailwindcss from '@tailwindcss/vite';
 import autoprefixer from 'autoprefixer';
-import { cloudflare } from '@cloudflare/vite-plugin';
 
 
 dotenv.config();
@@ -17,7 +16,6 @@ export default defineConfig({
   base: '/',
   plugins: [
     react(),
-    cloudflare(),
     svgr(),
     nodePolyfills({
       globals: {
@@ -63,7 +61,7 @@ export default defineConfig({
     }
   },
   build: {
-    outDir: 'build',
+    outDir: 'dist',
     assetsDir: ASSETS_DIR,
   },
   preview: {

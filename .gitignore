@@ -113,7 +113,7 @@ dist
 /coverage
 
 # production
-/build
+/dist
 
 # misc
 .DS_Store
