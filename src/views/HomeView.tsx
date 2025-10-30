@@ -27,7 +27,6 @@ import { sm_faq } from '../components/utils/schema-markup-generator';
 import CtaSection from '../components/send/CtaSection';
 import moment from 'moment';
 import Tooltip from '../components/Tooltip';
-import analyticsService from '../services/analytics.service';
 
 type EmailFormState = {
   sendTo: string[];
@@ -119,12 +118,6 @@ export default function HomeView() {
     const isEmailOption = switchValue === 'Send email';
     const trackName = isEmailOption ? 'Email Sent' : 'Link Created';
 
-    const emailData = isEmailOption
-      ? {
-          totalLengthOfSendTo: formState.sendTo.length,
-        }
-      : undefined;
-
     setPhase({ name: 'loading', uploadedBytes: 0 });
     try {
       const link = await uploadFiles((uploadedBytes) => {
@@ -136,12 +129,6 @@ export default function HomeView() {
       setPhase({ name: 'done', link });
 
       window.gtag('event', trackName);
-
-      analyticsService.track(trackName, {
-        totalFilesCount: filesContext.totalFilesCount,
-        size: filesContext.totalFilesSize,
-        ...emailData,
-      });
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(err);
