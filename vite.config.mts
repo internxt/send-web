@@ -10,8 +10,6 @@ import autoprefixer from 'autoprefixer';
 
 dotenv.config();
 
-const ASSETS_DIR = 'static';
-
 export default defineConfig({
   base: '/',
   plugins: [
@@ -62,7 +60,7 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    assetsDir: ASSETS_DIR,
+    assetsDir: 'assets'
   },
   preview: {
     port: 3000,
