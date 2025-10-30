@@ -14,7 +14,7 @@
     "lint": "eslint .",
     "pretty": "prettier --write **/*.{js,jsx,tsx,ts}",
     "prepare": "husky",
-    "cloudflare:dev": "wrangler dev"
+    "cloudflare:dev": "yarn build && wrangler dev"
   },
   "dependencies": {
     "@headlessui/react": "2.2.9",
@@ -67,8 +67,7 @@
     ]
   },
   "devDependencies": {
-    "@cloudflare/kv-asset-handler": "0.4.0",
-    "@cloudflare/workers-types": "4.20251014.0",
+    "@cloudflare/vite-plugin": "1.13.17",
     "@internxt/eslint-config-internxt": "2.0.1",
     "@internxt/prettier-config": "internxt/prettier-config#v1.0.2",
     "@rollup/plugin-replace": "6.0.2",
