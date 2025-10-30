@@ -1,9 +1,9 @@
 interface FileLike {
-  name: string,
-  lastModified?: Date,
-  directory?: boolean,
+  name: string;
+  lastModified?: Date;
+  directory?: boolean;
   comment?: string;
-  stream: () => ReadableStream
+  stream?: () => ReadableStream;
 }
 
 interface ZipObject {
@@ -15,7 +15,7 @@ interface ZipObject {
   compressedLength: number;
   uncompressedLength: number;
   writeHeader: () => void;
-  writeFooter: (x?: any) => void;
+  writeFooter: (x?: void) => void;
   offset?: number;
   header?: {
     array: Uint8Array;
@@ -23,6 +23,7 @@ interface ZipObject {
   };
   crc?: Crc32;
   fileLike: FileLike;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   reader?: any;
 }
 
@@ -42,9 +43,7 @@ class Crc32 {
     for (i = 0; i < 256; i++) {
       t = i;
       for (j = 0; j < 8; j++) {
-        t = (t & 1)
-          ? (t >>> 1) ^ 0xEDB88320
-          : t >>> 1;
+        t = t & 1 ? (t >>> 1) ^ 0xedb88320 : t >>> 1;
       }
       table[i] = t;
     }
@@ -53,9 +52,10 @@ class Crc32 {
   }
 
   append(data: Uint8Array) {
-    let crc = this.crc | 0; const table = this.table;
+    let crc = this.crc | 0;
+    const table = this.table;
     for (let offset = 0, len = data.length | 0; offset < len; offset++) {
-      crc = (crc >>> 8) ^ table[(crc ^ data[offset]) & 0xFF];
+      crc = (crc >>> 8) ^ table[(crc ^ data[offset]) & 0xff];
     }
     this.crc = crc;
   }
@@ -70,20 +70,19 @@ const getDataHelper = (byteLength: number) => {
 
   return {
     array: uint8,
-    view: new DataView(uint8.buffer)
+    view: new DataView(uint8.buffer),
   };
 };
 
-const pump = (zipObj: ZipObject) => zipObj.reader.read().then((chunk: {
-  done: boolean, value: Uint8Array
-}) => {
-  if (chunk.done) return zipObj.writeFooter();
-  const outputData = chunk.value as Uint8Array<ArrayBuffer>;
-  zipObj.crc?.append(outputData);
-  zipObj.uncompressedLength += outputData.length;
-  zipObj.compressedLength += outputData.length;
-  zipObj.ctrl.enqueue(outputData);
-});
+const pump = (zipObj: ZipObject) =>
+  zipObj.reader.read().then((chunk: { done: boolean; value: Uint8Array }) => {
+    if (chunk.done) return zipObj.writeFooter();
+    const outputData = chunk.value as Uint8Array<ArrayBuffer>;
+    zipObj.crc?.append(outputData);
+    zipObj.uncompressedLength += outputData.length;
+    zipObj.compressedLength += outputData.length;
+    zipObj.ctrl.enqueue(outputData);
+  });
 
 /**
  * [createWriter description]
@@ -91,14 +90,8 @@ const pump = (zipObj: ZipObject) => zipObj.reader.read().then((chunk: {
  * @return {Boolean}                  [description]
  */
 export default function createZipReadable(underlyingSource: {
-  start: (writer: {
-    enqueue: (fileLike: FileLike) => void
-    close: () => void
-  }) => void | undefined,
-  pull?: (writer: {
-    enqueue: (fileLike: FileLike) => void
-    close: () => void
-  }) => void
+  start: (writer: { enqueue: (fileLike: FileLike) => void; close: () => void }) => void | undefined;
+  pull?: (writer: { enqueue: (fileLike: FileLike) => void; close: () => void }) => void;
 }): ReadableStream<Uint8Array> {
   const files: Record<string, ZipObject> = Object.create(null);
   const filenames: string[] = [];
@@ -118,8 +111,9 @@ export default function createZipReadable(underlyingSource: {
   const zipWriter = {
     enqueue(fileLike: FileLike) {
       if (closed) {
-        // eslint-disable-next-line max-len
-        throw new TypeError('Cannot enqueue a chunk into a readable stream that is closed or has been requested to be closed');
+        throw new TypeError(
+          'Cannot enqueue a chunk into a readable stream that is closed or has been requested to be closed',
+        );
       }
 
       let name = fileLike.name.trim();
@@ -131,7 +125,7 @@ export default function createZipReadable(underlyingSource: {
       const nameBuf = encoder.encode(name);
       filenames.push(name);
 
-      const zipObject = files[name] = {
+      const zipObject = (files[name] = {
         level: 0,
         ctrl,
         crc: new Crc32(),
@@ -142,7 +136,7 @@ export default function createZipReadable(underlyingSource: {
         uncompressedLength: 0,
         header: {
           array: new Uint8Array(),
-          view: new DataView(new ArrayBuffer(0))
+          view: new DataView(new ArrayBuffer(0)),
         },
         offset: 0,
         writeHeader() {
@@ -156,10 +150,11 @@ export default function createZipReadable(underlyingSource: {
             header.view.setUint16(4, 0x0800);
           }
           header.view.setUint32(0, 0x14000808);
-          header.view.setUint16(6, (((date.getHours() << 6) | date.getMinutes()) << 5) | date.getSeconds() / 2, true);
-          header.view.setUint16(8, (
-            (((date.getFullYear() - 1980) << 4) | (date.getMonth() + 1)) << 5) | date.getDate(),
-            true
+          header.view.setUint16(6, (((date.getHours() << 6) | date.getMinutes()) << 5) | (date.getSeconds() / 2), true);
+          header.view.setUint16(
+            8,
+            ((((date.getFullYear() - 1980) << 4) | (date.getMonth() + 1)) << 5) | date.getDate(),
+            true,
           );
           header.view.setUint16(22, nameBuf.length, true);
           data.view.setUint32(0, 0x504b0304);
@@ -185,8 +180,8 @@ export default function createZipReadable(underlyingSource: {
           offset += zipObject.compressedLength + 16;
           next();
         },
-        fileLike
-      };
+        fileLike,
+      });
 
       if (!activeZipObject) {
         activeZipObject = zipObject;
@@ -197,7 +192,7 @@ export default function createZipReadable(underlyingSource: {
       if (closed) throw new TypeError('Cannot close a readable stream that has already been requested to be closed');
       if (!activeZipObject) closeZip();
       closed = true;
-    }
+    },
   };
 
   function closeZip() {
@@ -244,16 +239,15 @@ export default function createZipReadable(underlyingSource: {
   }
 
   return new ReadableStream({
-    start: c => {
+    start: (c) => {
       ctrl = c;
-      underlyingSource.start && Promise.resolve(underlyingSource.start(zipWriter));
+      if (underlyingSource.start) {
+        Promise.resolve(underlyingSource.start(zipWriter));
+      }
     },
     pull() {
-      return processNextChunk() || (
-        underlyingSource.pull &&
-        Promise.resolve(underlyingSource.pull(zipWriter))
-      );
-    }
+      return processNextChunk() || (underlyingSource.pull && Promise.resolve(underlyingSource.pull(zipWriter)));
+    },
   });
 }
 
@@ -269,19 +263,26 @@ export function loadWritableStreamPonyfill(): Promise<void> {
   });
 }
 
-type AddFileToZipFunction = (name: string, source: ReadableStream<Uint8Array>) => void
-type AddFolderToZipFunction = (name: string) => void
+type AddFileToZipFunction = (name: string, source: ReadableStream<Uint8Array>) => void;
+type AddFolderToZipFunction = (name: string) => void;
 export interface ZipStream {
-  addFile: AddFileToZipFunction,
-  addFolder: AddFolderToZipFunction,
-  stream: ReadableStream<Uint8Array>,
-  end: () => void
+  addFile: AddFileToZipFunction;
+  addFolder: AddFolderToZipFunction;
+  stream: ReadableStream<Uint8Array>;
+  end: () => void;
 }
 
 export function createFolderWithFilesWritable(): ZipStream {
-  let controller: any;
+  let controller: {
+    enqueue: (fileLike: FileLike) => void;
+    close: () => void;
+  };
 
-  const zipStream = createZipReadable({ start(ctrl) { controller = ctrl; } });
+  const zipStream = createZipReadable({
+    start(ctrl) {
+      controller = ctrl;
+    },
+  });
 
   return {
     addFile: (name: string, source: ReadableStream<Uint8Array>): void => {
@@ -293,6 +294,6 @@ export function createFolderWithFilesWritable(): ZipStream {
     stream: zipStream,
     end: () => {
       controller.close();
-    }
+    },
   };
 }

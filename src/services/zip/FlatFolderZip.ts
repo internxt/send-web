@@ -2,21 +2,22 @@ import streamSaver from 'streamsaver';
 import fileDownload from 'js-file-download';
 
 import { binaryStreamToBlob, buildProgressStream } from '../../network/streams';
-import { loadWritableStreamPonyfill, createFolderWithFilesWritable, ZipStream } from "./Zip";
+import { loadWritableStreamPonyfill, createFolderWithFilesWritable, ZipStream } from './Zip';
 
 type FlatFolderZipOpts = {
   abortController?: AbortController;
   progress?: (loadedBytes: number) => void;
-}
+};
 function isBrave() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const maybeBrave = (window.navigator as { brave?: any }).brave;
 
-  return maybeBrave !== undefined && maybeBrave.isBrave.name === "isBrave";
+  return maybeBrave !== undefined && maybeBrave.isBrave.name === 'isBrave';
 }
 export class FlatFolderZip {
   private finished!: Promise<void>;
   private zip: ZipStream;
-  private passThrough: ReadableStream<Uint8Array>; 
+  private passThrough: ReadableStream<Uint8Array>;
   private folderName: string;
   private abortController?: AbortController;
 
@@ -25,9 +26,7 @@ export class FlatFolderZip {
     this.zip = createFolderWithFilesWritable();
     this.abortController = opts.abortController;
 
-    this.passThrough = opts.progress ?
-      buildProgressStream(this.zip.stream, opts.progress) :
-      this.zip.stream;
+    this.passThrough = opts.progress ? buildProgressStream(this.zip.stream, opts.progress) : this.zip.stream;
 
     const isFirefox = navigator.userAgent.indexOf('Firefox') !== -1;
 
@@ -37,16 +36,14 @@ export class FlatFolderZip {
       loadWritableStreamPonyfill().then(() => {
         streamSaver.WritableStream = window.WritableStream;
 
-        this.finished = this.passThrough.pipeTo(
-          streamSaver.createWriteStream(folderName + '.zip'),
-          { signal: opts.abortController?.signal }
-        );
+        this.finished = this.passThrough.pipeTo(streamSaver.createWriteStream(folderName + '.zip'), {
+          signal: opts.abortController?.signal,
+        });
       });
     } else {
-      this.finished = this.passThrough.pipeTo(
-        streamSaver.createWriteStream(folderName + '.zip'),
-        { signal: opts.abortController?.signal }
-      );
+      this.finished = this.passThrough.pipeTo(streamSaver.createWriteStream(folderName + '.zip'), {
+        signal: opts.abortController?.signal,
+      });
     }
   }
 
@@ -63,19 +60,14 @@ export class FlatFolderZip {
   }
 
   async close(): Promise<void> {
-    if (this.abortController?.signal.aborted) return; 
+    if (this.abortController?.signal.aborted) return;
 
     this.zip.end();
 
     if (isBrave()) {
-      console.log('is Brave');
-      return fileDownload(
-        await binaryStreamToBlob(this.passThrough),
-        `${this.folderName}.zip`,
-        'application/zip'
-      );
+      return fileDownload(await binaryStreamToBlob(this.passThrough), `${this.folderName}.zip`, 'application/zip');
     }
-  
+
     await this.finished;
   }
 

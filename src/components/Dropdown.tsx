@@ -7,7 +7,7 @@ export default function Dropdown({
   menuItems,
   classMenuItems,
   openDirection,
-  buttonInputRef
+  buttonInputRef,
 }: {
   children: ReactNode;
   classButton?: string;
@@ -19,7 +19,9 @@ export default function Dropdown({
   return (
     <Menu>
       <div className="relative flex items-center">
-        <Menu.Button className={`outline-hidden cursor-pointer ${classButton}`} ref={buttonInputRef}>{children}</Menu.Button>
+        <Menu.Button className={`outline-hidden cursor-pointer ${classButton}`} ref={buttonInputRef}>
+          {children}
+        </Menu.Button>
 
         <Transition
           enter="transform transition duration-50 ease-out"

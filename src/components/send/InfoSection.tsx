@@ -1,5 +1,5 @@
-import label from "../../assets/lang/en/send.json";
-import RevealX from "../RevealX";
+import label from '../../assets/lang/en/send.json';
+import RevealX from '../RevealX';
 
 const InfoSection = () => {
   return (
@@ -13,17 +13,16 @@ const InfoSection = () => {
           direction="right"
           className="flex overflow-hidden rounded-2xl bg-gray-100 lg:grid lg:grid-cols-2 lg:grid-rows-1 lg:gap-0"
         >
-          <div className="flex h-full flex-col items-center justify-center p-7 text-center lg:items-start lg:pl-20 lg:text-start">
+          <div
+            className="flex h-full flex-col items-center justify-center p-7 text-center lg:items-start
+            lg:pl-20 lg:text-start"
+          >
             <h4 className="mb-10 max-w-xs text-4xl font-semibold text-white lg:text-4xl">
               {label.InfoSection.card1.title}
             </h4>
             <div className="mb-4 max-w-[340px] space-y-5 text-xl text-white">
-              <p className="font-regular text-lg">
-                {label.InfoSection.card1.description.line1}
-              </p>
-              <p className="font-regular text-lg">
-                {label.InfoSection.card1.description.line2}
-              </p>
+              <p className="font-regular text-lg">{label.InfoSection.card1.description.line1}</p>
+              <p className="font-regular text-lg">{label.InfoSection.card1.description.line2}</p>
             </div>
             <div className="flex justify-start"></div>
           </div>
@@ -39,17 +38,16 @@ const InfoSection = () => {
           direction="left"
           className="flex overflow-hidden rounded-2xl bg-gray-100 lg:grid lg:grid-cols-2 lg:grid-rows-1 lg:gap-0"
         >
-          <div className="flex h-full flex-col items-center justify-center p-7 text-center lg:items-start lg:pl-20 lg:text-start">
+          <div
+            className="flex h-full flex-col items-center justify-center p-7 text-center lg:items-start
+            lg:pl-20 lg:text-start"
+          >
             <h4 className="mb-10 max-w-xs text-4xl font-semibold text-white lg:text-4xl">
               {label.InfoSection.card2.title}
             </h4>
             <div className="mb-4 max-w-[340px] space-y-5 text-xl text-white">
-              <p className="font-regular text-lg">
-                {label.InfoSection.card2.description.line1}
-              </p>
-              <p className="font-regular text-lg">
-                {label.InfoSection.card2.description.line2}
-              </p>
+              <p className="font-regular text-lg">{label.InfoSection.card2.description.line1}</p>
+              <p className="font-regular text-lg">{label.InfoSection.card2.description.line2}</p>
             </div>
             <div className="flex justify-start"></div>
           </div>

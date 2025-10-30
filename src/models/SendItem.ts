@@ -1,4 +1,4 @@
-import { FileWithPath } from "react-dropzone";
+import { FileWithPath } from 'react-dropzone';
 
 export interface SendItemBasic {
   id: string;

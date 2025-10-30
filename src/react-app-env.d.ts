@@ -2,7 +2,7 @@
 
 declare namespace NodeJS {
   interface ProcessEnv {
-    NODE_ENV: "development" | "production" | "test";
+    NODE_ENV: 'development' | 'production' | 'test';
 
     REACT_APP_SEND_USER: string;
     REACT_APP_SEND_PASS: string;
@@ -25,6 +25,8 @@ interface Window {
     ready: (cb: () => void) => void;
     execute: (siteKey: string, { action: string }) => Promise<string>;
   };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   gtag: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   rudderanalytics: any;
 }

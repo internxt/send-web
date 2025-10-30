@@ -69,6 +69,8 @@ export const generateRandomStringUrlSafe = (size: number): string => {
  */
 export function base64UrlSafetoUUID(base64UrlSafe: string): string {
   const hex = Buffer.from(fromBase64UrlSafe(base64UrlSafe), 'base64').toString('hex');
+
+  // eslint-disable-next-line max-len
   return `${hex.substring(0, 8)}-${hex.substring(8, 12)}-${hex.substring(12, 16)}-${hex.substring(16, 20)}-${hex.substring(20)}`;
 }
 

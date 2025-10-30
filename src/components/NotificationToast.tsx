@@ -1,7 +1,7 @@
-import { Transition } from "@headlessui/react";
-import { CheckCircle, Info, Warning, WarningOctagon, X } from "phosphor-react";
-import { ToastShowProps, ToastType } from "../services/notifications.service";
-import { JSX } from "react";
+import { Transition } from '@headlessui/react';
+import { CheckCircle, Info, Warning, WarningOctagon, X } from 'phosphor-react';
+import { ToastShowProps, ToastType } from '../services/notifications.service';
+import { JSX } from 'react';
 
 const NotificationToast = ({
   text,
@@ -10,7 +10,7 @@ const NotificationToast = ({
   visible,
   closable,
   onClose,
-}: Omit<ToastShowProps, "duration"> & {
+}: Omit<ToastShowProps, 'duration'> & {
   visible: boolean;
   onClose: () => void;
 }): JSX.Element => {
@@ -20,19 +20,19 @@ const NotificationToast = ({
   switch (type) {
     case ToastType.Success:
       Icon = CheckCircle;
-      IconColor = "text-green";
+      IconColor = 'text-green';
       break;
     case ToastType.Error:
       Icon = WarningOctagon;
-      IconColor = "text-red-50";
+      IconColor = 'text-red-50';
       break;
     case ToastType.Info:
       Icon = Info;
-      IconColor = "text-primary";
+      IconColor = 'text-primary';
       break;
     case ToastType.Warning:
       Icon = Warning;
-      IconColor = "text-yellow";
+      IconColor = 'text-yellow';
       break;
   }
 
@@ -49,18 +49,13 @@ const NotificationToast = ({
     >
       <div
         className="flex max-w-md items-center rounded-lg border border-gray-10 bg-white p-3 shadow-subtle-hard"
-        style={{ minWidth: "300px" }}
+        style={{ minWidth: '300px' }}
       >
-        {Icon && (
-          <Icon weight="fill" className={`${IconColor} mr-1.5`} size={24} />
-        )}
+        {Icon && <Icon weight="fill" className={`${IconColor} mr-1.5`} size={24} />}
 
         <p className="line-clamp-2 flex-1 wrap-break-word text-gray-80">{text}</p>
         {action && (
-          <button
-            onClick={action.onClick}
-            className="ml-3 truncate font-medium text-primary"
-          >
+          <button onClick={action.onClick} className="ml-3 truncate font-medium text-primary">
             {action.text}
           </button>
         )}

@@ -18,7 +18,6 @@ const variableList = {
   recaptchaV3: 'REACT_APP_RECAPTCHA_V3',
 };
 
-
 function getVariable(variable: keyof typeof variableList): string {
   const envKey = variableList[variable];
   if (!envKey) {

@@ -1,10 +1,10 @@
-import { WarningOctagon, Warning, CheckCircle } from "phosphor-react";
-import { JSX } from "react";
+import { WarningOctagon, Warning, CheckCircle } from 'phosphor-react';
+import { JSX } from 'react';
 
 export default function Input({
-  className = "",
+  className = '',
   label,
-  type = "text",
+  type = 'text',
   accent,
   disabled,
   placeholder,
@@ -21,8 +21,8 @@ export default function Input({
 }: {
   className?: string;
   label?: string;
-  variant?: "text" | "email";
-  accent?: "error" | "warning" | "success";
+  variant?: 'text' | 'email';
+  accent?: 'error' | 'warning' | 'success';
   disabled?: boolean;
   placeholder?: string;
   value?: string;
@@ -33,35 +33,34 @@ export default function Input({
   onBlur?: () => void;
   message?: string;
   type?: string;
-  refForInput?: React.RefObject<HTMLInputElement>;
+  refForInput?: React.RefObject<HTMLInputElement | null>;
   onMouseEnter?: React.MouseEventHandler;
   onMouseLeave?: React.MouseEventHandler;
 }): JSX.Element {
   let focusColor: string;
 
   switch (accent) {
-    case "error":
-      focusColor = "focus:border-red-std ring-red-std";
+    case 'error':
+      focusColor = 'focus:border-red-std ring-red-std';
       break;
-    case "warning":
-      focusColor = "focus:border-orange ring-orange";
+    case 'warning':
+      focusColor = 'focus:border-orange ring-orange';
       break;
-    case "success":
-      focusColor = "focus:border-green ring-green";
+    case 'success':
+      focusColor = 'focus:border-green ring-green';
       break;
     default:
-      focusColor = "focus:border-primary ring-primary";
+      focusColor = 'focus:border-primary ring-primary';
       break;
   }
 
-  const borderColor =
-    "border-gray-20 disabled:border-gray-10 hover:border-gray-30";
+  const borderColor = 'border-gray-20 disabled:border-gray-10 hover:border-gray-30';
 
-  const backgroundColor = "bg-white disabled:bg-white";
+  const backgroundColor = 'bg-white disabled:bg-white';
 
-  const placeholderColor = "placeholder-gray-30";
+  const placeholderColor = 'placeholder-gray-30';
 
-  const padding = "px-3";
+  const padding = 'px-3';
 
   const input = (
     <div className="relative">
@@ -70,17 +69,17 @@ export default function Input({
         onMouseLeave={onMouseLeave}
         ref={refForInput}
         disabled={disabled}
-        className={`inxt-input h-11 w-full rounded-md border text-lg font-normal text-gray-80 outline-hidden ring-opacity-10 disabled:text-gray-40 disabled:placeholder-gray-20 md:h-9 lg:text-base 
-          ${borderColor} ${focusColor} ${placeholderColor} ${backgroundColor} ${padding}`
-        }
-        type={type ?? "text"}
+        className={`inxt-input h-11 w-full rounded-md border text-lg font-normal text-gray-80 outline-hidden
+          ring-opacity-10 disabled:text-gray-40 disabled:placeholder-gray-20 md:h-9 lg:text-base
+          ${borderColor} ${focusColor} ${placeholderColor} ${backgroundColor} ${padding}`}
+        type={type ?? 'text'}
         placeholder={placeholder}
         onChange={(e) => onChange && onChange(e.target.value)}
         onFocus={() => {
-          onFocus && onFocus();
+          onFocus?.();
         }}
         onBlur={() => {
-          onBlur && onBlur();
+          onBlur?.();
         }}
         onPaste={onPaste}
         value={value}
@@ -93,29 +92,26 @@ export default function Input({
   let MessageIcon: typeof WarningOctagon | undefined;
 
   switch (accent) {
-    case "success":
-      messageColor = "text-green";
+    case 'success':
+      messageColor = 'text-green';
       MessageIcon = CheckCircle;
       break;
-    case "warning":
-      messageColor = "text-orange";
+    case 'warning':
+      messageColor = 'text-orange';
       MessageIcon = Warning;
       break;
-    case "error":
-      messageColor = "text-red-std";
+    case 'error':
+      messageColor = 'text-red-std';
       MessageIcon = WarningOctagon;
       break;
     default:
-      messageColor = "text-gray-80";
+      messageColor = 'text-gray-80';
   }
 
   return (
     <div className={`${className}`}>
       {label ? (
-        <label
-          className={`text-sm font-medium ${disabled ? "text-gray-40" : "text-gray-80"
-            }`}
-        >
+        <label className={`text-sm font-medium ${disabled ? 'text-gray-40' : 'text-gray-80'}`}>
           {label} {input}
         </label>
       ) : (

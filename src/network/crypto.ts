@@ -3,7 +3,6 @@ import { streamFileIntoChunks } from './streams';
 import { createSHA256, createSHA512, ripemd160, sha256 } from 'hash-wasm';
 import { mnemonicToSeed } from 'bip39';
 
-
 /**
  * Given a stream and a cipher, encrypt its content
  * @param readable Readable stream
@@ -60,10 +59,7 @@ export async function getEncryptedFile(
 
   const sha256Result = hasher.digest();
 
-  return [
-    fileParts,
-    await getRipemd160FromHex(sha256Result),
-  ];
+  return [fileParts, await getRipemd160FromHex(sha256Result)];
 }
 
 /**
@@ -105,12 +101,14 @@ async function getSha512Combined(key: Buffer, data: Buffer): Promise<string> {
  * @param cipher Cipher used to encrypt the content
  * @returns A readable whose output is the encrypted content of the source stream
  */
-export function encryptReadablePull(readable: ReadableStream<Uint8Array>, cipher: Cipheriv): ReadableStream<Uint8Array> {
+export function encryptReadablePull(
+  readable: ReadableStream<Uint8Array>,
+  cipher: Cipheriv,
+): ReadableStream<Uint8Array> {
   const reader = readable.getReader();
 
   return new ReadableStream({
     async pull(controller) {
-      console.log('2ND_STEP: PULLING');
       const status = await reader.read();
 
       if (!status.done) {

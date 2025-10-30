@@ -1,24 +1,24 @@
-import { randomBytes } from "crypto";
-import { queue, QueueObject } from "async";
-import { generateMnemonic } from "bip39";
-import axios from "axios";
-import { aes } from "@internxt/lib";
+import { randomBytes } from 'crypto';
+import { queue, QueueObject } from 'async';
+import { generateMnemonic } from 'bip39';
+import axios from 'axios';
+import { aes } from '@internxt/lib';
 
-import { MAX_ITEMS_PER_LINK, MAX_BYTES_PER_SEND } from "../constants";
-import { NetworkService } from "./network.service";
-import { SendItemData } from "../models/SendItem";
-import { getCaptchaToken } from "../lib/auth";
-import { encodeSendId, generateRandomStringUrlSafe } from "../lib/stringUtils";
-import envService from "./env.service";
+import { MAX_ITEMS_PER_LINK, MAX_BYTES_PER_SEND } from '../constants';
+import { NetworkService } from './network.service';
+import { SendItemData } from '../models/SendItem';
+import { getCaptchaToken } from '../lib/auth';
+import { encodeSendId, generateRandomStringUrlSafe } from '../lib/stringUtils';
+import envService from './env.service';
 
 interface FileWithNetworkId extends File {
   networkId: string;
 }
 
 enum FileSizeType {
-  Big = "big",
-  Medium = "medium",
-  Small = "small",
+  Big = 'big',
+  Medium = 'medium',
+  Small = 'small',
 }
 
 const oneHundredMbytes = 100 * 1024 * 1024;
@@ -33,7 +33,7 @@ interface EmailInfo {
 
 export class MaximumItemsNumberLimitReachedError extends Error {
   constructor() {
-    super("Maximum allowed files to upload is " + MAX_ITEMS_PER_LINK);
+    super('Maximum allowed files to upload is ' + MAX_ITEMS_PER_LINK);
   }
 }
 
@@ -45,15 +45,11 @@ const originUrl = window.origin;
 export class UploadService {
   static async storeSendLinks(payload: CreateSendLinksPayload) {
     const token = await getCaptchaToken();
-    const res = await axios.post<CreateSendLinksResponse>(
-      envService.getVariable("sendApiUrl") + "/links",
-      payload,
-      {
-        headers: {
-          "x-internxt-captcha": token,
-        },
-      }
-    );
+    const res = await axios.post<CreateSendLinksResponse>(envService.getVariable('sendApiUrl') + '/links', payload, {
+      headers: {
+        'x-internxt-captcha': token,
+      },
+    });
 
     return res.data;
   }
@@ -64,30 +60,30 @@ export class UploadService {
     opts?: {
       progress?: (totalBytes: number, uploadedBytes: number) => void;
       abortController?: AbortController;
-    }
+    },
   ): Promise<string> {
     const itemFiles = [] as SendLinkWithFile[];
     const sendLinksFolders = [] as SendLink[];
     itemList.forEach((item) => {
-      if (item.type === "file") {
+      if (item.type === 'file') {
         itemFiles.push({
           id: item.id,
           name: item.name,
           type: item.type,
           size: item.size,
-          encryptionKey: "",
-          networkId: "",
+          encryptionKey: '',
+          networkId: '',
           parent_folder: item.parent_folder,
           file: item.file as FileWithNetworkId,
         });
-      } else if (item.type === "folder") {
+      } else if (item.type === 'folder') {
         sendLinksFolders.push({
           id: item.id,
           name: item.name,
           type: item.type,
           size: item.size,
-          encryptionKey: "",
-          networkId: "",
+          encryptionKey: '',
+          networkId: '',
           parent_folder: item.parent_folder,
         });
       }
@@ -114,13 +110,11 @@ export class UploadService {
       plainCode: code,
     } as CreateSendLinksPayload;
 
-    const createSendLinkResponse = await UploadService.storeSendLinks(
-      createSendLinksPayload
-    );
+    const createSendLinkResponse = await UploadService.storeSendLinks(createSendLinksPayload);
 
     const encodedSendId = encodeSendId(createSendLinkResponse.id);
 
-    return (`${originUrl}/d/${encodedSendId}/${code}`);
+    return `${originUrl}/d/${encodedSendId}/${code}`;
   }
 
   static async uploadFiles(
@@ -128,7 +122,7 @@ export class UploadService {
     opts?: {
       progress?: (totalBytes: number, uploadedBytes: number) => void;
       abortController?: AbortController;
-    }
+    },
   ): Promise<SendLink[]> {
     if (files.length > MAX_ITEMS_PER_LINK) {
       throw new MaximumItemsNumberLimitReachedError();
@@ -136,16 +130,10 @@ export class UploadService {
 
     const totalBytes = files.reduce((a, f) => a + f.size, 0);
     if (totalBytes > MAX_BYTES_PER_SEND) {
-      throw new Error(
-        "Maximum allowed total upload size is " + MAX_BYTES_PER_SEND
-      );
+      throw new Error('Maximum allowed total upload size is ' + MAX_BYTES_PER_SEND);
     }
 
-    const uploadManager = new UploadManager(
-      files,
-      totalBytes,
-      opts?.abortController
-    );
+    const uploadManager = new UploadManager(files, totalBytes, opts?.abortController);
     return uploadManager.run(opts?.progress);
   }
 }
@@ -180,13 +168,10 @@ class UploadManager {
   private errored = false;
   private uploadsProgress: Record<string, number> = {};
   private uploadQueue: QueueObject<SendLinkWithFile> = queue<SendLinkWithFile>(
-    (
-      sendLinkWithFile,
-      next: (err: Error | null, res?: SendLinkWithFile) => void
-    ) => {
+    (sendLinkWithFile, next: (err: Error | null, res?: SendLinkWithFile) => void) => {
       const file = sendLinkWithFile.file;
       const networkService = this.networkService;
-      const uploadId = randomBytes(10).toString("hex");
+      const uploadId = randomBytes(10).toString('hex');
 
       this.uploadsProgress[uploadId] = 0;
 
@@ -199,10 +184,7 @@ class UploadManager {
         })
         .then((networkId) => {
           const fileObject = Object.assign({}, { ...file, networkId });
-          next(
-            null,
-            Object.assign({}, { ...sendLinkWithFile, file: fileObject })
-          );
+          next(null, Object.assign({}, { ...sendLinkWithFile, file: fileObject }));
         })
         .catch((err) => {
           if (!this.errored) {
@@ -214,65 +196,41 @@ class UploadManager {
           next(err);
         });
     },
-    this.filesGroups.small.concurrency
+    this.filesGroups.small.concurrency,
   );
 
   private abortController?: AbortController;
   private items: SendLinkWithFile[];
   private totalBytes: number;
 
-  constructor(
-    items: SendLinkWithFile[],
-    totalBytes: number,
-    abortController?: AbortController
-  ) {
+  constructor(items: SendLinkWithFile[], totalBytes: number, abortController?: AbortController) {
     this.items = items;
     this.totalBytes = totalBytes;
     this.abortController = abortController;
   }
 
-  private classifyFilesBySize(
-    files: SendLinkWithFile[]
-  ): [SendLinkWithFile[], SendLinkWithFile[], SendLinkWithFile[]] {
+  private classifyFilesBySize(files: SendLinkWithFile[]): [SendLinkWithFile[], SendLinkWithFile[], SendLinkWithFile[]] {
     return [
       files.filter((f) => f.size >= this.filesGroups.big.lowerBound),
-      files.filter(
-        (f) =>
-          f.size >= this.filesGroups.medium.lowerBound &&
-          f.size <= this.filesGroups.medium.upperBound
-      ),
-      files.filter(
-        (f) =>
-          f.size >= this.filesGroups.small.lowerBound &&
-          f.size <= this.filesGroups.small.upperBound
-      ),
+      files.filter((f) => f.size >= this.filesGroups.medium.lowerBound && f.size <= this.filesGroups.medium.upperBound),
+      files.filter((f) => f.size >= this.filesGroups.small.lowerBound && f.size <= this.filesGroups.small.upperBound),
     ];
   }
 
-  async run(
-    progress?: (totalBytes: number, uploadedBytes: number) => void
-  ): Promise<SendLink[]> {
+  async run(progress?: (totalBytes: number, uploadedBytes: number) => void): Promise<SendLink[]> {
     const progressInterval = setInterval(() => {
-      const uploadedBytes = Object.values(this.uploadsProgress).reduce(
-        (a, p) => a + p,
-        0
-      );
+      const uploadedBytes = Object.values(this.uploadsProgress).reduce((a, p) => a + p, 0);
       progress?.(this.totalBytes, uploadedBytes);
     }, 500);
 
     try {
-      const [bigSizedFiles, mediumSizedFiles, smallSizedFiles] =
-        this.classifyFilesBySize(this.items);
+      const [bigSizedFiles, mediumSizedFiles, smallSizedFiles] = this.classifyFilesBySize(this.items);
       const filesReferences: SendLink[] = [];
 
-      const uploadFiles = async (
-        files: SendLinkWithFile[],
-        concurrency: number
-      ) => {
+      const uploadFiles = async (files: SendLinkWithFile[], concurrency: number) => {
         this.uploadQueue.concurrency = concurrency;
 
-        const uploadPromises: Promise<SendLinkWithFile>[] =
-          await this.uploadQueue.pushAsync(files);
+        const uploadPromises: Promise<SendLinkWithFile>[] = await this.uploadQueue.pushAsync(files);
         const uploadedFiles = await Promise.all(uploadPromises);
 
         for (const uploadedFile of uploadedFiles) {
@@ -288,17 +246,11 @@ class UploadManager {
         }
       };
 
-      if (smallSizedFiles.length > 0)
-        await uploadFiles(smallSizedFiles, this.filesGroups.small.concurrency);
+      if (smallSizedFiles.length > 0) await uploadFiles(smallSizedFiles, this.filesGroups.small.concurrency);
 
-      if (mediumSizedFiles.length > 0)
-        await uploadFiles(
-          mediumSizedFiles,
-          this.filesGroups.medium.concurrency
-        );
+      if (mediumSizedFiles.length > 0) await uploadFiles(mediumSizedFiles, this.filesGroups.medium.concurrency);
 
-      if (bigSizedFiles.length > 0)
-        await uploadFiles(bigSizedFiles, this.filesGroups.big.concurrency);
+      if (bigSizedFiles.length > 0) await uploadFiles(bigSizedFiles, this.filesGroups.big.concurrency);
 
       return filesReferences;
     } finally {
@@ -313,7 +265,7 @@ class UploadManager {
 export interface SendLink {
   id: string;
   name: string;
-  type: "file" | "folder";
+  type: 'file' | 'folder';
   size: number;
   networkId: string;
   encryptionKey: string;

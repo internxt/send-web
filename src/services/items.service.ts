@@ -1,7 +1,6 @@
-import { FileWithPath } from "react-dropzone";
-import { SendItem, SendItemData, SendItemFile, SendItemFolder } from "../models/SendItem";
+import { FileWithPath } from 'react-dropzone';
+import { SendItem, SendItemData, SendItemFile, SendItemFolder } from '../models/SendItem';
 import { v4 as uuidv4 } from 'uuid';
-
 
 export const getPathFromFile = (file: FileWithPath): string => {
   let filePath = file.path || file.webkitRelativePath || '';
@@ -24,21 +23,22 @@ export const transformInputFilesToJSON = (files: FileWithPath[]): JSON => {
   const result = {} as JSON;
   for (const file of files) {
     const filePath = getPathFromFile(file);
-    filePath.split('/').reduce(
-      (previousValue: { [key: string]: any }, currentValue, currentIndex, arrayPaths) => {
-        if (arrayPaths.length === 0 || (arrayPaths.length === 1 && arrayPaths[0].trim() === '')) {
-          return previousValue[file.name] = file;
-        } else if (currentIndex === arrayPaths.length - 1) {
-          previousValue[currentValue] = file;
-        }
-        return previousValue[currentValue] = previousValue[currentValue] || {};
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    filePath.split('/').reduce((previousValue: { [key: string]: any }, currentValue, currentIndex, arrayPaths) => {
+      if (arrayPaths.length === 0 || (arrayPaths.length === 1 && arrayPaths[0].trim() === '')) {
+        return (previousValue[file.name] = file);
+      } else if (currentIndex === arrayPaths.length - 1) {
+        previousValue[currentValue] = file;
       }
-      , result);
+      return (previousValue[currentValue] = previousValue[currentValue] || {});
+    }, result);
   }
   return result;
 };
 
-export const transformJsonFilesToItems = (jsonObject: JSON): {
+export const transformJsonFilesToItems = (
+  jsonObject: JSON,
+): {
   rootFolders: Array<SendItemFolder>;
   rootFiles: Array<SendItemFile>;
 } => {
@@ -53,7 +53,7 @@ export const transformJsonFilesToItems = (jsonObject: JSON): {
         size: value.size,
         type: 'file',
         file: value,
-        parent_folder: null
+        parent_folder: null,
       });
     } else {
       const currentId = uuidv4();
@@ -67,16 +67,19 @@ export const transformJsonFilesToItems = (jsonObject: JSON): {
         countFiles: childrenFiles.length + childrenFolderCountFiles,
         childrenFiles: childrenFiles,
         childrenFolders: childrenFolders,
-        parent_folder: null
+        parent_folder: null,
       });
     }
   }
   return { rootFolders, rootFiles };
 };
 
-export const getChildrenFiles = (jsonObject: JSON, parent_folder: string): {
-  childrenFiles: SendItemFile[],
-  childrenFilesSize: number
+export const getChildrenFiles = (
+  jsonObject: JSON,
+  parent_folder: string,
+): {
+  childrenFiles: SendItemFile[];
+  childrenFilesSize: number;
 } => {
   const childrenFiles = [] as SendItemFile[];
   let childrenFilesSize = 0;
@@ -89,17 +92,20 @@ export const getChildrenFiles = (jsonObject: JSON, parent_folder: string): {
         size: value.size,
         type: 'file',
         file: value,
-        parent_folder: parent_folder
+        parent_folder: parent_folder,
       });
     }
   }
   return { childrenFiles, childrenFilesSize };
 };
 
-export const getChildrenFolders = (jsonObject: JSON, parent_folder: string): {
-  childrenFolders: SendItemFolder[],
-  childrenFoldersSize: number,
-  childrenFolderCountFiles: number
+export const getChildrenFolders = (
+  jsonObject: JSON,
+  parent_folder: string,
+): {
+  childrenFolders: SendItemFolder[];
+  childrenFoldersSize: number;
+  childrenFolderCountFiles: number;
 } => {
   const totalChildrenFolders = [] as SendItemFolder[];
   let totalChildrenFoldersSize = 0;
@@ -117,7 +123,7 @@ export const getChildrenFolders = (jsonObject: JSON, parent_folder: string): {
         countFiles: childrenFiles.length + childrenFolderCountFiles,
         childrenFiles: childrenFiles,
         childrenFolders: childrenFolders,
-        parent_folder: parent_folder
+        parent_folder: parent_folder,
       });
       totalChildrenFoldersSize += childrenFilesSize + childrenFoldersSize;
       totalChildrenFoldersCountFiles += childrenFiles.length + childrenFolderCountFiles;
@@ -126,7 +132,7 @@ export const getChildrenFolders = (jsonObject: JSON, parent_folder: string): {
   return {
     childrenFolders: totalChildrenFolders,
     childrenFoldersSize: totalChildrenFoldersSize,
-    childrenFolderCountFiles: totalChildrenFoldersCountFiles
+    childrenFolderCountFiles: totalChildrenFoldersCountFiles,
   };
 };
 
@@ -139,7 +145,7 @@ export const getAllItemsArray = (itemList: SendItemData[]): SendItemData[] => {
       size: item.size,
       type: item.type,
       file: item.file,
-      parent_folder: item.parent_folder
+      parent_folder: item.parent_folder,
     });
     if (item.childrenFiles && item.childrenFiles.length > 0) {
       item.childrenFiles.forEach((childrenFile) => {
@@ -149,7 +155,7 @@ export const getAllItemsArray = (itemList: SendItemData[]): SendItemData[] => {
           size: childrenFile.size,
           type: childrenFile.type,
           file: childrenFile.file,
-          parent_folder: childrenFile.parent_folder
+          parent_folder: childrenFile.parent_folder,
         });
       });
     }
@@ -162,9 +168,9 @@ export const getAllItemsArray = (itemList: SendItemData[]): SendItemData[] => {
 
 export const getAllItemsList = (flatArray: SendItem[]): SendItem[] => {
   const hashTable = Object.create(null);
-  flatArray.forEach(item => hashTable[item.id] = { ...item, childrenFiles: [], childrenFolders: [] });
+  flatArray.forEach((item) => (hashTable[item.id] = { ...item, childrenFiles: [], childrenFolders: [] }));
   const dataTree = [] as SendItem[];
-  flatArray.forEach(item => {
+  flatArray.forEach((item) => {
     if (item.parent_folder) {
       hashTable[item.id]['path'] = hashTable[item.parent_folder].path + '/' + item.name;
       if (item.type === 'file') {
@@ -186,7 +192,7 @@ const getItemListWithFileCount = (itemList: SendItem[]): SendItem[] => {
     if (item.type === 'folder') {
       items.push({
         ...item,
-        countFiles: getChildrenFoldersFileCount(item)
+        countFiles: getChildrenFoldersFileCount(item),
       });
     } else if (item.type === 'file') {
       items.push(item);
@@ -204,4 +210,4 @@ const getChildrenFoldersFileCount = (folder: SendItemFolder): number => {
     });
   }
   return totalChildrenFoldersSize;
-}
+};

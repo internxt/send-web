@@ -1,7 +1,7 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
 export default function Button({
-  className = "",
+  className = '',
   children,
   disabled,
   outline,
@@ -13,17 +13,11 @@ export default function Button({
   outline?: boolean;
   onClick?: () => void;
 }) {
-  const background = outline
-    ? "bg-transparent"
-    : "bg-primary active:bg-primary-dark disabled:bg-gray-40";
+  const background = outline ? 'bg-transparent' : 'bg-primary active:bg-primary-dark disabled:bg-gray-40';
 
-  const textColor = outline
-    ? "text-primary active:text-primary-dark disabled:text-gray-40"
-    : "text-white";
+  const textColor = outline ? 'text-primary active:text-primary-dark disabled:text-gray-40' : 'text-white';
 
-  const border = outline
-    ? "border border-primary active:border-primary-dark disabled:border-gray-40"
-    : "";
+  const border = outline ? 'border border-primary active:border-primary-dark disabled:border-gray-40' : '';
 
   return (
     <button

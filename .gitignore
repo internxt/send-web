@@ -113,7 +113,7 @@ dist
 /coverage
 
 # production
-/build
+/dist
 
 # misc
 .DS_Store
@@ -128,3 +128,4 @@ yarn-error.log*
 
 .npmrc
 index.generated.css
+.wrangler
