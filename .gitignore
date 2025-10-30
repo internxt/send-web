@@ -128,3 +128,4 @@ yarn-error.log*
 
 .npmrc
 index.generated.css
+.wrangler

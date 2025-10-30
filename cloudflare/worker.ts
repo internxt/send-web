@@ -1,15 +1,16 @@
-import { getAssetFromKV } from '@cloudflare/kv-asset-handler';
-
 export default {
-  async fetch(request): Promise<Response> {
-    try {
-      // Intenta servir el asset (por ejemplo /assets/main.js)
-      return await getAssetFromKV({ request });
-    } catch {
-      // Si no existe (por ejemplo /about o /dashboard), sirve el index.html
-      const url = new URL(request.url);
-      url.pathname = '/index.html';
-      return await getAssetFromKV({ request: new Request(url.toString(), request) });
+  async fetch(request, env): Promise<Response> {
+    const response = await env.ASSETS.fetch(request);
+
+    if (response.status === 404) {
+      const indexResponse = await env.ASSETS.fetch('http://ignored/index.html');
+
+      return new Response(indexResponse.body, {
+        headers: indexResponse.headers,
+        status: 200,
+      });
     }
+
+    return response;
   },
 } satisfies ExportedHandler<Env>;

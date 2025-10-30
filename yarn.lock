@@ -204,21 +204,6 @@
   resolved "https://registry.yarnpkg.com/@cloudflare/unenv-preset/-/unenv-preset-2.7.8.tgz#8eaaca11cab436acdd2bed431f4c0a445f79d1cb"
   integrity sha512-Ky929MfHh+qPhwCapYrRPwPVHtA2Ioex/DbGZyskGyNRDe9Ru3WThYZivyNVaPy5ergQSgMs9OKrM9Ajtz9F6w==
 
-"@cloudflare/vite-plugin@1.13.17":
-  version "1.13.17"
-  resolved "https://registry.yarnpkg.com/@cloudflare/vite-plugin/-/vite-plugin-1.13.17.tgz#280f0d19ec2bc27def33e04fac943f875116026e"
-  integrity sha512-JYBs+KwN/fcqcOwa4hZ5SPLUAZ2idksZ4umeja4TWPPUWvO2f0Lm0bOjVHI+rFuq72b2vixx2coNJSyntEBUsA==
-  dependencies:
-    "@cloudflare/unenv-preset" "2.7.8"
-    "@remix-run/node-fetch-server" "^0.8.0"
-    get-port "^7.1.0"
-    miniflare "4.20251011.1"
-    picocolors "^1.1.1"
-    tinyglobby "^0.2.12"
-    unenv "2.0.0-rc.21"
-    wrangler "4.45.2"
-    ws "8.18.0"
-
 "@cloudflare/workerd-darwin-64@1.20251011.0":
   version "1.20251011.0"
   resolved "https://registry.yarnpkg.com/@cloudflare/workerd-darwin-64/-/workerd-darwin-64-1.20251011.0.tgz#21c719140472d191bbc69a6e2b029ac7b74968de"
@@ -243,6 +228,11 @@
   version "1.20251011.0"
   resolved "https://registry.yarnpkg.com/@cloudflare/workerd-windows-64/-/workerd-windows-64-1.20251011.0.tgz#b188009fc84b637a224a0a81e0bef66db54741d5"
   integrity sha512-RIXUQRchFdqEvaUqn1cXZXSKjpqMaSaVAkI5jNZ8XzAw/bw2bcdOVUtakrflgxDprltjFb0PTNtuss1FKtH9Jg==
+
+"@cloudflare/workers-types@4.20251014.0":
+  version "4.20251014.0"
+  resolved "https://registry.yarnpkg.com/@cloudflare/workers-types/-/workers-types-4.20251014.0.tgz#14026edfd352c7b17c2ae5a3674d11d1d2691e7f"
+  integrity sha512-tEW98J/kOa0TdylIUOrLKRdwkUw0rvvYVlo+Ce0mqRH3c8kSoxLzUH9gfCvwLe0M89z1RkzFovSKAW2Nwtyn3w==
 
 "@cspotcode/source-map-support@0.8.1":
   version "0.8.1"
@@ -1016,11 +1006,6 @@
   version "3.32.1"
   resolved "https://registry.yarnpkg.com/@react-types/shared/-/shared-3.32.1.tgz#abfeb839d65d0abe923576f34ac08342c25dfa55"
   integrity sha512-famxyD5emrGGpFuUlgOP6fVW2h/ZaF405G5KDi3zPHzyjAWys/8W6NAVJtNbkCkhedmvL0xOhvt8feGXyXaw5w==
-
-"@remix-run/node-fetch-server@^0.8.0":
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/@remix-run/node-fetch-server/-/node-fetch-server-0.8.1.tgz#094f2324c0c93d530c3addb279247f396727e86a"
-  integrity sha512-J1dev372wtJqmqn9U/qbpbZxbJSQrogNN2+Qv1lKlpATpe/WQ9aCZfl/xSb9d2Rgh1IyLSvNxZAXPZxruO6Xig==
 
 "@rolldown/pluginutils@1.0.0-beta.43":
   version "1.0.0-beta.43"
@@ -3098,11 +3083,6 @@ get-intrinsic@^1.2.4, get-intrinsic@^1.2.5, get-intrinsic@^1.2.6, get-intrinsic@
     has-symbols "^1.1.0"
     hasown "^2.0.2"
     math-intrinsics "^1.1.0"
-
-get-port@^7.1.0:
-  version "7.1.0"
-  resolved "https://registry.yarnpkg.com/get-port/-/get-port-7.1.0.tgz#d5a500ebfc7aa705294ec2b83cc38c5d0e364fec"
-  integrity sha512-QB9NKEeDg3xxVwCCwJQ9+xycaz6pBB6iQ76wiWMl1927n0Kir6alPiP+yuiICLLU4jpMe08dXfpebuQppFA2zw==
 
 get-proto@^1.0.1:
   version "1.0.1"
@@ -5354,7 +5334,7 @@ tinyexec@^0.3.2:
   resolved "https://registry.yarnpkg.com/tinyexec/-/tinyexec-0.3.2.tgz#941794e657a85e496577995c6eef66f53f42b3d2"
   integrity sha512-KQQR9yN7R5+OSwaK0XQoj22pwHoTlgYqmUscPYoknOoWCWfj/5/ABTMRi69FrKU5ffPVh5QcFikpWJI/P1ocHA==
 
-tinyglobby@^0.2.12, tinyglobby@^0.2.15:
+tinyglobby@^0.2.15:
   version "0.2.15"
   resolved "https://registry.yarnpkg.com/tinyglobby/-/tinyglobby-0.2.15.tgz#e228dd1e638cea993d2fdb4fcd2d4602a79951c2"
   integrity sha512-j2Zq4NyQYG5XMST4cbs02Ak8iJUdxRM0XI5QyxXuZOzKOINmWurp3smXu3y5wDcJrptwpSjgXHzIQxR0omXljQ==
