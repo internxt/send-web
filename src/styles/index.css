@@ -20,6 +20,10 @@
   }
 }
 
+button {
+  cursor: pointer;
+}
+
 div:focus-visible {
   outline: none;
 }
