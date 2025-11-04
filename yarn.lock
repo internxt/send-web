@@ -5961,6 +5961,22 @@ wrangler@4.45.2:
   optionalDependencies:
     fsevents "~2.3.2"
 
+wrangler@4.45.3:
+  version "4.45.3"
+  resolved "https://registry.yarnpkg.com/wrangler/-/wrangler-4.45.3.tgz#6e13bda27b53b36531120b188b320aeb74ee82fe"
+  integrity sha512-0ddEA9t4HeBgSVTVTcqtBHl7Z5CorWZ8tGgTQCP5XuL+9E1TJRwS6t/zzG51Ruwjb17SZYCaLchoM8V629S8cw==
+  dependencies:
+    "@cloudflare/kv-asset-handler" "0.4.0"
+    "@cloudflare/unenv-preset" "2.7.8"
+    blake3-wasm "2.1.5"
+    esbuild "0.25.4"
+    miniflare "4.20251011.1"
+    path-to-regexp "6.3.0"
+    unenv "2.0.0-rc.21"
+    workerd "1.20251011.0"
+  optionalDependencies:
+    fsevents "~2.3.2"
+
 "wrap-ansi-cjs@npm:wrap-ansi@^7.0.0":
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
