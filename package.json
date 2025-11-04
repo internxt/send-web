@@ -7,8 +7,9 @@
   "scripts": {
     "dev": "vite",
     "start": "vite build && vite preview",
-    "build": "vite build",
+    "build": "yarn clean && vite build",
     "test": "vitest run --coverage",
+    "clean": "rimraf dist coverage .wrangler tsconfig.tsbuildinfo",
     "add:npmrc": "cp .npmrc.template .npmrc",
     "vercel:install": "yarn run add:npmrc && yarn install",
     "lint": "eslint .",
@@ -89,6 +90,7 @@
     "lint-staged": "16.2.6",
     "postcss": "8.5.6",
     "prettier": "3.6.2",
+    "rimraf": "6.1.0",
     "tailwindcss": "4.1.16",
     "vite": "7.1.12",
     "vite-plugin-bundle-obfuscator": "1.8.0",
