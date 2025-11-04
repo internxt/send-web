@@ -66,7 +66,7 @@
     ]
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "1.13.18",
+    "@cloudflare/vite-plugin": "1.13.19",
     "@internxt/eslint-config-internxt": "2.0.1",
     "@internxt/prettier-config": "internxt/prettier-config#v1.0.2",
     "@rollup/plugin-replace": "6.0.3",
@@ -95,7 +95,7 @@
     "vite-plugin-node-polyfills": "0.24.0",
     "vite-plugin-svgr": "4.5.0",
     "vitest": "4.0.6",
-    "wrangler": "4.45.3"
+    "wrangler": "4.45.4"
   },
   "lint-staged": {
     "*.{js,jsx,tsx,ts}": [
