@@ -1,12 +1,19 @@
-# Getting Started with Create React App
+# Internxt Send
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A secure, privacy-focused file sharing web app built with React, TypeScript, and Vite.\
+This document describes how to set up and run the development environment.
 
-## Available Scripts
+# Getting Started
 
-In the project directory, you can run:
+## Installation
 
-### `npm start`
+- Create a `.npmrc` file by copying the `.npmrc.template` provided in the repo.
+- Fill the `.env` file using `.env.template`.
+- Use `yarn` to install project dependencies.
+
+## Scripts
+
+### `yarn run dev`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -14,27 +21,59 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-### `npm test`
+### `yarn run start`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Serves the built application locally to preview the production output.
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-### `npm run build`
+- Useful for testing the result of a production build.
+- No hot reloading or development tools included.
+
+> The preview command serves the latest build output, so if you haven't run build beforehand, it will either fail or serve outdated files.
+
+### `yarn run lint`
+
+- Runs eslint linter
+
+### `yarn test`
+
+- Runs unit tests with [Vitest](https://vitest.dev/)
+
+### `yarn build`
 
 Builds the app for production to the `dist` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and obfuscated, and the filenames include the hashes.\
+The build is minified, obfuscated, and the filenames include the hashes.\
 Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+## Configuring TailwindCSS Purge
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+It is important to add in the tailwind.config.js file, within the purge property, the list of classes that we are overriding within a Tailwind layer (components, utilities or base) for third-party packages (such as react-bootstrap)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+For example, with this snippet we are telling to purge that we are overriding the react-bootstrap Dropdown and Tabs classes:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```javascript
+  purge: {
+    content: ["./src/**/*.tsx"],
+    options: {
+      safelist: [
+        'dropdown-menu', 'dropdown-item',
+        'nav-item', 'nav-link', 'tab-content', 'tab-pane'
+      ]
+    }
+  }
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Recommended VSCode Extensions
+
+To speed up the development and maintenance of the project, it is recommended to use the following extensions for the IDE:
+
+- Better Comments
+- ESLint
+- Stylelint
+- PostCSS Language Support
+- SCSS Formatter
+- Tailwind CSS IntelliSense
+- GitLens
