@@ -16,7 +16,7 @@ import { getAllItemsList } from '../services/items.service';
 import { ProgressOptions } from '../services/network.service';
 import SendBanner from '../components/SendBanner';
 import moment from 'moment';
-import { decodeSendId } from '../lib/stringUtils';
+import { stringUtils } from '@internxt/lib';
 
 export default function DownloadView() {
   const [state, setState] = useState<
@@ -33,7 +33,7 @@ export default function DownloadView() {
 
   const params = useParams();
 
-  const sendId = decodeSendId(params.sendId ?? '');
+  const sendId = stringUtils.decodeV4Uuid(params.sendId ?? '');
 
   const router = useNavigate();
 

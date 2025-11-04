@@ -2,13 +2,12 @@ import { randomBytes } from 'crypto';
 import { queue, QueueObject } from 'async';
 import { generateMnemonic } from 'bip39';
 import axios from 'axios';
-import { aes } from '@internxt/lib';
+import { aes, stringUtils } from '@internxt/lib';
 
 import { MAX_ITEMS_PER_LINK, MAX_BYTES_PER_SEND } from '../constants';
 import { NetworkService } from './network.service';
 import { SendItemData } from '../models/SendItem';
 import { getCaptchaToken } from '../lib/auth';
-import { encodeSendId, generateRandomStringUrlSafe } from '../lib/stringUtils';
 import envService from './env.service';
 
 interface FileWithNetworkId extends File {
@@ -91,7 +90,7 @@ export class UploadService {
     const sendLinksFiles = await UploadService.uploadFiles(itemFiles, opts);
     const items = [...sendLinksFolders, ...sendLinksFiles];
     const randomMnemonic = generateMnemonic(256);
-    const code = generateRandomStringUrlSafe(8);
+    const code = stringUtils.generateRandomStringUrlSafe(8);
     const encryptedCode = aes.encrypt(code, randomMnemonic);
     const encryptedMnemonic = aes.encrypt(randomMnemonic, code);
 
@@ -112,7 +111,7 @@ export class UploadService {
 
     const createSendLinkResponse = await UploadService.storeSendLinks(createSendLinksPayload);
 
-    const encodedSendId = encodeSendId(createSendLinkResponse.id);
+    const encodedSendId = stringUtils.encodeV4Uuid(createSendLinkResponse.id);
 
     return `${originUrl}/d/${encodedSendId}/${code}`;
   }
