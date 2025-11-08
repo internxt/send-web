@@ -18,7 +18,7 @@
   "dependencies": {
     "@headlessui/react": "2.2.9",
     "@internxt/lib": "1.4.1",
-    "@internxt/sdk": "1.11.12",
+    "@internxt/sdk": "1.11.13",
     "@sentry/react": "10.22.0",
     "async": "3.2.6",
     "axios": "1.13.1",
