@@ -206,10 +206,7 @@ export default function Layout({
             className="relative flex h-full max-w-screen-xl flex-col items-center justify-center md:px-10
             xl:mx-auto xl:px-0 3xl:max-w-full"
           >
-            <div
-              className="relative flex h-full w-full flex-row items-center justify-start space-x-20
-              lg:pb-32 3xl:translate-x-50"
-            >
+            <div className="relative h-full w-full items-center justify-start space-x-20 lg:pb-32 3xl:translate-x-50">
               <div className="relative flex h-full w-full items-center lg:w-max">
                 <Card className="relative z-30 flex shrink-0 flex-col pt-12 md:pt-0">{children}</Card>
               </div>
