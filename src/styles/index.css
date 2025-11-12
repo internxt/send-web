@@ -99,3 +99,7 @@ body {
   transform: translateX(0);
   opacity: 1;
 }
+
+.ml-80 {
+  margin-left: 80px;
+}
