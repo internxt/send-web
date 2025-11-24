@@ -20,7 +20,7 @@
     "@headlessui/react": "2.2.9",
     "@internxt/lib": "1.4.1",
     "@internxt/sdk": "1.11.13",
-    "@sentry/react": "10.23.0",
+    "@sentry/react": "10.26.0",
     "async": "3.2.6",
     "axios": "1.13.2",
     "bip39": "3.1.0",
