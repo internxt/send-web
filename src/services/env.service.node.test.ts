@@ -28,7 +28,6 @@ describe('Check that env variables are loaded correctly', () => {
     expect(envService.getVariable('sendBucketId')).toBe(process.env.REACT_APP_SEND_BUCKET_ID);
     expect(envService.getVariable('stripePublicKey')).toBe(process.env.REACT_APP_STRIPE_PK);
     expect(envService.getVariable('stripeTestPublicKey')).toBe(process.env.REACT_APP_STRIPE_TEST_PK);
-    expect(envService.getVariable('sentryDsn')).toBe(process.env.REACT_APP_SENTRY_DSN);
     expect(envService.getVariable('sendApiUrl')).toBe(process.env.REACT_APP_SEND_API_URL);
     expect(envService.getVariable('recaptchaV3')).toBe(process.env.REACT_APP_RECAPTCHA_V3);
   });
@@ -38,6 +37,5 @@ describe('Check that env variables are loaded correctly', () => {
 
     expect(envService.getVariable('networkUrl')).toMatch(urlPattern);
     expect(envService.getVariable('sendApiUrl')).toMatch(urlPattern);
-    expect(envService.getVariable('sentryDsn')).toMatch(urlPattern);
   });
 });

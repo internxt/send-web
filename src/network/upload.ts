@@ -3,7 +3,6 @@ import { ErrorWithContext } from '@internxt/sdk/dist/network/errors';
 
 import { getSha256 } from './crypto';
 import { NetworkFacade } from './NetworkFacade';
-import { reportError } from '../services/error-reporting.service';
 import axios, { AxiosError, AxiosProgressEvent } from 'axios';
 import envService from '../services/env.service';
 import packageJson from '../../package.json';
@@ -103,7 +102,6 @@ export async function uploadFile(bucketId: string, params: IUploadParams): Promi
         parts: params.parts,
       })
       .catch((err: ErrorWithContext) => {
-        reportError(err, err.context);
         throw err;
       });
   }
@@ -114,8 +112,6 @@ export async function uploadFile(bucketId: string, params: IUploadParams): Promi
       abortController: params.abortController,
     })
     .catch((err: ErrorWithContext) => {
-      reportError(err, err.context);
-
       throw err;
     });
 }
