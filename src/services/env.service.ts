@@ -13,7 +13,6 @@ const variableList = {
   sendBucketId: 'REACT_APP_SEND_BUCKET_ID',
   stripePublicKey: 'REACT_APP_STRIPE_PK',
   stripeTestPublicKey: 'REACT_APP_STRIPE_TEST_PK',
-  sentryDsn: 'REACT_APP_SENTRY_DSN',
   sendApiUrl: 'REACT_APP_SEND_API_URL',
   recaptchaV3: 'REACT_APP_RECAPTCHA_V3',
 };

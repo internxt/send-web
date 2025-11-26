@@ -1,19 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import * as Sentry from '@sentry/react';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import notificationsService, { ToastType } from './services/notifications.service';
 import throttle from 'lodash.throttle';
-import envService from './services/env.service';
-
-Sentry.init({
-  dsn: envService.getVariable('sentryDsn'),
-  integrations: [Sentry.browserTracingIntegration()],
-  tracesSampleRate: 1.0,
-  debug: envService.getVariable('nodeEnv') !== 'production',
-  environment: envService.getVariable('nodeEnv'),
-});
 
 function onUnhandledException(e: ErrorEvent | PromiseRejectionEvent) {
   // eslint-disable-next-line no-console

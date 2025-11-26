@@ -15,7 +15,6 @@ import { FilesContext } from '../contexts/Files';
 import Layout from '../Layout';
 import notificationsService, { ToastType } from '../services/notifications.service';
 import { UploadService } from '../services/upload.service';
-import * as Sentry from '@sentry/react';
 import { getAllItemsArray } from '../services/items.service';
 import FeatureSection from '../components/send/FeatureSection';
 import InfoSection from '../components/send/InfoSection';
@@ -135,7 +134,6 @@ export default function HomeView() {
 
       if (!uploadAbortController.current?.signal.aborted) {
         setPhase({ name: 'error' });
-        Sentry.captureException(err);
       }
     }
   }

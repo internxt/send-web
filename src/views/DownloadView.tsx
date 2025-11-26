@@ -10,7 +10,6 @@ import Spinner from '../components/Spinner';
 import ItemsList from '../components/ItemList';
 import Layout from '../Layout';
 import { DownloadService, getSendLink, GetSendLinkResponse } from '../services/download.service';
-import * as Sentry from '@sentry/react';
 import { SendItemData } from '../models/SendItem';
 import { getAllItemsList } from '../services/items.service';
 import { ProgressOptions } from '../services/network.service';
@@ -48,7 +47,6 @@ export default function DownloadView() {
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(err);
-      Sentry.captureException(err);
       if (err instanceof AxiosError && err.response?.status === 404) {
         setState({ status: 'error', reason: 'not_found' });
       }
@@ -83,7 +81,6 @@ export default function DownloadView() {
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(err);
-      Sentry.captureException(err);
       setState({ status: 'error', reason: 'unknown' });
     }
   }

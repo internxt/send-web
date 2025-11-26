@@ -14,7 +14,6 @@ declare namespace NodeJS {
     REACT_APP_SEND_BUCKET_ID: string;
     REACT_APP_STRIPE_PK: string;
     REACT_APP_STRIPE_TEST_PK: string;
-    REACT_APP_SENTRY_DSN: string;
     REACT_APP_SEND_API_URL: string;
     REACT_APP_RECAPTCHA_V3: string;
   }
