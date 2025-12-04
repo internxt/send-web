@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "vite",
     "start": "vite build && vite preview",
-    "build": "yarn clean && vite build",
+    "build": "yarn clean && tsc --noEmit && vite build",
     "test": "vitest run",
     "test:cov": "vitest run --coverage",
     "clean": "rimraf dist coverage .wrangler tsconfig.tsbuildinfo",
