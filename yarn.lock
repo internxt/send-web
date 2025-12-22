@@ -5949,10 +5949,10 @@ vfile@^6.0.0:
     "@types/unist" "^3.0.0"
     vfile-message "^4.0.0"
 
-vite-plugin-bundle-obfuscator@1.9.0:
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/vite-plugin-bundle-obfuscator/-/vite-plugin-bundle-obfuscator-1.9.0.tgz#ed700fc3ab34b10016866d4bdcfe66576c6b5530"
-  integrity sha512-DBMsFWdLSS0FBOGvqCc9gJPAz927AbSNysj+qnN01HqvFgtFHzW71FyJXUzs/mgzUfPbuH0wXfLk1ZLo6WzbLw==
+vite-plugin-bundle-obfuscator@1.10.0:
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/vite-plugin-bundle-obfuscator/-/vite-plugin-bundle-obfuscator-1.10.0.tgz#8b0b7ca49ba74ab4faae4aacac5e45c42726593c"
+  integrity sha512-a68gGYcLgGu2/aBjd7m2KVtHq6uoGDunU6psXNBQh+47xW55IUDKw2BGOttMFG3azApwqKdtoWsrefmyyO/+1Q==
   dependencies:
     "@jridgewell/remapping" "^2.3.5"
     javascript-obfuscator "^4.2.0"
