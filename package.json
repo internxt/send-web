@@ -74,7 +74,7 @@
     "@testing-library/jest-dom": "6.9.1",
     "@types/async": "3.2.25",
     "@types/lodash.throttle": "4.1.9",
-    "@types/node": "25.0.3",
+    "@types/node": "25.0.5",
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",
     "@types/streamsaver": "2.0.5",
