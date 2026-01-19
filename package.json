@@ -79,7 +79,7 @@
     "@types/react-dom": "19.2.3",
     "@types/streamsaver": "2.0.5",
     "@vitejs/plugin-react": "5.1.2",
-    "@vitest/coverage-istanbul": "4.0.16",
+    "@vitest/coverage-istanbul": "4.0.17",
     "autoprefixer": "10.4.23",
     "dotenv": "17.2.3",
     "eslint": "9.39.2",
@@ -94,7 +94,7 @@
     "vite-plugin-bundle-obfuscator": "1.10.0",
     "vite-plugin-node-polyfills": "0.25.0",
     "vite-plugin-svgr": "4.5.0",
-    "vitest": "4.0.16",
+    "vitest": "4.0.17",
     "wrangler": "4.58.0"
   },
   "lint-staged": {
