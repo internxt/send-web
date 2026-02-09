@@ -1,4 +1,3 @@
-import axios from 'axios';
 import fileDownload from 'js-file-download';
 
 import { NetworkService, ProgressOptions } from './network.service';
@@ -8,7 +7,8 @@ import { binaryStreamToBlob } from '../network/streams';
 import { SendItem } from '../models/SendItem';
 import { StreamService } from './stream.service';
 import { getAllItemsList } from './items.service';
-import envService from './env.service';
+import { SdkManager } from './sdk-manager.service';
+import { GetSendLinkResponse } from '@internxt/sdk/dist/send/types';
 
 /**
  * This service has *the only responsability* of downloading
@@ -112,25 +112,6 @@ export class DownloadService {
   }
 }
 
-/**
- * TODO: SDK
- */
-export interface GetSendLinkResponse {
-  id: string;
-  title: string;
-  subject: string;
-  code: string;
-  views: number;
-  userId: number | null;
-  items: SendItem[];
-  createdAt: string;
-  updatedAt: string;
-  expirationAt: string;
-  size: number;
-}
-
 export async function getSendLink(linkId: string): Promise<GetSendLinkResponse> {
-  const res = await axios.get<GetSendLinkResponse>(envService.getVariable('sendApiUrl') + '/links/' + linkId);
-
-  return res.data;
+  return SdkManager.instance.getSend().getSendLink(linkId);
 }

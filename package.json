@@ -12,14 +12,14 @@
     "test:cov": "vitest run --coverage",
     "clean": "rimraf dist coverage .wrangler tsconfig.tsbuildinfo",
     "lint": "eslint .",
-    "pretty": "prettier --write **/*.{js,jsx,tsx,ts}",
+    "format": "prettier --write **/*.{js,jsx,tsx,ts}",
     "prepare": "husky",
     "cloudflare:dev": "yarn build && wrangler dev"
   },
   "dependencies": {
     "@headlessui/react": "2.2.9",
     "@internxt/lib": "1.4.1",
-    "@internxt/sdk": "1.12.0",
+    "@internxt/sdk": "1.12.5",
     "async": "3.2.6",
     "axios": "1.13.4",
     "bip39": "3.1.0",

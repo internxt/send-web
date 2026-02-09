@@ -1,11 +1,9 @@
-import { Network } from '@internxt/sdk/dist/network';
 import { ErrorWithContext } from '@internxt/sdk/dist/network/errors';
 
 import { getSha256 } from './crypto';
 import { NetworkFacade } from './NetworkFacade';
 import axios, { AxiosError, AxiosProgressEvent } from 'axios';
-import envService from '../services/env.service';
-import packageJson from '../../package.json';
+import { SdkManager } from '../services/sdk-manager.service';
 
 export type UploadProgressCallback = (totalBytes: number, uploadedBytes: number) => void;
 
@@ -80,19 +78,12 @@ export async function uploadFile(bucketId: string, params: IUploadParams): Promi
     pass: params.creds.pass,
   });
 
-  const facade = new NetworkFacade(
-    Network.client(
-      envService.getVariable('networkUrl'),
-      {
-        clientName: packageJson.name,
-        clientVersion: packageJson.version,
-      },
-      {
-        bridgeUser: auth.username,
-        userId: auth.password,
-      },
-    ),
-  );
+  const networkClient = SdkManager.instance.getNetwork({
+    user: auth.username,
+    pass: auth.password,
+  });
+
+  const facade = new NetworkFacade(networkClient);
 
   if (params.parts) {
     return facade

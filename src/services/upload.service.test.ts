@@ -1,12 +1,11 @@
-import { vi, describe, it, expect, beforeEach, Mock } from 'vitest';
+import { vi, describe, expect, beforeEach, Mock, test } from 'vitest';
 import { getCaptchaToken } from '../lib/auth';
-import { CreateSendLinksResponse, SendLink, UploadService } from './upload.service';
+import { UploadService } from './upload.service';
 import { FileWithPath } from 'react-dropzone';
 import { SendItemData } from '../models/SendItem';
-import axios from 'axios';
 import { v4 } from 'uuid';
-
-vi.mock('axios');
+import { CreateSendLinksResponse, SendLink } from '@internxt/sdk/dist/send/types';
+import { SdkManager } from './sdk-manager.service';
 
 vi.mock('../lib/auth', () => ({
   getCaptchaToken: vi.fn().mockResolvedValue('mock-token'),
@@ -73,18 +72,22 @@ const mockCreateSendLinksResponse: CreateSendLinksResponse = {
   expirationAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
 };
 
-beforeEach(() => {
-  vi.clearAllMocks();
-  (axios.post as Mock).mockResolvedValue({ data: mockCreateSendLinksResponse });
-});
-
 describe('upload.service', () => {
-  it('When the uploadFiles() is done, then should call storeSendLinks() and getCaptchaToken()', async () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  test('When the uploadFiles() is done, then should call storeSendLinks() and getCaptchaToken()', async () => {
     const uploadFilesSpy = vi.spyOn(UploadService, 'uploadFiles');
     const storeSendLinksSpy = vi.spyOn(UploadService, 'storeSendLinks');
     (getCaptchaToken as Mock).mockResolvedValue('mock-token');
 
-    const axiosPostSpy = vi.spyOn(axios, 'post');
+    // @ts-expect-error - We only mock the properties we need
+    const sendSpy = vi.spyOn(SdkManager.instance, 'getSend').mockImplementation(() => {
+      return {
+        createSendLink: vi.fn().mockResolvedValue(mockCreateSendLinksResponse),
+      };
+    });
 
     uploadFilesSpy.mockResolvedValue([mockSendLink, mockSendLinkFolder]);
 
@@ -116,19 +119,22 @@ describe('upload.service', () => {
         plainCode: expect.any(String),
       }),
     );
-    expect(axiosPostSpy).toHaveBeenCalledTimes(1);
+    expect(sendSpy).toHaveBeenCalledTimes(1);
     expect(uploadFilesSpy.mock.invocationCallOrder[0]).toBeLessThan(
       (getCaptchaToken as Mock).mock.invocationCallOrder[0],
     );
-    expect((getCaptchaToken as Mock).mock.invocationCallOrder[0]).toBeLessThan(
-      axiosPostSpy.mock.invocationCallOrder[0],
-    );
+    expect((getCaptchaToken as Mock).mock.invocationCallOrder[0]).toBeLessThan(sendSpy.mock.invocationCallOrder[0]);
     expect(result).toContain('/d/');
   });
 
-  it('When links are sent to be created, the captcha is generated before that', async () => {
+  test('When links are sent to be created, the captcha is generated before that', async () => {
     const storeSendLinksSpy = vi.spyOn(UploadService, 'storeSendLinks');
-    const axiosPostSpy = vi.spyOn(axios, 'post');
+    // @ts-expect-error - We only mock the properties we need
+    const sendSpy = vi.spyOn(SdkManager.instance, 'getSend').mockImplementation(() => {
+      return {
+        createSendLink: vi.fn().mockResolvedValue(mockCreateSendLinksResponse),
+      };
+    });
     (getCaptchaToken as Mock).mockResolvedValue('mock-token');
     vi.spyOn(UploadService, 'uploadFiles').mockResolvedValue([mockSendLink]);
 
@@ -147,12 +153,10 @@ describe('upload.service', () => {
     expect(storeSendLinksSpy.mock.invocationCallOrder[0]).toBeLessThan(
       (getCaptchaToken as Mock).mock.invocationCallOrder[0],
     );
-    expect((getCaptchaToken as Mock).mock.invocationCallOrder[0]).toBeLessThan(
-      axiosPostSpy.mock.invocationCallOrder[0],
-    );
+    expect((getCaptchaToken as Mock).mock.invocationCallOrder[0]).toBeLessThan(sendSpy.mock.invocationCallOrder[0]);
   });
 
-  it('When an error is thrown before getCaptchaToken, then getCaptchaToken is not called', async () => {
+  test('When an error is thrown before getCaptchaToken, then getCaptchaToken is not called', async () => {
     const uploadFilesSpy = vi.spyOn(UploadService, 'uploadFiles').mockImplementation(() => {
       throw new Error('Error before captcha');
     });
@@ -174,14 +178,19 @@ describe('upload.service', () => {
     expect(getCaptchaToken).not.toHaveBeenCalled();
   });
 
-  it('When an error is thrown in getCaptchaToken, then storeSendLinks is not called', async () => {
+  test('When an error is thrown in getCaptchaToken, then storeSendLinks is not called', async () => {
     vi.spyOn(UploadService, 'uploadFiles').mockResolvedValue([mockSendLink]);
     (getCaptchaToken as Mock).mockRejectedValue(new Error('Captcha error'));
-    const axiosPostSpy = vi.spyOn(axios, 'post');
+    // @ts-expect-error - We only mock the properties we need
+    const sendSpy = vi.spyOn(SdkManager.instance, 'getSend').mockImplementation(() => {
+      return {
+        createSendLink: vi.fn().mockResolvedValue(mockCreateSendLinksResponse),
+      };
+    });
 
     await expect(UploadService.storeSendLinks).rejects.toThrow('Captcha error');
 
     expect(getCaptchaToken).toHaveBeenCalled();
-    expect(axiosPostSpy).not.toHaveBeenCalled();
+    expect(sendSpy).not.toHaveBeenCalled();
   });
 });
