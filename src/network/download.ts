@@ -1,11 +1,8 @@
-import { Network } from '@internxt/sdk/dist/network';
 import { Decipheriv } from 'crypto';
-
 import { getSha256 } from './crypto';
 import { NetworkFacade } from './NetworkFacade';
 import { joinReadableBinaryStreams } from './streams';
-import envService from '../services/env.service';
-import packageJson from '../../package.json';
+import { SdkManager } from '../services/sdk-manager.service';
 
 export type DownloadProgressCallback = (totalBytes: number, downloadedBytes: number) => void;
 export type Downloadable = { fileId: string; bucketId: string };
@@ -121,19 +118,12 @@ const downloadOwnFile: DownloadOwnFileFunction = async (params) => {
   const { bucketId, fileId, mnemonic, options } = params;
   const auth = await getAuthFromCredentials(params.creds);
 
-  return new NetworkFacade(
-    Network.client(
-      envService.getVariable('networkUrl'),
-      {
-        clientName: packageJson.name,
-        clientVersion: packageJson.version,
-      },
-      {
-        bridgeUser: auth.username,
-        userId: auth.password,
-      },
-    ),
-  ).download(bucketId, fileId, mnemonic, {
+  const networkClient = SdkManager.instance.getNetwork({
+    user: auth.username,
+    pass: auth.password,
+  });
+
+  return new NetworkFacade(networkClient).download(bucketId, fileId, mnemonic, {
     downloadingCallback: options?.notifyProgress,
     abortController: options?.abortController,
   });

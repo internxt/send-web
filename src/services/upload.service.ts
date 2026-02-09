@@ -1,14 +1,14 @@
 import { randomBytes } from 'crypto';
 import { queue, QueueObject } from 'async';
 import { generateMnemonic } from 'bip39';
-import axios from 'axios';
 import { aes, stringUtils } from '@internxt/lib';
 
 import { MAX_ITEMS_PER_LINK, MAX_BYTES_PER_SEND } from '../constants';
 import { NetworkService } from './network.service';
 import { SendItemData } from '../models/SendItem';
 import { getCaptchaToken } from '../lib/auth';
-import envService from './env.service';
+import { CreateSendLinksPayload, SendLink } from '@internxt/sdk/dist/send/types';
+import { SdkManager } from './sdk-manager.service';
 
 interface FileWithNetworkId extends File {
   networkId: string;
@@ -44,13 +44,11 @@ const originUrl = window.origin;
 export class UploadService {
   static async storeSendLinks(payload: CreateSendLinksPayload) {
     const token = await getCaptchaToken();
-    const res = await axios.post<CreateSendLinksResponse>(envService.getVariable('sendApiUrl') + '/links', payload, {
-      headers: {
-        'x-internxt-captcha': token,
-      },
-    });
+    const customHeaders = {
+      'x-internxt-captcha': token,
+    };
 
-    return res.data;
+    return SdkManager.instance.getSend(customHeaders).createSendLink(payload);
   }
 
   static async uploadFilesAndGetLink(
@@ -256,42 +254,4 @@ class UploadManager {
       clearInterval(progressInterval);
     }
   }
-}
-
-/**
- * TODO: SDK
- */
-export interface SendLink {
-  id: string;
-  name: string;
-  type: 'file' | 'folder';
-  size: number;
-  networkId: string;
-  encryptionKey: string;
-  parent_folder: string | null;
-}
-
-export interface CreateSendLinksPayload {
-  sender?: string;
-  receivers?: string[];
-  code: string;
-  title?: string;
-  subject?: string;
-  items: SendLink[];
-  mnemonic: string;
-}
-
-export interface CreateSendLinksResponse {
-  id: string;
-  title: string;
-  subject: string;
-  code: string;
-  sender: string;
-  receivers: string[];
-  views: number;
-  userId: number;
-  items: SendLink[];
-  createdAt: string;
-  updatedAt: string;
-  expirationAt: string;
 }

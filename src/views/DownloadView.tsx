@@ -9,13 +9,14 @@ import FancySpinner from '../components/FancySpinner';
 import Spinner from '../components/Spinner';
 import ItemsList from '../components/ItemList';
 import Layout from '../Layout';
-import { DownloadService, getSendLink, GetSendLinkResponse } from '../services/download.service';
+import { DownloadService, getSendLink } from '../services/download.service';
 import { SendItemData } from '../models/SendItem';
 import { getAllItemsList } from '../services/items.service';
 import { ProgressOptions } from '../services/network.service';
 import SendBanner from '../components/SendBanner';
 import moment from 'moment';
 import { stringUtils } from '@internxt/lib';
+import { GetSendLinkResponse } from '@internxt/sdk/dist/send/types';
 
 export default function DownloadView() {
   const [state, setState] = useState<
