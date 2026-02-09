@@ -80,7 +80,7 @@
     "@types/streamsaver": "2.0.5",
     "@vitejs/plugin-react": "5.1.2",
     "@vitest/coverage-istanbul": "4.0.18",
-    "autoprefixer": "10.4.23",
+    "autoprefixer": "10.4.24",
     "dotenv": "17.2.3",
     "eslint": "9.39.2",
     "husky": "9.1.7",
