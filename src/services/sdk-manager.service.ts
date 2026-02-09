@@ -38,7 +38,7 @@ export class SdkManager {
 
     return Send.client(envService.getVariable('sendApiUrl'), {
       ...appDetails,
-      ...(customHeaders ?? {}),
+      ...(customHeaders ? { customHeaders } : {}),
     });
   };
 }
