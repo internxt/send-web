@@ -12,7 +12,7 @@
     "test:cov": "vitest run --coverage",
     "clean": "rimraf dist coverage .wrangler tsconfig.tsbuildinfo",
     "lint": "eslint .",
-    "pretty": "prettier --write **/*.{js,jsx,tsx,ts}",
+    "format": "prettier --write **/*.{js,jsx,tsx,ts}",
     "prepare": "husky",
     "cloudflare:dev": "yarn build && wrangler dev"
   },
