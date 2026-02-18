@@ -8,16 +8,10 @@ import logo from '../../logo.svg';
 import logo_dark from '../../logo_dark.svg';
 import urls from '../../lib/urls';
 
-const INTERNXT_URL = 'https://internxt.com';
-
 export default function Navbar() {
   const [menuState, setMenuState] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [scrolled, setScrolled] = useState(true);
-
-  // DIALOG MANAGEMENT
-
-  // SCROLL EFFECTS
 
   const handleScroll = () => setScrolled(window.pageYOffset > 0);
 
@@ -54,7 +48,7 @@ export default function Navbar() {
                 >
                   <div className="my-6 font-medium">
                     <a
-                      href={`${INTERNXT_URL}/pricing`}
+                      href={urls.pricing}
                       target="_blank"
                       rel="noreferrer"
                       tabIndex={0}
@@ -105,7 +99,7 @@ export default function Navbar() {
                             >
                               <Disclosure.Panel className="mb-4 flex flex-col py-3 text-cool-gray-80">
                                 <a
-                                  href={`${INTERNXT_URL}/drive`}
+                                  href={urls.products.drive}
                                   tabIndex={0}
                                   target="_blank"
                                   rel="noreferrer"
@@ -119,7 +113,7 @@ export default function Navbar() {
                                 </a>
 
                                 <a
-                                  href={`${INTERNXT_URL}/cloud-object-storage`}
+                                  href={urls.products.antivirus}
                                   tabIndex={0}
                                   target="_blank"
                                   rel="noreferrer"
@@ -129,34 +123,63 @@ export default function Navbar() {
                                   className="flex w-full justify-start px-8 py-3 text-lg font-medium
                                     text-cool-gray-80 outline-hidden"
                                 >
-                                  {textContent.products.s3}
-                                </a>
-
-                                <a
-                                  href="https://send.internxt.com"
-                                  target="_blank"
-                                  rel="noreferrer"
-                                  className="flex w-full items-center justify-start px-8 py-3 text-lg font-medium
-                                    text-cool-gray-80 outline-hidden"
-                                >
-                                  <span>{textContent.products.send}</span>
+                                  {textContent.products.antivirus}
                                 </a>
 
                                 <a
                                   href={urls.products.vpn}
+                                  tabIndex={0}
                                   target="_blank"
                                   rel="noreferrer"
-                                  className="flex w-full items-center justify-start px-8 py-3 text-lg font-medium
+                                  onClick={() => {
+                                    setMenuState(false);
+                                  }}
+                                  className="flex w-full justify-start px-8 py-3 text-lg font-medium
                                     text-cool-gray-80 outline-hidden"
                                 >
-                                  <span>{textContent.products.vpn}</span>
-                                  <span
-                                    className="pointer-events-none ml-2 flex flex-row items-center
-                                    whitespace-nowrap rounded-full bg-orange bg-black/15 px-2 text-supporting-2
-                                    font-medium uppercase text-orange"
-                                  >
-                                    {textContent.products.new}
-                                  </span>
+                                  {textContent.products.vpn}
+                                </a>
+
+                                <a
+                                  href={urls.products.cleaner}
+                                  tabIndex={0}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  onClick={() => {
+                                    setMenuState(false);
+                                  }}
+                                  className="flex w-full justify-start px-8 py-3 text-lg font-medium
+                                    text-cool-gray-80 outline-hidden"
+                                >
+                                  {textContent.products.cleaner}
+                                </a>
+
+                                <a
+                                  href={urls.products.meet}
+                                  tabIndex={0}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  onClick={() => {
+                                    setMenuState(false);
+                                  }}
+                                  className="flex w-full justify-start px-8 py-3 text-lg font-medium
+                                    text-cool-gray-80 outline-hidden"
+                                >
+                                  {textContent.products.meet}
+                                </a>
+
+                                <a
+                                  href={urls.products.ai}
+                                  tabIndex={0}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  onClick={() => {
+                                    setMenuState(false);
+                                  }}
+                                  className="flex w-full justify-start px-8 py-3 text-lg font-medium
+                                    text-cool-gray-80 outline-hidden"
+                                >
+                                  {textContent.products.ai}
                                 </a>
                               </Disclosure.Panel>
                             </Transition>
@@ -164,6 +187,19 @@ export default function Navbar() {
                         </div>
                       )}
                     </Disclosure>
+                    <a
+                      href={urls.products.objectStorage}
+                      target="_blank"
+                      rel="noreferrer"
+                      tabIndex={0}
+                      onClick={() => {
+                        setMenuState(false);
+                      }}
+                      className={`flex w-full translate-y-0 px-8 py-3 outline-hidden transition
+                        delay-100 duration-300 ${menuState ? 'opacity-100' : '-translate-y-4 opacity-0'}`}
+                    >
+                      {textContent.links.pricing}
+                    </a>
 
                     <Disclosure as="div">
                       {({ open }) => (
@@ -237,7 +273,7 @@ export default function Navbar() {
                     </Disclosure>
 
                     <a
-                      href={`${INTERNXT_URL}/about`}
+                      href={urls.company.about}
                       tabIndex={0}
                       target="_blank"
                       rel="noreferrer"
@@ -257,7 +293,7 @@ export default function Navbar() {
                         setMenuState(false);
                       }}
                       tabIndex={0}
-                      href="https://drive.internxt.com/login"
+                      href={urls.login}
                       className={`flex w-full translate-y-0 px-8 py-3 text-primary outline-hidden transition delay-300
                         duration-300 ${menuState ? 'opacity-100' : '-translate-y-4 opacity-0'}`}
                     >
@@ -272,7 +308,7 @@ export default function Navbar() {
             <div className="flex w-full flex-row items-center gap-10">
               {/* Logo */}
               <div className="flex w-max">
-                <a target="_blank" rel="noreferrer" href="https://internxt.com">
+                <a target="_blank" rel="noreferrer" href={urls.home}>
                   <img className="flex h-3 lg:hidden" src={logo_dark} alt="Internxt's logo" />
                   <img className="hidden h-3 lg:flex" src={logo} alt="Internxt's logo" />
                 </a>
@@ -280,7 +316,7 @@ export default function Navbar() {
 
               <div className="hidden w-full flex-row items-center space-x-2 lg:inline-flex">
                 <a
-                  href={`${INTERNXT_URL}/pricing`}
+                  href={urls.pricing}
                   target="_blank"
                   rel="noreferrer"
                   className="whitespace-nowrap px-4 py-1.5 text-base font-medium transition duration-150 ease-in-out"
@@ -302,7 +338,7 @@ export default function Navbar() {
                   {/* Menu items */}
                   <div
                     className="pointer-events-none absolute left-1/2 top-full z-50 w-52 -translate-x-1/2
-                    translate-y-0 border border-black border-black/5 bg-transparent bg-white rounded-xl p-1.5
+                    translate-y-0 border border-black  bg-transparent rounded-xl p-1.5
                     opacity-0 shadow-subtle transition duration-150 ease-in-out group-hover:pointer-events-auto
                     group-hover:translate-y-1 group-hover:opacity-100"
                   >
@@ -312,7 +348,7 @@ export default function Navbar() {
                       <a
                         target="_blank"
                         rel="noreferrer"
-                        href={`${INTERNXT_URL}/drive`}
+                        href={urls.products.drive}
                         className="flex flex-row justify-start rounded-xl px-4 py-2 text-base font-medium
                           text-cool-gray-80 hover:bg-gray-5"
                       >
@@ -320,42 +356,65 @@ export default function Navbar() {
                       </a>
 
                       <a
-                        href={`${INTERNXT_URL}/cloud-object-storage`}
-                        tabIndex={0}
                         target="_blank"
                         rel="noreferrer"
-                        onClick={() => {
-                          setMenuState(false);
-                        }}
-                        className="flex flex-row items-center justify-start rounded-xl px-4 py-2 text-base font-medium
-                        text-cool-gray-80 hover:bg-gray-5"
-                      >
-                        {textContent.products.s3}
-                      </a>
-
-                      <a
-                        href="https://send.internxt.com"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="flex flex-row items-center justify-start rounded-xl px-4 py-2 text-base font-medium
+                        href={urls.products.antivirus}
+                        className="flex flex-row justify-start rounded-xl px-4 py-2 text-base font-medium
                           text-cool-gray-80 hover:bg-gray-5"
                       >
-                        <span>{textContent.products.send}</span>
+                        {textContent.products.antivirus}
                       </a>
 
                       <a
+                        target="_blank"
+                        rel="noreferrer"
                         href={urls.products.vpn}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="flex flex-row items-center justify-start rounded-xl px-4 py-2 text-base font-medium
+                        className="flex flex-row justify-start rounded-xl px-4 py-2 text-base font-medium
                           text-cool-gray-80 hover:bg-gray-5"
                       >
-                        <span>{textContent.products.vpn}</span>
+                        {textContent.products.vpn}
+                      </a>
+
+                      <a
+                        target="_blank"
+                        rel="noreferrer"
+                        href={urls.products.cleaner}
+                        className="flex flex-row justify-start rounded-xl px-4 py-2 text-base font-medium
+                          text-cool-gray-80 hover:bg-gray-5"
+                      >
+                        {textContent.products.cleaner}
+                      </a>
+
+                      <a
+                        target="_blank"
+                        rel="noreferrer"
+                        href={urls.products.meet}
+                        className="flex flex-row justify-start rounded-xl px-4 py-2 text-base font-medium
+                          text-cool-gray-80 hover:bg-gray-5"
+                      >
+                        {textContent.products.meet}
+                      </a>
+
+                      <a
+                        target="_blank"
+                        rel="noreferrer"
+                        href={urls.products.ai}
+                        className="flex flex-row justify-start rounded-xl px-4 py-2 text-base font-medium
+                          text-cool-gray-80 hover:bg-gray-5"
+                      >
+                        {textContent.products.ai}
                       </a>
                     </div>
                   </div>
                 </div>
-
+                <a
+                  href={urls.products.objectStorage}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="whitespace-nowrap px-4 py-1.5 text-base font-medium transition duration-150 ease-in-out"
+                >
+                  {textContent.products.s3}
+                </a>
                 <div
                   className="group relative flex cursor-default items-center space-x-1 rounded-lg px-4 py-1.5 pr-2
                   font-medium transition duration-150 ease-in-out"
@@ -370,7 +429,7 @@ export default function Navbar() {
                   {/* Menu items */}
                   <div
                     className="pointer-events-none absolute top-full left-1/2 z-50 w-52 -translate-x-1/2
-                    translate-y-0 rounded-xl border border-black border-black/5 bg-white p-1.5 opacity-0 shadow-subtle
+                    translate-y-0 rounded-xl border border-black bg-white p-1.5 opacity-0 shadow-subtle
                     transition duration-150 ease-in-out group-hover:pointer-events-auto group-hover:translate-y-1
                     group-hover:opacity-100"
                   >
@@ -396,6 +455,26 @@ export default function Navbar() {
                       >
                         {textContent.ourValues.openSource}
                       </a>
+
+                      <a
+                        href={urls.company.openSource}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex flex-row justify-start rounded-xl px-4 py-2 text-base font-medium
+                        text-cool-gray-80 hover:bg-gray-5"
+                      >
+                        {textContent.ourValues.sustainability}
+                      </a>
+
+                      <a
+                        href={urls.company.openSource}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex flex-row justify-start rounded-xl px-4 py-2 text-base font-medium
+                        text-cool-gray-80 hover:bg-gray-5"
+                      >
+                        {textContent.ourValues.certifications}
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -403,7 +482,7 @@ export default function Navbar() {
                 <a
                   target="_blank"
                   rel="noreferrer"
-                  href={`${INTERNXT_URL}/about`}
+                  href={urls.company.about}
                   className={`whitespace-nowrap px-4 py-1.5 text-base font-medium text-white transition duration-150 
                          ease-in-out hover:text-cool-gray-20`}
                 >
@@ -424,7 +503,7 @@ export default function Navbar() {
             </button>
 
             <a
-              href={`${INTERNXT_URL}/pricing`}
+              href={urls.pricing}
               id="get-started-link"
               className="flex justify-center rounded-lg border border-transparent bg-primary px-4 py-1.5 text-sm
               font-medium text-white transition-all duration-75 focus:outline-hidden sm:inline-flex"

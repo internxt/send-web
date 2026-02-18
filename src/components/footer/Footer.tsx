@@ -1,10 +1,12 @@
-/* eslint-disable max-len */
+import { useState } from 'react';
 import { Transition, Disclosure } from '@headlessui/react';
-import { CaretDown } from 'phosphor-react';
+import { CaretDown, CaretRight, CaretUp } from 'phosphor-react';
 import moment from 'moment';
 
 import textContent from '../../assets/lang/en/footer.json';
 import GDPR from '../../assets/social/gdpr-internxt.svg';
+import ISO from '../../assets/social/ISO-27001.webp';
+import DownloadQR from '../../assets/social/DownloadQR.webp';
 import Reddit from '../../assets/social/reddit.svg';
 import Instagram from '../../assets/social/cool-gray-60/instagram.svg';
 import LinkedIn from '../../assets/social/cool-gray-60/linkedin.svg';
@@ -14,241 +16,232 @@ import Internxt from '../../assets/Internxt.svg';
 import iosStore from '../../assets/images/footer/app-store.svg';
 import androidStore from '../../assets/images/footer/store-for-android.svg';
 import urls from '../../lib/urls';
+import { subscribeToNewsletter } from '../../services/klaviyo.service';
 
 const iosURL = 'https://apps.apple.com/es/app/internxt-drive/id1465869889';
 const androidURL = 'https://play.google.com/store/apps/details?id=com.internxt.cloud';
 
-export default function Footer({
-  hideNewsletter,
-  darkMode,
-}: Readonly<{
-  hideNewsletter?: boolean;
-  darkMode?: boolean;
-}>) {
-  const lang = 'en';
+export default function Footer() {
   const year = moment().format('YYYY');
+  const [isAlternativesOpen, setIsAlternativesOpen] = useState(false);
+  const [isVideocallsOpen, setIsVideocallsOpen] = useState(false);
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'success' | 'error' | 'loading' | null>(null);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus('loading');
+
+    try {
+      await subscribeToNewsletter(email);
+      setStatus('success');
+      setEmail('');
+    } catch (error) {
+      setStatus('error');
+
+      if (error instanceof Error) {
+        console.error('[Newsletter] Error:', error.message); // eslint-disable-line no-console
+      } else {
+        console.error('[Newsletter] Error desconocido:', error); // eslint-disable-line no-console
+      }
+    }
+  };
 
   return (
-    <section id="footer" className="z-50 flex w-full flex-col bg-gray-1 pb-10">
-      <div className="flex w-full flex-col items-center justify-center px-6 py-16 sm:p-20 sm:py-12">
-        <div className="flex w-full max-w-[896px] flex-col items-center justify-center space-y-8 pb-9 text-center lg:flex-row lg:items-start lg:space-y-0 lg:space-x-32 lg:text-left">
-          {/* Download app for iOS and Android */}
-          {lang === 'en' ? (
-            <>
-              <div className="flex w-full max-w-[384px] flex-col items-center justify-center space-y-3 lg:items-start">
-                <div className="flex flex-col space-y-1">
-                  <h2 className="text-lg font-medium text-gray-100">{textContent.DownloadApp.title}</h2>
-                  <p className="text-sm text-gray-80">{textContent.DownloadApp.description}</p>
-                </div>
-                {/* Images */}
-                <div className="flex flex-col space-y-4 lg:flex-row lg:space-y-0 lg:space-x-4">
-                  <div className="flex">
-                    <img
-                      src={iosStore}
-                      width={148}
-                      height={44}
-                      className="cursor-pointer"
-                      alt="Download on the App Store"
-                      onClick={() => {
-                        window.open(iosURL, '_blank');
-                      }}
-                    />
-                  </div>
-                  <div className="flex">
-                    <img
-                      src={androidStore}
-                      onClick={() => {
-                        window.open(androidURL, '_blank');
-                      }}
-                      width={148}
-                      height={44}
-                      className="cursor-pointer"
-                      alt="Get it on Google Play"
-                    />
-                  </div>
-                </div>
+    <section id="footer" className="flex w-full flex-col overflow-hidden">
+      <div
+        className="flex w-full flex-col items-center justify-center pt-10 sm:py-12 lg:px-10 lg:pt-10 xl:px-64 3xl:px-80"
+        style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #E5EFFF 100%)' }}
+      >
+        <div className="flex w-full flex-col gap-6 p-6 lg:flex-row lg:justify-between lg:gap-8 lg:p-0">
+          <div className="flex w-full flex-row items-end gap-6 lg:w-1/2 2xl:w-1/3">
+            <div className="flex flex-col items-start justify-between gap-9">
+              <div className="flex flex-col gap-2">
+                <p className="text-lg font-medium">{textContent.DownloadApp.title}</p>
+                <p className="max-w-95 text-sm text-gray-80">{textContent.DownloadApp.description}</p>
               </div>
 
-              <div
-                className={`${
-                  hideNewsletter ? 'hidden' : 'flex'
-                } mb-10 max-w-[384px] flex-col items-center justify-center space-y-3 text-center md:items-start md:text-left `}
-              >
-                <div className="flex w-full flex-col space-y-1 md:max-w-sm">
-                  <h2 className="text-lg font-medium">{textContent.NewsletterSection.title}</h2>
-                  <p className={`text-base sm:text-sm ${darkMode ? 'text-cool-gray-30' : 'text-gray-80'}`}>
-                    {textContent.NewsletterSection.description}
-                  </p>
-                </div>
-
-                <form
-                  data-code="r3s4c1"
-                  method="post"
-                  target="_blank"
-                  rel="noopener"
-                  action="https://app.mailerlite.com/webforms/submit/r3s4c1"
-                  className="flex w-full flex-col items-center justify-center md:flex-row"
-                >
-                  <input type="hidden" name="ml-submit" value="1" />
-                  <input
-                    name="fields[email]"
-                    type="email"
-                    placeholder={`${textContent.NewsletterSection.input}`}
-                    className={`flex h-auto w-full flex-row rounded-lg px-4 py-3 text-lg outline-hidden sm:py-2 sm:text-base md:w-64 ${
-                      darkMode
-                        ? 'border-cool-gray-70 bg-cool-gray-90 focus:border-primary focus:ring-black/30'
-                        : 'border-cool-gray-20 bg-white focus:border-blue-50 focus:ring-black/20'
-                    } mb-2 appearance-none border text-left transition-all duration-150 focus:ring focus:ring-primary`}
-                    required
+              <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+                <div className="flex gap-4">
+                  <img
+                    src={iosStore}
+                    width={148}
+                    height={44}
+                    className="cursor-pointer"
+                    alt="Download on the App Store"
+                    onClick={() => window.open(iosURL, '_blank')}
                   />
-                  <input
-                    name="signup"
-                    type="submit"
-                    value={`${textContent.NewsletterSection.cta}`}
-                    className="ml-2 flex w-full cursor-pointer items-center justify-center rounded-lg border border-transparent bg-primary px-4 py-3 text-lg font-medium text-white transition-all duration-75 hover:bg-primary-dark focus:outline-hidden active:bg-primary-dark sm:mb-2 sm:py-2 sm:text-base"
+                  <img
+                    src={androidStore}
+                    width={148}
+                    height={44}
+                    className="cursor-pointer"
+                    alt="Get it on Google Play"
+                    onClick={() => window.open(androidURL, '_blank')}
                   />
-                </form>
-                <span className="text-sm text-gray-40">
-                  {textContent.NewsletterSection.privacy}{' '}
-                  <a href={urls.legal} target={'_blank'} rel="noreferrer">
-                    <span className="cursor-pointer underline">{textContent.NewsletterSection.privacyLink}</span>
-                  </a>
-                </span>
+                </div>
               </div>
-            </>
-          ) : (
-            <div
-              className={`${
-                hideNewsletter ? 'hidden' : 'flex'
-              } mb-10 w-full flex-col items-start justify-center space-y-6 md:flex-row md:space-x-20 md:space-y-0`}
-            >
-              <div className="flex w-full flex-col space-y-1 md:max-w-sm">
-                <h2 className="text-lg font-medium">{textContent.NewsletterSection.title}</h2>
-                <p className={`text-base sm:text-sm ${darkMode ? 'text-cool-gray-30' : 'text-cool-gray-60'}`}>
-                  {textContent.NewsletterSection.description}
-                </p>
-              </div>
-
-              <form
-                data-code="r3s4c1"
-                method="post"
-                target="_blank"
-                rel="noopener"
-                action="https://app.mailerlite.com/webforms/submit/r3s4c1"
-                className="flex w-full flex-col items-center justify-center md:w-auto"
-              >
-                <input type="hidden" name="ml-submit" value="1" />
-                <input
-                  name="fields[email]"
-                  type="email"
-                  placeholder={`${textContent.NewsletterSection.input}`}
-                  className={`flex h-auto w-full flex-row rounded-lg px-4 py-3 text-lg outline-hidden sm:py-2 sm:text-base md:w-64 ${
-                    darkMode
-                      ? 'border-cool-gray-70 bg-cool-gray-90 focus:border-primary focus:ring-black/30'
-                      : 'border-cool-gray-20 bg-white focus:border-blue-50 focus:ring-black/20'
-                  } mb-2 appearance-none border text-left transition-all duration-150 focus:ring focus:ring-primary`}
-                  required
-                />
-                <input
-                  name="signup"
-                  type="submit"
-                  value={`${textContent.NewsletterSection.cta}`}
-                  className="mb-6 flex w-full cursor-pointer items-center justify-center rounded-lg border border-transparent bg-primary px-4 py-3 text-lg font-medium text-white transition-all duration-75 hover:bg-primary-dark focus:outline-hidden active:bg-primary-dark sm:mb-2 sm:py-2 sm:text-base"
-                />
-                <span className="text-xs text-cool-gray-40 sm:text-supporting-2">
-                  {textContent.NewsletterSection.privacy}{' '}
-                  <a href={urls.legal} target={'_blank'} rel="noreferrer">
-                    <span className="cursor-pointer underline">{textContent.NewsletterSection.privacyLink}</span>
-                  </a>
-                </span>
-              </form>
             </div>
-          )}
+            <img
+              src={DownloadQR}
+              width={125}
+              height={125}
+              className="cursor-pointer"
+              alt="QR code for download Internxt APP"
+            />
+          </div>
+
+          <div className="flex w-full flex-col gap-3 lg:w-1/3 2xl:w-1/3">
+            <div className="flex flex-col gap-1">
+              <p className="text-lg font-medium">{textContent.NewsletterSection.title}</p>
+              <p className="text-sm text-gray-80">{textContent.NewsletterSection.description}</p>
+            </div>
+
+            <form className="flex flex-col gap-2 sm:flex-row" onSubmit={handleSubmit}>
+              <input
+                name="email"
+                type="email"
+                placeholder={textContent.NewsletterSection.input}
+                className="flex-1 rounded-lg border px-4 py-2.5 text-base outline-hidden 
+                transition-all border-cool-gray-20 bg-white focus:border-blue-50 focus:ring 
+                focus:ring-primary focus:ring-opacity-20"
+                required
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (status) setStatus(null);
+                }}
+              />
+              <button
+                type="submit"
+                disabled={!email || status === 'loading'}
+                className={`rounded-lg px-4 py-2.5 text-base font-medium transition-all ${
+                  email && status !== 'loading'
+                    ? 'bg-primary text-white hover:bg-primary-dark active:bg-primary-dark'
+                    : 'bg-primary/10 text-cool-gray-40 cursor-default'
+                }`}
+              >
+                {status === 'loading' ? 'Sending...' : textContent.NewsletterSection.cta}
+              </button>
+            </form>
+
+            {status === 'success' && <p className="text-sm font-medium text-green-600">Successfully submitted!</p>}
+            {status === 'error' && (
+              <p className="text-sm font-medium text-red-500">Something went wrong. Please try again.</p>
+            )}
+
+            <span className="text-sm text-gray-40">
+              {textContent.NewsletterSection.privacy}{' '}
+              <a href={urls.legal} target="_blank" rel="noreferrer" className="underline hover:text-gray-30">
+                {textContent.NewsletterSection.privacyLink}
+              </a>
+            </span>
+          </div>
         </div>
 
-        {/* Separator */}
-        <div
-          className={`${hideNewsletter ? 'hidden' : 'flex'} h-px  w-full max-w-[896px] ${
-            darkMode ? 'bg-cool-gray-90' : 'bg-cool-gray-10'
-          } mb-10`}
-        />
+        <div className="w-full bg-green-120 bg-cool-gray-10 h-px lg:my-10" />
 
-        {/* Footer content */}
-        <footer className="flex max-w-[896px] items-center justify-center">
-          {/* Desktop version */}
+        <footer className="flex w-full items-center justify-center">
           <div className="hidden w-full flex-col items-center justify-center md:space-y-16 lg:flex">
-            <div className="flex w-full flex-row justify-between md:justify-center lg:space-x-20">
-              <div className="flex flex-1 flex-col items-center lg:flex-none">
+            <div className="flex w-full flex-row justify-between md:justify-between">
+              <div className="flex max-w-[30%] flex-1 flex-col items-center lg:flex-none">
                 <div className="flex shrink-0 flex-col space-y-3">
-                  <h3 className="text-lg font-medium">{textContent.FooterSection.sections.products.title}</h3>
-                  <div
-                    className={`flex flex-col space-y-1.5 text-base ${
-                      darkMode ? 'text-cool-gray-30' : 'text-cool-gray-60'
-                    }`}
-                  >
-                    <a href={urls.products.drive} target={'_blank'} rel="noreferrer" className="hover:text-primary">
+                  <p className="text-xs font-semibold text-gray-100">
+                    {textContent.FooterSection.sections.products.title}
+                  </p>
+                  <div className="flex flex-col gap-1 text-xs text-cool-gray-60">
+                    <a href={urls.products.drive} className="hover:text-primary">
                       {textContent.FooterSection.sections.products.drive}
                     </a>
 
                     <a
-                      href={urls.products.webdav}
+                      href={urls.products.antivirus}
                       target="_blank"
                       rel="noreferrer"
-                      className="flex flex-row items-center hover:text-primary"
+                      className="flex items-center hover:text-primary"
                     >
-                      <div>{textContent.FooterSection.sections.products.webDAV}</div>
+                      {textContent.FooterSection.sections.products.antivirus}
+                      <span
+                        className="ml-2 h-max items-center justify-center rounded-sm 
+                      bg-primary/10 bg-opacity-15 px-1 py-0.5 text-[10px] font-semibold text-primary"
+                      >
+                        {textContent.FooterSection.new}
+                      </span>
                     </a>
 
                     <a
                       href={urls.products.send}
                       target="_blank"
                       rel="noreferrer"
-                      className="flex flex-row items-center hover:text-primary"
+                      className="flex items-center hover:text-primary"
                     >
-                      <div>{textContent.FooterSection.sections.products.send}</div>
+                      {textContent.FooterSection.sections.products.send}
                     </a>
 
-                    <a
-                      href={urls.products.vpn}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="flex flex-row items-center hover:text-primary"
-                    >
-                      <div>{textContent.FooterSection.sections.products.vpn}</div>
-                    </a>
-
-                    <a
-                      href={urls.products.business}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="flex flex-row items-center hover:text-primary"
-                    >
-                      <div>{textContent.FooterSection.sections.products.business}</div>
-                      <div className="ml-2 flex h-max items-center justify-center rounded-full bg-primary/15 py-1 px-2 text-xs font-medium uppercase text-primary">
+                    <a href={urls.products.vpn} className="flex items-center hover:text-primary">
+                      {textContent.FooterSection.sections.products.vpn}
+                      <span
+                        className="ml-2 h-max items-center justify-center rounded-sm
+                       bg-primary/10 bg-opacity-15 px-1 py-0.5 text-[10px] font-semibold text-primary"
+                      >
                         {textContent.FooterSection.new}
-                      </div>
+                      </span>
+                    </a>
+                    <a href={urls.products.cleaner} className="flex items-center hover:text-primary">
+                      {textContent.FooterSection.sections.products.cleaner}
+                      <span
+                        className="ml-2 h-max items-center justify-center rounded-sm
+                       bg-primary/10 bg-opacity-15 px-1 py-0.5 text-[10px] font-semibold text-primary"
+                      >
+                        {textContent.FooterSection.new}
+                      </span>
+                    </a>
+                    <a href={urls.products.ai} className="flex items-center hover:text-primary">
+                      {textContent.FooterSection.sections.products.ai}
+                      <span
+                        className="ml-2 h-max items-center justify-center rounded-sm
+                       bg-primary/10 bg-opacity-15 px-1 py-0.5 text-[10px] font-semibold text-primary"
+                      >
+                        {textContent.FooterSection.new}
+                      </span>
+                    </a>
+                    <a href={urls.products.meet} className="flex items-center hover:text-primary">
+                      {textContent.FooterSection.sections.products.meet}
+                      <span
+                        className="ml-2 h-max items-center justify-center rounded-sm
+                       bg-primary/10 bg-opacity-15 px-1 py-0.5 text-[10px] font-semibold text-primary"
+                      >
+                        {textContent.FooterSection.new}
+                      </span>
                     </a>
 
-                    <a href={urls.products.pricing} target={'_blank'} rel="noreferrer" className="hover:text-primary">
+                    <a
+                      href={urls.products.objectStorage}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex flex-row items-center hover:text-primary"
+                    >
+                      <div className="flex flex-row">{textContent.FooterSection.sections.products.objStorage}</div>
+                    </a>
+
+                    <a href={urls.pricing} className="hover:text-primary">
                       {textContent.FooterSection.sections.products.pricing}
                     </a>
                   </div>
                 </div>
               </div>
 
-              <div className="flex flex-1 flex-col items-center lg:flex-none">
+              <div className="flex max-w-[14%] flex-1 flex-col items-center text-gray-100 lg:flex-none">
                 <div className="flex shrink-0 flex-col space-y-3">
-                  <h3 className="text-lg font-medium">{textContent.FooterSection.sections.company.title}</h3>
-                  <div
-                    className={`flex flex-col space-y-1.5 text-base ${
-                      darkMode ? 'text-cool-gray-30' : 'text-cool-gray-60'
-                    }`}
-                  >
-                    <a href={urls.company.about} target={'_blank'} rel="noreferrer" className="hover:text-primary">
+                  <p className="text-xs font-semibold text-gray-100">
+                    {textContent.FooterSection.sections.company.title}
+                  </p>
+                  <div className="flex flex-col gap-1 text-xs text-cool-gray-60">
+                    <a href={urls.company.about} className="hover:text-primary">
                       {textContent.FooterSection.sections.company.about}
                     </a>
 
-                    <a href={urls.company.privacy} target={'_blank'} rel="noreferrer" className="hover:text-primary">
+                    <a href={urls.company.privacy} className="hover:text-primary">
                       {textContent.FooterSection.sections.company.privacy}
                     </a>
 
@@ -258,601 +251,785 @@ export default function Footer({
 
                     <a
                       href={urls.company.openSource}
-                      target={'_blank'}
-                      rel="noreferrer"
                       className="flex max-w-[200px] flex-row items-center hover:text-primary"
                     >
                       {textContent.FooterSection.sections.company.openSource}
                     </a>
 
-                    <a href={urls.company.legal} className="hover:text-primary" target={'_blank'} rel="noreferrer">
+                    <a href={urls.company.legal} className="hover:text-primary">
                       {textContent.FooterSection.sections.company.legal}
                     </a>
 
                     <a
-                      href={urls.company.mediaArea}
+                      href={urls.company.sustainability}
                       className="flex max-w-[200px] flex-row items-center hover:text-primary"
-                      target={'_blank'}
-                      rel="noreferrer"
                     >
-                      {textContent.FooterSection.sections.company.mediaArea}
+                      {textContent.FooterSection.sections.company.sustainability}
                     </a>
                   </div>
                 </div>
               </div>
 
-              <div className="flex flex-1 flex-col items-center lg:flex-none">
+              <div className="flex max-w-[14%] flex-1 flex-col items-center text-gray-100 lg:flex-none">
                 <div className="flex shrink-0 flex-col space-y-3">
-                  <h3 className="text-lg font-medium">{textContent.FooterSection.sections.join.title}</h3>
-                  <div
-                    className={`flex flex-col space-y-1.5 text-base ${
-                      darkMode ? 'text-cool-gray-30' : 'text-cool-gray-60'
-                    }`}
-                  >
+                  <p className="text-xs font-semibold text-gray-100">{textContent.FooterSection.sections.join.title}</p>
+                  <div className="flex flex-col gap-1 text-xs text-cool-gray-60">
                     <a href={urls.join.signup} target="_top" className="hover:text-primary">
                       {textContent.FooterSection.sections.join.signup}
                     </a>
-
                     <a href={urls.join.login} target="_top" className="hover:text-primary">
                       {textContent.FooterSection.sections.join.login}
                     </a>
-
-                    <a href={urls.join.support} className="cursor-pointer hover:text-primary">
+                    <a
+                      href={urls.support}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="cursor-pointer hover:text-primary"
+                    >
                       {textContent.FooterSection.sections.join.support}
                     </a>
 
-                    <a href={urls.join.whitePaper} download className="hover:text-primary" rel="noreferrer">
+                    <a
+                      href={'/whitepaper/internxt-white-paper-1.pdf'}
+                      target="_blank"
+                      rel="noreferrer"
+                      download={true}
+                      className="hover:text-primary"
+                    >
                       {textContent.FooterSection.sections.join.whitePaper}
-                    </a>
-
-                    <a href={urls.join.newsletter} target="_top" className="hover:text-primary">
-                      {textContent.FooterSection.sections.join.newsletter}
                     </a>
 
                     <a href={urls.join.github} target="_blank" rel="noreferrer" className="hover:text-primary">
                       {textContent.FooterSection.sections.join.github}
                     </a>
 
-                    <a href={urls.join.affiliates} target="_blank" rel="noreferrer" className="hover:text-primary">
+                    <a href={urls.join.affiliates} target="_blank" className="hover:text-primary">
                       {textContent.FooterSection.sections.join.affiliates}
-                    </a>
-
-                    <a
-                      href={urls.join.storageForEducation}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="hover:text-primary"
-                    >
-                      {textContent.FooterSection.sections.join.storageForEducation}
                     </a>
                   </div>
                 </div>
               </div>
 
-              <div className="flex max-w-[180px] flex-col items-center lg:flex-none">
+              <div className="flex max-w-[34%] flex-1 flex-col items-center text-gray-100 lg:flex-none">
                 <div className="flex shrink-0 flex-col space-y-3">
-                  <h3 className="text-lg font-medium">{textContent.FooterSection.sections.resources.title}</h3>
-                  <div
-                    className={`flex flex-col space-y-1.5 text-base ${
-                      darkMode ? 'text-cool-gray-30' : 'text-cool-gray-60'
-                    }`}
-                  >
-                    <a href={urls.resources.blog} target="_blank" rel="noreferrer" className="hover:text-primary">
+                  <p className="text-xs font-semibold text-gray-100">
+                    {textContent.FooterSection.sections.resources.title}
+                  </p>
+                  <div className="flex flex-col gap-1 text-xs text-cool-gray-60">
+                    <a href={urls.blog} target="_blank" rel="noreferrer" className="hover:text-primary">
                       {textContent.FooterSection.sections.resources.blog}
                     </a>
-
-                    <a
-                      href={urls.resources.storageComparison}
-                      target={'_blank'}
-                      rel="noreferrer"
-                      className="w-full max-w-[160px] hover:text-primary"
-                    >
+                    <a href={urls.resources.storageComparison} className="w-full max-w-40 hover:text-primary">
                       {textContent.FooterSection.sections.resources.comparison}
                     </a>
 
-                    <a
-                      href={urls.resources.pCloudAlternatives}
-                      target={'_blank'}
-                      rel="noreferrer"
-                      className="w-full max-w-[160px] hover:text-primary"
+                    <button
+                      onClick={() => setIsAlternativesOpen(!isAlternativesOpen)}
+                      className="flex w-full max-w-40 flex-row items-center gap-1 text-left hover:text-primary"
                     >
-                      {textContent.FooterSection.sections.resources.pCloudAlternative}
-                    </a>
+                      {textContent.FooterSection.sections.resources.cloudStorage}
+                      {isAlternativesOpen ? (
+                        <CaretDown className="mt-0.5 flex h-2 w-2" />
+                      ) : (
+                        <CaretRight className="mt-0.5 flex h-2 w-2" />
+                      )}
+                    </button>
 
-                    <a
-                      href={urls.resources.privacyDirectory}
-                      target={'_blank'}
-                      rel="noreferrer"
-                      className="w-full max-w-[265px] hover:text-primary"
+                    <div
+                      className={`flex flex-col gap-1 overflow-hidden transition-all duration-300 ease-in-out ${
+                        isAlternativesOpen ? 'max-h-125 opacity-100' : 'invisible max-h-0 opacity-0'
+                      }`}
+                      style={!isAlternativesOpen ? { display: 'none' } : {}}
                     >
-                      {textContent.FooterSection.sections.resources.directoryOfPrivacyOrganizations}
-                    </a>
+                      <a href={urls.resources.alternatives.pCloud} className="w-full max-w-40 pl-3 hover:text-primary">
+                        {textContent.FooterSection.sections.resources.pCloudAlternative}
+                      </a>
+                      <a href={urls.resources.alternatives.dropbox} className="w-full max-w-40 pl-3 hover:text-primary">
+                        {textContent.FooterSection.sections.resources.dropboxAlternative}
+                      </a>
+                      <a href={urls.resources.alternatives.mega} className="w-full max-w-40 pl-3 hover:text-primary">
+                        {textContent.FooterSection.sections.resources.megaAlternative}
+                      </a>
+                      <a href={urls.resources.alternatives.koofr} className="w-full max-w-40 pl-3 hover:text-primary">
+                        {textContent.FooterSection.sections.resources.koofrAlternative}
+                      </a>
+                      <a
+                        href={urls.resources.alternatives.icedrive}
+                        className="w-full max-w-40 pl-3 hover:text-primary"
+                      >
+                        {textContent.FooterSection.sections.resources.icedriveAlternative}
+                      </a>
+                      <a href={urls.resources.alternatives.pCloud} className="w-full max-w-40 pl-3 hover:text-primary">
+                        {textContent.FooterSection.sections.resources.onedriveAlternative}
+                      </a>
+                      <a
+                        href={urls.resources.alternatives.googleDrive}
+                        className="w-full max-w-40 pl-3 hover:text-primary"
+                      >
+                        {textContent.FooterSection.sections.resources.googleDriveAlternative}
+                      </a>
+                      <a href={urls.resources.alternatives.drime} className="w-full max-w-40 pl-3 hover:text-primary">
+                        {textContent.FooterSection.sections.resources.drimeAlternative}
+                      </a>
+                      <a href={urls.resources.alternatives.degoo} className="w-full max-w-40 pl-3 hover:text-primary">
+                        {textContent.FooterSection.sections.resources.degooAlternative}
+                      </a>
+                      <a
+                        href={urls.resources.alternatives.filejump}
+                        className="w-full max-w-40 pl-3 hover:text-primary"
+                      >
+                        {textContent.FooterSection.sections.resources.fileJumpAlternative}
+                      </a>
+                      <a
+                        href={urls.resources.alternatives.elephantdrive}
+                        className="w-full max-w-40 pl-3 hover:text-primary"
+                      >
+                        {textContent.FooterSection.sections.resources.elephantDriveAlternative}
+                      </a>
+                      <a href={urls.resources.alternatives.sync} className="w-full max-w-40 pl-3 hover:text-primary">
+                        {textContent.FooterSection.sections.resources.syncAlternative}
+                      </a>
+                      <a href={urls.resources.alternatives.filen} className="w-full max-w-40 pl-3 hover:text-primary">
+                        {textContent.FooterSection.sections.resources.filenAlternatice}
+                      </a>
+                      <a href={urls.resources.alternatives.idrive} className="w-full max-w-40 pl-3 hover:text-primary">
+                        {textContent.FooterSection.sections.resources.iDriveAlternative}
+                      </a>
+                      <a href={urls.resources.alternatives.terabox} className="w-full max-w-40 pl-3 hover:text-primary">
+                        {textContent.FooterSection.sections.resources.teraboxAlternative}
+                      </a>
+                      <a href={urls.resources.alternatives.proton} className="w-full max-w-40 pl-3 hover:text-primary">
+                        {textContent.FooterSection.sections.resources.protonAlternative}
+                      </a>
+                    </div>
 
-                    <a
-                      href={urls.resources.cyberAwareness}
-                      target={'_blank'}
-                      rel="noreferrer"
-                      className="hover:text-primary"
+                    <button
+                      onClick={() => setIsVideocallsOpen(!isVideocallsOpen)}
+                      className="flex w-full flex-row items-center gap-1 text-left hover:text-primary"
                     >
-                      {textContent.FooterSection.sections.resources.cyberAwareness}
-                    </a>
+                      {textContent.FooterSection.sections.resources.videoCalls}
+                      {isVideocallsOpen ? (
+                        <CaretDown className="mt-0.5 flex h-2 w-2" />
+                      ) : (
+                        <CaretRight className="mt-0.5 flex h-2 w-2" />
+                      )}
+                    </button>
 
-                    <a
-                      className="flex  items-center hover:text-primary"
-                      href={urls.resources.whatGoogleKnows}
-                      target={'_blank'}
-                      rel="noreferrer"
+                    <div
+                      className={`flex flex-col gap-1 overflow-hidden transition-all duration-300 ease-in-out ${
+                        isVideocallsOpen ? 'max-h-125 opacity-100' : 'invisible max-h-0 opacity-0'
+                      }`}
+                      style={!isVideocallsOpen ? { display: 'none' } : {}}
                     >
+                      <a
+                        href={urls.resources.videoCalls.googleMeet}
+                        className="w-full max-w-40 pl-3 hover:text-primary"
+                      >
+                        {textContent.FooterSection.sections.resources.googleMeet}
+                      </a>
+                      <a href={urls.resources.videoCalls.zoom} className="w-full max-w-40 pl-3 hover:text-primary">
+                        {textContent.FooterSection.sections.resources.zoom}
+                      </a>
+                      <a href={urls.resources.videoCalls.teams} className="w-full max-w-40 pl-3 hover:text-primary">
+                        {textContent.FooterSection.sections.resources.teams}
+                      </a>
+                    </div>
+                    <a href={urls.resources.whatGoogleKnows} className="items-center hover:text-primary">
                       {textContent.FooterSection.sections.resources.whatGoogleKnowsAboutMe}
+                    </a>
+                    <a href={urls.resources.webdav} className="items-center hover:text-primary">
+                      {textContent.FooterSection.sections.resources.WebDAV}
+                    </a>
+                    <a href={urls.resources.nas} className="items-center hover:text-primary">
+                      {textContent.FooterSection.sections.resources.nas}
+                    </a>
+                    <a href={urls.resources.coupons} className="items-center hover:text-primary">
+                      {textContent.FooterSection.sections.resources.coupons}
+                    </a>
+                    <a href={urls.resources.reviews} className="items-center hover:text-primary">
+                      {textContent.FooterSection.sections.resources.reviews}
+                    </a>
+                    <a href={urls.company.certifications} className="items-center hover:text-primary">
+                      {textContent.FooterSection.sections.resources.certifications}
                     </a>
                   </div>
                 </div>
               </div>
-              <div className="flex max-w-[220px] flex-col items-center lg:flex-none">
+              <div className="flex max-w-[18%] flex-1 flex-col items-center text-gray-100 lg:flex-none">
                 <div className="flex shrink-0 flex-col space-y-3">
-                  <h3 className="text-lg font-medium">{textContent.FooterSection.sections.tools.title}</h3>
-                  <div
-                    className={`flex flex-col space-y-1.5 text-base ${
-                      darkMode ? 'text-cool-gray-30' : 'text-cool-gray-60'
-                    }`}
-                  >
-                    <a
-                      className="hover:text-primary"
-                      href={urls.tools.byteConverter}
-                      target={'_blank'}
-                      rel="noreferrer"
-                    >
+                  <p className="text-xs font-semibold text-gray-100">
+                    {textContent.FooterSection.sections.tools.title}
+                  </p>
+                  <div className="flex flex-col gap-1 text-xs text-cool-gray-60">
+                    <a href={urls.tools.byteConverter} className="hover:text-primary">
                       {textContent.FooterSection.sections.tools.byteConverter}
                     </a>
-
-                    <a href={urls.tools.tempMail} target={'_blank'} rel="noreferrer" className="hover:text-primary">
+                    <a href={urls.tools.tempMail} className="hover:text-primary">
                       {textContent.FooterSection.sections.tools.temporaryEmail}
                     </a>
-
-                    <a
-                      className="hover:text-primary"
-                      href={urls.tools.passwordChecker}
-                      target={'_blank'}
-                      rel="noreferrer"
-                    >
+                    <a href={urls.tools.passwordChecker} className="hover:text-primary">
                       {textContent.FooterSection.sections.tools.passwordChecker}
                     </a>
-
-                    <a href={urls.tools.virusScanner} rel="noreferrer" target={'_blank'} className="hover:text-primary">
+                    <a href={urls.tools.virusScanner} className="hover:text-primary">
                       {textContent.FooterSection.sections.tools.fileVirusScan}
                     </a>
-
-                    <a
-                      href={urls.tools.passwordGenerator}
-                      className="flex items-center hover:text-primary"
-                      target={'_blank'}
-                      rel="noreferrer"
-                    >
+                    <a href={urls.tools.passwordGenerator} className="items-center hover:text-primary">
                       {textContent.FooterSection.sections.tools.passwordGenerator}
                     </a>
-
-                    <a
-                      href={urls.tools.fileConverter}
-                      className="flex items-center hover:text-primary"
-                      target={'_blank'}
-                      rel="noreferrer"
-                    >
+                    <a href={urls.tools.fileConverter} className="items-center hover:text-primary">
                       {textContent.FooterSection.sections.tools.fileConverter}
+                    </a>
+                    <a href={urls.tools.darkWebMonitor} className="items-center hover:text-primary">
+                      {textContent.FooterSection.sections.tools.haveIBeenPwned}
+                    </a>
+                    <a href={urls.tools.metadataRemover} className="items-center hover:text-primary">
+                      {textContent.FooterSection.sections.tools.metadataRemover}
+                    </a>
+                    <a href={urls.tools.aiDetector} className="items-center hover:text-primary">
+                      {textContent.FooterSection.sections.tools.aiDetector}
+                    </a>
+                    <a href="/file-compressor" className="items-center hover:text-primary">
+                      {textContent.FooterSection.sections.tools.fileCompressor}
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex max-w-[14%] flex-1 flex-col items-center text-gray-100 lg:flex-none">
+                <div className="flex shrink-0 flex-col space-y-3">
+                  <p className="text-xs font-semibold text-gray-100">
+                    {textContent.FooterSection.sections.features.title}
+                  </p>
+                  <div className="flex flex-col gap-1 text-xs text-cool-gray-60">
+                    <a href={urls.features.privateCloud} className=" items-center hover:text-primary">
+                      {textContent.FooterSection.sections.features.privateCloud}
+                    </a>
+                    <a href={urls.features.cloudBackup} className="items-center hover:text-primary">
+                      {textContent.FooterSection.sections.features.cloudBakcup}
+                    </a>
+                    <a href={urls.features.gdprCloud} className="items-center hover:text-primary">
+                      {textContent.FooterSection.sections.features.GDPRCloud}
+                    </a>
+                    <a href={urls.features.cloudPhotos} className="items-center hover:text-primary">
+                      {textContent.FooterSection.sections.features.cloudPhotos}
+                    </a>
+                    <a href="/cloud-storage-for-videos" className="items-center hover:text-primary">
+                      {textContent.FooterSection.sections.features.cloudVideo}
+                    </a>
+                    <a href="/lifetime" className="items-center hover:text-primary">
+                      {textContent.FooterSection.sections.features.lifetime}
+                    </a>
+                    <a href="/drive/free-cloud-storage" className="items-center hover:text-primary">
+                      {textContent.FooterSection.sections.features.freeCloudStorage}
                     </a>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Separator */}
-            <div
-              className={`${hideNewsletter ? 'hidden' : 'flex'} h-px w-full ${
-                darkMode ? 'bg-cool-gray-90' : 'bg-cool-gray-10'
-              } mb-10`}
-            />
+            <div className="w-full bg-green-120 bg-cool-gray-10 h-px lg:mb-10" />
 
-            {/* Logos */}
-            <div className="flex w-screen max-w-[1140px] flex-row justify-between px-5">
-              <img src={GDPR} alt="GDPR Internxt" width={146} height={48} />
+            <div className="flex w-full flex-row justify-between">
+              <div className="flex flex-row gap-10">
+                <img src={ISO} alt="ISO 27001" width={60} height={60} className="text-primary" />
+                <img src={GDPR} alt="GDPR Internxt" width={146} height={48} />
+              </div>
+
               <div className="flex flex-row items-center space-x-4">
-                <a href="https://internxt.com" target={'_blank'} rel="noreferrer" className="flex shrink-0">
-                  <img loading="lazy" src={Internxt} alt="Internxt logo" />
+                <a href="https://internxt.com" target="_blank" rel="noreferrer" className="flex shrink-0">
+                  <img width={110} height={12} loading="lazy" src={Internxt} alt="Internxt logo" />
                 </a>
-
-                <p className={`text-xs ${darkMode ? 'text-cool-gray-30' : 'text-cool-gray-60'}`}>
+                <p className="text-sm font-medium text-cool-gray-60">
                   {textContent.FooterSection.copyright.line1 + year + textContent.FooterSection.copyright.line2}
                 </p>
               </div>
-              <div className="flex flex-row space-x-1">
-                <a href={urls.social.twitter} target="_blank" className="h-6 py-1.5 pr-2" rel="noreferrer">
-                  <img loading="lazy" className="h-4" src={Twitter} draggable="false" alt="twitter icon" />
+
+              <div className="flex flex-row items-center gap-5">
+                <a href={urls.social.twitter} target="_blank" rel="noreferrer">
+                  <img width={15} height={14} loading="lazy" src={Twitter} draggable="false" alt="twitter icon" />
                 </a>
-                <a href={urls.social.reddit} target="_blank" className="h-6 py-1.5 pr-2" rel="noreferrer">
-                  <img loading="lazy" className="h-4" src={Reddit} draggable="false" alt="Reddit icon" />
+                <a href={urls.social.reddit} target="_blank" rel="noreferrer">
+                  <img width={16} height={16} loading="lazy" src={Reddit} draggable="false" alt="Reddit icon" />
                 </a>
-                <a href={urls.social.linkedin} target="_blank" className="h-6 py-1.5 pr-2" rel="noreferrer">
-                  <img loading="lazy" className="h-4" src={LinkedIn} draggable="false" alt="linkedin icon" />
+                <a href={urls.social.linkedin} target="_blank" rel="noreferrer">
+                  <img width={16} height={16} loading="lazy" src={LinkedIn} draggable="false" alt="linkedin icon" />
                 </a>
-                <a href={urls.social.youtube} target="_blank" className="h-6 py-1.5 pr-2" rel="noreferrer">
-                  <img loading="lazy" className="h-4" src={YouTube} draggable="false" alt="youtube icon" />
+                <a href={urls.social.youtube} target="_blank" rel="noreferrer">
+                  <img loading="lazy" width={16} height={16} src={YouTube} draggable="false" alt="youtube icon" />
                 </a>
-                <a href={urls.social.instagram} target="_blank" className="h-6 py-1.5 pr-2" rel="noreferrer">
-                  <img loading="lazy" className="h-4" src={Instagram} draggable="false" alt="instagram icon" />
+                <a href={urls.social.instagram} target="_blank" rel="noreferrer">
+                  <img loading="lazy" width={16} height={16} src={Instagram} draggable="false" alt="instagram icon" />
                 </a>
               </div>
             </div>
           </div>
 
-          {/* Mobile version */}
-          <div className="flex flex-col lg:hidden">
-            <Disclosure as="div" className={`border-b ${darkMode ? 'border-cool-gray-90' : 'border-cool-gray-10'}`}>
+          <div className="bg-gray-5 bg-opacity-50 flex flex-col overflow-hidden lg:hidden">
+            <Disclosure as="div" className="w-screen">
               {({ open }) => (
-                <div>
-                  <Disclosure.Button className="flex w-full items-center justify-between py-4 text-lg font-medium">
+                <>
+                  <Disclosure.Button
+                    className="text-gray-100 flex w-full items-center
+                   justify-between px-6 py-4 text-lg font-medium"
+                  >
                     <span className="flex flex-row">{textContent.FooterSection.sections.products.title}</span>
-                    <span className="relative h-5 w-5">
-                      <CaretDown
-                        className={`absolute top-0 left-0 h-full w-full ${
-                          (open && darkMode) || (!open && !darkMode) ? 'text-cool-gray-30' : 'text-cool-gray-60'
-                        } transition duration-300 ${open ? 'text-cool-gray-30' : '-rotate-180'}`}
-                      />
-                      <CaretDown
-                        className={`absolute top-0 left-0 h-full w-full ${
-                          (open && darkMode) || (!open && !darkMode) ? 'text-cool-gray-30' : 'text-cool-gray-60'
-                        } transition duration-300 ${open ? 'text-cool-gray-30' : '-rotate-90'}`}
-                      />
-                    </span>
+                    <CaretDown className={`${open ? 'hidden' : 'flex'} text-gray-80`} weight="bold" />
+                    <CaretUp className={`${!open ? 'hidden' : 'flex'} text-gray-80`} weight="bold" />
                   </Disclosure.Button>
-
                   <Transition
                     enter="transition duration-200 ease-out"
                     enterFrom="-translate-y-10 opacity-0"
                     enterTo="translate-y-0 opacity-100"
-                    leave="transition duration-0"
+                    leave="transition duration-200 ease-out"
                   >
                     <Disclosure.Panel
-                      className={`flex flex-col ${
-                        darkMode ? 'text-cool-gray-30' : 'text-cool-gray-60'
-                      } space-y-4 p-4 pt-2`}
+                      className={`flex flex-col px-6 font-semibold text-gray-100
+                         ${!open ? 'hidden' : 'flex'} bg-gray-1 text-gray-60 space-y-8 p-4`}
                     >
-                      <a href={urls.products.drive} target={'_blank'} rel="noreferrer" className="hover:text-primary">
-                        {textContent.FooterSection.sections.products.drive}
-                      </a>
-
-                      <a
-                        href={urls.products.webdav}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="flex flex-row items-center hover:text-primary"
-                      >
-                        <div>{textContent.FooterSection.sections.products.webDAV}</div>
-                      </a>
-
-                      <a
-                        href={urls.products.send}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="flex flex-row items-center hover:text-primary"
-                      >
-                        <div>{textContent.FooterSection.sections.products.send}</div>
-                      </a>
-
-                      <a
-                        href={urls.products.vpn}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="flex flex-row items-center hover:text-primary"
-                      >
-                        <div>{textContent.FooterSection.sections.products.vpn}</div>
-                      </a>
-
-                      <a
-                        href={urls.products.business}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="flex flex-row items-center hover:text-primary"
-                      >
-                        <div>{textContent.FooterSection.sections.products.business}</div>
-                        <div className="ml-2 flex h-max items-center justify-center rounded-full bg-primary/15 py-1 px-2 text-xs font-medium uppercase text-primary">
-                          {textContent.FooterSection.new}
+                      <a href={urls.products.drive}>
+                        <div className="flex flex-row space-x-2">
+                          <p>{textContent.FooterSection.sections.products.drive}</p>
                         </div>
                       </a>
-
-                      <a href={urls.products.pricing} target={'_blank'} rel="noreferrer" className="hover:text-primary">
+                      <a
+                        href={urls.products.objectStorage}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex flex-row items-center hover:text-primary"
+                      >
+                        {textContent.FooterSection.sections.products.objStorage}
+                      </a>
+                      <a
+                        href={urls.products.antivirus}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex flex-row items-center hover:text-primary"
+                      >
+                        <div className="flex flex-row">{textContent.FooterSection.sections.products.antivirus}</div>
+                      </a>
+                      <a
+                        href="https://send.internxt.com"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex flex-row items-center"
+                      >
+                        <div className="flex flex-row space-x-2">
+                          <p>{textContent.FooterSection.sections.products.send}</p>
+                        </div>
+                      </a>
+                      <a href={urls.products.vpn} className="items-center hover:text-primary">
+                        {textContent.FooterSection.sections.products.vpn}
+                      </a>
+                      <a href={urls.products.cleaner} className="items-center hover:text-primary">
+                        {textContent.FooterSection.sections.products.cleaner}
+                      </a>
+                      <a href={urls.products.meet} className="items-center hover:text-primary">
+                        {textContent.FooterSection.sections.products.meet}
+                      </a>
+                      <a href={urls.products.ai} className="items-center hover:text-primary">
+                        {textContent.FooterSection.sections.products.ai}
+                      </a>
+                      <a href={urls.products.business} className="items-center hover:text-primary">
+                        {textContent.FooterSection.sections.products.business}
+                      </a>
+                      <a href={urls.products.family} className="items-center hover:text-primary">
+                        {textContent.FooterSection.sections.products.family}
+                      </a>
+                      <a href={urls.pricing} className="items-center hover:text-primary">
                         {textContent.FooterSection.sections.products.pricing}
                       </a>
                     </Disclosure.Panel>
                   </Transition>
-                </div>
+                </>
               )}
             </Disclosure>
-
-            <Disclosure as="div" className={`border-b ${darkMode ? 'border-cool-gray-90' : 'border-cool-gray-10'}`}>
+            <Disclosure as="div" className="w-screen">
               {({ open }) => (
-                <div>
-                  <Disclosure.Button className="flex w-full items-center justify-between py-4 text-lg font-medium">
+                <>
+                  <Disclosure.Button
+                    className="text-gray-100 flex w-full items-center
+                   justify-between px-6 py-4 text-lg font-medium"
+                  >
                     <span className="flex flex-row">{textContent.FooterSection.sections.company.title}</span>
-                    <span className="relative h-5 w-5">
-                      <CaretDown
-                        className={`absolute top-0 left-0 h-full w-full ${
-                          (open && darkMode) || (!open && !darkMode) ? 'text-cool-gray-30' : 'text-cool-gray-60'
-                        } transition duration-300 ${open ? 'text-cool-gray-30' : '-rotate-180'}`}
-                      />
-                      <CaretDown
-                        className={`absolute top-0 left-0 h-full w-full ${
-                          (open && darkMode) || (!open && !darkMode) ? 'text-cool-gray-30' : 'text-cool-gray-60'
-                        } transition duration-300 ${open ? 'text-cool-gray-30' : '-rotate-90'}`}
-                      />
-                    </span>
+                    <CaretDown className={`${open ? 'hidden' : 'flex'} text-gray-80`} weight="bold" />
+                    <CaretUp className={`${!open ? 'hidden' : 'flex'} text-gray-80`} weight="bold" />
                   </Disclosure.Button>
-
                   <Transition
                     enter="transition duration-200 ease-out"
                     enterFrom="-translate-y-10 opacity-0"
                     enterTo="translate-y-0 opacity-100"
-                    leave="transition duration-0"
+                    leave="transition duration-200 ease-out"
                   >
                     <Disclosure.Panel
-                      className={`flex flex-col ${
-                        darkMode ? 'text-cool-gray-30' : 'text-cool-gray-60'
-                      } space-y-4 p-4 pt-2`}
+                      className={`flex flex-col bg-gray-1 px-6 font-semibold
+                         ${!open ? 'hidden' : 'flex'} text-gray-60 space-y-8 p-4`}
                     >
-                      <a href={urls.company.about} target={'_blank'} rel="noreferrer" className="hover:text-primary">
-                        {textContent.FooterSection.sections.company.about}
-                      </a>
+                      <a href={urls.company.about}>{textContent.FooterSection.sections.company.about}</a>
 
-                      <a href={urls.company.privacy} target={'_blank'} rel="noreferrer" className="hover:text-primary">
-                        {textContent.FooterSection.sections.company.privacy}
-                      </a>
+                      <a href={urls.company.privacy}>{textContent.FooterSection.sections.company.privacy}</a>
 
-                      <a href={urls.company.security} target="_blank" rel="noreferrer" className="hover:text-primary">
-                        {textContent.FooterSection.sections.company.security}
+                      <a
+                        href={urls.company.security}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex flex-row items-center"
+                      >
+                        <div> {textContent.FooterSection.sections.company.security}</div>
                       </a>
 
                       <a
                         href={urls.company.openSource}
-                        target={'_blank'}
-                        rel="noreferrer"
                         className="flex max-w-[200px] flex-row items-center hover:text-primary"
                       >
                         {textContent.FooterSection.sections.company.openSource}
                       </a>
 
-                      <a href={urls.company.legal} className="hover:text-primary" target={'_blank'} rel="noreferrer">
-                        {textContent.FooterSection.sections.company.legal}
-                      </a>
-
-                      <a
-                        href={urls.company.mediaArea}
-                        className="flex max-w-[200px] flex-row items-center hover:text-primary"
-                        target={'_blank'}
-                        rel="noreferrer"
-                      >
-                        {textContent.FooterSection.sections.company.mediaArea}
-                      </a>
+                      <a href={urls.company.legal}>{textContent.FooterSection.sections.company.legal}</a>
                     </Disclosure.Panel>
                   </Transition>
-                </div>
+                </>
               )}
             </Disclosure>
-
-            <Disclosure as="div" className={`border-b ${darkMode ? 'border-cool-gray-90' : 'border-cool-gray-10'}`}>
+            <Disclosure as="div" className="w-screen">
               {({ open }) => (
-                <div>
-                  <Disclosure.Button className="flex w-full items-center justify-between py-4 text-lg font-medium">
+                <>
+                  <Disclosure.Button
+                    className="text-gray-100 flex w-full items-center
+                   justify-between px-6 py-4 text-lg font-medium"
+                  >
                     <span className="flex flex-row">{textContent.FooterSection.sections.join.title}</span>
-                    <span className="relative h-5 w-5">
-                      <CaretDown
-                        className={`absolute top-0 left-0 h-full w-full ${
-                          (open && darkMode) || (!open && !darkMode) ? 'text-cool-gray-30' : 'text-cool-gray-60'
-                        } transition duration-300 ${open ? 'text-cool-gray-30' : '-rotate-180'}`}
-                      />
-                      <CaretDown
-                        className={`absolute top-0 left-0 h-full w-full ${
-                          (open && darkMode) || (!open && !darkMode) ? 'text-cool-gray-30' : 'text-cool-gray-60'
-                        } transition duration-300 ${open ? 'text-cool-gray-30' : '-rotate-90'}`}
-                      />
-                    </span>
+                    <CaretDown className={`${open ? 'hidden' : 'flex'} text-gray-80`} weight="bold" />
+                    <CaretUp className={`${!open ? 'hidden' : 'flex'} text-gray-80`} weight="bold" />
                   </Disclosure.Button>
-
                   <Transition
                     enter="transition duration-200 ease-out"
                     enterFrom="-translate-y-10 opacity-0"
                     enterTo="translate-y-0 opacity-100"
-                    leave="transition duration-0"
+                    leave="transition duration-200 ease-out"
                   >
                     <Disclosure.Panel
-                      className={`flex flex-col ${
-                        darkMode ? 'text-cool-gray-30' : 'text-cool-gray-60'
-                      } space-y-4 p-4 pt-2`}
+                      className={`flex flex-col bg-gray-1 px-6 font-semibold
+                         ${!open ? 'hidden' : 'flex'} text-gray-60 space-y-8 p-4`}
                     >
                       <a href={urls.join.signup} target="_top" className="hover:text-primary">
                         {textContent.FooterSection.sections.join.signup}
                       </a>
-
                       <a href={urls.join.login} target="_top" className="hover:text-primary">
                         {textContent.FooterSection.sections.join.login}
                       </a>
-
-                      <a href={urls.join.support} className="cursor-pointer hover:text-primary">
+                      <a
+                        href={'https://help.internxt.com'}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="cursor-pointer hover:text-primary"
+                      >
                         {textContent.FooterSection.sections.join.support}
                       </a>
 
-                      <a href={urls.join.whitePaper} download className="hover:text-primary" rel="noreferrer">
+                      <a
+                        href={'/whitepaper/internxt-white-paper-1.pdf'}
+                        target="_blank"
+                        rel="noreferrer"
+                        download={true}
+                        className="hover:text-primary"
+                      >
                         {textContent.FooterSection.sections.join.whitePaper}
-                      </a>
-
-                      <a href={urls.join.newsletter} target="_top" className="hover:text-primary">
-                        {textContent.FooterSection.sections.join.newsletter}
                       </a>
 
                       <a href={urls.join.github} target="_blank" rel="noreferrer" className="hover:text-primary">
                         {textContent.FooterSection.sections.join.github}
                       </a>
 
-                      <a href={urls.join.affiliates} target="_blank" rel="noreferrer" className="hover:text-primary">
+                      <a href={urls.join.affiliates} target="_blank" className="hover:text-primary">
                         {textContent.FooterSection.sections.join.affiliates}
-                      </a>
-                      <a
-                        href={urls.join.storageForEducation}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="hover:text-primary"
-                      >
-                        {textContent.FooterSection.sections.join.storageForEducation}
                       </a>
                     </Disclosure.Panel>
                   </Transition>
-                </div>
+                </>
               )}
             </Disclosure>
-
-            <Disclosure as="div" className={`border-b ${darkMode ? 'border-cool-gray-90' : 'border-cool-gray-10'}`}>
+            <Disclosure as="div" className="w-screen">
               {({ open }) => (
-                <div>
-                  <Disclosure.Button className="flex w-full items-center justify-between py-4 text-lg font-medium">
+                <>
+                  <Disclosure.Button
+                    className="text-gray-100 flex w-full items-center
+                   justify-between px-6 py-4 text-lg font-medium"
+                  >
                     <span className="flex flex-row">{textContent.FooterSection.sections.resources.title}</span>
-                    <span className="relative h-5 w-5">
-                      <CaretDown
-                        className={`absolute top-0 left-0 h-full w-full ${
-                          (open && darkMode) || (!open && !darkMode) ? 'text-cool-gray-30' : 'text-cool-gray-60'
-                        } transition duration-300 ${open ? 'text-cool-gray-30' : '-rotate-180'}`}
-                      />
-                      <CaretDown
-                        className={`absolute top-0 left-0 h-full w-full ${
-                          (open && darkMode) || (!open && !darkMode) ? 'text-cool-gray-30' : 'text-cool-gray-60'
-                        } transition duration-300 ${open ? 'text-cool-gray-30' : '-rotate-90'}`}
-                      />
-                    </span>
+                    <CaretDown className={`${open ? 'hidden' : 'flex'} text-gray-80`} weight="bold" />
+                    <CaretUp className={`${!open ? 'hidden' : 'flex'} text-gray-80`} weight="bold" />
                   </Disclosure.Button>
-
                   <Transition
                     enter="transition duration-200 ease-out"
                     enterFrom="-translate-y-10 opacity-0"
                     enterTo="translate-y-0 opacity-100"
-                    leave="transition duration-0"
+                    leave="transition duration-200 ease-out"
                   >
                     <Disclosure.Panel
-                      className={`flex flex-col ${
-                        darkMode ? 'text-cool-gray-30' : 'text-cool-gray-60'
-                      } space-y-4 p-4 pt-2`}
+                      className={`flex flex-col bg-gray-1 px-6 font-semibold
+                         ${!open ? 'hidden' : 'flex'} text-gray-60 space-y-8 p-4`}
                     >
-                      <a href={urls.resources.blog} target="_blank" rel="noreferrer">
+                      <a href={urls.blog} target="_blank" rel="noreferrer" className="hover:text-primary">
                         {textContent.FooterSection.sections.resources.blog}
                       </a>
-
-                      <a href={urls.resources.storageComparison} target={'_blank'} rel="noreferrer">
+                      <a href={urls.resources.storageComparison} className="w-full max-w-40 hover:text-primary">
                         {textContent.FooterSection.sections.resources.comparison}
                       </a>
 
-                      <a href={urls.resources.pCloudAlternatives} target={'_blank'} rel="noreferrer">
-                        {textContent.FooterSection.sections.resources.pCloudAlternative}
-                      </a>
+                      <div className="flex flex-col">
+                        <button
+                          onClick={() => setIsAlternativesOpen(!isAlternativesOpen)}
+                          className="flex w-full max-w-40 flex-row items-center gap-1 text-left hover:text-primary"
+                        >
+                          {textContent.FooterSection.sections.resources.alternatives}
+                          {isAlternativesOpen ? (
+                            <CaretDown className="mt-0.5 flex h-4 w-4" />
+                          ) : (
+                            <CaretRight className="mt-0.5 flex h-4 w-4" />
+                          )}
+                        </button>
 
-                      <a href={urls.resources.privacyDirectory} target={'_blank'} rel="noreferrer">
-                        {textContent.FooterSection.sections.resources.directoryOfPrivacyOrganizations}
-                      </a>
+                        <div
+                          className={`flex flex-col overflow-hidden transition-all duration-300 ease-in-out ${
+                            isAlternativesOpen ? 'mt-8 max-h-250 opacity-100' : 'max-h-0 opacity-0'
+                          }`}
+                        >
+                          <div className="flex flex-col space-y-8 pl-4">
+                            <a href={urls.resources.alternatives.pCloud} className="w-full max-w-40 hover:text-primary">
+                              {textContent.FooterSection.sections.resources.pCloudAlternative}
+                            </a>
+                            <a
+                              href={urls.resources.alternatives.dropbox}
+                              className="w-full max-w-40 hover:text-primary"
+                            >
+                              {textContent.FooterSection.sections.resources.dropboxAlternative}
+                            </a>
+                            <a href={urls.resources.alternatives.mega} className="w-full max-w-40 hover:text-primary">
+                              {textContent.FooterSection.sections.resources.megaAlternative}
+                            </a>
+                            <a
+                              href={urls.resources.alternatives.googleDrive}
+                              className="w-full max-w-40 hover:text-primary"
+                            >
+                              {textContent.FooterSection.sections.resources.googleDriveAlternative}
+                            </a>
+                            <a href={urls.resources.alternatives.koofr} className="w-full max-w-40 hover:text-primary">
+                              {textContent.FooterSection.sections.resources.koofrAlternative}
+                            </a>
+                            <a
+                              href={urls.resources.alternatives.icedrive}
+                              className="w-full max-w-40 hover:text-primary"
+                            >
+                              {textContent.FooterSection.sections.resources.icedriveAlternative}
+                            </a>
+                            <a
+                              href={urls.resources.alternatives.onedrive}
+                              className="w-full max-w-40 hover:text-primary"
+                            >
+                              {textContent.FooterSection.sections.resources.onedriveAlternative}
+                            </a>
+                            <a href={urls.resources.alternatives.drime} className="w-full max-w-40 hover:text-primary">
+                              {textContent.FooterSection.sections.resources.drimeAlternative}
+                            </a>
+                            <a href={urls.resources.alternatives.degoo} className="w-full max-w-40 hover:text-primary">
+                              {textContent.FooterSection.sections.resources.degooAlternative}
+                            </a>
+                            <a
+                              href={urls.resources.alternatives.filejump}
+                              className="w-full max-w-40 hover:text-primary"
+                            >
+                              {textContent.FooterSection.sections.resources.fileJumpAlternative}
+                            </a>
+                            <a
+                              href={urls.resources.alternatives.elephantdrive}
+                              className="w-full max-w-40 hover:text-primary"
+                            >
+                              {textContent.FooterSection.sections.resources.elephantDriveAlternative}
+                            </a>
+                            <a href={urls.resources.alternatives.sync} className="w-full max-w-40 hover:text-primary">
+                              {textContent.FooterSection.sections.resources.syncAlternative}
+                            </a>
+                            <a href={urls.resources.alternatives.filen} className="w-full max-w-40 hover:text-primary">
+                              {textContent.FooterSection.sections.resources.filenAlternatice}
+                            </a>
+                            <a href={urls.resources.alternatives.idrive} className="w-full max-w-40 hover:text-primary">
+                              {textContent.FooterSection.sections.resources.iDriveAlternative}
+                            </a>
+                            <a
+                              href={urls.resources.alternatives.terabox}
+                              className="w-full max-w-40 hover:text-primary"
+                            >
+                              {textContent.FooterSection.sections.resources.teraboxAlternative}
+                            </a>
+                            <a href={urls.resources.alternatives.proton} className="w-full max-w-40 hover:text-primary">
+                              {textContent.FooterSection.sections.resources.protonAlternative}
+                            </a>
+                          </div>
+                        </div>
+                      </div>
 
-                      <a href={urls.resources.cyberAwareness} target={'_blank'} rel="noreferrer">
-                        {textContent.FooterSection.sections.resources.cyberAwareness}
-                      </a>
+                      <div className="flex flex-col">
+                        <button
+                          onClick={() => setIsVideocallsOpen(!isVideocallsOpen)}
+                          className="flex w-full max-w-40 flex-row items-center gap-1 text-left hover:text-primary"
+                        >
+                          {textContent.FooterSection.sections.resources.videoCalls}
+                          {isVideocallsOpen ? (
+                            <CaretDown className="mt-0.5 flex h-4 w-4" />
+                          ) : (
+                            <CaretRight className="mt-0.5 flex h-4 w-4" />
+                          )}
+                        </button>
 
-                      <a href={urls.resources.whatGoogleKnows} target={'_blank'} rel="noreferrer">
+                        <div
+                          className={`flex flex-col overflow-hidden transition-all duration-300 ease-in-out ${
+                            isVideocallsOpen ? 'mt-8 max-h-250 opacity-100' : 'max-h-0 opacity-0'
+                          }`}
+                        >
+                          <div className="flex flex-col space-y-8 pl-4">
+                            <a
+                              href={urls.resources.videoCalls.googleMeet}
+                              className="w-full max-w-40 hover:text-primary"
+                            >
+                              {textContent.FooterSection.sections.resources.googleMeet}
+                            </a>
+                            <a href={urls.resources.videoCalls.zoom} className="w-full max-w-40 hover:text-primary">
+                              {textContent.FooterSection.sections.resources.zoom}
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+
+                      <a href={urls.resources.whatGoogleKnows} className="items-center hover:text-primary">
                         {textContent.FooterSection.sections.resources.whatGoogleKnowsAboutMe}
+                      </a>
+                      <a href={urls.resources.webdav} className="items-center hover:text-primary">
+                        {textContent.FooterSection.sections.resources.WebDAV}
+                      </a>
+                      <a href={urls.resources.nas} className="items-center hover:text-primary">
+                        {textContent.FooterSection.sections.resources.nas}
+                      </a>
+                      <a href={urls.resources.coupons} className="items-center hover:text-primary">
+                        {textContent.FooterSection.sections.resources.coupons}
+                      </a>
+                      <a href={urls.resources.reviews} className="items-center hover:text-primary">
+                        {textContent.FooterSection.sections.resources.reviews}
+                      </a>
+                      <a href={urls.company.certifications} className="items-center hover:text-primary">
+                        {textContent.FooterSection.sections.resources.certifications}
                       </a>
                     </Disclosure.Panel>
                   </Transition>
-                </div>
+                </>
               )}
             </Disclosure>
-            <Disclosure as="div" className={`border-b ${darkMode ? 'border-cool-gray-90' : 'border-cool-gray-10'}`}>
+            <Disclosure as="div" className="w-screen">
               {({ open }) => (
-                <div>
-                  <Disclosure.Button className="flex w-full items-center justify-between py-4 text-lg font-medium">
+                <>
+                  <Disclosure.Button
+                    className="text-gray-100 flex w-full items-center
+                   justify-between px-6 py-4 text-lg font-medium"
+                  >
                     <span className="flex flex-row">{textContent.FooterSection.sections.tools.title}</span>
-                    <span className="relative h-5 w-5">
-                      <CaretDown
-                        className={`absolute top-0 left-0 h-full w-full ${
-                          (open && darkMode) || (!open && !darkMode) ? 'text-cool-gray-30' : 'text-cool-gray-60'
-                        } transition duration-300 ${open ? 'text-cool-gray-30' : '-rotate-180'}`}
-                      />
-                      <CaretDown
-                        className={`absolute top-0 left-0 h-full w-full ${
-                          (open && darkMode) || (!open && !darkMode) ? 'text-cool-gray-30' : 'text-cool-gray-60'
-                        } transition duration-300 ${open ? 'text-cool-gray-30' : '-rotate-90'}`}
-                      />
-                    </span>
+                    <CaretDown className={`${open ? 'hidden' : 'flex'} text-gray-80`} weight="bold" />
+                    <CaretUp className={`${!open ? 'hidden' : 'flex'} text-gray-80`} weight="bold" />
                   </Disclosure.Button>
-
                   <Transition
                     enter="transition duration-200 ease-out"
                     enterFrom="-translate-y-10 opacity-0"
                     enterTo="translate-y-0 opacity-100"
-                    leave="transition duration-0"
+                    leave="transition duration-200 ease-out"
                   >
                     <Disclosure.Panel
-                      className={`flex flex-col ${
-                        darkMode ? 'text-cool-gray-30' : 'text-cool-gray-60'
-                      } space-y-4 p-4 pt-2`}
+                      className={`flex flex-col bg-gray-1 px-6 font-semibold
+                         ${!open ? 'hidden' : 'flex'} text-gray-60 space-y-8 p-4`}
                     >
-                      <a href={urls.tools.byteConverter} lang={lang} target="_blank" rel="noreferrer">
-                        {textContent.FooterSection.sections.tools.byteConverter}
+                      <a href={urls.tools.byteConverter}>{textContent.FooterSection.sections.tools.byteConverter}</a>
+
+                      <a href={urls.tools.tempMail}>{textContent.FooterSection.sections.tools.temporaryEmail}</a>
+
+                      <a href={urls.tools.passwordChecker}>
+                        <div>{textContent.FooterSection.sections.tools.passwordChecker}</div>
                       </a>
 
-                      <a href={urls.tools.tempMail} target={'_blank'} rel="noreferrer">
-                        {textContent.FooterSection.sections.tools.temporaryEmail}
-                      </a>
-
-                      <a href={urls.tools.passwordChecker} target={'_blank'} rel="noreferrer">
-                        {textContent.FooterSection.sections.tools.passwordChecker}
-                      </a>
-
-                      <a href={urls.tools.virusScanner} target={'_blank'} rel="noreferrer">
-                        {textContent.FooterSection.sections.tools.fileVirusScan}
-                      </a>
-                      <a href={urls.tools.passwordGenerator} className="flex items-center hover:text-primary">
+                      <a href={urls.tools.virusScanner}>{textContent.FooterSection.sections.tools.fileVirusScan}</a>
+                      <a href={urls.tools.passwordGenerator}>
                         {textContent.FooterSection.sections.tools.passwordGenerator}
                       </a>
-
-                      <a
-                        href={urls.tools.fileConverter}
-                        className="flex items-center hover:text-primary"
-                        target={'_blank'}
-                        rel="noreferrer"
-                      >
-                        {textContent.FooterSection.sections.tools.fileConverter}
+                      <a href={urls.tools.fileConverter}>{textContent.FooterSection.sections.tools.fileConverter}</a>
+                      <a href={urls.tools.darkWebMonitor}>{textContent.FooterSection.sections.tools.haveIBeenPwned}</a>
+                      <a href={urls.tools.metadataRemover}>
+                        {textContent.FooterSection.sections.tools.metadataRemover}
                       </a>
+                      <a href={urls.tools.aiDetector}>{textContent.FooterSection.sections.tools.aiDetector}</a>
                     </Disclosure.Panel>
                   </Transition>
-                </div>
+                </>
+              )}
+            </Disclosure>
+            <Disclosure as="div" className="w-screen">
+              {({ open }) => (
+                <>
+                  <Disclosure.Button
+                    className="text-gray-100 flex w-full items-center 
+                  justify-between px-6 py-4 text-lg font-medium"
+                  >
+                    <span className="flex flex-row">{textContent.FooterSection.sections.features.title}</span>
+                    <CaretDown className={`${open ? 'hidden' : 'flex'} text-gray-80`} weight="bold" />
+                    <CaretUp className={`${!open ? 'hidden' : 'flex'} text-gray-80`} weight="bold" />
+                  </Disclosure.Button>
+                  <Transition
+                    enter="transition duration-200 ease-out"
+                    enterFrom="-translate-y-10 opacity-0"
+                    enterTo="translate-y-0 opacity-100"
+                    leave="transition duration-200 ease-out"
+                  >
+                    <Disclosure.Panel
+                      className={`flex flex-col bg-gray-1 px-6 font-semibold 
+                        ${!open ? 'hidden' : 'flex'} text-gray-60 space-y-8 p-4`}
+                    >
+                      <a href={urls.features.privateCloud}>
+                        {textContent.FooterSection.sections.features.privateCloud}
+                      </a>
+
+                      <a href={urls.features.cloudBackup}>{textContent.FooterSection.sections.features.cloudBakcup}</a>
+
+                      <a href={urls.features.gdprCloud}>{textContent.FooterSection.sections.features.GDPRCloud}</a>
+
+                      <a href={urls.features.cloudPhotos}>{textContent.FooterSection.sections.features.cloudPhotos}</a>
+
+                      <a href={urls.features.cloudVideos}>{textContent.FooterSection.sections.features.cloudVideo}</a>
+                    </Disclosure.Panel>
+                  </Transition>
+                </>
               )}
             </Disclosure>
 
-            <div className="mt-16 flex flex-col items-center space-y-4">
-              <div className="flex flex-row space-x-1">
-                <a href={urls.social.twitter} target="_blank" className="h-8 py-1.5 pr-6" rel="noreferrer">
-                  <img loading="lazy" className="h-5" src={Twitter} draggable="false" alt="twitter icon" />
+            <div className="flex flex-col items-center space-y-4 py-10 text-gray-100">
+              <div className="flex flex-row gap-5">
+                <a href={urls.social.twitter} target="_blank" rel="noreferrer">
+                  <img width={15} height={14} loading="lazy" src={Twitter} draggable="false" alt="twitter icon" />
                 </a>
-                <a href={urls.social.reddit} target="_blank" className="h-8 py-1.5 pr-6" rel="noreferrer">
-                  <img loading="lazy" className="h-5" src={Reddit} draggable="false" alt="Reddit icon" />
+                <a href={urls.social.reddit} target="_blank" rel="noreferrer">
+                  <img width={16} height={16} loading="lazy" src={Reddit} draggable="false" alt="Reddit icon" />
                 </a>
-                <a href={urls.social.linkedin} target="_blank" className="h-8 py-1.5 pr-6" rel="noreferrer">
-                  <img loading="lazy" className="h-5" src={LinkedIn} draggable="false" alt="linkedin icon" />
+                <a href={urls.social.linkedin} target="_blank" rel="noreferrer">
+                  <img width={16} height={16} loading="lazy" src={LinkedIn} draggable="false" alt="linkedin icon" />
                 </a>
-                <a href={urls.social.youtube} target="_blank" className="h-8 py-1.5 pr-6" rel="noreferrer">
-                  <img loading="lazy" className="h-5" src={YouTube} draggable="false" alt="youtube icon" />
+                <a href={urls.social.youtube} target="_blank" rel="noreferrer">
+                  <img loading="lazy" width={16} height={16} src={YouTube} draggable="false" alt="youtube icon" />
                 </a>
-                <a href={urls.social.instagram} target="_blank" className="h-8 py-1.5 pr-6" rel="noreferrer">
-                  <img loading="lazy" className="h-5" src={Instagram} draggable="false" alt="instagram icon" />
+                <a href={urls.social.instagram} target="_blank" rel="noreferrer">
+                  <img loading="lazy" width={16} height={16} src={Instagram} draggable="false" alt="instagram icon" />
                 </a>
               </div>
 
-              <p className={`text-xs ${darkMode ? 'text-cool-gray-30' : 'text-cool-gray-60'}`}>
+              <p className="text-xs text-cool-gray-60">
                 {textContent.FooterSection.copyright.line1 + year + textContent.FooterSection.copyright.line2}
               </p>
 
-              <a href="https://internxt.com" className="flex shrink-0">
-                <img loading="lazy" src={Internxt} alt="Internxt logo" />
+              <a href={urls.home} className="flex shrink-0 text-gray-100">
+                <img width={96} height={10.5} loading="lazy" src={Internxt} alt="Internxt logo" />
               </a>
             </div>
           </div>

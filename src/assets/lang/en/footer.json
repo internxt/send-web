@@ -20,17 +20,21 @@
     },
     "comingSoon": "Coming soon",
     "new": "New",
+    "financialProject": "Project funded by the Generalitat Valenciana through the IVACE (Institute for Business Competitiveness)",
     "sections": {
       "products": {
         "title": "Products",
         "drive": "Internxt Drive",
-        "photos": "Internxt Photos",
+        "objStorage": "Internxt Enterprise S3",
+        "antivirus": "Internxt Antivirus",
         "send": "Internxt Send",
-        "webDAV": "WebDAV",
         "vpn": "Internxt VPN",
-        "token": "Token",
-        "pricing": "Pricing",
-        "business": "Internxt for Business"
+        "cleaner": "Internxt Cleaner",
+        "meet": "Internxt Meet",
+        "ai": "Internxt AI",
+        "business": "Internxt for Business",
+        "family": "Internxt Family",
+        "pricing": "Pricing"
       },
       "company": {
         "title": "Company",
@@ -40,7 +44,7 @@
         "mediaArea": "Media Area",
         "security": "Security",
         "legal": "Legal",
-        "whyInternxt": "Why Internxt?"
+        "sustainability": "Sustainability"
       },
       "join": {
         "title": "Join Us",
@@ -50,33 +54,64 @@
         "signup": "Create Account",
         "support": "Support",
         "login": "Log In",
-        "community": "Community",
         "github": "GitHub",
-        "whitePaper": "White Paper",
-        "twitter": "Twitter",
-        "facebook": "Facebook",
-        "linkedin": "LinkedIn",
-        "youtube": "Youtube",
-        "instagram": "Instagram",
-        "mastodon": "Mastodon"
+        "whitePaper": "White Paper"
       },
       "resources": {
         "title": "Resources",
         "blog": "Blog",
         "comparison": "Cloud Storage Comparison",
-        "directoryOfPrivacyOrganizations": "Directory of Privacy Organizations",
+        "alternatives": "Alternatives",
+        "cloudStorage": "Cloud Storage Alternatives",
+        "videoCalls": "Video Call Alternatives",
         "pCloudAlternative": "pCloud Alternative",
-        "cyberAwareness": "Cyber Awareness",
-        "whatGoogleKnowsAboutMe": "What Google Knows"
+        "dropboxAlternative": "Dropbox Alternative",
+        "megaAlternative": "MEGA Alternative",
+        "koofrAlternative": "Koofr Alternative",
+        "icedriveAlternative": "Icedrive Alternative",
+        "onedriveAlternative": "OneDrive Alternative",
+        "googleDriveAlternative": "Google Drive Alternative",
+        "drimeAlternative": "Drime Alternative",
+        "degooAlternative": "Degoo Alternative",
+        "fileJumpAlternative": "FileJump Alternative",
+        "elephantDriveAlternative": "ElephantDrive Alternative",
+        "syncAlternative": "Sync.com Alternative",
+        "filenAlternatice": "Filen Alternative",
+        "iDriveAlternative": "IDrive Alternative",
+        "teraboxAlternative": "Terabox Alternative",
+        "protonAlternative": "Proton Drive Alternative",
+        "googleMeet": "Google Meet Alternative",
+        "zoom": "Zoom Alternative",
+        "teams": "Microsoft Teams Alternative",
+        "whatGoogleKnowsAboutMe": "What Google Knows",
+        "WebDAV": "WebDAV, Rclne & CLI",
+        "nas": "NAS",
+        "coupons": "Coupons",
+        "reviews": "Reviews",
+        "certifications": "Certifications"
       },
       "tools": {
         "title": "Free Tools",
-        "temporaryEmail": "Temporary Email",
-        "fileVirusScan": "File Virus Scanner",
-        "passwordChecker": "Password Checker",
         "byteConverter": "Byte Converter",
+        "temporaryEmail": "Temporary Email",
+        "passwordChecker": "Password Checker",
+        "fileVirusScan": "File Virus Scanner",
         "passwordGenerator": "Password Generator",
-        "fileConverter": "File Converter"
+        "fileConverter": "File Converter",
+        "haveIBeenPwned": "Dark Web Monitor",
+        "metadataRemover": "Metadata Remover",
+        "aiDetector": "AI Detector",
+        "fileCompressor": "File Compressor"
+      },
+      "features": {
+        "title": "Features",
+        "privateCloud": "Private Cloud Storage",
+        "cloudBakcup": "Cloud Storage Backup",
+        "GDPRCloud": "GDPR Cloud Storage",
+        "cloudPhotos": "Cloud Storage for Photos",
+        "cloudVideo": "Cloud Storage for Videos",
+        "lifetime": "Lifetime Plans",
+        "freeCloudStorage": "Free Cloud Storage"
       }
     }
   },
