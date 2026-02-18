@@ -290,7 +290,7 @@ export default function Footer() {
                     </a>
 
                     <a
-                      href={'/whitepaper/internxt-white-paper-1.pdf'}
+                      href={'/whitepaper/internxt-white-paper.pdf'}
                       target="_blank"
                       rel="noreferrer"
                       download={true}
@@ -727,7 +727,7 @@ export default function Footer() {
                       </a>
 
                       <a
-                        href={'/whitepaper/internxt-white-paper-1.pdf'}
+                        href={'/whitepaper/internxt-white-paper.pdf'}
                         target="_blank"
                         rel="noreferrer"
                         download={true}
