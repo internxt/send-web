@@ -7,19 +7,22 @@
     "login": "Log in",
     "getStarted": "Get Internxt",
     "checkout": "Claim now!"
+    
   },
   "products": {
     "drive": "Internxt Drive",
-    "photos": "Internxt Photos",
-    "send": "Internxt Send",
-    "s3": "Internxt S3",
+    "antivirus": "Internxt Antivirus",
     "vpn": "Internxt VPN",
-    "comingSoon": "Coming soon",
-    "new": "New"
+    "cleaner": "Internxt Cleaner",
+    "meet": "Internxt Meet",
+    "ai": "Internxt AI",
+    "s3": "Enterprise Cloud Storage"
   },
   "ourValues": {
     "privacy": "Privacy",
-    "openSource": "Open Source"
+    "openSource": "Open Source",
+    "sustainability": "Sustainability",
+    "certifications": "Certifications"
   },
   "Auth": {
     "SignUp": {

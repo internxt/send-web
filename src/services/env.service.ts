@@ -15,6 +15,8 @@ const variableList = {
   stripeTestPublicKey: 'REACT_APP_STRIPE_TEST_PK',
   sendApiUrl: 'REACT_APP_SEND_API_URL',
   recaptchaV3: 'REACT_APP_RECAPTCHA_V3',
+  klaviyoPublicKey: 'REACT_APP_KLAVIYO_PUBLIC_KEY',
+  klaviyoListId: 'REACT_APP_KLAVIYO_LIST_ID',
 };
 
 function getVariable(variable: keyof typeof variableList): string {
