@@ -54,8 +54,8 @@ export default function Footer() {
         style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #E5EFFF 100%)' }}
       >
         <div className="flex w-full flex-col gap-6 p-6 lg:flex-row lg:justify-between lg:gap-8 lg:p-0">
-          <div className="flex w-full flex-row items-end gap-6 lg:w-1/2 2xl:w-1/3">
-            <div className="flex flex-col items-start justify-between gap-9">
+          <div className="flex w-full flex-row items-start gap-6 lg:w-1/2 2xl:w-1/3">
+            <div className="flex flex-col justify-between gap-9">
               <div className="flex flex-col gap-2">
                 <p className="text-lg font-medium">{textContent.DownloadApp.title}</p>
                 <p className="max-w-95 text-sm text-gray-80">{textContent.DownloadApp.description}</p>
@@ -86,7 +86,7 @@ export default function Footer() {
               src={DownloadQR}
               width={125}
               height={125}
-              className="cursor-pointer"
+              className="cursor-pointer top-0"
               alt="QR code for download Internxt APP"
             />
           </div>
