@@ -90,7 +90,7 @@ const urls = {
     linkedin: 'https://linkedin.com/company/internxt',
     reddit: 'https://www.reddit.com/r/internxt/',
     twitter: 'https://twitter.com/Internxt',
-    youtube: 'https://www.youtube.com/channel/UCW2SxWdVEAEACYuejCgpGwg/featured',
+    youtube: 'https://www.youtube.com/@internxt',
   },
   tools: {
     byteConverter: `${INXT_URL}/byte-converter`,
