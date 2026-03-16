@@ -136,6 +136,7 @@ export class NetworkFacade {
           parts: fileParts,
         };
       },
+      options.abortController?.signal,
       options.parts,
     );
   }
