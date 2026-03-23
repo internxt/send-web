@@ -338,7 +338,7 @@ export default function Navbar() {
                   {/* Menu items */}
                   <div
                     className="pointer-events-none absolute left-1/2 top-full z-50 w-52 -translate-x-1/2
-                    translate-y-0 border border-black  bg-transparent rounded-xl p-1.5
+                    translate-y-0  bg-transparent rounded-xl p-1.5
                     opacity-0 shadow-subtle transition duration-150 ease-in-out group-hover:pointer-events-auto
                     group-hover:translate-y-1 group-hover:opacity-100"
                   >
