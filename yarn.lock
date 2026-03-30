@@ -4307,6 +4307,18 @@ miniflare@4.20260317.1:
     ws "8.18.0"
     youch "4.1.0-beta.10"
 
+miniflare@4.20260317.3:
+  version "4.20260317.3"
+  resolved "https://registry.yarnpkg.com/miniflare/-/miniflare-4.20260317.3.tgz#a52b109f5c6e1f56852e4a789153bf22471ec952"
+  integrity sha512-tK78D3X4q30/SXqVwMhWrUfH+ffRou9dJLC+jkhNy5zh1I7i7T4JH6xihOvYxdCSBavJ5fQXaaxDJz6orh09BA==
+  dependencies:
+    "@cspotcode/source-map-support" "0.8.1"
+    sharp "^0.34.5"
+    undici "7.24.4"
+    workerd "1.20260317.1"
+    ws "8.18.0"
+    youch "4.1.0-beta.10"
+
 minimalistic-assert@^1.0.0, minimalistic-assert@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/minimalistic-assert/-/minimalistic-assert-1.0.1.tgz#2e194de044626d4a10e7f7fbc00ce73e83e4d5c7"
@@ -5851,6 +5863,22 @@ wrangler@4.76.0:
     blake3-wasm "2.1.5"
     esbuild "0.27.3"
     miniflare "4.20260317.1"
+    path-to-regexp "6.3.0"
+    unenv "2.0.0-rc.24"
+    workerd "1.20260317.1"
+  optionalDependencies:
+    fsevents "~2.3.2"
+
+wrangler@4.78.0:
+  version "4.78.0"
+  resolved "https://registry.yarnpkg.com/wrangler/-/wrangler-4.78.0.tgz#07c677c0d64b5cf8b7cfc8c0d894d24840d73d9f"
+  integrity sha512-He/vUhk4ih0D0eFmtNnlbT6Od8j+BEokaSR+oYjbVsH0SWIrIch+eHqfLRSBjBQaOoh6HCNxcafcIkBm2u0Hag==
+  dependencies:
+    "@cloudflare/kv-asset-handler" "0.4.2"
+    "@cloudflare/unenv-preset" "2.16.0"
+    blake3-wasm "2.1.5"
+    esbuild "0.27.3"
+    miniflare "4.20260317.3"
     path-to-regexp "6.3.0"
     unenv "2.0.0-rc.24"
     workerd "1.20260317.1"
