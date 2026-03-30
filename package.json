@@ -43,7 +43,7 @@
     "react-dropzone": "15.0.0",
     "react-hot-toast": "2.6.0",
     "react-markdown": "10.1.0",
-    "react-router-dom": "7.13.1",
+    "react-router-dom": "7.13.2",
     "stream-browserify": "3.0.0",
     "stream-http": "3.2.0",
     "streamsaver": "2.0.6",
