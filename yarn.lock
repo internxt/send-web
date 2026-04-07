@@ -1187,7 +1187,7 @@
     "@rollup/pluginutils" "^5.0.1"
     magic-string "^0.30.3"
 
-"@rollup/pluginutils@^5.0.1", "@rollup/pluginutils@^5.2.0":
+"@rollup/pluginutils@^5.0.1", "@rollup/pluginutils@^5.3.0":
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/@rollup/pluginutils/-/pluginutils-5.3.0.tgz#57ba1b0cbda8e7a3c597a4853c807b156e21a7b4"
   integrity sha512-5EdhGZtnu3V88ces7s53hhfK5KSASnJZv8Lulpc04cWO3REESroJXg73DFsOmgbU2BhwV0E20bu2IDZb3VKW4Q==
@@ -2726,10 +2726,10 @@ dot-prop@^10.0.0:
   dependencies:
     type-fest "^5.0.0"
 
-dotenv@17.3.1:
-  version "17.3.1"
-  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-17.3.1.tgz#2706f5b0165e45a1503348187b8468f87fe6aae2"
-  integrity sha512-IO8C/dzEb6O3F9/twg6ZLXz164a2fhTnEWb95H23Dm4OuN+92NmEAlTrupP9VW6Jm3sO26tQlqyvyi4CsnY9GA==
+dotenv@17.4.0:
+  version "17.4.0"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-17.4.0.tgz#9a5de24d7112a889b4b179ffbe83933298c41d37"
+  integrity sha512-kCKF62fwtzwYm0IGBNjRUjtJgMfGapII+FslMHIjMR5KTnwEmBmWLDRSnc3XSNP8bNy34tekgQyDT0hr7pERRQ==
 
 dunder-proto@^1.0.1:
   version "1.0.1"
@@ -5693,12 +5693,12 @@ vite-plugin-node-polyfills@0.25.0:
     "@rollup/plugin-inject" "^5.0.5"
     node-stdlib-browser "^1.3.1"
 
-vite-plugin-svgr@4.5.0:
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/vite-plugin-svgr/-/vite-plugin-svgr-4.5.0.tgz#253e4c703d1f0b30935c285ca8621f4857952338"
-  integrity sha512-W+uoSpmVkSmNOGPSsDCWVW/DDAyv+9fap9AZXBvWiQqrboJ08j2vh0tFxTD/LjwqwAd3yYSVJgm54S/1GhbdnA==
+vite-plugin-svgr@5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/vite-plugin-svgr/-/vite-plugin-svgr-5.2.0.tgz#6502d7988394e167822baa91e6d6369383815006"
+  integrity sha512-qj2eAKF8C6PZWemVTvQA0xgQIcP1hHU6Buh7fl6BhvayWwnuxE+z417miKxeDvRWbDrupQ1oK99hfxElopJ3sQ==
   dependencies:
-    "@rollup/pluginutils" "^5.2.0"
+    "@rollup/pluginutils" "^5.3.0"
     "@svgr/core" "^8.1.0"
     "@svgr/plugin-jsx" "^8.1.0"
 
