@@ -19,5 +19,6 @@
     "incremental": true,
     "types": ["@types/react"]
   },
-  "include": ["src", "vite-env.d.ts"]
+  "include": ["src", "vite-env.d.ts"],
+  "exclude": ["**/*.test.*"]
 }
