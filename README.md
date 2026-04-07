@@ -9,11 +9,11 @@ This document describes how to set up and run the development environment.
 
 - Create a `.npmrc` file by copying the `.npmrc.template` provided in the repo.
 - Fill the `.env` file using `.env.template`.
-- Use `yarn` to install project dependencies.
+- Use `npm install` to install project dependencies.
 
 ## Scripts
 
-### `yarn run dev`
+### `npm run dev`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -21,7 +21,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-### `yarn run start`
+### `npm run start`
 
 Serves the built application locally to preview the production output.
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -31,22 +31,21 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 > The preview command serves the latest build output, so if you haven't run build beforehand, it will either fail or serve outdated files.
 
-### `yarn run lint`
+### `npm run lint`
 
 - Runs eslint linter
 
-### `yarn test`
+### `npm run test`
 
 - Runs unit tests with [Vitest](https://vitest.dev/)
 
-### `yarn build`
+### `npm run build`
 
 Builds the app for production to the `dist` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
 The build is minified, obfuscated, and the filenames include the hashes.\
 Your app is ready to be deployed!
-
 
 ## Configuring TailwindCSS Purge
 

@@ -19,7 +19,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '24.x'
-          cache: yarn
+          cache: npm
 
       - name: Add .env
         run: cp .env.template .env
@@ -28,10 +28,10 @@ jobs:
         run: cp .npmrc.template .npmrc
 
       - name: Install dependencies
-        run: yarn
+        run: npm install
 
       - name: Build
-        run: yarn build
+        run: npm run build
 
       - name: Run tests
-        run: yarn test:cov
+        run: npm run test:cov

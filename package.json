@@ -6,15 +6,15 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "start": "yarn build && vite preview",
-    "build": "yarn clean && tsc --noEmit && vite build",
+    "start": "npm run build && vite preview",
+    "build": "npm run clean && tsc --noEmit && vite build",
     "test": "vitest run",
     "test:cov": "vitest run --coverage",
     "clean": "rimraf dist coverage .wrangler tsconfig.tsbuildinfo",
     "lint": "eslint .",
     "format": "prettier --write **/*.{js,jsx,tsx,ts}",
     "prepare": "husky",
-    "cloudflare:dev": "yarn build && wrangler dev"
+    "cloudflare:dev": "npm run build && wrangler dev"
   },
   "dependencies": {
     "@headlessui/react": "2.2.9",
@@ -101,5 +101,10 @@
     "*.{js,jsx,tsx,ts}": [
       "prettier --write"
     ]
+  },
+  "engines": {
+    "node": ">=22.0.0",
+    "npm": ">=8.0.0",
+    "yarn": "disabled"
   }
 }
