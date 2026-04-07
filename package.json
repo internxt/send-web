@@ -95,7 +95,7 @@
     "vite-plugin-node-polyfills": "0.25.0",
     "vite-plugin-svgr": "4.5.0",
     "vitest": "4.1.0",
-    "wrangler": "4.78.0"
+    "wrangler": "4.80.0"
   },
   "lint-staged": {
     "*.{js,jsx,tsx,ts}": [
