@@ -5,17 +5,17 @@
   "description": "Secure, end-to-end encrypted file sharing by Internxt",
   "private": true,
   "scripts": {
-    "dev": "vite",
-    "start": "npm run build && vite preview",
-    "build": "npm run clean && vite build",
-    "typecheck": "tsc --noEmit",
-    "test": "vitest run",
-    "test:cov": "vitest run --coverage",
+    "dev": "npx vite",
+    "start": "npm run build && npx vite preview",
+    "build": "npm run clean && npx vite build",
+    "typecheck": "npx tsc --noEmit",
+    "test": "npx vitest run",
+    "test:cov": "npx vitest run --coverage",
     "clean": "npx rimraf dist coverage .wrangler tsconfig.tsbuildinfo",
-    "lint": "eslint .",
-    "format": "prettier --write **/*.{js,jsx,tsx,ts}",
-    "prepare": "husky",
-    "cloudflare:dev": "npm run build && wrangler dev"
+    "lint": "npx eslint .",
+    "format": "npx prettier --write **/*.{js,jsx,tsx,ts}",
+    "prepare": "npx husky",
+    "cloudflare:dev": "npm run build && npx wrangler dev"
   },
   "dependencies": {
     "@headlessui/react": "2.2.9",
