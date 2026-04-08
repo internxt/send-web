@@ -1,49 +1,40 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/favicon.ico" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta
+      name="description"
+      content="Securely send and share files and photos with Internxt Send. Internxt's 100% private and fully end-to-end encrypted free file transfer service"
+    />
+    <link rel="canonical" href="https://send.internxt.com" />
 
-<head>
-  <meta charset="utf-8" />
-  <link rel="icon" href="/favicon.ico" />
-  <link rel="apple-touch-icon" href="/favicon.ico" />
-  <link rel="manifest" href="/manifest.json" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#ffffff" />
-  <meta name="description" content="Securely send and share files and photos with Internxt Send. Internxt's 100% private and fully end-to-end encrypted free file transfer service" />
-  <link rel="canonical" href="https://send.internxt.com" />
+    <link rel="stylesheet" href="/src/styles/index.css" />
 
-  <link rel="stylesheet" href="/src/styles/index.css">
+    <title>Internxt Send - Securely Send Large Files for Free</title>
 
-  <title>Internxt Send - Securely Send Large Files for Free</title>
+    <script src="https://www.google.com/recaptcha/api.js?render=%REACT_APP_RECAPTCHA_V3%"></script>
 
-  <script src="https://www.google.com/recaptcha/api.js?render=%REACT_APP_RECAPTCHA_V3%"></script>
+    <script src="https://www.googletagmanager.com/gtag/js?id=%REACT_APP_GA_ID%"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', '%REACT_APP_GA_ID%', {
+        debug_mode: '%NODE_ENV%' === 'development',
+      });
+    </script>
+  </head>
 
-  <script src="https://www.googletagmanager.com/gtag/js?id=%REACT_APP_GA_ID%"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-    gtag("js", new Date());
-    gtag("config", "%REACT_APP_GA_ID%", {
-      debug_mode: "%NODE_ENV%" === "development",
-    });
-  </script>
-</head>
-
-<body>
-  <noscript>You need to enable JavaScript to run this app.</noscript>
-  <div id="root"></div>
-  <script type="module" src="/src/index.tsx"></script>
-  <!--
-        This HTML file is a template.
-        If you open it directly in the browser, you will see an empty page.
-
-        You can add webfonts, meta tags, or analytics to this file.
-        The build step will place the bundled scripts into the <body> tag.
-
-          To begin the development, run `npm start` or `yarn start`.
-          To create a production bundle, use `npm run build` or `yarn build`.
-    -->
-</body>
-
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/index.tsx"></script>
+  </body>
 </html>
