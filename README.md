@@ -47,7 +47,6 @@ It correctly bundles React in production mode and optimizes the build for the be
 The build is minified, obfuscated, and the filenames include the hashes.\
 Your app is ready to be deployed!
 
-
 ## Configuring TailwindCSS Purge
 
 It is important to add in the tailwind.config.js file, within the purge property, the list of classes that we are overriding within a Tailwind layer (components, utilities or base) for third-party packages (such as react-bootstrap)

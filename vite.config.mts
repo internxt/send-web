@@ -8,7 +8,6 @@ import tailwindcss from '@tailwindcss/vite';
 import autoprefixer from 'autoprefixer';
 import { cloudflare } from '@cloudflare/vite-plugin';
 
-
 dotenv.config();
 
 export default defineConfig({
@@ -55,14 +54,12 @@ export default defineConfig({
   envPrefix: ['REACT_APP_'],
   css: {
     postcss: {
-      plugins: [
-        autoprefixer({}),
-      ],
-    }
+      plugins: [autoprefixer({})],
+    },
   },
   build: {
     outDir: 'dist',
-    assetsDir: 'assets'
+    assetsDir: 'assets',
   },
   preview: {
     port: 3000,
