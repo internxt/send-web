@@ -68,7 +68,7 @@
   "devDependencies": {
     "@cloudflare/vite-plugin": "1.31.1",
     "@internxt/eslint-config-internxt": "2.1.0",
-    "@internxt/prettier-config": "internxt/prettier-config#v1.0.2",
+    "@internxt/prettier-config": "internxt/prettier-config#v2.0.1",
     "@rollup/plugin-replace": "6.0.3",
     "@tailwindcss/vite": "4.2.2",
     "@testing-library/jest-dom": "6.9.1",

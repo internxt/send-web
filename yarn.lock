@@ -879,9 +879,10 @@
   dependencies:
     uuid "^11.1.0"
 
-"@internxt/prettier-config@internxt/prettier-config#v1.0.2":
-  version "1.0.2"
-  resolved "https://codeload.github.com/internxt/prettier-config/tar.gz/9fa74e9a2805e1538b50c3809324f1c9d0f3e4f9"
+"@internxt/prettier-config@internxt/prettier-config#v2.0.1":
+  version "2.0.1"
+  uid c0fd6e64ec2056f00d48ec79aa18454bd678d40a
+  resolved "https://codeload.github.com/internxt/prettier-config/tar.gz/c0fd6e64ec2056f00d48ec79aa18454bd678d40a"
 
 "@internxt/sdk@1.15.10":
   version "1.15.10"
