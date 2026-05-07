@@ -28,6 +28,7 @@ export default defineConfig({
     obfuscator({
       log: false,
       enable: true,
+      excludes: [/rolldown-runtime/],
       autoExcludeNodeModules: true,
       threadPool: true,
       options: {
@@ -88,9 +89,11 @@ export default defineConfig({
   },
   optimizeDeps: {
     exclude: [],
-    esbuildOptions: {
-      define: {
-        global: 'globalThis',
+    rolldownOptions: {
+      transform: {
+        define: {
+          global: 'globalThis',
+        },
       },
     },
   },
