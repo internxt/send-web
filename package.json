@@ -70,7 +70,7 @@
     "@internxt/eslint-config-internxt": "^2.1.0",
     "@internxt/prettier-config": "^2.0.1",
     "@rollup/plugin-replace": "^6.0.3",
-    "@tailwindcss/vite": "^4.2.4",
+    "@tailwindcss/vite": "^4.3.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@types/async": "^3.2.25",
     "@types/lodash.throttle": "^4.1.9",
@@ -95,7 +95,7 @@
     "vite-plugin-node-polyfills": "^0.26.0",
     "vite-plugin-svgr": "^5.2.0",
     "vitest": "^4.1.5",
-    "wrangler": "^4.88.0"
+    "wrangler": "^4.90.0"
   },
   "lint-staged": {
     "*.{js,jsx,tsx,ts}": [
