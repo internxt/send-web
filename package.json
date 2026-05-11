@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^2.2.10",
-    "@internxt/lib": "^1.4.1",
+    "@internxt/lib": "^1.4.2",
     "@internxt/sdk": "^1.16.2",
     "async": "^3.2.6",
     "axios": "^1.16.0",
