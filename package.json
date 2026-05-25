@@ -92,7 +92,7 @@
     "tailwindcss": "^4.2.4",
     "vite": "^8.0.13",
     "vite-plugin-bundle-obfuscator": "^1.11.0",
-    "vite-plugin-node-polyfills": "^0.26.0",
+    "vite-plugin-node-polyfills": "^0.28.0",
     "vite-plugin-svgr": "^5.2.0",
     "vitest": "^4.1.6",
     "wrangler": "^4.90.0"
