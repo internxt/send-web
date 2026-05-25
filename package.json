@@ -82,7 +82,7 @@
     "@vitest/coverage-istanbul": "^4.1.6",
     "autoprefixer": "^10.5.0",
     "dotenv": "^17.4.2",
-    "eslint": "^10.3.0",
+    "eslint": "^10.4.0",
     "husky": "^9.1.7",
     "jsdom": "^29.1.1",
     "lint-staged": "^17.0.4",
@@ -92,7 +92,7 @@
     "tailwindcss": "^4.2.4",
     "vite": "^8.0.13",
     "vite-plugin-bundle-obfuscator": "^1.11.0",
-    "vite-plugin-node-polyfills": "^0.26.0",
+    "vite-plugin-node-polyfills": "^0.28.0",
     "vite-plugin-svgr": "^5.2.0",
     "vitest": "^4.1.6",
     "wrangler": "^4.90.0"
