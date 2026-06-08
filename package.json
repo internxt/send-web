@@ -51,7 +51,7 @@
     "url": "^0.11.4",
     "util": "^0.12.5",
     "uuid": "^14.0.0",
-    "web-vitals": "^5.2.0"
+    "web-vitals": "^5.3.0"
   },
   "browserslist": {
     "production": [
@@ -74,7 +74,7 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@types/async": "^3.2.25",
     "@types/lodash.throttle": "^4.1.9",
-    "@types/node": "^25.6.2",
+    "@types/node": "^25.9.2",
     "@types/react": "^19.2.15",
     "@types/react-dom": "^19.2.3",
     "@types/streamsaver": "^2.0.5",
@@ -85,7 +85,7 @@
     "eslint": "^10.4.0",
     "husky": "^9.1.7",
     "jsdom": "^29.1.1",
-    "lint-staged": "^17.0.4",
+    "lint-staged": "^17.0.7",
     "postcss": "^8.5.14",
     "prettier": "^3.8.3",
     "rimraf": "^6.1.3",
