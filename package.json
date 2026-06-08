@@ -51,7 +51,7 @@
     "url": "^0.11.4",
     "util": "^0.12.5",
     "uuid": "^14.0.0",
-    "web-vitals": "^5.2.0"
+    "web-vitals": "^5.3.0"
   },
   "browserslist": {
     "production": [
@@ -66,7 +66,7 @@
     ]
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "^1.38.0",
+    "@cloudflare/vite-plugin": "^1.39.0",
     "@internxt/eslint-config-internxt": "^2.1.0",
     "@internxt/prettier-config": "^2.0.1",
     "@rollup/plugin-replace": "^6.0.3",
