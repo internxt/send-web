@@ -17,9 +17,9 @@ const InfoSection = () => {
             className="flex h-full flex-col items-center justify-center p-7 text-center lg:items-start
             lg:pl-20 lg:text-start"
           >
-            <h4 className="mb-10 max-w-xs text-4xl font-semibold text-white lg:text-4xl">
+            <p className="mb-10 max-w-xs text-4xl font-semibold text-white lg:text-4xl">
               {label.InfoSection.card1.title}
-            </h4>
+            </p>
             <div className="mb-4 max-w-[340px] space-y-5 text-xl text-white">
               <p className="font-regular text-lg">{label.InfoSection.card1.description.line1}</p>
               <p className="font-regular text-lg">{label.InfoSection.card1.description.line2}</p>
@@ -42,9 +42,9 @@ const InfoSection = () => {
             className="flex h-full flex-col items-center justify-center p-7 text-center lg:items-start
             lg:pl-20 lg:text-start"
           >
-            <h4 className="mb-10 max-w-xs text-4xl font-semibold text-white lg:text-4xl">
+            <p className="mb-10 max-w-xs text-4xl font-semibold text-white lg:text-4xl">
               {label.InfoSection.card2.title}
-            </h4>
+            </p>
             <div className="mb-4 max-w-[340px] space-y-5 text-xl text-white">
               <p className="font-regular text-lg">{label.InfoSection.card2.description.line1}</p>
               <p className="font-regular text-lg">{label.InfoSection.card2.description.line2}</p>

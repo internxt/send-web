@@ -56,14 +56,12 @@ export default function Tooltip({
             style === 'dark' ? 'bg-gray-90' : 'bg-primary/10'
           }`}
         >
-          <h1 className={`max-w-[170px] text-sm ${style === 'dark' ? 'text-white' : 'text-primary'}`}>
+          <p className={`max-w-[170px] text-sm ${style === 'dark' ? 'text-white' : 'text-primary'}`}>
             {title}
             {children}
-          </h1>
+          </p>
           {subtitle && (
-            <h2 className={`-mt-1 text-sm ${style === 'dark' ? 'text-white opacity-50' : 'text-gray-50'}`}>
-              {subtitle}
-            </h2>
+            <p className={`-mt-1 text-sm ${style === 'dark' ? 'text-white opacity-50' : 'text-gray-50'}`}>{subtitle}</p>
           )}
         </div>
         <div

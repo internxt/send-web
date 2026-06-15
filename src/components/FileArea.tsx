@@ -138,11 +138,9 @@ function Empty({
       >
         <PlusCircle size={48} className="cursor-pointer text-primary" weight="fill" onClick={onFileExplorerOpen} />
         <div className="ml-2">
-          <h1 className="text-2xl font-medium text-gray-80">Upload files</h1>
+          <p className="text-2xl font-medium text-gray-80">Upload files</p>
           <div onClick={onFolderExplorerOpen} className="cursor-pointer">
-            <h2 className="-mt-0.5 text-base leading-4 text-primary underline hover:no-underline">
-              or select a folder
-            </h2>
+            <p className="-mt-0.5 text-base leading-4 text-primary underline hover:no-underline">or select a folder</p>
           </div>
         </div>
       </div>
