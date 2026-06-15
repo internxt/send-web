@@ -33,12 +33,12 @@ export default function RootDropzone({ className = '', children }: { className?:
             lg:rounded-2xl lg:border-white"
           >
             <div className="text-center">
-              <h1 className="text-3xl font-medium text-gray-40 lg:text-5xl lg:text-white">
+              <p className="text-3xl font-medium text-gray-40 lg:text-5xl lg:text-white">
                 Drag and drop your files here
-              </h1>
-              <h2 className="mt-3  text-lg text-gray-40 lg:text-2xl lg:text-white">
+              </p>
+              <p className="mt-3  text-lg text-gray-40 lg:text-2xl lg:text-white">
                 Maximum {maxBytesPerSendDisplay} upload limit
-              </h2>
+              </p>
             </div>
           </div>
         </div>

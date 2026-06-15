@@ -61,9 +61,9 @@ const BgLoop = (text: Item['text'], ctaRef: RefObject<HTMLDivElement | null>) =>
     <div ref={ctaRef} className="flex select-none opacity-100 transition-opacity duration-1000">
       <div className="flex w-full flex-row justify-end">
         <div className={`flex w-full ${text.cta ? 'max-w-[316px]' : 'max-w-[605px]'} flex-col 3xl:max-w-4xl`}>
-          <h1 className="text-6xl font-semibold 3xl:text-7xl" style={{ lineHeight: 1 }}>
+          <p className="text-6xl font-semibold 3xl:text-7xl" style={{ lineHeight: 1 }}>
             {text.title}
-          </h1>
+          </p>
           <p className="mt-6 text-xl font-medium 3xl:text-2xl">{text.description}</p>
           {text.cta ? (
             <div

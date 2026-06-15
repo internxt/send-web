@@ -100,9 +100,9 @@ export default function DownloadView() {
               <div className="mx-auto mt-10 flex items-center justify-center">
                 <ArrowCircleDown size={96} className="text-primary " weight="thin" />
               </div>
-              <h1 className="mt-4 px-5 text-center text-xl font-semibold text-gray-80">
+              <p className="mt-4 px-5 text-center text-xl font-semibold text-gray-80">
                 {state.details.title ?? `${fileList.length} ${fileList.length === 1 ? 'File' : 'Files'}`}
-              </h1>
+              </p>
               {state.details.subject && <p className="px-5 text-center text-gray-60">{state.details.subject}</p>}
               <p className="mb-8 px-5 text-center text-sm text-gray-50">Link will expire on {expireDate}</p>
             </div>
