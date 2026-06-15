@@ -5,7 +5,7 @@ const InfoSection = () => {
   return (
     <div className="z-10 flex flex-col items-center justify-center bg-gray-1 px-10 pt-20">
       <div className="flex w-auto flex-col space-y-6 text-center text-black lg:w-[756px]">
-        <p className="text-5xl font-semibold">{label.InfoSection.title}</p>
+        <h2 className="text-5xl font-semibold">{label.InfoSection.title}</h2>
         <p className=" text-xl">{label.InfoSection.description}</p>
       </div>
       <div className="flex w-screen flex-col items-center space-y-10 px-10 pb-20 pt-16">
@@ -17,9 +17,9 @@ const InfoSection = () => {
             className="flex h-full flex-col items-center justify-center p-7 text-center lg:items-start
             lg:pl-20 lg:text-start"
           >
-            <p className="mb-10 max-w-xs text-4xl font-semibold text-white lg:text-4xl">
+            <h3 className="mb-10 max-w-xs text-4xl font-semibold text-white lg:text-4xl">
               {label.InfoSection.card1.title}
-            </p>
+            </h3>
             <div className="mb-4 max-w-[340px] space-y-5 text-xl text-white">
               <p className="font-regular text-lg">{label.InfoSection.card1.description.line1}</p>
               <p className="font-regular text-lg">{label.InfoSection.card1.description.line2}</p>
@@ -42,9 +42,9 @@ const InfoSection = () => {
             className="flex h-full flex-col items-center justify-center p-7 text-center lg:items-start
             lg:pl-20 lg:text-start"
           >
-            <p className="mb-10 max-w-xs text-4xl font-semibold text-white lg:text-4xl">
+            <h3 className="mb-10 max-w-xs text-4xl font-semibold text-white lg:text-4xl">
               {label.InfoSection.card2.title}
-            </p>
+            </h3>
             <div className="mb-4 max-w-[340px] space-y-5 text-xl text-white">
               <p className="font-regular text-lg">{label.InfoSection.card2.description.line1}</p>
               <p className="font-regular text-lg">{label.InfoSection.card2.description.line2}</p>

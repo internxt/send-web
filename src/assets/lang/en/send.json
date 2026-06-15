@@ -67,7 +67,7 @@
     "title": "How to use Internxt Send",
     "description": "Simply drag and drop the files you want to share or send into the browser, or select the + icon and manually select the files or photos you wish to send. From there, you will have to choose from two options to complete your encrypted file transfer:",
     "card1": {
-      "title": "Share by link",
+      "title": "Send Large Files Via Email",
       "description": {
         "line1": "Select \"Get a link\" and a unique sharing link will be automatically generated. ",
         "line2": "Copy the link and share it, however, with whoever you wish. Your link will be valid only for 15 days and then automatically expire for your safety."
@@ -76,7 +76,7 @@
     },
 
     "card2": {
-      "title": "Share by email",
+      "title": "Secure Shareable link",
       "description": {
         "line1": "Or, move the slider to \"Send email\" and input the email addresses of those you wish to share files and photos with. Add in your email address and an optional subject or message.",
         "line2": "Then click \"Send files\" and your unique sharing link will automatically be sent via email. Your link will also only be valid for 15 days and then automatically expire."
@@ -110,7 +110,7 @@
     ]
   },
   "FaqSection": {
-    "title": "Questions? We have answers",
+    "title": "Questions for Internxt Send? We have answers",
     "faq": [
       {
         "question": "Do I need an Internxt account to use Internxt Send?",

@@ -48,7 +48,7 @@ const FeatureSection = () => {
       px-5 pb-[88px] pt-20 lg:px-0"
     >
       <div className="flex flex-col items-center justify-center space-y-6 pb-16 text-center">
-        <p className="w-full max-w-[550px] justify-center text-5xl font-semibold">{label.FeatureSection.title}</p>
+        <h2 className="w-full max-w-[550px] justify-center text-5xl font-semibold">{label.FeatureSection.title}</h2>
         <p className="pt-4 text-xl font-light text-gray-80 lg:max-w-[850px]">{label.FeatureSection.description}</p>
       </div>
       <RevealY className="grid grid-cols-1 flex-row flex-wrap justify-center gap-8 sm:grid-cols-2">
@@ -63,7 +63,7 @@ const FeatureSection = () => {
               className="flex  w-full max-w-[408px] flex-col items-center gap-x-40 space-y-5
               text-left lg:items-start"
             >
-              <p className="text-2xl font-medium">{card.title}</p>
+              <h3 className="text-2xl font-medium">{card.title}</h3>
               <p className="text-lg">{card.description}</p>
             </div>
           </div>

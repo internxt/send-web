@@ -156,6 +156,7 @@ export default function HomeView() {
 
   return (
     <div className="relative flex w-full flex-col overflow-hidden">
+      <h1 className="sr-only">Send Large Files Free with End-to-End Encryption</h1>
       <Layout>
         {phase.name === 'standby' && (
           <>

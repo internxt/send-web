@@ -23,9 +23,7 @@ export default function FaqAccordion({
         className="my-5 flex cursor-pointer flex-row items-center justify-between space-x-6 text-left
           hover:text-primary"
       >
-        <span className={`w-full text-lg font-medium ${isQuestionBigger ? 'md:text-2xl' : 'md:text-xl'}`}>
-          {question}
-        </span>
+        <h3 className={`w-full text-lg font-medium ${isQuestionBigger ? 'md:text-2xl' : 'md:text-xl'}`}>{question}</h3>
         <PlusCircle size={32} className={`${active && 'rotate-45'} transition-transform duration-250 ease-in-out`} />
       </button>
 
