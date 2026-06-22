@@ -5250,10 +5250,10 @@ vite-plugin-svgr@^5.2.0:
     "@svgr/core" "^8.1.0"
     "@svgr/plugin-jsx" "^8.1.0"
 
-"vite@^6.0.0 || ^7.0.0 || ^8.0.0", vite@^8.0.15:
-  version "8.0.15"
-  resolved "https://registry.yarnpkg.com/vite/-/vite-8.0.15.tgz#f2117eb2ac1963160ae5c79c6879f50814e2bdc5"
-  integrity sha512-qpgllRxrLqwsMAGRdLhsEr9bepaOQk1rxH1xT2coBXLaEB/bfkqQj1j7RMxwMfnYrvO1ZnFMiwX+wBVgnsyn0g==
+"vite@^6.0.0 || ^7.0.0 || ^8.0.0", vite@^8.0.16:
+  version "8.0.16"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-8.0.16.tgz#ae073866c06563d6634a90169a496e11bd84f1a6"
+  integrity sha512-h9bXPmJichP5fLmVQo3PyaGSDE2n3aPuomeAlVRm0JLmt4rY6zmPKd59HYI4LNW8oTK7tlTsuC7l/m7awx9Jcw==
   dependencies:
     lightningcss "^1.32.0"
     picomatch "^4.0.4"
