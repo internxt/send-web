@@ -1,5 +1,3 @@
 registry=https://registry.npmjs.org/
 
 @internxt:registry=https://registry.npmjs.org/
-
-include=dev
