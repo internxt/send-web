@@ -13,7 +13,7 @@
     "clean": "rimraf dist coverage .wrangler tsconfig.tsbuildinfo",
     "lint": "eslint .",
     "format": "prettier --write **/*.{js,jsx,tsx,ts}",
-    "prepare": "husky",
+    "prepare": "husky || true",
     "cloudflare:dev": "npm run build && wrangler dev"
   },
   "dependencies": {
