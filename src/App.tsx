@@ -18,11 +18,12 @@ function DownloadRedirectWrapper() {
 function App() {
   useEffect(() => {
     const url = new URL(window.location.href);
-    const parametersToClear = ['_gl', '_gcl_au', '_ga'];
     let hadChanges = false;
 
-    parametersToClear.forEach((param) => {
-      if (url.searchParams.has(param)) {
+    const currentKeys = Array.from(url.searchParams.keys());
+
+    currentKeys.forEach((param) => {
+      if (param === '_gl' || param === '_gcl_au' || param === '_fplc' || param.startsWith('_ga')) {
         url.searchParams.delete(param);
         hadChanges = true;
       }
