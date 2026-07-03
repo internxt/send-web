@@ -5,6 +5,7 @@ import { FilesProvider } from './contexts/Files';
 import DownloadView from './views/DownloadView';
 import HomeView from './views/HomeView';
 import NotFoundView from './views/NotFoundView';
+import { useEffect } from 'react';
 
 function DownloadRedirectWrapper() {
   const { sendId } = useParams();
@@ -15,6 +16,27 @@ function DownloadRedirectWrapper() {
 }
 
 function App() {
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const parametersToClear = ['_gl', '_gcl_au', '_ga'];
+    let hadChanges = false;
+
+    parametersToClear.forEach((param) => {
+      if (url.searchParams.has(param)) {
+        url.searchParams.delete(param);
+        hadChanges = true;
+      }
+    });
+
+    if (hadChanges) {
+      const newUrl = url.searchParams.toString()
+        ? `${url.pathname}?${url.searchParams.toString()}${url.hash}`
+        : `${url.pathname}${url.hash}`;
+
+      window.history.replaceState({}, document.title, newUrl);
+    }
+  }, []);
+
   return (
     <>
       <BrowserRouter>
