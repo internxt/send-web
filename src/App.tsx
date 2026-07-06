@@ -5,6 +5,7 @@ import { FilesProvider } from './contexts/Files';
 import DownloadView from './views/DownloadView';
 import HomeView from './views/HomeView';
 import NotFoundView from './views/NotFoundView';
+import { useEffect } from 'react';
 import { cleanUrlParam } from './utils/cleanUrl';
 
 function DownloadRedirectWrapper() {
@@ -16,7 +17,9 @@ function DownloadRedirectWrapper() {
 }
 
 function App() {
-  cleanUrlParam();
+  useEffect(() => {
+    cleanUrlParam();
+  }, []);
 
   return (
     <>
