@@ -1,4 +1,4 @@
-import isValidEmail from '@internxt/lib/dist/src/auth/isValidEmail';
+import isValidEmail from '@internxt/lib/dist/auth/isValidEmail';
 import { format } from 'bytes';
 import copy from 'copy-to-clipboard';
 import throttle from 'lodash.throttle';
