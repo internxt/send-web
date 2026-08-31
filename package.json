@@ -19,7 +19,7 @@
   "dependencies": {
     "@headlessui/react": "^2.2.10",
     "@internxt/lib": "^1.5.2",
-    "@internxt/sdk": "^1.20.1",
+    "@internxt/sdk": "^1.20.2",
     "async": "^3.2.6",
     "axios": "^1.19.0",
     "bip39": "^3.1.0",
@@ -71,7 +71,7 @@
     "@internxt/prettier-config": "^2.0.1",
     "@rollup/plugin-replace": "^6.0.3",
     "@tailwindcss/vite": "^4.3.3",
-    "@testing-library/jest-dom": "^7.0.0",
+    "@testing-library/jest-dom": "^7.0.1",
     "@types/async": "^3.2.25",
     "@types/lodash.throttle": "^4.1.9",
     "@types/node": "^26.2.0",
