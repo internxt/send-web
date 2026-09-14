@@ -52,7 +52,7 @@ export const transformJsonFilesToItems = (
         name: value.name,
         size: value.size,
         type: 'file',
-        file: value,
+        file: value as FileWithPath,
         parent_folder: null,
       });
     } else {
@@ -91,7 +91,7 @@ export const getChildrenFiles = (
         name: key,
         size: value.size,
         type: 'file',
-        file: value,
+        file: value as FileWithPath,
         parent_folder: parent_folder,
       });
     }
