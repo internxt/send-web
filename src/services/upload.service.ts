@@ -9,8 +9,9 @@ import { SendItemData } from '../models/SendItem';
 import { getCaptchaToken } from '../lib/auth';
 import { CreateSendLinksPayload, SendLink } from '@internxt/sdk/dist/send/types';
 import { SdkManager } from './sdk-manager.service';
+import { FileWithPath } from 'react-dropzone';
 
-interface FileWithNetworkId extends File {
+interface FileWithNetworkId extends FileWithPath {
   networkId: string;
 }
 
