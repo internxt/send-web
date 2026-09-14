@@ -5,6 +5,7 @@ import { format } from 'bytes';
 import { MAX_BYTES_PER_SEND, MAX_ITEMS_PER_LINK } from '../constants';
 import ItemsList from './ItemList';
 import Dropdown from './Dropdown';
+import { FileWithPath } from 'react-dropzone';
 
 export default function FileArea({ className = '', scroll }: { className?: string; scroll: boolean }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -27,7 +28,7 @@ export default function FileArea({ className = '', scroll }: { className?: strin
 
   const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
-      fileContext.addFiles(Array.from(event.target.files));
+      fileContext.addFiles(Array.from(event.target.files) as FileWithPath[]);
     }
     if (dropdownMenuButtonRef.current?.ariaExpanded === 'true') {
       dropdownMenuButtonRef.current?.click();
