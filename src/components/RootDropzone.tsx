@@ -1,6 +1,6 @@
 import { format } from 'bytes';
 import { ReactNode, useCallback, useContext } from 'react';
-import { useDropzone } from 'react-dropzone';
+import { FileWithPath, useDropzone } from 'react-dropzone';
 import { MAX_BYTES_PER_SEND } from '../constants';
 import { FilesContext } from '../contexts/Files';
 
@@ -9,7 +9,7 @@ export default function RootDropzone({ className = '', children }: { className?:
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
-      filesContext.addFiles(acceptedFiles);
+      filesContext.addFiles(acceptedFiles as FileWithPath[]);
     },
     [filesContext],
   );

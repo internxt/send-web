@@ -40,7 +40,7 @@
     "process": "^0.11.10",
     "react": "^19.2.7",
     "react-dom": "19.2.8",
-    "react-dropzone": "^15.0.0",
+    "react-dropzone": "^20.1.1",
     "react-hot-toast": "^2.6.0",
     "react-markdown": "^10.1.0",
     "react-router-dom": "^7.18.3",
