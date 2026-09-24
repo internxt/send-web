@@ -228,7 +228,7 @@ class UploadManager {
       const uploadFiles = async (files: SendLinkWithFile[], concurrency: number) => {
         this.uploadQueue.concurrency = concurrency;
 
-        const uploadPromises: Promise<SendLinkWithFile>[] = await this.uploadQueue.pushAsync(files);
+        const uploadPromises: Promise<SendLinkWithFile>[] = (await this.uploadQueue.pushAsync(files)) ?? [];
         const uploadedFiles = await Promise.all(uploadPromises);
 
         for (const uploadedFile of uploadedFiles) {
