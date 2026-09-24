@@ -4,6 +4,9 @@
   "version": "1.0.0",
   "description": "Secure, end-to-end encrypted file sharing by Internxt",
   "private": true,
+  "engines": {
+    "node": ">=24.x"
+  },
   "scripts": {
     "dev": "vite",
     "start": "npm run build && vite preview",
@@ -47,7 +50,7 @@
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
     "streamsaver": "^2.0.6",
-    "typescript": "^7.0.2",
+    "typescript": "^6.0.3",
     "url": "^0.11.4",
     "util": "^0.12.5",
     "uuid": "^14.0.2",
