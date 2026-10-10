@@ -82,7 +82,7 @@
     "@types/react-dom": "^19.2.7",
     "@types/streamsaver": "^2.0.5",
     "@vitejs/plugin-react": "^6.1.1",
-    "@vitest/coverage-istanbul": "^5.0.0",
+    "@vitest/coverage-istanbul": "^5.0.3",
     "autoprefixer": "^10.5.6",
     "dotenv": "^18.0.4",
     "eslint": "^10.10.0",
