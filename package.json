@@ -54,7 +54,7 @@
     "url": "^0.11.4",
     "util": "^0.12.5",
     "uuid": "^14.0.2",
-    "web-vitals": "^6.2.1"
+    "web-vitals": "^6.2.3"
   },
   "browserslist": {
     "production": [
