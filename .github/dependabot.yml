@@ -16,3 +16,9 @@ updates:
       prefix: fix(deps)
       # no release for dev-deps
       prefix-development: chore(dev-deps)
+    groups:
+      # vitest and its plugins pin each other as exact peers, keep them in one PR
+      vitest:
+        patterns:
+          - 'vitest'
+          - '@vitest/*'
