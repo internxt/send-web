@@ -1,5 +1,4 @@
-import axios from 'axios';
-import envService from './env.service';
+import { SdkManager } from './sdk-manager.service';
 import { getCaptchaToken } from '../lib/auth';
 
 const RENEW_MARGIN_MS = 60 * 60 * 1000;
@@ -10,24 +9,12 @@ export interface NetworkCredentials {
   pass: string;
 }
 
-interface NetworkTokenResponse {
-  user: string;
-  token: string;
-  bucketId: string;
-  expiresIn: number;
-}
-
 let cached: { credentials: NetworkCredentials; expiresAt: number } | null = null;
 let pending: Promise<NetworkCredentials> | null = null;
 
 async function requestCredentials(): Promise<NetworkCredentials> {
   const captcha = await getCaptchaToken();
-
-  const { data } = await axios.post<NetworkTokenResponse>(
-    `${envService.getVariable('sendApiUrl')}/links/network-token`,
-    {},
-    { headers: { 'x-internxt-captcha': captcha } },
-  );
+  const data = await SdkManager.instance.getSend({ 'x-internxt-captcha': captcha }).getNetworkToken();
 
   const credentials = { bucketId: data.bucketId, user: data.user, pass: data.token };
   cached = { credentials, expiresAt: Date.now() + data.expiresIn * 1000 };
