@@ -75,8 +75,6 @@ export default function HomeView() {
     const items = getAllItemsArray(filesContext.itemList);
 
     try {
-      await new Promise<void>((r) => window.grecaptcha.ready(r));
-
       const link = await UploadService.uploadFilesAndGetLink(
         items,
         switchValue === 'Send email'

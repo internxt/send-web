@@ -221,6 +221,7 @@ export function checkout({ planId, couponCode, mode }: PaymentCheckoutConfig): v
 }
 
 export async function getCaptchaToken(): Promise<string> {
+  await new Promise<void>((resolve) => window.grecaptcha.ready(resolve));
   const token = await window.grecaptcha.execute(envService.getVariable('recaptchaV3'), {
     action: 'SendItems',
   });

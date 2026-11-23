@@ -3,7 +3,7 @@ import { uploadFile } from '../network/upload';
 import { aes } from '@internxt/lib';
 import { SendItem } from '../models/SendItem';
 import envService from './env.service';
-import { withNetworkCredentials } from './network-credentials.service';
+import { getNetworkCredentials } from './network-credentials.service';
 
 export type ProgressOptions = {
   totalBytes?: number;
@@ -32,20 +32,20 @@ export class NetworkService {
   ): Promise<ReadableStream> {
     const plainCode = aes.decrypt(encryptedCode, this.encryptionKey);
 
-    return withNetworkCredentials(({ bucketId, user, pass }) =>
-      downloadFile({
-        bucketId,
-        fileId: item.networkId,
-        creds: { user, pass },
-        mnemonic: aes.decrypt(item.encryptionKey, plainCode),
-        options: {
-          notifyProgress: (totalBytes, downloadedBytes) => {
-            opts?.progress?.(opts.totalBytes || totalBytes, downloadedBytes);
-          },
-          abortController: opts?.abortController,
+    const { bucketId, user, pass } = await getNetworkCredentials();
+
+    return downloadFile({
+      bucketId,
+      fileId: item.networkId,
+      creds: { user, pass },
+      mnemonic: aes.decrypt(item.encryptionKey, plainCode),
+      options: {
+        notifyProgress: (totalBytes, downloadedBytes) => {
+          opts?.progress?.(opts.totalBytes || totalBytes, downloadedBytes);
         },
-      }),
-    );
+        abortController: opts?.abortController,
+      },
+    });
   }
 
   /**
@@ -54,20 +54,20 @@ export class NetworkService {
   async getDownloadFileStreamV2(item: SendItem, plainCode: string, opts?: ProgressOptions): Promise<ReadableStream> {
     const encryptionKey = aes.decrypt(item.encryptionKey, plainCode);
 
-    return withNetworkCredentials(({ bucketId, user, pass }) =>
-      downloadFile({
-        bucketId,
-        fileId: item.networkId,
-        creds: { user, pass },
-        mnemonic: encryptionKey,
-        options: {
-          notifyProgress: (totalBytes, downloadedBytes) => {
-            opts?.progress?.(opts.totalBytes || totalBytes, downloadedBytes);
-          },
-          abortController: opts?.abortController,
+    const { bucketId, user, pass } = await getNetworkCredentials();
+
+    return downloadFile({
+      bucketId,
+      fileId: item.networkId,
+      creds: { user, pass },
+      mnemonic: encryptionKey,
+      options: {
+        notifyProgress: (totalBytes, downloadedBytes) => {
+          opts?.progress?.(opts.totalBytes || totalBytes, downloadedBytes);
         },
-      }),
-    );
+        abortController: opts?.abortController,
+      },
+    });
   }
 
   public getDownloadFileStream(
@@ -103,18 +103,18 @@ export class NetworkService {
       parts = Math.ceil(file.size / partSize);
     }
 
-    return withNetworkCredentials(({ bucketId, user, pass }) =>
-      uploadFile(bucketId, {
-        creds: { user, pass },
-        filecontent: file,
-        filesize: file.size,
-        mnemonic: this.encryptionKey,
-        progressCallback: (totalBytes, uploadedBytes) => {
-          opts?.progress?.(totalBytes, uploadedBytes);
-        },
-        parts,
-        abortController: opts?.abortController,
-      }),
-    );
+    const { bucketId, user, pass } = await getNetworkCredentials();
+
+    return uploadFile(bucketId, {
+      creds: { user, pass },
+      filecontent: file,
+      filesize: file.size,
+      mnemonic: this.encryptionKey,
+      progressCallback: (totalBytes, uploadedBytes) => {
+        opts?.progress?.(totalBytes, uploadedBytes);
+      },
+      parts,
+      abortController: opts?.abortController,
+    });
   }
 }

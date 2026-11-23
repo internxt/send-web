@@ -21,7 +21,6 @@ let cached: { credentials: NetworkCredentials; expiresAt: number } | null = null
 let pending: Promise<NetworkCredentials> | null = null;
 
 async function requestCredentials(): Promise<NetworkCredentials> {
-  await new Promise<void>((resolve) => window.grecaptcha.ready(resolve));
   const captcha = await getCaptchaToken();
 
   const { data } = await axios.post<NetworkTokenResponse>(
@@ -48,26 +47,4 @@ export async function getNetworkCredentials(): Promise<NetworkCredentials> {
   }
 
   return pending;
-}
-
-const isUnauthorized = (err: unknown) => (err as { status?: number } | undefined)?.status === 401;
-
-export async function withNetworkCredentials<T>(
-  operation: (credentials: NetworkCredentials) => Promise<T>,
-): Promise<T> {
-  const credentials = await getNetworkCredentials();
-
-  try {
-    return await operation(credentials);
-  } catch (err) {
-    if (!isUnauthorized(err)) {
-      throw err;
-    }
-
-    if (cached?.credentials === credentials) {
-      cached = null;
-    }
-
-    return operation(await getNetworkCredentials());
-  }
 }

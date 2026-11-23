@@ -17,19 +17,16 @@ const twoHours = 2 * 60 * 60;
 
 describe('Network credentials', () => {
   let getNetworkCredentials: typeof import('./network-credentials.service').getNetworkCredentials;
-  let withNetworkCredentials: typeof import('./network-credentials.service').withNetworkCredentials;
 
   beforeEach(async () => {
     vi.useFakeTimers().setSystemTime(now);
-    vi.stubGlobal('window', { grecaptcha: { ready: (cb: () => void) => cb() } });
     vi.mocked(axios.post).mockReset();
     vi.resetModules();
-    ({ getNetworkCredentials, withNetworkCredentials } = await import('./network-credentials.service'));
+    ({ getNetworkCredentials } = await import('./network-credentials.service'));
   });
 
   afterEach(() => {
     vi.useRealTimers();
-    vi.unstubAllGlobals();
   });
 
   test('When credentials are requested, then the temporary token is used as the network password', async () => {
@@ -72,33 +69,6 @@ describe('Network credentials', () => {
 
     await Promise.all([getNetworkCredentials(), getNetworkCredentials(), getNetworkCredentials()]);
 
-    expect(axios.post).toHaveBeenCalledTimes(1);
-  });
-
-  test('When the network rejects the token, then the operation is retried once with a new token', async () => {
-    vi.mocked(axios.post)
-      .mockResolvedValueOnce(tokenResponse('rejected-jwt', twoHours))
-      .mockResolvedValueOnce(tokenResponse('new-jwt', twoHours));
-    const operation = vi
-      .fn()
-      .mockRejectedValueOnce(Object.assign(new Error('Unauthorized'), { status: 401 }))
-      .mockResolvedValueOnce('done');
-
-    const result = await withNetworkCredentials(operation);
-
-    expect(result).toBe('done');
-    expect(operation).toHaveBeenCalledTimes(2);
-    expect(operation).toHaveBeenLastCalledWith(expect.objectContaining({ pass: 'new-jwt' }));
-  });
-
-  test('When the operation fails for another reason, then it is not retried', async () => {
-    vi.mocked(axios.post).mockResolvedValueOnce(tokenResponse('network-jwt', twoHours));
-    const error = Object.assign(new Error('Server error'), { status: 500 });
-    const operation = vi.fn().mockRejectedValue(error);
-
-    await expect(withNetworkCredentials(operation)).rejects.toBe(error);
-
-    expect(operation).toHaveBeenCalledTimes(1);
     expect(axios.post).toHaveBeenCalledTimes(1);
   });
 });
