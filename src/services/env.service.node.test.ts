@@ -18,14 +18,11 @@ describe('Check that env variables are loaded correctly', () => {
 
   it('When an env variable are requested, then their value is successfully returned', async () => {
     expect(envService.getVariable('nodeEnv')).toBe(process.env.NODE_ENV);
-    expect(envService.getVariable('sendUser')).toBe(process.env.REACT_APP_SEND_USER);
-    expect(envService.getVariable('sendPass')).toBe(process.env.REACT_APP_SEND_PASS);
     expect(envService.getVariable('magicIv')).toBe(process.env.REACT_APP_MAGIC_IV);
     expect(envService.getVariable('magicSalt')).toBe(process.env.REACT_APP_MAGIC_SALT);
     expect(envService.getVariable('gaId')).toBe(process.env.REACT_APP_GA_ID);
     expect(envService.getVariable('networkUrl')).toBe(process.env.REACT_APP_NETWORK_URL);
     expect(envService.getVariable('sendEncryptionKey')).toBe(process.env.REACT_APP_SEND_ENCRYPTION_KEY);
-    expect(envService.getVariable('sendBucketId')).toBe(process.env.REACT_APP_SEND_BUCKET_ID);
     expect(envService.getVariable('stripePublicKey')).toBe(process.env.REACT_APP_STRIPE_PK);
     expect(envService.getVariable('stripeTestPublicKey')).toBe(process.env.REACT_APP_STRIPE_TEST_PK);
     expect(envService.getVariable('sendApiUrl')).toBe(process.env.REACT_APP_SEND_API_URL);

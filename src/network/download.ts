@@ -1,5 +1,4 @@
 import { Decipheriv } from 'crypto';
-import { getSha256 } from './crypto';
 import { NetworkFacade } from './NetworkFacade';
 import { joinReadableBinaryStreams } from './streams';
 import { SdkManager } from '../services/sdk-manager.service';
@@ -107,21 +106,9 @@ interface DownloadSharedFileParams extends DownloadFileParams {
 type DownloadOwnFileFunction = (params: DownloadOwnFileParams) => DownloadFileResponse;
 type DownloadFileFunction = (params: DownloadSharedFileParams | DownloadOwnFileParams) => DownloadFileResponse;
 
-async function getAuthFromCredentials(creds: NetworkCredentials): Promise<{ username: string; password: string }> {
-  return {
-    username: creds.user,
-    password: await getSha256(creds.pass),
-  };
-}
-
 const downloadOwnFile: DownloadOwnFileFunction = async (params) => {
   const { bucketId, fileId, mnemonic, options } = params;
-  const auth = await getAuthFromCredentials(params.creds);
-
-  const networkClient = SdkManager.instance.getNetwork({
-    user: auth.username,
-    pass: auth.password,
-  });
+  const networkClient = SdkManager.instance.getNetwork(params.creds);
 
   return new NetworkFacade(networkClient).download(bucketId, fileId, mnemonic, {
     downloadingCallback: options?.notifyProgress,
