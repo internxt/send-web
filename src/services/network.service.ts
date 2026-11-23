@@ -3,25 +3,7 @@ import { uploadFile } from '../network/upload';
 import { aes } from '@internxt/lib';
 import { SendItem } from '../models/SendItem';
 import envService from './env.service';
-
-interface NetworkCredentials {
-  user: string;
-  pass: string;
-}
-
-function getSendAccountParameters(): {
-  bucketId: string;
-  user: string;
-  pass: string;
-  encryptionKey: string;
-} {
-  return {
-    bucketId: envService.getVariable('sendBucketId'),
-    user: envService.getVariable('sendUser'),
-    pass: envService.getVariable('sendPass'),
-    encryptionKey: envService.getVariable('sendEncryptionKey'),
-  };
-}
+import { getNetworkCredentials } from './network-credentials.service';
 
 export type ProgressOptions = {
   totalBytes?: number;
@@ -36,27 +18,26 @@ export type ProgressOptions = {
  * Network and how the zero-knowledge is being implemented.
  */
 export class NetworkService {
-  private constructor(private readonly creds: NetworkCredentials) {}
   public static getInstance(): NetworkService {
-    const accountParams = getSendAccountParameters();
-
-    return new NetworkService({
-      user: accountParams.user,
-      pass: accountParams.pass,
-    });
+    return new NetworkService();
   }
 
   /**
    * Downloads a Send item using the decrypting protocol version 1.
    */
-  getDownloadFileStreamV1(item: SendItem, encryptedCode: string, opts?: ProgressOptions): Promise<ReadableStream> {
-    const { bucketId, encryptionKey } = getSendAccountParameters();
-    const plainCode = aes.decrypt(encryptedCode, encryptionKey);
+  async getDownloadFileStreamV1(
+    item: SendItem,
+    encryptedCode: string,
+    opts?: ProgressOptions,
+  ): Promise<ReadableStream> {
+    const plainCode = aes.decrypt(encryptedCode, this.encryptionKey);
+
+    const { bucketId, user, pass } = await getNetworkCredentials();
 
     return downloadFile({
       bucketId,
       fileId: item.networkId,
-      creds: this.creds,
+      creds: { user, pass },
       mnemonic: aes.decrypt(item.encryptionKey, plainCode),
       options: {
         notifyProgress: (totalBytes, downloadedBytes) => {
@@ -70,14 +51,15 @@ export class NetworkService {
   /**
    * Downloads a Send item using the decrypting protocol version 2.
    */
-  getDownloadFileStreamV2(item: SendItem, plainCode: string, opts?: ProgressOptions): Promise<ReadableStream> {
-    const { bucketId } = getSendAccountParameters();
+  async getDownloadFileStreamV2(item: SendItem, plainCode: string, opts?: ProgressOptions): Promise<ReadableStream> {
     const encryptionKey = aes.decrypt(item.encryptionKey, plainCode);
+
+    const { bucketId, user, pass } = await getNetworkCredentials();
 
     return downloadFile({
       bucketId,
       fileId: item.networkId,
-      creds: this.creds,
+      creds: { user, pass },
       mnemonic: encryptionKey,
       options: {
         notifyProgress: (totalBytes, downloadedBytes) => {
@@ -113,8 +95,6 @@ export class NetworkService {
       abortController?: AbortController;
     },
   ): Promise<string> {
-    const { bucketId, user, pass, encryptionKey } = getSendAccountParameters();
-
     let parts;
     const partSize = 50 * 1024 * 1024;
     const minimumMultipartThreshold = 100 * 1024 * 1024;
@@ -123,11 +103,13 @@ export class NetworkService {
       parts = Math.ceil(file.size / partSize);
     }
 
+    const { bucketId, user, pass } = await getNetworkCredentials();
+
     return uploadFile(bucketId, {
       creds: { user, pass },
       filecontent: file,
       filesize: file.size,
-      mnemonic: encryptionKey,
+      mnemonic: this.encryptionKey,
       progressCallback: (totalBytes, uploadedBytes) => {
         opts?.progress?.(totalBytes, uploadedBytes);
       },
