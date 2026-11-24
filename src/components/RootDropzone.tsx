@@ -27,7 +27,7 @@ export default function RootDropzone({ className = '', children }: { className?:
     <div className={className} {...getRootProps()}>
       <input {...getInputProps()} />
       {isDragActive && (
-        <div className="fade-in-animation fixed z-10 h-full w-full bg-white p-5 lg:bg-primary lg:p-20">
+        <div className="fade-in-animation fixed z-40 h-full w-full bg-white p-5 lg:bg-primary lg:p-20">
           <div
             className="flex h-full w-full items-center justify-center border-3 border-dashed border-gray-40
             lg:rounded-2xl lg:border-white"
