@@ -1,6 +1,5 @@
 import { ErrorWithContext } from '@internxt/sdk/dist/network/errors';
 
-import { getSha256 } from './crypto';
 import { NetworkFacade } from './NetworkFacade';
 import axios, { AxiosError, AxiosProgressEvent } from 'axios';
 import { SdkManager } from '../services/sdk-manager.service';
@@ -60,28 +59,10 @@ export async function uploadFileUint8Array(
   }
 }
 
-async function getAuthFromCredentials(creds: NetworkCredentials): Promise<{
-  username: string;
-  password: string;
-}> {
-  return {
-    username: creds.user,
-    password: await getSha256(creds.pass),
-  };
-}
-
 export async function uploadFile(bucketId: string, params: IUploadParams): Promise<string> {
   const file: File = params.filecontent;
 
-  const auth = await getAuthFromCredentials({
-    user: params.creds.user,
-    pass: params.creds.pass,
-  });
-
-  const networkClient = SdkManager.instance.getNetwork({
-    user: auth.username,
-    pass: auth.password,
-  });
+  const networkClient = SdkManager.instance.getNetwork(params.creds);
 
   const facade = new NetworkFacade(networkClient);
 
