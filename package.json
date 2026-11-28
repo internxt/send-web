@@ -78,7 +78,7 @@
     "@types/async": "^3.2.26",
     "@types/lodash.throttle": "^4.1.9",
     "@types/node": "^26.6.6",
-    "@types/react": "^19.3.0",
+    "@types/react": "^19.3.1",
     "@types/react-dom": "^19.3.0",
     "@types/streamsaver": "^2.0.5",
     "@vitejs/plugin-react": "^6.3.0",
